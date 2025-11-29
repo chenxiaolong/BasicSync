@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2025 Andrew Gunnerson
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+<resources>
+    <string name="app_name_release" translatable="false">BasicSync</string>
+    <string name="app_name_debug" translatable="false">BasicSync (Debug)</string>
+
+    <string name="app_name_upstream">Syncthing</string>
+</resources>

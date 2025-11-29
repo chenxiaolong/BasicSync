@@ -1,0 +1,727 @@
+/*
+ * SPDX-FileCopyrightText: 2023-2025 Andrew Gunnerson
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+
+import com.android.build.gradle.internal.UsesSdkComponentsBuildService
+import com.android.build.gradle.internal.dsl.SdkComponentsImpl
+import com.android.repository.Revision
+import java.io.ByteArrayOutputStream
+import org.eclipse.jgit.api.ArchiveCommand
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.archive.TarFormat
+import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.revwalk.RevWalk
+import org.gradle.kotlin.dsl.environment
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+buildscript {
+    dependencies {
+        classpath(libs.jgit)
+        classpath(libs.jgit.archive)
+    }
+}
+
+typealias VersionTriple = Triple<String?, Int, ObjectId>
+
+fun describeVersion(git: Git): VersionTriple {
+    // jgit doesn't provide a nice way to get strongly-typed objects from its `describe` command
+    val describeStr = git.describe().setLong(true).call()
+
+    return if (describeStr != null) {
+        val pieces = describeStr.split('-').toMutableList()
+        val commit = git.repository.resolve(pieces.removeLast().substring(1))
+        val count = pieces.removeLast().toInt()
+        val tag = pieces.joinToString("-")
+
+        Triple(tag, count, commit)
+    } else {
+        val log = git.log().call().iterator()
+        val head = log.next()
+        var count = 1
+
+        while (log.hasNext()) {
+            log.next()
+            ++count
+        }
+
+        Triple(null, count, head.id)
+    }
+}
+
+fun getVersionCode(triple: VersionTriple): Int {
+    val tag = triple.first
+    val (major, minor) = if (tag != null) {
+        if (!tag.startsWith('v')) {
+            throw IllegalArgumentException("Tag does not begin with 'v': $tag")
+        }
+
+        val pieces = tag.substring(1).split('.')
+        if (pieces.size != 2) {
+            throw IllegalArgumentException("Tag is not in the form 'v<major>.<minor>': $tag")
+        }
+
+        Pair(pieces[0].toInt(), pieces[1].toInt())
+    } else {
+        Pair(0, 0)
+    }
+
+    // 8 bits for major version, 8 bits for minor version, and 8 bits for git commit count
+    assert(major in 0 until 1.shl(8))
+    assert(minor in 0 until 1.shl(8))
+    assert(triple.second in 0 until 1.shl(8))
+
+    return major.shl(16) or minor.shl(8) or triple.second
+}
+
+fun getVersionName(git: Git, triple: VersionTriple): String {
+    val tag = triple.first?.replace(Regex("^v"), "") ?: "NONE"
+
+    return buildString {
+        append(tag)
+
+        if (triple.second > 0) {
+            append(".r")
+            append(triple.second)
+
+            append(".g")
+            git.repository.newObjectReader().use {
+                append(it.abbreviate(triple.third).name())
+            }
+        }
+    }
+}
+
+val git = Git.open(File(rootDir, ".git"))!!
+val gitVersionTriple = describeVersion(git)
+val gitVersionCode = getVersionCode(gitVersionTriple)
+val gitVersionName = getVersionName(git, gitVersionTriple)
+
+val projectUrl = "https://github.com/chenxiaolong/BasicSync"
+
+val extraDir = layout.buildDirectory.map { it.dir("extra") }
+val archiveDir = extraDir.map { it.dir("archive") }
+val stbridgeDir = extraDir.map { it.dir("stbridge") }
+val stbridgeAar = stbridgeDir.map { it.file("stbridge.aar") }
+
+android {
+    namespace = "com.chiller3.basicsync"
+
+    compileSdk = 36
+    buildToolsVersion = "36.0.0"
+    ndkVersion = "28.2.13676358"
+
+    defaultConfig {
+        applicationId = "com.chiller3.basicsync"
+        minSdk = 28
+        targetSdk = 36
+        versionCode = gitVersionCode
+        versionName = gitVersionName
+
+        base.archivesName.set("BasicSync-$versionName")
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "PROJECT_URL_AT_COMMIT",
+            "\"${projectUrl}/tree/${gitVersionTriple.third.name}\"")
+
+        buildConfigField("String", "DOCUMENTS_AUTHORITY",
+            "APPLICATION_ID + \".documents\"")
+
+        resValue("string", "app_name", "@string/app_name_release")
+    }
+    sourceSets {
+        getByName("main") {
+            assets {
+                srcDir(archiveDir)
+            }
+        }
+    }
+    signingConfigs {
+        create("release") {
+            val keystore = System.getenv("RELEASE_KEYSTORE")
+            storeFile = if (keystore != null) { File(keystore) } else { null }
+            storePassword = System.getenv("RELEASE_KEYSTORE_PASSPHRASE")
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+            keyPassword = System.getenv("RELEASE_KEY_PASSPHRASE")
+        }
+    }
+    buildTypes {
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+
+            resValue("string", "app_name", "@string/app_name_debug")
+        }
+
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+    applicationVariants.all {
+        // This is set here so that applicationIdSuffix will be respected
+        resValue("string", "documents_authority", "$applicationId.documents")
+    }
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_21)
+        targetCompatibility(JavaVersion.VERSION_21)
+    }
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+    splits {
+        // Split by ABI because compiled golang code is huge and a universal APK is nearly 200 MiB
+        abi {
+            isEnable = true
+            isUniversalApk = false
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
+    }
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_21
+    }
+}
+
+dependencies {
+    implementation(libs.activity.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+    implementation(libs.core.ktx)
+    implementation(libs.fragment.ktx)
+    implementation(libs.preference.ktx)
+    implementation(libs.material)
+    implementation(libs.zxing.core)
+    implementation(files(stbridgeAar))
+}
+
+val archive = tasks.register("archive") {
+    inputs.property("gitVersionTriple.third", gitVersionTriple.third)
+
+    val outputFile = archiveDir.map { it.file("archive.tar") }
+    outputs.file(outputFile)
+
+    doLast {
+        val format = "tar_for_task_$name"
+
+        ArchiveCommand.registerFormat(format, TarFormat())
+        try {
+            outputFile.get().asFile.outputStream().use {
+                git.archive()
+                    .setTree(git.repository.resolve(gitVersionTriple.third.name))
+                    .setFormat(format)
+                    .setOutputStream(it)
+                    .call()
+            }
+        } finally {
+            ArchiveCommand.unregisterFormat(format)
+        }
+    }
+}
+
+interface InjectedExecOps {
+    @get:Inject val execOps: ExecOperations
+}
+
+val stbridgeSrcDir = File(rootDir, "stbridge")
+
+val goenv = tasks.register("goenv") {
+    val envVars = arrayOf(
+        "GOPROXY",
+        "GOSUMDB",
+        "GOTOOLCHAIN",
+        "GOFLAGS",
+    ).associateWith { System.getenv(it) }
+    val goModFile = File(stbridgeSrcDir, "go.mod")
+    val outputFile = extraDir.map { it.file("go.env") }
+
+    // Rebuild if the environment variables change.
+    inputs.properties(envVars.map { "golang.env.${it.key}" to (it.value ?: "") }.toMap())
+    inputs.files(goModFile)
+    outputs.files(outputFile)
+
+    doLast {
+        val prefix = "toolchain "
+        val goToolchain = goModFile.useLines { lines ->
+            lines.find { it.startsWith(prefix) }
+                ?.substring(prefix.length)
+                ?: throw IllegalStateException("go.sum does not contain toolchain version")
+        }
+
+        val defaultEnvVars = mapOf(
+            // Needed for building on Fedora prior to:
+            // https://src.fedoraproject.org/rpms/golang/c/1a696ebca1b2d5227921924d3f9885e18cf445b5
+            "GOPROXY" to "https://proxy.golang.org,direct",
+            "GOSUMDB" to "sum.golang.org",
+            // Pin to the specified toolchain version, even if the local toolchain is newer, for
+            // more reproducible builds.
+            "GOTOOLCHAIN" to goToolchain,
+            "GOFLAGS" to "-ldflags=-buildid= -buildvcs=false",
+        )
+
+        defaultEnvVars + envVars
+
+        val properties = Properties()
+        (defaultEnvVars.keys + envVars.keys).forEach { key ->
+            properties[key] = envVars[key] ?: defaultEnvVars[key]
+        }
+
+        outputFile.get().asFile.writer().use {
+            properties.store(it, null)
+        }
+    }
+}
+
+fun addGoEnvironment(options: ProcessForkOptions) {
+    goenv.get().outputs.files.forEach { file ->
+        val properties = Properties()
+        file.reader().use { properties.load(it) }
+        properties.forEach { options.environment(it.key.toString(), it.value) }
+    }
+}
+
+val gomobile = tasks.register("gomobile") {
+    val binDir = layout.buildDirectory.map { it.dir("bin") }
+
+    inputs.files(
+        File(stbridgeSrcDir, "go.sum"),
+        goenv.map { it.outputs.files },
+    )
+    outputs.files(
+        binDir.map { it.file("gobind") },
+        binDir.map { it.file("gomobile") },
+    )
+
+    val injected = project.objects.newInstance<InjectedExecOps>()
+
+    doLast {
+        val outputStream = ByteArrayOutputStream()
+
+        injected.execOps.exec {
+            executable("go")
+            args = listOf("mod", "graph")
+            addGoEnvironment(this)
+            workingDir(stbridgeSrcDir)
+            standardOutput = outputStream
+        }
+
+        val outputText = outputStream.toString(Charsets.UTF_8)
+        val prefix = "stbridge golang.org/x/mobile@"
+        val version = outputText.lineSequence()
+            .find { it.startsWith(prefix) }
+            ?.substring(prefix.length)
+            ?: throw IllegalStateException("go.sum does not contain gomobile version")
+
+        injected.execOps.exec {
+            executable("go")
+            args(
+                "install",
+                "golang.org/x/mobile/cmd/gobind@$version",
+                "golang.org/x/mobile/cmd/gomobile@$version",
+            )
+
+            environment("GOBIN", binDir.get().asFile.absolutePath)
+            addGoEnvironment(this)
+
+            workingDir(stbridgeSrcDir)
+        }
+    }
+}
+
+val gowrapper = tasks.register("gowrapper") {
+    val gowrapperDir = File(stbridgeSrcDir, "gowrapper")
+    val binDir = layout.buildDirectory.map { it.dir("bin") }
+
+    inputs.files(
+        File(gowrapperDir, "go.go"),
+        File(stbridgeSrcDir, "go.mod"),
+        File(stbridgeSrcDir, "go.sum"),
+        goenv.map { it.outputs.files },
+    )
+    outputs.files(
+        binDir.map { it.file("go") },
+    )
+
+    val injected = project.objects.newInstance<InjectedExecOps>()
+
+    doLast {
+        injected.execOps.exec {
+            executable("go")
+            args("install", "go.go")
+
+            environment("GOBIN", binDir.get().asFile.absolutePath)
+            addGoEnvironment(this)
+
+            workingDir(gowrapperDir)
+        }
+    }
+}
+
+val stbridge = tasks.register("stbridge") {
+    project.objects.newInstance<UsesSdkComponentsBuildService>().let { usesSdkComponents ->
+        usesSdkComponents.initializeSdkComponentsBuildService(this)
+        val sdkComponentsBuildService = usesSdkComponents.sdkComponentsBuildService.get()
+
+        // AGP is currently set up so that the NDK auto-installation only happens when the C++
+        // functionality is enabled. We want that behavior even though we're only using the NDK for
+        // building Go code.
+        val sdkComponents = androidComponents.sdkComponents as SdkComponentsImpl
+        val ndkHandler = sdkComponentsBuildService.versionedNdkHandler(
+            sdkComponents.ndkVersion.get(),
+            sdkComponents.ndkPath.takeIf { it.isPresent }?.get(),
+        )
+        ndkHandler.getNdkPlatform(downloadOkay = true)
+
+        // Query for the path to android.jar. This forces the SdkFullLoadingStrategy to initialize,
+        // which calls SdkHandler.initTarget(), which calls DefaultSdkLoader.getTargetInfo(), which
+        // installs missing SDK components. Like the NDK installation above, this is hacky, but
+        // works well enough.
+        sdkComponentsBuildService
+            .sdkLoader(
+                project.provider { "android-${android.compileSdk}" },
+                project.provider { Revision.parseRevision(android.buildToolsVersion) },
+            )
+            .androidJarProvider
+            .get()
+    }
+
+    val tempDir = stbridgeDir.map { it.dir("temp") }
+    val goModFile = File(stbridgeSrcDir, "go.mod")
+    val syncthingDir = File(File(rootDir, "external"), "syncthing")
+
+    inputs.files(
+        goModFile,
+        File(stbridgeSrcDir, "go.sum"),
+        File(stbridgeSrcDir, "stbridge.go"),
+        File(File(stbridgeSrcDir, "pidfdhack"), "pidfdhack.go"),
+        File(File(syncthingDir, ".git"), "HEAD"),
+        goenv.map { it.outputs.files },
+        gomobile.map { it.outputs.files },
+        gowrapper.map { it.outputs.files },
+    )
+    inputs.properties(
+        "android.defaultConfig.minSdk" to android.defaultConfig.minSdk!!,
+        "android.namespace" to android.namespace!!,
+        "androidComponents.sdkComponents.ndkDirectory" to
+                androidComponents.sdkComponents.ndkDirectory.map { it.asFile.absolutePath },
+        "androidComponents.sdkComponents.sdkDirectory" to
+                androidComponents.sdkComponents.sdkDirectory.map { it.asFile.absolutePath },
+    )
+    outputs.files(
+        stbridgeDir.map { it.file("stbridge.aar") },
+        stbridgeDir.map { it.file("stbridge-sources.jar") },
+    )
+
+    doFirst {
+        tempDir.get().asFile.mkdirs()
+    }
+
+    val injected = project.objects.newInstance<InjectedExecOps>()
+
+    doLast {
+        val gomobileExecutable = gomobile.get().outputs.files.find { it.name == "gomobile" }!!
+        val binDir = gomobileExecutable.parentFile
+
+        // jgit can't read a submodule's .git file.
+        val stGit = Git.open(File(File(File(File(rootDir, ".git"), "modules"), "external"), "syncthing"))!!
+        val stGitVersionTriple = describeVersion(stGit)
+        val stGitVersionName = getVersionName(stGit, stGitVersionTriple)
+        val stGitTimestamp = RevWalk(stGit.repository).use {
+            it.parseCommit(stGitVersionTriple.third).commitTime
+        }
+
+        // We use the web UI, so the embedded assets need to be generated.
+        injected.execOps.exec {
+            executable("go")
+            args(
+                "generate",
+                "github.com/syncthing/syncthing/lib/api/auto",
+                "github.com/syncthing/syncthing/cmd/infra/strelaypoolsrv/auto",
+            )
+            environment(
+                "PATH" to "$binDir${File.pathSeparator}${environment["PATH"]}",
+            )
+            addGoEnvironment(this)
+
+            workingDir(syncthingDir)
+        }
+
+        injected.execOps.exec {
+            val tags = arrayOf(
+                // From TAGS_LINUX in Syncthing's .github/workflows/build-syncthing.yaml
+                "sqlite_omit_load_extension",
+                "sqlite_dbstat",
+                // Disable auto-upgrades since we pull in Syncthing as a library, not an executable.
+                "noupgrade",
+            )
+            val ldflags = arrayOf(
+                // The "v" prefix is important. Syncthing will panic without it.
+                "-X github.com/syncthing/syncthing/lib/build.Version=v$stGitVersionName",
+                "-X github.com/syncthing/syncthing/lib/build.Host=${android.namespace}",
+                "-X github.com/syncthing/syncthing/lib/build.User=${android.namespace}",
+                "-X github.com/syncthing/syncthing/lib/build.Stamp=$stGitTimestamp",
+                "-X github.com/syncthing/syncthing/lib/build.Tags=${tags.joinToString(",")}",
+                // https://github.com/wlynxg/anet#how-to-build-with-go-1230-or-later
+                "-checklinkname=0",
+            )
+
+            executable(gomobileExecutable)
+            args(
+                "bind",
+                "-v",
+                "-o", stbridgeAar.get().asFile.absolutePath,
+                "-target=android",
+                "-androidapi=${android.defaultConfig.minSdk}",
+                "-javapkg=${android.namespace}.binding",
+                "-trimpath",
+                "-tags=${tags.joinToString(" ")}",
+                "-ldflags=${ldflags.joinToString(" ")}",
+                ".",
+            )
+            environment(
+                // gomobile only supports finding gobind in $PATH.
+                "PATH" to "$binDir${File.pathSeparator}${environment["PATH"]}",
+                "ANDROID_HOME" to androidComponents.sdkComponents.sdkDirectory.get()
+                    .asFile.absolutePath,
+                "ANDROID_NDK_HOME" to androidComponents.sdkComponents.ndkDirectory.get()
+                    .asFile.absolutePath,
+                "TMPDIR" to tempDir.get().asFile.absolutePath,
+                // The wrapper will use this as a template to construct a relative path for
+                // reproducible builds. This will need to change if gomobile ever changes their
+                // temp directory layout.
+                "GOWRAPPER_BASE_PATH" to File(
+                    File(tempDir.get().asFile, "gomobile-work-PLACEHOLDER"),
+                    "src-android-PLACEHOLDER",
+                ),
+            )
+            addGoEnvironment(this)
+
+            workingDir(stbridgeSrcDir)
+        }
+    }
+
+    // gomobile fails to clean up its temp directories after it switched to using go modules. These
+    // directories are never reused, so delete them.
+    doLast {
+        val subDirs = tempDir.get().asFile.listFiles { _, name: String ->
+            name.startsWith("gomobile-work-")
+        }
+        if (subDirs != null) {
+            for (subDir in subDirs) {
+                println("Cleaning up gomobile leftovers: $subDir")
+
+                injected.execOps.exec {
+                    executable("go")
+                    args = listOf("clean", "-modcache")
+                    environment("GOPATH", subDir.absolutePath)
+                }
+
+                File(subDir, "pkg").delete()
+                subDir.delete()
+            }
+        }
+    }
+}
+
+/*
+ * NOTE: This requires the https://crates.io/crates/resvg CLI utility. BasicSync's SVG icon uses
+ * transform-origin, which very few SVG parsers support.
+ *
+ * https://gitlab.gnome.org/GNOME/librsvg/-/issues/685
+ * https://gitlab.com/inkscape/inbox/-/issues/4640
+ */
+tasks.register("iconPng") {
+    val inputSvg = File(File(File(rootDir, "app"), "images"), "icon.svg")
+    val outputPng = File(File(File(File(rootDir, "metadata"), "en-US"), "images"), "icon.png")
+
+    inputs.files(inputSvg)
+    outputs.files(outputPng)
+
+    val injected = project.objects.newInstance<InjectedExecOps>()
+
+    doLast {
+        injected.execOps.exec {
+            executable("resvg")
+            args("-w", "512", "-h", "512", inputSvg, outputPng)
+        }
+    }
+}
+
+android.applicationVariants.all {
+    preBuildProvider.configure {
+        dependsOn(archive)
+        dependsOn(stbridge)
+    }
+}
+
+data class LinkRef(val type: String, val number: Int) : Comparable<LinkRef> {
+    override fun compareTo(other: LinkRef): Int = compareValuesBy(
+        this,
+        other,
+        { it.type },
+        { it.number },
+    )
+
+    override fun toString(): String = "[$type #$number]"
+}
+
+fun checkBrackets(line: String) {
+    var expectOpening = true
+
+    for (c in line) {
+        if (c == '[' || c == ']') {
+            if (c == '[' != expectOpening) {
+                throw IllegalArgumentException("Mismatched brackets: $line")
+            }
+
+            expectOpening = !expectOpening
+        }
+    }
+
+    if (!expectOpening) {
+        throw IllegalArgumentException("Missing closing bracket: $line")
+    }
+}
+
+fun updateChangelogLinks(baseUrl: String) {
+    val file = File(rootDir, "CHANGELOG.md")
+    val regexStandaloneLink = Regex("\\[([^\\]]+)\\](?![\\(\\[])")
+    val regexAutoLink = Regex("(Issue|PR) #(\\d+)")
+    val links = hashMapOf<LinkRef, String>()
+    var skipRemaining = false
+    val changelog = mutableListOf<String>()
+
+    file.useLines { lines ->
+        for (rawLine in lines) {
+            val line = rawLine.trimEnd()
+
+            if (!skipRemaining) {
+                checkBrackets(line)
+                val matches = regexStandaloneLink.findAll(line)
+
+                for (linkMatch in matches) {
+                    val linkText = linkMatch.groupValues[1]
+                    val match = regexAutoLink.matchEntire(linkText)
+                    require(match != null) { "Invalid link format: $linkText" }
+
+                    val type = match.groupValues[1]
+                    val number = match.groupValues[2].toInt()
+
+                    val link = when (type) {
+                        "Issue" -> "$baseUrl/issues/$number"
+                        "PR" -> "$baseUrl/pull/$number"
+                        else -> throw IllegalArgumentException("Unknown link type: $type")
+                    }
+
+                    // #0 is used for examples only
+                    if (number != 0) {
+                        links[LinkRef(type, number)] = link
+                    }
+                }
+
+                if ("Do not manually edit the lines below" in line) {
+                    skipRemaining = true
+                }
+
+                changelog.add(line)
+            }
+        }
+    }
+
+    for ((ref, link) in links.entries.sortedBy { it.key }) {
+        changelog.add("$ref: $link")
+    }
+
+    changelog.add("")
+
+    file.writeText(changelog.joinToString("\n"))
+}
+
+fun updateChangelog(version: String?, replaceFirst: Boolean) {
+    val file = File(rootDir, "CHANGELOG.md")
+    val expected = if (version != null) { "### Version $version" } else { "### Unreleased" }
+
+    val changelog = mutableListOf<String>().apply {
+        // This preserves a trailing newline, unlike File.readLines()
+        addAll(file.readText().lineSequence())
+    }
+
+    val index = changelog.indexOfFirst { it.startsWith("### ") }
+    if (index == -1) {
+        changelog.addAll(0, listOf(expected, ""))
+    } else if (changelog[index] != expected) {
+        if (replaceFirst) {
+            changelog[index] = expected
+        } else {
+            changelog.addAll(index, listOf(expected, ""))
+        }
+    }
+
+    file.writeText(changelog.joinToString("\n"))
+}
+
+tasks.register("changelogUpdateLinks") {
+    doLast {
+        updateChangelogLinks(projectUrl)
+    }
+}
+
+tasks.register("changelogPreRelease") {
+    val version = project.findProperty("releaseVersion")
+
+    doLast {
+        updateChangelog(version!!.toString(), true)
+    }
+}
+
+tasks.register("changelogPostRelease") {
+    doLast {
+        updateChangelog(null, false)
+    }
+}
+
+tasks.register("versionPreRelease") {
+    // This needs to be computed manually since the git tag hasn't been created yet at this point.
+    val gitVersionCode = project.findProperty("releaseVersion")
+        ?.let { getVersionCode(VersionTriple("v$it", 0, ObjectId.zeroId())) }
+
+    doLast {
+        File(File(rootDir, "metadata"), "version.txt").writeText(gitVersionCode!!.toString())
+    }
+}
+
+tasks.register("preRelease") {
+    dependsOn("changelogUpdateLinks")
+    dependsOn("changelogPreRelease")
+    dependsOn("versionPreRelease")
+}
+
+tasks.register("postRelease") {
+    dependsOn("changelogPostRelease")
+}

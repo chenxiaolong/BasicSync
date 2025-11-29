@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2023-2025 Andrew Gunnerson
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:key="permissions"
+        app:title="@string/pref_header_permissions"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            app:key="inhibit_battery_opt"
+            app:persistent="false"
+            app:title="@string/pref_inhibit_battery_opt_name"
+            app:summary="@string/pref_inhibit_battery_opt_desc"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            app:key="allow_notifications"
+            app:persistent="false"
+            app:title="@string/pref_allow_notifications_name"
+            app:summary="@string/pref_allow_notifications_desc"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            app:key="local_storage_access"
+            app:persistent="false"
+            app:title="@string/pref_local_storage_access_name"
+            app:summary="@string/pref_local_storage_access_desc"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            app:key="disable_app_hibernation"
+            app:persistent="false"
+            app:title="@string/pref_disable_app_hibernation_name"
+            app:summary="@string/pref_disable_app_hibernation_desc"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="configuration"
+        app:title="@string/pref_header_configuration"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            app:key="open_web_ui"
+            app:persistent="false"
+            app:title="@string/pref_open_web_ui_name"
+            app:summary="@string/pref_open_web_ui_desc"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            app:key="import_configuration"
+            app:persistent="false"
+            app:title="@string/pref_import_configuration_name"
+            app:summary="@string/pref_import_configuration_desc"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            app:key="export_configuration"
+            app:persistent="false"
+            app:title="@string/pref_export_configuration_name"
+            app:summary="@string/pref_export_configuration_desc"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/pref_header_run_conditions"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreferenceCompat
+            app:key="service_status"
+            app:persistent="false"
+            app:title="@string/pref_service_status_name"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreferenceCompat
+            app:key="auto_mode"
+            app:persistent="false"
+            app:title="@string/pref_auto_mode_name"
+            app:summary="@string/pref_auto_mode_desc"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreferenceCompat
+            app:key="require_unmetered_network"
+            app:defaultValue="true"
+            app:title="@string/pref_require_unmetered_network_name"
+            app:summary="@string/pref_require_unmetered_network_desc"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreferenceCompat
+            app:key="require_sufficient_battery"
+            app:defaultValue="true"
+            app:title="@string/pref_require_sufficient_battery_name"
+            app:summary="@string/pref_require_sufficient_battery_desc"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/pref_header_about"
+        app:iconSpaceReserved="false">
+
+        <com.chiller3.basicsync.view.LongClickablePreference
+            app:key="version"
+            app:persistent="false"
+            app:title="@string/pref_version_name"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="debug"
+        app:title="@string/pref_header_debug"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            app:key="save_logs"
+            app:persistent="false"
+            app:title="@string/pref_save_logs_name"
+            app:summary="@string/pref_save_logs_desc"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+</PreferenceScreen>
