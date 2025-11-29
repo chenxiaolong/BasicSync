@@ -106,6 +106,8 @@ class Notifications(private val context: Context) {
             } else {
                 Intent(context, SettingsActivity::class.java)
             }
+            primaryIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
             val primaryPendingIntent = PendingIntent.getActivity(
                 context,
                 0,
