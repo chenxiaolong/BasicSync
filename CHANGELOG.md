@@ -7,8 +7,13 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update syncthing to 2.0.12 ([PR #2])
+
 ### Version 1.0
 
 * Initial release
 
 <!-- Do not manually edit the lines below. Use `./gradlew changelogUpdateLinks` to regenerate. -->
+[PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
