@@ -263,6 +263,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver,
             val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
             val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING
                     || status == BatteryManager.BATTERY_STATUS_FULL
+                    || intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) != 0
 
             val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
             val scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
