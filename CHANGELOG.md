@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Consider plugged in device as charging (eg. when device reached charge limit) ([PR #3])
+* Update syncthing to 2.0.13 ([PR #4])
 
 ### Version 1.1
 
