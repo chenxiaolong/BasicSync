@@ -1,3 +1,3 @@
 [submodule "external/syncthing"]
 	path = external/syncthing
-	url = https://github.com/syncthing/syncthing.git
+	url = https://github.com/chenxiaolong/syncthing.git
