@@ -13,6 +13,9 @@
 * Update syncthing to 2.0.13 ([PR #4])
 * Backport upstream fix to skip point-to-point interfaces ([PR #5])
   * Reduces power consumption previously caused by use of the cellular interface when local discovery was enabled.
+* Pause Syncthing instead of shutting it down by default ([PR #6])
+  * Reduces power consumption caused by the initial folder scan at startup.
+  * Makes the most difference when using large folders or when the network connection is unstable and frequently flapping.
 
 ### Version 1.1
 
@@ -27,3 +30,4 @@
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
 [PR #5]: https://github.com/chenxiaolong/BasicSync/pull/5
+[PR #6]: https://github.com/chenxiaolong/BasicSync/pull/6
