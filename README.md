@@ -137,4 +137,4 @@ If you are interested in implementing a new feature and would like to see it inc
 
 BasicSync itself is licensed under GPLv3. Please see [`LICENSE`](./LICENSE) for the full license text.
 
-The bundled Syncthing is [licensed under MPL 2.0](https://github.com/syncthing/syncthing/blob/main/LICENSE) and is unmodified from the upstream code.
+The bundled Syncthing, along with the additional patches applied in [BasicSync's fork](https://github.com/chenxiaolong/syncthing), is [licensed under MPL 2.0](https://github.com/syncthing/syncthing/blob/main/LICENSE).
