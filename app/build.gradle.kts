@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2023-2025 Andrew Gunnerson
+ * SPDX-FileCopyrightText: 2023-2026 Andrew Gunnerson
  * SPDX-License-Identifier: GPL-3.0-only
  */
 
@@ -18,7 +18,6 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
 }
 
 java {
@@ -121,7 +120,7 @@ android {
 
     compileSdk = 36
     buildToolsVersion = "36.0.0"
-    ndkVersion = "28.2.13676358"
+    ndkVersion = "29.0.14206865"
 
     defaultConfig {
         applicationId = "com.chiller3.basicsync"
@@ -137,17 +136,7 @@ android {
         buildConfigField("String", "PROJECT_URL_AT_COMMIT",
             "\"${projectUrl}/tree/${gitVersionTriple.third.name}\"")
 
-        buildConfigField("String", "DOCUMENTS_AUTHORITY",
-            "APPLICATION_ID + \".documents\"")
-
         resValue("string", "app_name", "@string/app_name_release")
-    }
-    sourceSets {
-        getByName("main") {
-            assets {
-                srcDir(archiveDir)
-            }
-        }
     }
     signingConfigs {
         create("release") {
@@ -173,16 +162,13 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
-    applicationVariants.all {
-        // This is set here so that applicationIdSuffix will be respected
-        resValue("string", "documents_authority", "$applicationId.documents")
-    }
     compileOptions {
         sourceCompatibility(JavaVersion.VERSION_21)
         targetCompatibility(JavaVersion.VERSION_21)
     }
     buildFeatures {
         buildConfig = true
+        resValues = true
         viewBinding = true
     }
     splits {
@@ -197,6 +183,14 @@ android {
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
+    }
+}
+
+androidComponents.onVariants { variant ->
+    variant.sources.assets!!.addGeneratedSourceDirectory(archive) {
+        project.objects.directoryProperty().apply {
+            set(archiveDir)
+        }
     }
 }
 
@@ -573,11 +567,9 @@ tasks.register("iconPng") {
     }
 }
 
-android.applicationVariants.all {
-    preBuildProvider.configure {
-        dependsOn(archive)
-        dependsOn(stbridge)
-    }
+androidComponents.onVariants { variant ->
+    variant.lifecycleTasks.registerPreBuild(archive)
+    variant.lifecycleTasks.registerPreBuild(stbridge)
 }
 
 data class LinkRef(val type: String, val number: Int) : Comparable<LinkRef> {
