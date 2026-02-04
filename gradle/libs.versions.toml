@@ -1,8 +1,8 @@
 [versions]
-activity-ktx = "1.12.2"
+activity-ktx = "1.12.3"
 android-gradle-plugin = "9.0.0"
 appcompat = "1.7.1"
-camera = "1.5.2"
+camera = "1.5.3"
 core-ktx = "1.17.0"
 jgit = "7.5.0.202512021534-r"
 fragment-ktx = "1.8.9"
