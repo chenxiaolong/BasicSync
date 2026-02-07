@@ -11,6 +11,7 @@
 
 * Fix save button not being enabled after selecting a folder path or scanning a device QR code ([PR #15])
 * Fix device ID not being filled in when scanning a QR code the second time after adding or editing a device ([PR #16])
+* Fix QR code scanner button being clickable when editing an existing device ([PR #17])
 
 ### Version 1.5
 
@@ -59,3 +60,4 @@
 [PR #13]: https://github.com/chenxiaolong/BasicSync/pull/13
 [PR #15]: https://github.com/chenxiaolong/BasicSync/pull/15
 [PR #16]: https://github.com/chenxiaolong/BasicSync/pull/16
+[PR #17]: https://github.com/chenxiaolong/BasicSync/pull/17
