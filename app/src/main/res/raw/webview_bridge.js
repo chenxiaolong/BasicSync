@@ -56,10 +56,16 @@ function addQrScanner(element) {
     button.classList.add('btn-default');
     button.setAttribute('data-container', 'body');
     button.setAttribute('data-original-title', BasicSync.getTranslation('scan_qr_code'));
-    $(button).tooltip();
+    button.setAttribute('ng-disabled', '!editingDeviceNew()');
+    button.setAttribute('tooltip', '');
     button.appendChild(icon);
 
-    element.appendChild(button);
+    angular.element(document).injector().invoke(function($compile) {
+        const scope = angular.element(element).scope();
+        $compile(button)(scope);
+
+        element.appendChild(button);
+    });
 
     button.addEventListener('click', function() {
         BasicSync.scanQrCode();
