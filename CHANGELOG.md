@@ -11,6 +11,7 @@
 
 * Reenable default proguard optimizations ([PR #21], [PR #22])
   * For folks who want to decode stack traces from log files, the mapping files are now included with the official releases in `mappings.tar.zst`
+* Don't fail the build if some languages have missing strings in their translations ([PR #24])
 
 ### Version 1.6
 
@@ -73,3 +74,4 @@
 [PR #19]: https://github.com/chenxiaolong/BasicSync/pull/19
 [PR #21]: https://github.com/chenxiaolong/BasicSync/pull/21
 [PR #22]: https://github.com/chenxiaolong/BasicSync/pull/22
+[PR #24]: https://github.com/chenxiaolong/BasicSync/pull/24
