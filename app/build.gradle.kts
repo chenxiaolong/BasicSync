@@ -181,6 +181,11 @@ android {
             include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
         }
     }
+    lint {
+        // The translations are always going to lag behind new strings being
+        // added to values/strings.xml
+        disable += "MissingTranslation"
+    }
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
