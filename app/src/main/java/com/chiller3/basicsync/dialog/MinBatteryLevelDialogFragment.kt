@@ -19,10 +19,10 @@ class MinBatteryLevelDialogFragment : TextInputDialogFragment<Int>() {
         fun newInstance(context: Context) =
             MinBatteryLevelDialogFragment().apply {
                 arguments = TextInputParams(
+                    inputType = TextInputType.NUMBER,
                     title = context.getString(R.string.dialog_min_battery_level_title),
                     message = context.getString(R.string.dialog_min_battery_level_message),
                     hint = context.getString(R.string.dialog_min_battery_level_hint),
-                    inputType = TextInputType.NUMBER,
                     origValue = Preferences(context).minBatteryLevel.toString(),
                 ).toArgs()
             }

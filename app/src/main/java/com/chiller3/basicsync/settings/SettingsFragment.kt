@@ -19,7 +19,8 @@ import androidx.core.content.IntentCompat
 import androidx.core.content.PackageManagerCompat
 import androidx.core.content.UnusedAppRestrictionsConstants
 import androidx.core.net.toUri
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.FragmentResultListener
+import androidx.fragment.app.clearFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +37,7 @@ import com.chiller3.basicsync.R
 import com.chiller3.basicsync.binding.stbridge.Stbridge
 import com.chiller3.basicsync.dialog.MessageDialogFragment
 import com.chiller3.basicsync.dialog.MinBatteryLevelDialogFragment
+import com.chiller3.basicsync.dialog.PasswordDialogFragment
 import com.chiller3.basicsync.extension.formattedString
 import com.chiller3.basicsync.syncthing.SyncthingService
 import com.chiller3.basicsync.view.LongClickablePreference
@@ -47,11 +49,13 @@ import java.time.format.DateTimeFormatterBuilder
 import java.time.format.SignStyle
 import java.time.temporal.ChronoField
 
-class SettingsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickListener,
-    LongClickablePreference.OnPreferenceLongClickListener, Preference.OnPreferenceChangeListener,
-    SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
+    Preference.OnPreferenceClickListener, LongClickablePreference.OnPreferenceLongClickListener,
+    Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         private val TAG = SettingsFragment::class.java.simpleName
+
+        private val TAG_IMPORT_EXPORT_PASSWORD = "$TAG.import_export_password"
 
         private const val BACKUP_MIMETYPE = "application/zip"
 
@@ -88,6 +92,9 @@ class SettingsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickL
 
     private var appHibernationEnabled: Boolean? = null
 
+    private var serviceAvailable = false
+    private var importExportAllowed = false
+
     private val requestInhibitBatteryOpt =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             refreshPermissions()
@@ -111,13 +118,13 @@ class SettingsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickL
     private val requestSafImportConfiguration =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             uri?.let {
-                viewModel.importConfiguration(uri)
+                viewModel.startImportExport(ImportExportMode.IMPORT, it)
             }
         }
     private val requestSafExportConfiguration =
         registerForActivityResult(ActivityResultContracts.CreateDocument(BACKUP_MIMETYPE)) { uri ->
             uri?.let {
-                viewModel.exportConfiguration(uri)
+                viewModel.startImportExport(ImportExportMode.EXPORT, it)
             }
         }
     private val requestSafSaveLogs =
@@ -191,8 +198,8 @@ class SettingsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickL
                 viewModel.runState.collect {
                     prefOpenWebUi.isEnabled = it != null && it.webUiAvailable
 
-                    prefImportConfiguration.isEnabled = it != null
-                    prefExportConfiguration.isEnabled = it != null
+                    serviceAvailable = it != null
+                    refreshImportExport()
 
                     prefServiceStatus.isChecked = it == SyncthingService.RunState.RUNNING
                             || it == SyncthingService.RunState.STARTING
@@ -229,10 +236,32 @@ class SettingsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickL
             }
         }
 
-        setFragmentResultListener(MinBatteryLevelDialogFragment.TAG) { _, result ->
-            if (result.getBoolean(MinBatteryLevelDialogFragment.RESULT_SUCCESS)) {
-                refreshBattery()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.importExportState.collect { state ->
+                    importExportAllowed = state == null
+                    refreshImportExport()
+
+                    if (state == null) {
+                        return@collect
+                    }
+
+                    if (state.status == ImportExportState.Status.NEED_PASSWORD &&
+                        parentFragmentManager.findFragmentByTag(
+                            TAG_IMPORT_EXPORT_PASSWORD) == null) {
+                        PasswordDialogFragment.newInstance(context, state.mode)
+                            .show(parentFragmentManager.beginTransaction(),
+                                TAG_IMPORT_EXPORT_PASSWORD)
+                    }
+                }
             }
+        }
+
+        for (key in arrayOf(
+            TAG_IMPORT_EXPORT_PASSWORD,
+            MinBatteryLevelDialogFragment.TAG,
+        )) {
+            parentFragmentManager.setFragmentResultListener(key, this, this)
         }
     }
 
@@ -302,6 +331,11 @@ class SettingsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickL
         }, context.mainExecutor)
     }
 
+    private fun refreshImportExport() {
+        prefImportConfiguration.isEnabled = serviceAvailable && importExportAllowed
+        prefExportConfiguration.isEnabled = serviceAvailable && importExportAllowed
+    }
+
     private fun refreshService() {
         prefServiceStatus.isEnabled = prefs.isManualMode
         prefAutoMode.isChecked = !prefs.isManualMode
@@ -334,6 +368,26 @@ class SettingsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickL
 
     private fun refreshDebugPrefs() {
         categoryDebug.isVisible = prefs.isDebugMode
+    }
+
+    override fun onFragmentResult(requestKey: String, bundle: Bundle) {
+        clearFragmentResult(requestKey)
+
+        when (requestKey) {
+            TAG_IMPORT_EXPORT_PASSWORD -> {
+                if (bundle.getBoolean(PasswordDialogFragment.RESULT_SUCCESS)) {
+                    val password = bundle.getString(PasswordDialogFragment.RESULT_PASSWORD)!!
+                    viewModel.setImportExportPassword(password.ifEmpty { null })
+                } else {
+                    viewModel.cancelPendingImportExport()
+                }
+            }
+            MinBatteryLevelDialogFragment.TAG -> {
+                if (bundle.getBoolean(MinBatteryLevelDialogFragment.RESULT_SUCCESS)) {
+                    refreshBattery()
+                }
+            }
+        }
     }
 
     override fun onPreferenceClick(preference: Preference): Boolean {
@@ -469,6 +523,8 @@ class SettingsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickL
             SettingsAlert.ExportSucceeded -> getString(R.string.alert_export_success)
             is SettingsAlert.ImportFailed -> getString(R.string.alert_import_failure)
             is SettingsAlert.ExportFailed -> getString(R.string.alert_export_failure)
+            SettingsAlert.ImportCancelled -> getString(R.string.alert_import_cancelled)
+            SettingsAlert.ExportCancelled -> getString(R.string.alert_export_cancelled)
             is SettingsAlert.LogcatSucceeded ->
                 getString(R.string.alert_logcat_success, alert.uri.formattedString)
             is SettingsAlert.LogcatFailed ->
@@ -480,6 +536,8 @@ class SettingsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickL
             SettingsAlert.ExportSucceeded -> null
             is SettingsAlert.ImportFailed -> alert.error
             is SettingsAlert.ExportFailed -> alert.error
+            SettingsAlert.ImportCancelled -> null
+            SettingsAlert.ExportCancelled -> null
             is SettingsAlert.LogcatSucceeded -> null
             is SettingsAlert.LogcatFailed -> alert.error
         }

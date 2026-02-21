@@ -19,10 +19,10 @@ class WifiNetworkDialogFragment : TextInputDialogFragment<String>() {
         fun newInstance(context: Context, origName: String?) =
             WifiNetworkDialogFragment().apply {
                 arguments = TextInputParams(
+                    inputType = TextInputType.NORMAL,
                     title = context.getString(R.string.dialog_wifi_network_title),
                     message = context.getString(R.string.dialog_wifi_network_message),
                     hint = context.getString(R.string.dialog_wifi_network_hint),
-                    inputType = TextInputType.NORMAL,
                     origValue = origName,
                 ).toArgs()
             }

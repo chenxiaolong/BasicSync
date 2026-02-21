@@ -130,28 +130,40 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             }
     }
 
+    data class Password(val value: String) {
+        override fun toString(): String = "<password>"
+    }
+
     sealed interface PreRunAction {
         fun perform(context: Context)
 
-        data class Import(val uri: Uri) : PreRunAction {
+        data class Import(val uri: Uri, val password: Password?) : PreRunAction {
             override fun perform(context: Context) {
                 @SuppressLint("Recycle")
                 val fd = context.contentResolver.openFileDescriptor(uri, "r")
                     ?: throw IOException("Failed to open for reading: $uri")
 
                 // stbridge will own the fd.
-                Stbridge.importConfiguration(fd.detachFd().toLong(), uri.toString())
+                Stbridge.importConfiguration(
+                    fd.detachFd().toLong(),
+                    uri.toString(),
+                    password?.value ?: "",
+                )
             }
         }
 
-        data class Export(val uri: Uri) : PreRunAction {
+        data class Export(val uri: Uri, val password: Password?) : PreRunAction {
             override fun perform(context: Context) {
                 @SuppressLint("Recycle")
                 val fd = context.contentResolver.openFileDescriptor(uri, "wt")
                     ?: throw IOException("Failed to open for writing: $uri")
 
                 // stbridge will own the fd.
-                Stbridge.exportConfiguration(fd.detachFd().toLong(), uri.toString())
+                Stbridge.exportConfiguration(
+                    fd.detachFd().toLong(),
+                    uri.toString(),
+                    password?.value ?: "",
+                )
             }
         }
     }
@@ -160,6 +172,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     private lateinit var notifications: Notifications
     private val runnerThread = Thread(::runner)
 
+    @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
     private val stateLock = Object()
 
     @GuardedBy("stateLock")
@@ -535,20 +548,20 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             }
         }
 
-        fun importConfiguration(uri: Uri) {
+        fun importConfiguration(uri: Uri, password: Password?) {
             synchronized(stateLock) {
                 Log.d(TAG, "Scheduling configuration import: $uri")
 
-                preRunActions.add(PreRunAction.Import(uri))
+                preRunActions.add(PreRunAction.Import(uri, password))
                 handleStateChangeLocked()
             }
         }
 
-        fun exportConfiguration(uri: Uri) {
+        fun exportConfiguration(uri: Uri, password: Password?) {
             synchronized(stateLock) {
                 Log.d(TAG, "Scheduling configuration export: $uri")
 
-                preRunActions.add(PreRunAction.Export(uri))
+                preRunActions.add(PreRunAction.Export(uri, password))
                 handleStateChangeLocked()
             }
         }

@@ -65,8 +65,10 @@
     <!-- Main alerts -->
     <string name="alert_import_success">Successfully imported configuration</string>
     <string name="alert_import_failure">Failed to import configuration</string>
+    <string name="alert_import_cancelled">Configuration import cancelled</string>
     <string name="alert_export_success">Successfully exported configuration</string>
     <string name="alert_export_failure">Failed to export configuration</string>
+    <string name="alert_export_cancelled">Configuration export cancelled</string>
     <string name="alert_logcat_success">Successfully saved logs to %1$s</string>
     <string name="alert_logcat_failure">Failed to save logs to %1$s</string>
 
@@ -74,6 +76,13 @@
     <string name="dialog_new_folder_title">New folder</string>
     <string name="dialog_new_folder_message">Enter the name of the new folder to create in %1$s.</string>
     <string name="dialog_new_folder_hint">Name</string>
+    <string name="dialog_import_password_title">Config import</string>
+    <string name="dialog_import_password_message">The selected zip file is encrypted. Enter the decryption password to import it.</string>
+    <string name="dialog_import_password_hint">Decryption password</string>
+    <string name="dialog_export_password_title">Config export</string>
+    <string name="dialog_export_password_message">Enter a password to encrypt the exported zip file or leave empty to store it unencrypted.</string>
+    <string name="dialog_export_password_hint">Encryption password</string>
+    <string name="dialog_export_password_confirm_hint">Confirm password</string>
     <string name="dialog_min_battery_level_title">Minimum battery level</string>
     <string name="dialog_min_battery_level_message">Enter the minimum battery level needed for Syncthing to run.</string>
     <string name="dialog_min_battery_level_hint">Percentage</string>

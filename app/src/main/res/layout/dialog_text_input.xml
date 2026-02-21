@@ -29,4 +29,17 @@
             android:layout_height="wrap_content"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/confirm_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/abc_dialog_title_divider_material">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/confirm_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

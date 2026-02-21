@@ -16,6 +16,10 @@ sealed interface SettingsAlert {
 
     data class ExportFailed(val error: String) : SettingsAlert
 
+    data object ImportCancelled : SettingsAlert
+
+    data object ExportCancelled : SettingsAlert
+
     data class LogcatSucceeded(val uri: Uri) : SettingsAlert
 
     data class LogcatFailed(val uri: Uri, val error: String) : SettingsAlert

@@ -18,10 +18,10 @@ class NewFolderDialogFragment : TextInputDialogFragment<String>() {
         fun newInstance(context: Context, cwd: String) =
             NewFolderDialogFragment().apply {
                 arguments = TextInputParams(
+                    inputType = TextInputType.NORMAL,
                     title = context.getString(R.string.dialog_new_folder_title),
                     message = context.getString(R.string.dialog_new_folder_message, cwd),
                     hint = context.getString(R.string.dialog_new_folder_hint),
-                    inputType = TextInputType.NORMAL,
                 ).toArgs()
             }
     }

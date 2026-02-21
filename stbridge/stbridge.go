@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2025 Andrew Gunnerson
+// SPDX-FileCopyrightText: 2025-2026 Andrew Gunnerson
 // SPDX-License-Identifier: GPL-3.0-only
 
 package stbridge
@@ -10,7 +10,6 @@ import (
 	// This package's init() MUST run first.
 	_ "stbridge/pidfdhack"
 
-	"archive/zip"
 	"context"
 	"crypto/x509"
 	"encoding/pem"
@@ -37,6 +36,8 @@ import (
 	"github.com/syncthing/syncthing/lib/rand"
 	"github.com/syncthing/syncthing/lib/svcutil"
 	"github.com/syncthing/syncthing/lib/syncthing"
+
+	"github.com/cuhsat/go-zip/pkg/zip"
 )
 
 var stLock sync.Mutex
@@ -397,7 +398,11 @@ func Run(startup *SyncthingStartupConfig) error {
 	return nil
 }
 
-func ImportConfiguration(fd int, name string) error {
+func ZipErrorWrongPassword() string {
+	return zip.ErrPassword.Error()
+}
+
+func ImportConfiguration(fd int, name string, password string) error {
 	stLock.Lock()
 	defer stLock.Unlock()
 
@@ -424,9 +429,18 @@ func ImportConfiguration(fd int, name string) error {
 	}
 
 	extractEntry := func(f *zip.File) error {
+		if f.IsEncrypted() && password != "" {
+			f.SetPassword(password)
+		}
+
 		entry, err := f.Open()
 		if err != nil {
-			return fmt.Errorf("failed to open file entry: %q: %w", f.Name, err)
+			if err == zip.ErrPassword {
+				// We programmatically match on this string.
+				return err
+			} else {
+				return fmt.Errorf("failed to open file entry: %q: %w", f.Name, err)
+			}
 		}
 		defer entry.Close()
 
@@ -467,7 +481,7 @@ func ImportConfiguration(fd int, name string) error {
 	return nil
 }
 
-func ExportConfiguration(fd int, name string) error {
+func ExportConfiguration(fd int, name string, password string) error {
 	stLock.Lock()
 	defer stLock.Unlock()
 
@@ -502,7 +516,12 @@ func ExportConfiguration(fd int, name string) error {
 		}
 		defer input.Close()
 
-		entry, err := writer.Create(relPath)
+		var entry io.Writer
+		if password == "" {
+			entry, err = writer.Create(relPath)
+		} else {
+			entry, err = writer.Encrypt(relPath, password, zip.AES256Encryption)
+		}
 		if err != nil {
 			return fmt.Errorf("failed to create file entry: %q: %w", relPath, err)
 		}
