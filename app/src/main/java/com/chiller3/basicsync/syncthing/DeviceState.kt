@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -17,10 +18,14 @@ import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.BatteryManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.PowerManager
+import android.os.SystemClock
 import android.util.Log
 import com.chiller3.basicsync.Permissions
 import com.chiller3.basicsync.Preferences
+import kotlin.math.max
 import kotlin.math.roundToInt
 
 enum class NetworkType {
@@ -43,6 +48,7 @@ data class DeviceState(
     val isPluggedIn: Boolean = false,
     val batteryLevel: Int = 0,
     val isBatterySaver: Boolean = false,
+    val isInTimeWindow: Boolean = false,
     val proxyInfo: ProxyInfo = ProxyInfo("", ""),
 ) {
     companion object {
@@ -122,12 +128,18 @@ data class DeviceState(
             return false
         }
 
+        if (!isInTimeWindow) {
+            Log.d(TAG, "Blocked due to execution time window")
+            return false
+        }
+
         Log.d(TAG, "Permitted to run")
         return true
     }
 }
 
-class DeviceStateTracker(private val context: Context) {
+class DeviceStateTracker(private val context: Context) :
+    SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         private val TAG = DeviceStateTracker::class.java.simpleName
 
@@ -147,17 +159,22 @@ class DeviceStateTracker(private val context: Context) {
 
     private var listener: DeviceStateListener? = null
     private val prefs = Preferences(context)
+    private val handler = Handler(Looper.myLooper()!!)
     private val connectivityManager = context.getSystemService(ConnectivityManager::class.java)
     private val wifiManager = context.getSystemService(WifiManager::class.java)
     private val powerManager = context.getSystemService(PowerManager::class.java)
+
+    private var timeReferenceMs = SystemClock.uptimeMillis()
 
     private var state: DeviceState = DeviceState(
         isBatterySaver = powerManager.isPowerSaveMode,
         proxyInfo = getProxyInfo(),
     )
         set(value) {
-            field = value
-            listener?.onDeviceStateChanged(value)
+            if (field != value) {
+                field = value
+                listener?.onDeviceStateChanged(value)
+            }
         }
 
     private fun onNetworkAvailable() {
@@ -311,11 +328,57 @@ class DeviceStateTracker(private val context: Context) {
         registeredNetworkCallback = null
     }
 
+    private val timeWindowCallback = object : Runnable {
+        override fun run() {
+            handler.removeCallbacks(this)
+
+            var canRun = true
+
+            if (prefs.syncSchedule) {
+                val cycleDurationMs = max(prefs.scheduleCycleMs, 1000)
+                val syncDurationMs = max(prefs.scheduleSyncMs, 500)
+
+                val now = SystemClock.uptimeMillis()
+                val relativeStart = (now - timeReferenceMs) / cycleDurationMs * cycleDurationMs
+                val windowStart = timeReferenceMs + relativeStart
+                val windowEnd = windowStart + syncDurationMs
+                canRun = now in windowStart until windowEnd
+
+                val nextCheckMs = if (canRun) {
+                    windowEnd
+                } else {
+                    windowStart + cycleDurationMs
+                }
+
+                Log.d(TAG, "Time window updated: now=$now, window=[$windowStart, $windowEnd)")
+
+                handler.postAtTime(this, nextCheckMs)
+            } else {
+                Log.d(TAG, "Time schedule is disabled")
+            }
+
+            state = state.copy(isInTimeWindow = canRun)
+        }
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        when (key) {
+            Preferences.PREF_SYNC_SCHEDULE,
+            Preferences.PREF_SCHEDULE_CYCLE_MS,
+            Preferences.PREF_SCHEDULE_SYNC_MS -> {
+                timeWindowCallback.run()
+            }
+            // PREF_ALLOWED_WIFI_NETWORKS is checked in SyncthingService because we need the service
+            // to request the location foreground permission first.
+        }
+    }
+
     fun registerListener(listener: DeviceStateListener) {
         if (this.listener != null) {
             throw IllegalStateException("Listener already registered")
         }
 
+        prefs.registerListener(this)
         registerNetworkCallback()
         context.registerReceiver(
             batteryStatusReceiver,
@@ -329,6 +392,7 @@ class DeviceStateTracker(private val context: Context) {
             proxyChangeReceiver,
             IntentFilter(Proxy.PROXY_CHANGE_ACTION),
         )
+        timeWindowCallback.run()
 
         this.listener = listener
 
@@ -340,10 +404,12 @@ class DeviceStateTracker(private val context: Context) {
             throw IllegalStateException("Unregistering bad listener: $listener != ${this.listener}")
         }
 
+        prefs.unregisterListener(this)
         unregisterNetworkCallback()
         context.unregisterReceiver(batteryStatusReceiver)
         context.unregisterReceiver(batterySaverReceiver)
         context.unregisterReceiver(proxyChangeReceiver)
+        handler.removeCallbacks(timeWindowCallback)
 
         this.listener = null
     }

@@ -35,6 +35,8 @@
     <string name="pref_run_on_battery_desc">Run when the device is on battery power and the battery level is at least %1$d%%. Syncthing always runs when plugged in.</string>
     <string name="pref_respect_battery_saver_name">Respect battery saver mode</string>
     <string name="pref_respect_battery_saver_desc">Only run when Android\'s battery saver mode is disabled.</string>
+    <string name="pref_sync_schedule_name">Sync on time schedule</string>
+    <string name="pref_sync_schedule_desc">Sync for %2$s during every window of %1$s.</string>
     <string name="pref_keep_alive_name">Keep Syncthing alive</string>
     <string name="pref_keep_alive_desc">When Syncthing should not run, pause it instead of shutting it down. The avoids a potential performance hit when scanning large folders on startup.</string>
     <string name="pref_version_name">Version</string>
@@ -86,6 +88,10 @@
     <string name="dialog_min_battery_level_title">Minimum battery level</string>
     <string name="dialog_min_battery_level_message">Enter the minimum battery level needed for Syncthing to run.</string>
     <string name="dialog_min_battery_level_hint">Percentage</string>
+    <string name="dialog_sync_schedule_title">Sync schedule</string>
+    <string name="dialog_sync_schedule_message">Enter the cycle and sync duration. The <tt>h</tt> (hours), <tt>m</tt> (minutes), and <tt>s</tt> (seconds) suffixes are accepted.</string>
+    <string name="dialog_sync_schedule_hint_cycle">Cycle duration</string>
+    <string name="dialog_sync_schedule_hint_sync">Sync duration</string>
     <string name="dialog_wifi_network_title">Wi-Fi network</string>
     <string name="dialog_wifi_network_message">Enter the name (SSID) of the Wi-Fi network. This also works for hidden Wi-Fi networks.</string>
     <string name="dialog_wifi_network_hint">SSID</string>
@@ -113,4 +119,18 @@
     <string name="notification_action_manual_mode">Manual mode</string>
     <string name="notification_action_start">Start</string>
     <string name="notification_action_stop">Stop</string>
+
+    <!-- Durations -->
+    <plurals name="duration_seconds">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
 </resources>

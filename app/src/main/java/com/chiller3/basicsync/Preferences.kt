@@ -17,9 +17,11 @@ class Preferences(context: Context) {
         const val CATEGORY_DEBUG = "debug"
 
         // Main preferences.
+        const val PREF_AUTO_MODE = "auto_mode"
         const val PREF_RUN_ON_BATTERY = "run_on_battery"
         const val PREF_MIN_BATTERY_LEVEL = "min_battery_level"
         const val PREF_RESPECT_BATTERY_SAVER = "respect_battery_saver"
+        const val PREF_SYNC_SCHEDULE = "sync_schedule"
         const val PREF_KEEP_ALIVE = "keep_alive"
 
         // Main UI actions only.
@@ -31,7 +33,6 @@ class Preferences(context: Context) {
         const val PREF_IMPORT_CONFIGURATION = "import_configuration"
         const val PREF_EXPORT_CONFIGURATION = "export_configuration"
         const val PREF_SERVICE_STATUS = "service_status"
-        const val PREF_AUTO_MODE = "auto_mode"
         const val PREF_NETWORK_CONDITIONS = "network_conditions"
         const val PREF_VERSION = "version"
         const val PREF_SAVE_LOGS = "save_logs"
@@ -40,6 +41,8 @@ class Preferences(context: Context) {
         const val PREF_DEBUG_MODE = "debug_mode"
         const val PREF_MANUAL_MODE = "manual_mode"
         const val PREF_MANUAL_SHOULD_RUN = "manual_should_run"
+        const val PREF_SCHEDULE_CYCLE_MS = "schedule_cycle_ms"
+        const val PREF_SCHEDULE_SYNC_MS = "schedule_sync_ms"
 
         // Network condition preferences.
         const val CATEGORY_ALLOWED_WIFI_NETWORKS = "allowed_wifi_networks"
@@ -107,6 +110,18 @@ class Preferences(context: Context) {
     var allowedWifiNetworks: Set<String>
         get() = prefs.getStringSet(PREF_ALLOWED_WIFI_NETWORKS, emptySet())!!
         set(networks) = prefs.edit { putStringSet(PREF_ALLOWED_WIFI_NETWORKS, networks) }
+
+    var syncSchedule: Boolean
+        get() = prefs.getBoolean(PREF_SYNC_SCHEDULE, false)
+        set(enabled) = prefs.edit { putBoolean(PREF_SYNC_SCHEDULE, enabled) }
+
+    var scheduleCycleMs: Int
+        get() = prefs.getInt(PREF_SCHEDULE_CYCLE_MS, 60 * 60 * 1000)
+        set(ms) = prefs.edit { putInt(PREF_SCHEDULE_CYCLE_MS, ms) }
+
+    var scheduleSyncMs: Int
+        get() = prefs.getInt(PREF_SCHEDULE_SYNC_MS, 5 * 60 * 1000)
+        set(ms) = prefs.edit { putInt(PREF_SCHEDULE_SYNC_MS, ms) }
 
     var isDebugMode: Boolean
         get() = prefs.getBoolean(PREF_DEBUG_MODE, false)

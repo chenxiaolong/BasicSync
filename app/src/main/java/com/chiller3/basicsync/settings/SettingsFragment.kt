@@ -38,6 +38,7 @@ import com.chiller3.basicsync.binding.stbridge.Stbridge
 import com.chiller3.basicsync.dialog.MessageDialogFragment
 import com.chiller3.basicsync.dialog.MinBatteryLevelDialogFragment
 import com.chiller3.basicsync.dialog.PasswordDialogFragment
+import com.chiller3.basicsync.dialog.SyncScheduleDialogFragment
 import com.chiller3.basicsync.extension.formattedString
 import com.chiller3.basicsync.syncthing.SyncthingService
 import com.chiller3.basicsync.view.LongClickablePreference
@@ -87,6 +88,7 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
     private lateinit var prefAutoMode: SwitchPreferenceCompat
     private lateinit var prefNetworkConditions: Preference
     private lateinit var prefRunOnBattery: SplitSwitchPreference
+    private lateinit var prefSyncSchedule: SplitSwitchPreference
     private lateinit var prefVersion: LongClickablePreference
     private lateinit var prefSaveLogs: Preference
 
@@ -178,6 +180,9 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
         prefRunOnBattery = findPreference(Preferences.PREF_RUN_ON_BATTERY)!!
         prefRunOnBattery.onPreferenceClickListener = this
 
+        prefSyncSchedule = findPreference(Preferences.PREF_SYNC_SCHEDULE)!!
+        prefSyncSchedule.onPreferenceClickListener = this
+
         prefVersion = findPreference(Preferences.PREF_VERSION)!!
         prefVersion.onPreferenceClickListener = this
         prefVersion.onPreferenceLongClickListener = this
@@ -190,6 +195,7 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
         refreshPermissions()
 
         refreshBattery()
+        refreshSchedule()
         refreshVersion()
         refreshDebugPrefs()
 
@@ -260,6 +266,7 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
         for (key in arrayOf(
             TAG_IMPORT_EXPORT_PASSWORD,
             MinBatteryLevelDialogFragment.TAG,
+            SyncScheduleDialogFragment.TAG,
         )) {
             parentFragmentManager.setFragmentResultListener(key, this, this)
         }
@@ -351,6 +358,26 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
         prefRunOnBattery.summary = getString(R.string.pref_run_on_battery_desc, prefs.minBatteryLevel)
     }
 
+    private fun formatDurationMs(duration: Int): String =
+        if (duration % (60 * 60 * 1000) == 0) {
+            val hours = duration / 60 / 60 / 1000
+            resources.getQuantityString(R.plurals.duration_hours, hours, hours)
+        } else if (duration % (60 * 1000) == 0) {
+            val minutes = duration / 60 / 1000
+            resources.getQuantityString(R.plurals.duration_minutes, minutes, minutes)
+        } else {
+            val seconds = duration / 1000
+            resources.getQuantityString(R.plurals.duration_seconds, seconds, seconds)
+        }
+
+    private fun refreshSchedule() {
+        val cycleDuration = formatDurationMs(prefs.scheduleCycleMs)
+        val syncDuration = formatDurationMs(prefs.scheduleSyncMs)
+
+        prefSyncSchedule.summary =
+            getString(R.string.pref_sync_schedule_desc, cycleDuration, syncDuration)
+    }
+
     private fun refreshVersion() {
         prefVersion.summary = buildString {
             append(BuildConfig.VERSION_NAME)
@@ -385,6 +412,11 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
             MinBatteryLevelDialogFragment.TAG -> {
                 if (bundle.getBoolean(MinBatteryLevelDialogFragment.RESULT_SUCCESS)) {
                     refreshBattery()
+                }
+            }
+            SyncScheduleDialogFragment.TAG -> {
+                if (bundle.getBoolean(SyncScheduleDialogFragment.RESULT_SUCCESS)) {
+                    refreshSchedule()
                 }
             }
         }
@@ -452,6 +484,13 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
                 MinBatteryLevelDialogFragment.newInstance(requireContext()).show(
                     parentFragmentManager.beginTransaction(),
                     MinBatteryLevelDialogFragment.TAG,
+                )
+                return true
+            }
+            prefSyncSchedule -> {
+                SyncScheduleDialogFragment().show(
+                    parentFragmentManager.beginTransaction(),
+                    SyncScheduleDialogFragment.TAG,
                 )
                 return true
             }
