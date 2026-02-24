@@ -125,14 +125,17 @@
     <!-- Durations -->
     <plurals name="duration_seconds">
         <item quantity="one">%d secundă</item>
-        <item quantity="other">%d secunde</item>
+        <item quantity="few">%d secunde</item>
+        <item quantity="other">%d de secunde</item>
     </plurals>
     <plurals name="duration_minutes">
         <item quantity="one">%d minut</item>
-        <item quantity="other">%d minute</item>
+        <item quantity="few">%d minute</item>
+        <item quantity="other">%d de minute</item>
     </plurals>
     <plurals name="duration_hours">
         <item quantity="one">%d oră</item>
-        <item quantity="other">%d ore</item>
+        <item quantity="few">%d ore</item>
+        <item quantity="other">%d de ore</item>
     </plurals>
 </resources>
