@@ -35,6 +35,8 @@
     <string name="pref_run_on_battery_desc">Run when the device is on battery power and the battery level is at least %1$d%%. Syncthing always runs when plugged in.</string>
     <string name="pref_respect_battery_saver_name">Respect battery saver mode</string>
     <string name="pref_respect_battery_saver_desc">Only run when Android\'s battery saver mode is disabled.</string>
+    <string name="pref_respect_auto_sync_data_name">Respect auto-sync data setting</string>
+    <string name="pref_respect_auto_sync_data_desc">Only run when Android\'s auto-sync data setting is enabled.</string>
     <string name="pref_sync_schedule_name">Sync on time schedule</string>
     <string name="pref_sync_schedule_desc">Sync for %2$s during every window of %1$s.</string>
     <string name="pref_keep_alive_name">Keep Syncthing alive</string>

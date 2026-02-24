@@ -21,6 +21,7 @@ class Preferences(context: Context) {
         const val PREF_RUN_ON_BATTERY = "run_on_battery"
         const val PREF_MIN_BATTERY_LEVEL = "min_battery_level"
         const val PREF_RESPECT_BATTERY_SAVER = "respect_battery_saver"
+        const val PREF_RESPECT_AUTO_SYNC_DATA = "respect_auto_sync_data"
         const val PREF_SYNC_SCHEDULE = "sync_schedule"
         const val PREF_KEEP_ALIVE = "keep_alive"
 
@@ -82,6 +83,10 @@ class Preferences(context: Context) {
     var respectBatterySaver: Boolean
         get() = prefs.getBoolean(PREF_RESPECT_BATTERY_SAVER, true)
         set(enabled) = prefs.edit { putBoolean(PREF_RESPECT_BATTERY_SAVER, enabled) }
+
+    var respectAutoSyncData: Boolean
+        get() = prefs.getBoolean(PREF_RESPECT_AUTO_SYNC_DATA, true)
+        set(enabled) = prefs.edit { putBoolean(PREF_RESPECT_AUTO_SYNC_DATA, enabled) }
 
     var keepAlive: Boolean
         get() = prefs.getBoolean(PREF_KEEP_ALIVE, true)

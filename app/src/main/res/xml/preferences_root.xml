@@ -102,6 +102,13 @@
             app:summary="@string/pref_respect_battery_saver_desc"
             app:iconSpaceReserved="false" />
 
+        <SwitchPreferenceCompat
+            app:key="respect_auto_sync_data"
+            app:defaultValue="true"
+            app:title="@string/pref_respect_auto_sync_data_name"
+            app:summary="@string/pref_respect_auto_sync_data_desc"
+            app:iconSpaceReserved="false" />
+
         <com.chiller3.basicsync.view.SplitSwitchPreference
             app:key="sync_schedule"
             app:title="@string/pref_sync_schedule_name"

@@ -6,10 +6,12 @@
 package com.chiller3.basicsync.syncthing
 
 import android.content.BroadcastReceiver
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.content.SyncStatusObserver
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -48,6 +50,7 @@ data class DeviceState(
     val isPluggedIn: Boolean = false,
     val batteryLevel: Int = 0,
     val isBatterySaver: Boolean = false,
+    val isAutoSyncData: Boolean = false,
     val isInTimeWindow: Boolean = false,
     val proxyInfo: ProxyInfo = ProxyInfo("", ""),
 ) {
@@ -64,6 +67,7 @@ data class DeviceState(
             Preferences.PREF_RUN_ON_BATTERY,
             Preferences.PREF_MIN_BATTERY_LEVEL,
             Preferences.PREF_RESPECT_BATTERY_SAVER,
+            Preferences.PREF_RESPECT_AUTO_SYNC_DATA,
         )
 
         fun normalizeSsid(ssid: String): String? =
@@ -125,6 +129,11 @@ data class DeviceState(
 
         if (prefs.respectBatterySaver && isBatterySaver) {
             Log.d(TAG, "Blocked due to battery saver mode")
+            return false
+        }
+
+        if (prefs.respectAutoSyncData && !isAutoSyncData) {
+            Log.d(TAG, "Blocked due to auto-sync data status")
             return false
         }
 
@@ -300,33 +309,15 @@ class DeviceStateTracker(private val context: Context) :
         }
     }
 
-    private val proxyChangeReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val proxyInfo = getProxyInfo()
+    private val autoSyncObserver = SyncStatusObserver {
+        val canSync = ContentResolver.getMasterSyncAutomatically()
 
-            Log.d(TAG, "Proxy settings changed: $proxyInfo")
+        Log.d(TAG, "Auto-sync data changed: $canSync")
 
-            state = state.copy(proxyInfo = proxyInfo)
-        }
+        state = state.copy(isAutoSyncData = canSync)
     }
 
-    private fun registerNetworkCallback() {
-        if (registeredNetworkCallback != null) {
-            throw IllegalStateException("Network callback already registered")
-        }
-
-        val networkCallback = networkCallback
-        connectivityManager.registerDefaultNetworkCallback(networkCallback)
-        registeredNetworkCallback = networkCallback
-    }
-
-    private fun unregisterNetworkCallback() {
-        val callback = registeredNetworkCallback
-            ?: throw IllegalStateException("No network callback registered")
-
-        connectivityManager.unregisterNetworkCallback(callback)
-        registeredNetworkCallback = null
-    }
+    private var autoSyncHandle: Any? = null
 
     private val timeWindowCallback = object : Runnable {
         override fun run() {
@@ -361,6 +352,34 @@ class DeviceStateTracker(private val context: Context) :
         }
     }
 
+    private val proxyChangeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val proxyInfo = getProxyInfo()
+
+            Log.d(TAG, "Proxy settings changed: $proxyInfo")
+
+            state = state.copy(proxyInfo = proxyInfo)
+        }
+    }
+
+    private fun registerNetworkCallback() {
+        if (registeredNetworkCallback != null) {
+            throw IllegalStateException("Network callback already registered")
+        }
+
+        val networkCallback = networkCallback
+        connectivityManager.registerDefaultNetworkCallback(networkCallback)
+        registeredNetworkCallback = networkCallback
+    }
+
+    private fun unregisterNetworkCallback() {
+        val callback = registeredNetworkCallback
+            ?: throw IllegalStateException("No network callback registered")
+
+        connectivityManager.unregisterNetworkCallback(callback)
+        registeredNetworkCallback = null
+    }
+
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             Preferences.PREF_SYNC_SCHEDULE,
@@ -388,11 +407,16 @@ class DeviceStateTracker(private val context: Context) :
             batterySaverReceiver,
             IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED),
         )
+        autoSyncHandle = ContentResolver.addStatusChangeListener(
+            ContentResolver.SYNC_OBSERVER_TYPE_SETTINGS,
+            autoSyncObserver,
+        )
+        autoSyncObserver.onStatusChanged(ContentResolver.SYNC_OBSERVER_TYPE_SETTINGS)
+        timeWindowCallback.run()
         context.registerReceiver(
             proxyChangeReceiver,
             IntentFilter(Proxy.PROXY_CHANGE_ACTION),
         )
-        timeWindowCallback.run()
 
         this.listener = listener
 
@@ -408,8 +432,9 @@ class DeviceStateTracker(private val context: Context) :
         unregisterNetworkCallback()
         context.unregisterReceiver(batteryStatusReceiver)
         context.unregisterReceiver(batterySaverReceiver)
-        context.unregisterReceiver(proxyChangeReceiver)
+        ContentResolver.removeStatusChangeListener(autoSyncHandle)
         handler.removeCallbacks(timeWindowCallback)
+        context.unregisterReceiver(proxyChangeReceiver)
 
         this.listener = null
     }

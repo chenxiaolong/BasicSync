@@ -36,6 +36,9 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
 
+    <!-- For checking if auto-sync data setting is enabled. -->
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+
     <!-- For monitoring network connection state for network-based run conditions. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
