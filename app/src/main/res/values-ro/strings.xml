@@ -25,7 +25,7 @@
     <string name="pref_import_configuration_name">Import configurație</string>
     <string name="pref_import_configuration_desc">Importă un fișier zip de configurare Syncthing existent.</string>
     <string name="pref_export_configuration_name">Export configurație</string>
-    <string name="pref_export_configuration_desc">Exportă configurația curentă de sincronizare într-un fișier zip.</string>
+    <string name="pref_export_configuration_desc">Exportă configurația curentă Syncthing într-un fișier zip.</string>
     <string name="pref_service_status_name">Stare Syncthing</string>
     <string name="pref_auto_mode_name">Mod automat</string>
     <string name="pref_auto_mode_desc">Pornește și oprește automat în funcție de condițiile specificate.</string>
@@ -35,6 +35,10 @@
     <string name="pref_run_on_battery_desc">Rulează când dispozitivul este alimentat de la baterie și nivelul bateriei este de cel puțin %1$d%%. Syncthing rulează întotdeauna când este conectat la priză.</string>
     <string name="pref_respect_battery_saver_name">Respectă modul de economisire a bateriei</string>
     <string name="pref_respect_battery_saver_desc">Rulează numai când modul de economisire a bateriei Android este dezactivat.</string>
+    <string name="pref_respect_auto_sync_data_name">Respectă setarea de sincronizare automată a datelor</string>
+    <string name="pref_respect_auto_sync_data_desc">Ruleză numai când sincronizare automată a datelor de pe Android este activată.</string>
+    <string name="pref_sync_schedule_name">Sincronizare programată</string>
+    <string name="pref_sync_schedule_desc">Se sincronizează %2$s în timpul fiecărei ferestre de %1$s.</string>
     <string name="pref_keep_alive_name">Păstrează Syncthing pornit</string>
     <string name="pref_keep_alive_desc">Atunci când Syncthing nu ar trebui să ruleze, se întrerupe în loc să fie oprit. Evită o potențială afectare a performanței la scanarea dosarelor mari la pornire.</string>
     <string name="pref_version_name">Versiune</string>
@@ -65,8 +69,10 @@
     <!-- Main alerts -->
     <string name="alert_import_success">Configurație importată cu succes</string>
     <string name="alert_import_failure">Nu s-a putut importa configurația</string>
+    <string name="alert_import_cancelled">Importul configurației a fost anulat</string>
     <string name="alert_export_success">Configurație exportată cu succes</string>
     <string name="alert_export_failure">Nu s-a putut exporta configurația</string>
+    <string name="alert_export_cancelled">Exportul configurației a fost anulat</string>
     <string name="alert_logcat_success">Jurnale salvate cu succes în %1$s</string>
     <string name="alert_logcat_failure">Nu s-au salvat jurnalele în %1$s</string>
 
@@ -74,9 +80,20 @@
     <string name="dialog_new_folder_title">Dosar nou</string>
     <string name="dialog_new_folder_message">Introdu numele noului dosar pentru a fi creat în %1$s.</string>
     <string name="dialog_new_folder_hint">Nume</string>
+    <string name="dialog_import_password_title">Import configurație</string>
+    <string name="dialog_import_password_message">Fișierul zip selectat este criptat. Introdu parola de decriptare pentru a-l importa.</string>
+    <string name="dialog_import_password_hint">Parola de decriptare</string>
+    <string name="dialog_export_password_title">Export configurație</string>
+    <string name="dialog_export_password_message">Introdu o parolă pentru a cripta fișierul zip exportat sau lasă gol pentru a-l stoca necriptat.</string>
+    <string name="dialog_export_password_hint">Parola de criptare</string>
+    <string name="dialog_export_password_confirm_hint">Confirmă parola</string>
     <string name="dialog_min_battery_level_title">Nivel minim al bateriei</string>
     <string name="dialog_min_battery_level_message">Introdu nivelul minim al bateriei necesar pentru ca Syncthing să ruleze.</string>
     <string name="dialog_min_battery_level_hint">Procentaj</string>
+    <string name="dialog_sync_schedule_title">Sincronizare programată</string>
+    <string name="dialog_sync_schedule_message">Introdu ciclul și durata de sincronizare. Sunt acceptate sufixele <tt>h</tt> (ore), <tt>m</tt> (minute) și <tt>s</tt> (secunde).</string>
+    <string name="dialog_sync_schedule_hint_cycle">Durata ciclului</string>
+    <string name="dialog_sync_schedule_hint_sync">Durata sincronizării</string>
     <string name="dialog_wifi_network_title">Rețea Wi-Fi</string>
     <string name="dialog_wifi_network_message">Introdu numele (SSID) al rețelei Wi-Fi. Acest lucru funcționează și pentru rețelele Wi-Fi ascunse.</string>
     <string name="dialog_wifi_network_hint">SSID</string>
@@ -104,4 +121,21 @@
     <string name="notification_action_manual_mode">Mod manual</string>
     <string name="notification_action_start">Pornește</string>
     <string name="notification_action_stop">Oprește</string>
+
+    <!-- Durations -->
+    <plurals name="duration_seconds">
+        <item quantity="one">%d secundă</item>
+        <item quantity="few">%d secunde</item>
+        <item quantity="other">%d de secunde</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d minut</item>
+        <item quantity="few">%d minute</item>
+        <item quantity="other">%d de minute</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d oră</item>
+        <item quantity="few">%d ore</item>
+        <item quantity="other">%d de ore</item>
+    </plurals>
 </resources>
