@@ -7,6 +7,11 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add option to respect Android's auto-sync data setting ([Issue #39], [PR #40])
+  * This is enabled by default.
+
 ### Version 1.9
 
 * Make configuration import atomic ([PR #37])
@@ -76,6 +81,7 @@
 [Issue #26]: https://github.com/chenxiaolong/BasicSync/issues/26
 [Issue #29]: https://github.com/chenxiaolong/BasicSync/issues/29
 [Issue #36]: https://github.com/chenxiaolong/BasicSync/issues/36
+[Issue #39]: https://github.com/chenxiaolong/BasicSync/issues/39
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -104,3 +110,4 @@
 [PR #34]: https://github.com/chenxiaolong/BasicSync/pull/34
 [PR #37]: https://github.com/chenxiaolong/BasicSync/pull/37
 [PR #38]: https://github.com/chenxiaolong/BasicSync/pull/38
+[PR #40]: https://github.com/chenxiaolong/BasicSync/pull/40
