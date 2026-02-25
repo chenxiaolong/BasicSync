@@ -11,6 +11,7 @@
 
 * Add Romanian translations ([PR #41])
 * Add French translations ([PR #42])
+* Add Hungarian translations ([PR #43])
 
 ### Version 1.10
 
@@ -118,3 +119,4 @@
 [PR #40]: https://github.com/chenxiaolong/BasicSync/pull/40
 [PR #41]: https://github.com/chenxiaolong/BasicSync/pull/41
 [PR #42]: https://github.com/chenxiaolong/BasicSync/pull/42
+[PR #43]: https://github.com/chenxiaolong/BasicSync/pull/43
