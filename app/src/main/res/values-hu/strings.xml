@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2026 @SanskritFritz
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+<resources>
+    <!-- Preference headers -->
+    <string name="pref_header_permissions">Engedélyek</string>
+    <string name="pref_header_configuration">Beállítások</string>
+    <string name="pref_header_run_conditions">Futtatási feltételek</string>
+    <string name="pref_header_about">Névjegy</string>
+    <string name="pref_header_debug">Hibakeresés</string>
+
+    <!-- Main preferences -->
+    <string name="pref_inhibit_battery_opt_name">Akkumulátorkímélés letiltása</string>
+    <string name="pref_inhibit_battery_opt_desc">A megbízható háttérműködéshez szükséges.</string>
+    <string name="pref_allow_notifications_name">Értesítések engedélyezése</string>
+    <string name="pref_allow_notifications_desc">A megbízható háttérműködéshez és a Syncthing indítás/leállításhoz kell.</string>
+    <string name="pref_local_storage_access_name">Helyi tárhely-hozzáférés engedélyezése</string>
+    <string name="pref_local_storage_access_desc">A Syncthing helyi tárolóhoz való hozzáféréséhez a <tt>/sdcard</tt> alatt.</string>
+    <string name="pref_disable_app_hibernation_name">Alkalmazás hibernálásának tiltása</string>
+    <string name="pref_disable_app_hibernation_desc">Megakadályozza, hogy az Android automatikusan eltávolítsa az alkalmazás engedélyeit.</string>
+    <string name="pref_open_web_ui_name">Webes felület megnyitása</string>
+    <string name="pref_open_web_ui_desc">A Syncthing webes konfigurációs felületének megnyitása.</string>
+    <string name="pref_import_configuration_name">Konfiguráció importálása</string>
+    <string name="pref_import_configuration_desc">Syncthing konfigurációs zip fájl importálása.</string>
+    <string name="pref_export_configuration_name">Konfiguráció exportálása</string>
+    <string name="pref_export_configuration_desc">Aktuális Syncthing konfiguráció exportálása zip fájlba.</string>
+    <string name="pref_service_status_name">Syncthing állapota</string>
+    <string name="pref_auto_mode_name">Automatikus mód</string>
+    <string name="pref_auto_mode_desc">Automatikus indítás és leállítás a megadott feltételek szerint.</string>
+    <string name="pref_network_conditions_name">Hálózati feltételek</string>
+    <string name="pref_network_conditions_desc">Futtatás bizonyos hálózattípusokhoz vagy Wi-Fi hálózatokhoz való csatlakozáskor.</string>
+    <string name="pref_run_on_battery_name">Működés akkumulátorról</string>
+    <string name="pref_run_on_battery_desc">Működés az eszköz akkumulátoráról, amikor az akkumulátor szintje legalább %1$d%%. A Syncthing mindig aktív, ha csatlakoztatva van.</string>
+    <string name="pref_respect_battery_saver_name">Akkumulátor-takarékos mód figyelembevétele</string>
+    <string name="pref_respect_battery_saver_desc">Csak akkor aktív, ha az Android akkumulátor-takarékos módja le van tiltva.</string>
+    <string name="pref_respect_auto_sync_data_name">Automatikus adatszinkronizálás figyelembevétele</string>
+    <string name="pref_respect_auto_sync_data_desc">Csak akkor aktív, ha az Android automatikus adatszinkronizálás beállítása engedélyezve van.</string>
+    <string name="pref_sync_schedule_name">Szinkronizálás időzítés szerint</string>
+    <string name="pref_sync_schedule_desc">Szinkronizálás %2$s időtartamra minden %1$s ablakban.</string>
+    <string name="pref_keep_alive_name">Syncthing életbentartása</string>
+    <string name="pref_keep_alive_desc">Ha a Syncthing nem futhat, szüneteltesse ahelyett, hogy leállítaná. Megakadályozza a teljesítményromlást, ha nagy mappákat vizsgálna meg induláskor.</string>
+    <string name="pref_version_name">Verzió</string>
+    <string name="pref_save_logs_name">Naplók mentése</string>
+    <string name="pref_save_logs_desc">Logcat naplók mentése fájlba.</string>
+
+    <!-- Network condition preferences -->
+    <string name="pref_header_allowed_network_types">Engedélyezett hálózattípusok</string>
+    <string name="pref_header_allowed_wifi_networks">Engedélyezett Wi-Fi hálózatok</string>
+    <string name="pref_header_available_wifi_networks">Elérhető Wi-Fi hálózatok</string>
+    <string name="pref_require_unmetered_network_name">Csak korlátlan hálózaton</string>
+    <string name="pref_network_allow_wifi_name">Wi-Fi engedélyezése</string>
+    <string name="pref_network_allow_cellular_name">Mobil adatforgalom engedélyezése</string>
+    <string name="pref_network_allow_ethernet_name">Ethernet engedélyezése</string>
+    <string name="pref_network_allow_other_name">Egyéb hálózati felületek engedélyezése</string>
+    <string name="pref_location_optional_info">A helymeghatározás csak az engedélyezett Wi-Fi hálózatok korlátozásához szükséges. Még, ha engedélyezve is van, az csak szükség esetén lesz használva.</string>
+    <string name="pref_allow_precise_location_name">Pontos helymeghatározás engedélyezése</string>
+    <string name="pref_allow_precise_location_desc">A Wi-Fi adatok lekérdezéséhez szükséges.</string>
+    <string name="pref_allow_background_location_name">Háttér-helymeghatározás engedélyezése</string>
+    <string name="pref_allow_background_location_desc">A Wi-Fi adatok háttérben való lekérdezéséhez szükséges.</string>
+    <string name="pref_wifi_networks_info">Wi-Fi használatakor csak akkor aktív, ha a megadott hálózatokhoz csatlakozik. Ha nincs hálózat megadva, akkor az összes hálózat engedélyezve van.</string>
+    <string name="pref_add_wifi_network_name">Wi-Fi hálózat hozzáadása</string>
+
+    <!-- Alerts -->
+    <string name="action_details">Részletek</string>
+    <string name="dialog_error_details_title">Hiba részletei</string>
+
+    <!-- Main alerts -->
+    <string name="alert_import_success">Konfiguráció sikeresen importálva</string>
+    <string name="alert_import_failure">Nem sikerült importálni a konfigurációt</string>
+    <string name="alert_import_cancelled">Konfiguráció importálása lemondva</string>
+    <string name="alert_export_success">Konfiguráció sikeresen exportálva</string>
+    <string name="alert_export_failure">Nem sikerült exportálni a konfigurációt</string>
+    <string name="alert_export_cancelled">Konfiguráció exportálása lemondva</string>
+    <string name="alert_logcat_success">Naplók sikeresen lementve ide: %1$s</string>
+    <string name="alert_logcat_failure">Nem sikerült lementeni a naplókat ide: %1$s</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_new_folder_title">Új mappa</string>
+    <string name="dialog_new_folder_message">Adja meg az új mappa nevét, amelyet a %1$s helyen szeretne létrehozni.</string>
+    <string name="dialog_new_folder_hint">Név</string>
+    <string name="dialog_import_password_title">Konfiguráció importálása</string>
+    <string name="dialog_import_password_message">A kiválasztott zip fájl titkosított. Adja meg a visszafejtési jelszót az importálásához.</string>
+    <string name="dialog_import_password_hint">Visszafejtési jelszó</string>
+    <string name="dialog_export_password_title">Konfiguráció exportálása</string>
+    <string name="dialog_export_password_message">Adjon meg egy jelszót az exportált zip fájl titkosításához, vagy hagyja üresen a titkosítás nélküli tároláshoz.</string>
+    <string name="dialog_export_password_hint">Titkosítási jelszó</string>
+    <string name="dialog_export_password_confirm_hint">Jelszó megerősítése</string>
+    <string name="dialog_min_battery_level_title">Minimális akkumulátor szint</string>
+    <string name="dialog_min_battery_level_message">Adja meg a Syncthing futtatásához szükséges minimális akkumulátor szintet.</string>
+    <string name="dialog_min_battery_level_hint">Százalék</string>
+    <string name="dialog_sync_schedule_title">Szinkronizálási ütemezés</string>
+    <string name="dialog_sync_schedule_message">Adja meg a ciklust és a szinkronizálás időtartamát. Az <tt>h</tt> (óra), <tt>m</tt> (perc) és <tt>s</tt> (másodperc) utótagok elfogadottak.</string>
+    <string name="dialog_sync_schedule_hint_cycle">Ciklus időtartama</string>
+    <string name="dialog_sync_schedule_hint_sync">Szinkronizálás időtartama</string>
+    <string name="dialog_wifi_network_title">Wi-Fi hálózat</string>
+    <string name="dialog_wifi_network_message">Adja meg a Wi-Fi hálózat nevét (SSID). Ez rejtett Wi-Fi hálózatokhoz is működik.</string>
+    <string name="dialog_wifi_network_hint">SSID</string>
+
+    <!-- Web UI extra buttons -->
+    <string name="web_ui_select_folder">Mappa kiválasztása</string>
+    <string name="web_ui_scan_qr_code">QR-kód beolvasása</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_persistent_name">Háttérszolgáltatások</string>
+    <string name="notification_channel_persistent_desc">A Syncthing futtatása a háttérben</string>
+    <string name="notification_channel_failure_name">Hiba értesítések</string>
+    <string name="notification_channel_failure_desc">Értesítések a Syncthing indítási hibáiról</string>
+    <string name="notification_persistent_running_title">A Syncthing fut</string>
+    <string name="notification_persistent_not_running_title">A Syncthing nem fut</string>
+    <string name="notification_persistent_paused_title">A Syncthing szüneteltetve</string>
+    <string name="notification_persistent_starting_title">A Syncthing indul</string>
+    <string name="notification_persistent_stopping_title">A Syncthing leáll</string>
+    <string name="notification_persistent_pausing_title">A Syncthing szünetel</string>
+    <string name="notification_persistent_importing_title">Konfiguráció importálása</string>
+    <string name="notification_persistent_exporting_title">Konfiguráció exportálása</string>
+    <string name="notification_failure_run_title">Nem sikerült a Syncthing futtatása</string>
+    <string name="notification_failure_run_message">A Syncthing nem indult el megfelelően. A folyamatos újraindulás elkerülése érdekében a Syncthing leállt és manuális módra váltott.</string>
+    <string name="notification_action_auto_mode">Automatikus mód</string>
+    <string name="notification_action_manual_mode">Manuális mód</string>
+    <string name="notification_action_start">Indítás</string>
+    <string name="notification_action_stop">Leállítás</string>
+
+    <!-- Durations -->
+    <plurals name="duration_seconds">
+        <item quantity="one">%d másodperc</item>
+        <item quantity="other">%d másodperc</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d perc</item>
+        <item quantity="other">%d perc</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d óra</item>
+        <item quantity="other">%d óra</item>
+    </plurals>
+</resources>
