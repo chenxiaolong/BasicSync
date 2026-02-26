@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.11
 
 * Add Romanian translations ([PR #41], [PR #45])
 * Add French translations ([PR #42], [PR #46])
