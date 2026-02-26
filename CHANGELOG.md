@@ -9,9 +9,9 @@
 
 ### Unreleased
 
-* Add Romanian translations ([PR #41])
-* Add French translations ([PR #42])
-* Add Hungarian translations ([PR #43])
+* Add Romanian translations ([PR #41], [PR #45])
+* Add French translations ([PR #42], [PR #46])
+* Add Hungarian translations ([PR #43], [PR #47])
 * Display the reason syncthing is paused/stopped ([PR #44])
 
 ### Version 1.10
@@ -122,3 +122,6 @@
 [PR #42]: https://github.com/chenxiaolong/BasicSync/pull/42
 [PR #43]: https://github.com/chenxiaolong/BasicSync/pull/43
 [PR #44]: https://github.com/chenxiaolong/BasicSync/pull/44
+[PR #45]: https://github.com/chenxiaolong/BasicSync/pull/45
+[PR #46]: https://github.com/chenxiaolong/BasicSync/pull/46
+[PR #47]: https://github.com/chenxiaolong/BasicSync/pull/47
