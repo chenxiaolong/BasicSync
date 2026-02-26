@@ -122,6 +122,18 @@
     <string name="notification_action_start">Démarrer</string>
     <string name="notification_action_stop">Arrêter</string>
 
+    <!-- Paused/stopped reason -->
+    <string name="blocked_reason_manual">• Arrêté manuellement</string>
+    <string name="blocked_reason_disconnected">• Non connecté au réseau</string>
+    <string name="blocked_reason_metered_network">• Connecté à un réseau limité</string>
+    <string name="blocked_reason_bad_network_type">• Type de réseau non autorisé</string>
+    <string name="blocked_reason_bad_wifi_ssid">• Connecté à un réseau Wi-Fi bloqué</string>
+    <string name="blocked_reason_on_battery">• Fonctionne sur batterie</string>
+    <string name="blocked_reason_low_battery">• Niveau de batterie faible</string>
+    <string name="blocked_reason_battery_saver">• Mode économie d\'énergie activé</string>
+    <string name="blocked_reason_auto_sync_data">• Synchronisation automatique désactivée</string>
+    <string name="blocked_reason_time_schedule">• En dehors de la plage horaire autorisée</string>
+
     <!-- Durations -->
     <plurals name="duration_seconds">
         <item quantity="one">%d seconde</item>
