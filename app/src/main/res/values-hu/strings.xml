@@ -90,7 +90,7 @@
     <string name="dialog_min_battery_level_title">Minimális akkumulátor szint</string>
     <string name="dialog_min_battery_level_message">Adja meg a Syncthing futtatásához szükséges minimális akkumulátor szintet.</string>
     <string name="dialog_min_battery_level_hint">Százalék</string>
-    <string name="dialog_sync_schedule_title">Szinkronizálási ütemezés</string>
+    <string name="dialog_sync_schedule_title">Szinkronizálás időzítése</string>
     <string name="dialog_sync_schedule_message">Adja meg a ciklust és a szinkronizálás időtartamát. Az <tt>h</tt> (óra), <tt>m</tt> (perc) és <tt>s</tt> (másodperc) utótagok elfogadottak.</string>
     <string name="dialog_sync_schedule_hint_cycle">Ciklus időtartama</string>
     <string name="dialog_sync_schedule_hint_sync">Szinkronizálás időtartama</string>
@@ -121,6 +121,18 @@
     <string name="notification_action_manual_mode">Manuális mód</string>
     <string name="notification_action_start">Indítás</string>
     <string name="notification_action_stop">Leállítás</string>
+
+    <!-- Paused/stopped reason -->
+    <string name="blocked_reason_manual">• Manuálisan leállítva</string>
+    <string name="blocked_reason_disconnected">• Nincs hálózati kapcsolat</string>
+    <string name="blocked_reason_metered_network">• Korlátozott hálózati kapcsolat</string>
+    <string name="blocked_reason_bad_network_type">• Hálózattípus nem engedélyezett</string>
+    <string name="blocked_reason_bad_wifi_ssid">• Blokkolt Wi-Fi hálózati kapcsolat</string>
+    <string name="blocked_reason_on_battery">• Akkumulátoros üzemmód</string>
+    <string name="blocked_reason_low_battery">• Az akkumulátor töltöttsége alacsony</string>
+    <string name="blocked_reason_battery_saver">• Energiatakarékos mód bekapcsolva</string>
+    <string name="blocked_reason_auto_sync_data">• Automatikus adatszinkronizálás tiltva</string>
+    <string name="blocked_reason_time_schedule">• Időzítésen kívül</string>
 
     <!-- Durations -->
     <plurals name="duration_seconds">
