@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update Traditional Chinese (zh-TW) translations ([PR #48])
+
 ### Version 1.11
 
 * Add Romanian translations ([PR #41], [PR #45])
@@ -125,3 +129,4 @@
 [PR #45]: https://github.com/chenxiaolong/BasicSync/pull/45
 [PR #46]: https://github.com/chenxiaolong/BasicSync/pull/46
 [PR #47]: https://github.com/chenxiaolong/BasicSync/pull/47
+[PR #48]: https://github.com/chenxiaolong/BasicSync/pull/48
