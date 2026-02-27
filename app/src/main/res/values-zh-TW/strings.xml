@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2025-2026 Andrew Gunnerson
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+<resources>
+    <!-- Preference headers -->
+    <string name="pref_header_permissions">權限</string>
+    <string name="pref_header_configuration">組態設定</string>
+    <string name="pref_header_run_conditions">執行條件</string>
+    <string name="pref_header_about">關於</string>
+    <string name="pref_header_debug">除錯</string>
+
+    <!-- Main preferences -->
+    <string name="pref_inhibit_battery_opt_name">停用電池最佳化</string>
+    <string name="pref_inhibit_battery_opt_desc">為確保在背景穩定執行，需要此權限。</string>
+    <string name="pref_allow_notifications_name">允許通知</string>
+    <string name="pref_allow_notifications_desc">為確保在背景穩定執行，以及啟動與停止 Syncthing，需要此權限。</string>
+    <string name="pref_local_storage_access_name">允許存取本機儲存空間</string>
+    <string name="pref_local_storage_access_desc">Syncthing 需要此權限才能存取 <tt>/sdcard</tt> 下的本機儲存空間。</string>
+    <string name="pref_disable_app_hibernation_name">停止應用程式休眠</string>
+    <string name="pref_disable_app_hibernation_desc">防止 Android 在一段時間後自動移除應用程式權限。</string>
+    <string name="pref_open_web_ui_name">開啟網頁介面</string>
+    <string name="pref_open_web_ui_desc">開啟 Syncthing 的網頁設定介面。</string>
+    <string name="pref_import_configuration_name">匯入組態</string>
+    <string name="pref_import_configuration_desc">匯入現有的 Syncthing 組態壓縮檔。</string>
+    <string name="pref_export_configuration_name">匯出組態</string>
+    <string name="pref_export_configuration_desc">將目前的 Syncthing 組態匯出為壓縮檔。</string>
+    <string name="pref_service_status_name">Syncthing 狀態</string>
+    <string name="pref_auto_mode_name">自動模式</string>
+    <string name="pref_auto_mode_desc">根據指定條件自動啟動或停止。</string>
+    <string name="pref_network_conditions_name">網路條件</string>
+    <string name="pref_network_conditions_desc">連線至特定網路類型或 Wi-Fi 網路時執行。</string>
+    <string name="pref_run_on_battery_name">使用電池電力時執行</string>
+    <string name="pref_run_on_battery_desc">當裝置使用電池電力且電量至少為 %1$d%% 時執行。接上電源時 Syncthing 將始終執行。</string>
+    <string name="pref_respect_battery_saver_name">遵照省電模式</string>
+    <string name="pref_respect_battery_saver_desc">僅在 Android 省電模式未啟用時執行。</string>
+    <string name="pref_respect_auto_sync_data_name">遵照自動同步數據設定</string>
+    <string name="pref_respect_auto_sync_data_desc">僅在 Android 的自動同步數據設定啟用時執行。</string>
+    <string name="pref_sync_schedule_name">依排程同步</string>
+    <string name="pref_sync_schedule_desc">在每 %1$s 的週期內進行同步 %2$s。</string>
+    <string name="pref_keep_alive_name">保持 Syncthing 執行</string>
+    <string name="pref_keep_alive_desc">當 Syncthing 不應執行時將其暫停而非關閉。這可以避免啟動時掃描大型資料夾造成的效能影響。</string>
+    <string name="pref_version_name">版本</string>
+    <string name="pref_save_logs_name">儲存日誌</string>
+    <string name="pref_save_logs_desc">將 logcat 日誌儲存至檔案。</string>
+
+    <!-- Network condition preferences -->
+    <string name="pref_header_allowed_network_types">允許的網路類型</string>
+    <string name="pref_header_allowed_wifi_networks">允許的 Wi-Fi 網路</string>
+    <string name="pref_header_available_wifi_networks">可用的 Wi-Fi 網路</string>
+    <string name="pref_require_unmetered_network_name">要求非計量付費網路</string>
+    <string name="pref_network_allow_wifi_name">允許 Wi-Fi</string>
+    <string name="pref_network_allow_cellular_name">允許行動數據</string>
+    <string name="pref_network_allow_ethernet_name">允許乙太網路</string>
+    <string name="pref_network_allow_other_name">允許其他網路介面</string>
+    <string name="pref_location_optional_info">位置權限為選填，僅在限制允許的 Wi-Fi 網路時需要。即使授予權限，除非已設定允許的 Wi-Fi 網路，否則不會使用該權限。</string>
+    <string name="pref_allow_precise_location_name">允許存取精確位置</string>
+    <string name="pref_allow_precise_location_desc">存取 Wi-Fi 連線詳細資訊所需。</string>
+    <string name="pref_allow_background_location_name">允許在背景存取位置</string>
+    <string name="pref_allow_background_location_desc">在背景存取 Wi-Fi 連線詳細資訊所需。</string>
+    <string name="pref_wifi_networks_info">使用 Wi-Fi 時，僅在連線至指定網路時執行。若未指定，則允許所有網路。</string>
+    <string name="pref_add_wifi_network_name">手動新增 Wi-Fi 網路</string>
+
+    <!-- Alerts -->
+    <string name="action_details">詳細資訊</string>
+    <string name="dialog_error_details_title">錯誤詳細資訊</string>
+
+    <!-- Main alerts -->
+    <string name="alert_import_success">組態匯入成功</string>
+    <string name="alert_import_failure">組態匯入失敗</string>
+    <string name="alert_import_cancelled">已取消匯入組態</string>
+    <string name="alert_export_success">組態匯出成功</string>
+    <string name="alert_export_failure">組態匯出失敗</string>
+    <string name="alert_export_cancelled">已取消匯出組態</string>
+    <string name="alert_logcat_success">日誌已成功儲存至 %1$s</string>
+    <string name="alert_logcat_failure">無法將日誌儲存至 %1$s</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_new_folder_title">新增資料夾</string>
+    <string name="dialog_new_folder_message">請輸入要在 %1$s 中建立的新資料夾名稱。</string>
+    <string name="dialog_new_folder_hint">名稱</string>
+    <string name="dialog_import_password_title">匯入組態</string>
+    <string name="dialog_import_password_message">選取的壓縮檔已加密。請輸入解密密碼以匯入。</string>
+    <string name="dialog_import_password_hint">解密密碼</string>
+    <string name="dialog_export_password_title">匯出組態</string>
+    <string name="dialog_export_password_message">請輸入密碼以加密匯出的壓縮檔，若留空則不加密儲存。</string>
+    <string name="dialog_export_password_hint">加密密碼</string>
+    <string name="dialog_export_password_confirm_hint">確認密碼</string>
+    <string name="dialog_min_battery_level_title">最低電池電量</string>
+    <string name="dialog_min_battery_level_message">輸入允許 Syncthing 執行的最低電池電量。</string>
+    <string name="dialog_min_battery_level_hint">百分比</string>
+    <string name="dialog_sync_schedule_title">同步排程</string>
+    <string name="dialog_sync_schedule_message">輸入週期與同步時長。可接受 <tt>h</tt>（小時）、<tt>m</tt>（分鐘）及 <tt>s</tt>（秒）作為後綴。</string>
+    <string name="dialog_sync_schedule_hint_cycle">週期時長</string>
+    <string name="dialog_sync_schedule_hint_sync">同步時長</string>
+    <string name="dialog_wifi_network_title">Wi-Fi 網路</string>
+    <string name="dialog_wifi_network_message">請輸入 Wi-Fi 網路名稱（SSID）。亦支援隱藏的 Wi-Fi 網路。</string>
+    <string name="dialog_wifi_network_hint">SSID</string>
+
+    <!-- Web UI extra buttons -->
+    <string name="web_ui_select_folder">選取資料夾</string>
+    <string name="web_ui_scan_qr_code">掃描 QR Code</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_persistent_name">背景服務</string>
+    <string name="notification_channel_persistent_desc">保持 Syncthing 於背景執行</string>
+    <string name="notification_channel_failure_name">失敗警示</string>
+    <string name="notification_channel_failure_desc">啟動 Syncthing 發生錯誤時的警示</string>
+    <string name="notification_persistent_running_title">Syncthing 正在執行</string>
+    <string name="notification_persistent_not_running_title">Syncthing 未在執行</string>
+    <string name="notification_persistent_paused_title">Syncthing 已暫停</string>
+    <string name="notification_persistent_starting_title">Syncthing 正在啟動</string>
+    <string name="notification_persistent_stopping_title">Syncthing 正在停止</string>
+    <string name="notification_persistent_pausing_title">Syncthing 正在暫停</string>
+    <string name="notification_persistent_importing_title">正在匯入組態</string>
+    <string name="notification_persistent_exporting_title">正在匯出組態</string>
+    <string name="notification_failure_run_title">Syncthing 執行失敗</string>
+    <string name="notification_failure_run_message">無法正常執行 Syncthing。為防止陷入重新啟動的迴圈，Syncthing 已停止並切換至手動模式。</string>
+    <string name="notification_action_auto_mode">自動模式</string>
+    <string name="notification_action_manual_mode">手動模式</string>
+    <string name="notification_action_start">啟動</string>
+    <string name="notification_action_stop">停止</string>
+
+    <!-- Paused/stopped reason -->
+    <string name="blocked_reason_manual">手動停止</string>
+    <string name="blocked_reason_disconnected">未連線至網路</string>
+    <string name="blocked_reason_metered_network">已連線至計量付費網路</string>
+    <string name="blocked_reason_bad_network_type">不允許的網路類型</string>
+    <string name="blocked_reason_bad_wifi_ssid">已連線至受阻擋的 Wi-Fi 網路。</string>
+    <string name="blocked_reason_on_battery">正在使用電池電力</string>
+    <string name="blocked_reason_low_battery">電池電量不足</string>
+    <string name="blocked_reason_battery_saver">省電模式已開啟</string>
+    <string name="blocked_reason_auto_sync_data">自動同步數據已關閉</string>
+    <string name="blocked_reason_time_schedule">不在排程時間內</string>
+
+    <!-- Durations -->
+    <plurals name="duration_seconds">
+        <item quantity="one">%d 秒</item>
+        <item quantity="other">%d 秒</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d 分鐘</item>
+        <item quantity="other">%d 分鐘</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d 小時</item>
+        <item quantity="other">%d 小時</item>
+    </plurals>
+</resources>
