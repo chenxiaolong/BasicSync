@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Update syncthing to 2.0.15 ([PR #58])
+* Switch to using upstream golang MTE fix ([PR #50])
 
 ### Version 1.13
 
@@ -144,6 +145,7 @@
 [PR #47]: https://github.com/chenxiaolong/BasicSync/pull/47
 [PR #48]: https://github.com/chenxiaolong/BasicSync/pull/48
 [PR #49]: https://github.com/chenxiaolong/BasicSync/pull/49
+[PR #50]: https://github.com/chenxiaolong/BasicSync/pull/50
 [PR #51]: https://github.com/chenxiaolong/BasicSync/pull/51
 [PR #52]: https://github.com/chenxiaolong/BasicSync/pull/52
 [PR #53]: https://github.com/chenxiaolong/BasicSync/pull/53
