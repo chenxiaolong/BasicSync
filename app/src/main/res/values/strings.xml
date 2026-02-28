@@ -4,145 +4,250 @@
     SPDX-License-Identifier: GPL-3.0-only
 -->
 <resources>
-    <!-- Preference headers -->
+    <!-- Section header for preferences for allowing required permissions. -->
     <string name="pref_header_permissions">Permissions</string>
+    <!-- Section header for preferences to configure Syncthing (opening web UI, importing/exporting configuration). -->
     <string name="pref_header_configuration">Configuration</string>
+    <!-- Section header for preferences to configure when Syncthing is allowed to run. -->
     <string name="pref_header_run_conditions">Run conditions</string>
+    <!-- Section header for the preference showing information about the app, like version numbers. -->
     <string name="pref_header_about">About</string>
+    <!-- Section header for hidden debug preferences. -->
     <string name="pref_header_debug">Debug</string>
 
-    <!-- Main preferences -->
+    <!-- Title for the preference shown when battery optimizations are still enabled. -->
     <string name="pref_inhibit_battery_opt_name">Disable battery optimization</string>
+    <!-- Reason for why battery optimizations need to be disabled. -->
     <string name="pref_inhibit_battery_opt_desc">Needed to run reliably in the background.</string>
+    <!-- Title for the preference shown when the notifications permission is not granted. -->
     <string name="pref_allow_notifications_name">Allow notifications</string>
+    <!-- Reason for why the notifications permission is required. -->
     <string name="pref_allow_notifications_desc">Needed to run reliably in the background and to start and stop Syncthing.</string>
+    <!-- Title for the preference shown when access to the local storage is not granted. -->
     <string name="pref_local_storage_access_name">Allow local storage access</string>
+    <!-- Reason why access to local storage access is needed. /sdcard should be surrounded with <tt></tt> for displaying with a monospace font. -->
     <string name="pref_local_storage_access_desc">Needed for Syncthing to access the local storage under <tt>/sdcard</tt>.</string>
+    <!-- Title for the preference shown when app hibernation is enabled. App hibernation has different names in different versions of Android, like "Manage app if unused". -->
     <string name="pref_disable_app_hibernation_name">Disable app hibernation</string>
+    <!-- Reason why app hibernation needs to be disabled. -->
     <string name="pref_disable_app_hibernation_desc">Needed to prevent Android from automatically removing app permissions after a period of time.</string>
+    <!-- Title for the preference to open Syncthing's web UI. -->
     <string name="pref_open_web_ui_name">Open web UI</string>
+    <!-- Description for the preference to open Syncthing's web UI. -->
     <string name="pref_open_web_ui_desc">Open Syncthing\'s web configuration interface.</string>
+    <!-- Title for the preference to import a Syncthing configuration backup. -->
     <string name="pref_import_configuration_name">Import configuration</string>
+    <!-- Description for the preference to import an existing Syncthing configuration backup from a zip file. -->
     <string name="pref_import_configuration_desc">Import an existing Syncthing configuration zip file.</string>
+    <!-- Title for the preference to export the Syncthing configuration. -->
     <string name="pref_export_configuration_name">Export configuration</string>
+    <!-- Description for the preference to export the current Syncthing configuration to a zip file. -->
     <string name="pref_export_configuration_desc">Export current Syncthing configuration to a zip file.</string>
+    <!-- Title for the preference that shows the current status of Syncthing. The notification_persistent_* strings are used for the description. -->
     <string name="pref_service_status_name">Syncthing status</string>
+    <!-- Title for the preference that controls whether to use auto mode. Auto mode is where Syncthing is automatically started and stopped based on the run conditions. -->
     <string name="pref_auto_mode_name">Auto mode</string>
+    <!-- Description for the preference that controls whether to use auto mode. -->
     <string name="pref_auto_mode_desc">Automatically start and stop based on the specified conditions.</string>
+    <!-- Title for the preference that opens a new screen for configuring run conditions based on the network. -->
     <string name="pref_network_conditions_name">Network conditions</string>
+    <!-- Description for the preference that opens a new screen for configuring run conditions based on the network. -->
     <string name="pref_network_conditions_desc">Run when connected to certain network types or Wi-Fi networks.</string>
+    <!-- Title for the preference that controls whether to run on battery power. -->
     <string name="pref_run_on_battery_name">Run on battery power</string>
+    <!-- Description for the preference that controls whether to run on battery power. %1$d is replaced with the battery percentage threshold expressed as just a number. Add %% for a percent sign. -->
     <string name="pref_run_on_battery_desc">Run when the device is on battery power and the battery level is at least %1$d%%. Syncthing always runs when plugged in.</string>
+    <!-- Title for the preference that controls whether to respect Android's battery saver mode setting. -->
     <string name="pref_respect_battery_saver_name">Respect battery saver mode</string>
+    <!-- Description for the preference that controls whether to respect Android's battery saver mode setting. -->
     <string name="pref_respect_battery_saver_desc">Only run when Android\'s battery saver mode is disabled.</string>
+    <!-- Title for the preference that controls whether to respect the auto-sync data option from Android's settings. -->
     <string name="pref_respect_auto_sync_data_name">Respect auto-sync data setting</string>
+    <!-- Description for the preference that controls whether to respect the auto-sync data option from Android's settings. -->
     <string name="pref_respect_auto_sync_data_desc">Only run when Android\'s auto-sync data setting is enabled.</string>
+    <!-- Title for the preference that enables syncing on a time schedule. Example of time schedule: run for 5 minutes every hour. -->
     <string name="pref_sync_schedule_name">Sync on time schedule</string>
+    <!-- Description for the preference that enables syncing on a time schedule. %1$s is the time window duration. %2$s is how long to sync within the time window. Both timestamps are formatted using the duration_* strings before being inserted here. -->
     <string name="pref_sync_schedule_desc">Sync for %2$s during every window of %1$s.</string>
+    <!-- Title for the preference that keeps Syncthing always running. When run conditions prevent it from syncing, Syncthing is paused instead of stopped. -->
     <string name="pref_keep_alive_name">Keep Syncthing alive</string>
+    <!-- Description for the preference that keeps Syncthing always running. -->
     <string name="pref_keep_alive_desc">When Syncthing should not run, pause it instead of shutting it down. The avoids a potential performance hit when scanning large folders on startup.</string>
+    <!-- Title for the preference that shows the version number. The description is two lines: the first line is BasicSync's version and the second line in Syncthing's version. -->
     <string name="pref_version_name">Version</string>
+    <!-- Title for the debug preference that saves logs to a file. -->
     <string name="pref_save_logs_name">Save logs</string>
+    <!-- Description for the debug preference that saves logs to a file. -->
     <string name="pref_save_logs_desc">Save logcat logs to a file.</string>
 
-    <!-- Network condition preferences -->
+    <!-- Section header for preferences that control which type of networks (metered, Wi-Fi, cellular, etc.) that Syncthing is allowed to sync on. -->
     <string name="pref_header_allowed_network_types">Allowed network types</string>
+    <!-- Section header for Wi-Fi networks that the user has allowed Syncthing to sync on. -->
     <string name="pref_header_allowed_wifi_networks">Allowed Wi-Fi networks</string>
+    <!-- Section header for all available Wi-Fi networks that the user can pick from. -->
     <string name="pref_header_available_wifi_networks">Available Wi-Fi networks</string>
+    <!-- Preference for whether to allow syncing on unmetered networks. This is for unmetered networks of all types (Wi-Fi, unlimited cellular data, ethernet, etc.). -->
     <string name="pref_require_unmetered_network_name">Require unmetered network</string>
+    <!-- Preference for whether to allow syncing on Wi-Fi. -->
     <string name="pref_network_allow_wifi_name">Allow Wi-Fi</string>
+    <!-- Preference for whether to allow syncing on cellular data. -->
     <string name="pref_network_allow_cellular_name">Allow mobile data</string>
+    <!-- Preference for whether to allow syncing on ethernet. -->
     <string name="pref_network_allow_ethernet_name">Allow ethernet</string>
+    <!-- Preference for whether to allow syncing on all other types of interfaces. This is for uncommon network interfaces, like bluetooth tethering or satellite internet. -->
     <string name="pref_network_allow_other_name">Allow other network interfaces</string>
+    <!-- Description explaining that location permissions are only needed when using the feature to sync only on allowed Wi-Fi networks. -->
     <string name="pref_location_optional_info">Location permissions are optional and are only needed when restricting allowed Wi-Fi networks. Even if the permissions are granted, they will not be used unless there are allowed Wi-Fi networks configured.</string>
+    <!-- Title for the preference shown when the precise location permission is not granted. -->
     <string name="pref_allow_precise_location_name">Allow precise location access</string>
+    <!-- Reason why the precise location permission is required. -->
     <string name="pref_allow_precise_location_desc">Required for accessing Wi-Fi connection details at all.</string>
+    <!-- Title for the preference shown when the background location permission is not granted. This is the "Allow all the time" option for the location permission in Android's settings. -->
     <string name="pref_allow_background_location_name">Allow background location access</string>
+    <!-- Reason why the background location permission is required. -->
     <string name="pref_allow_background_location_desc">Required for accessing Wi-Fi connection details in the background.</string>
+    <!-- Description for how the allowed Wi-Fi networks feature works. -->
     <string name="pref_wifi_networks_info">When using Wi-Fi, only run if connected to the specified networks. If no networks are specified, then all networks are allowed.</string>
+    <!-- Preference for manually adding an allowed Wi-Fi network. This can be used, for example, to add hidden Wi-Fi networks or networks that are currently out of range. -->
     <string name="pref_add_wifi_network_name">Manually add Wi-Fi network</string>
 
-    <!-- Alerts -->
+    <!-- Button to open a dialog containing more details about an error that just occurred. -->
     <string name="action_details">Details</string>
+    <!-- Title shown in a dialog containing more details about an error that just occurred. -->
     <string name="dialog_error_details_title">Error details</string>
 
-    <!-- Main alerts -->
+    <!-- Alert shown after a successful import of a Syncthing configuration zip. -->
     <string name="alert_import_success">Successfully imported configuration</string>
+    <!-- Alert shown when importing a Syncthing configuration zip fails. The user's existing configuration is untouched when this happens, though the string currently does not mention this due to length limitations. -->
     <string name="alert_import_failure">Failed to import configuration</string>
+    <!-- Alert shown when importing a Syncthing configuration zip is cancelled because the user did not select which file to import. -->
     <string name="alert_import_cancelled">Configuration import cancelled</string>
+    <!-- Alert shown after a successful export of a Syncthing configuration zip. -->
     <string name="alert_export_success">Successfully exported configuration</string>
+    <!-- Alert shown when exporting a Syncthing configuration zip fails. -->
     <string name="alert_export_failure">Failed to export configuration</string>
+    <!-- Alert shown when exporting a Syncthing configuration zip is cancelled because the user did not select where to save the file. -->
     <string name="alert_export_cancelled">Configuration export cancelled</string>
+    <!-- Alert shown after successfully saving a log file. %1$s is the path to the saved file. -->
     <string name="alert_logcat_success">Successfully saved logs to %1$s</string>
+    <!-- Alert shown when saving a log file fails. %1$s is the path to the file that could not be saved. -->
     <string name="alert_logcat_failure">Failed to save logs to %1$s</string>
 
-    <!-- Dialogs -->
+    <!-- Button shown in the local filesystem folder picker to create a new local folder. -->
     <string name="dialog_new_folder_title">New folder</string>
+    <!-- Message shown in the dialog for creating a new local filesystem folder. -->
     <string name="dialog_new_folder_message">Enter the name of the new folder to create in %1$s.</string>
+    <!-- Textbox hint shown in the dialog for creating a new local filesystem folder. -->
     <string name="dialog_new_folder_hint">Name</string>
+    <!-- Title of the dialog for importing an encrypted Syncthing configuration zip. -->
     <string name="dialog_import_password_title">Config import</string>
+    <!-- Message shown in the dialog for importing an encrypted Syncthing configuration zip. -->
     <string name="dialog_import_password_message">The selected zip file is encrypted. Enter the decryption password to import it.</string>
+    <!-- Textbox hint shown in the dialog importing an encrypted Syncthing configuration zip. -->
     <string name="dialog_import_password_hint">Decryption password</string>
+    <!-- Title of the dialog for exporting a Syncthing configuration zip. -->
     <string name="dialog_export_password_title">Config export</string>
+    <!-- Message shown in the dialog for exporting a Syncthing configuration zip. -->
     <string name="dialog_export_password_message">Enter a password to encrypt the exported zip file or leave empty to store it unencrypted.</string>
+    <!-- Hint for the first password textbox shown in the dialog for exporting a Syncthing configuration zip. -->
     <string name="dialog_export_password_hint">Encryption password</string>
+    <!-- Hint for the second confirmation password textbox shown in the dialog for exporting a Syncthing configuration zip. -->
     <string name="dialog_export_password_confirm_hint">Confirm password</string>
+    <!-- Title of the dialog for configuring the minimum battery level threshold. -->
     <string name="dialog_min_battery_level_title">Minimum battery level</string>
+    <!-- Message shown in the dialog for configuring the minimum battery level threshold. -->
     <string name="dialog_min_battery_level_message">Enter the minimum battery level needed for Syncthing to run.</string>
+    <!-- Textbox hint shown in the dialog for configuring the minimum battery level threshold. -->
     <string name="dialog_min_battery_level_hint">Percentage</string>
+    <!-- Title of the dialog for configuring the time schedule feature. -->
     <string name="dialog_sync_schedule_title">Sync schedule</string>
+    <!-- Message shown in the dialog for configuring the time schedule feature. The 'h', 'm', and 's' suffixes are used for every language. -->
     <string name="dialog_sync_schedule_message">Enter the cycle and sync duration. The <tt>h</tt> (hours), <tt>m</tt> (minutes), and <tt>s</tt> (seconds) suffixes are accepted.</string>
+    <!-- Textbox hint shown in the dialog for configuring the time schedule feature. This represents the length of the time window. For example the "every hour" part of "sync for 5 minutes every hour". -->
     <string name="dialog_sync_schedule_hint_cycle">Cycle duration</string>
+    <!-- Textbox hint shown in the dialog for configuring the time schedule feature. This represents the sync duration within the time window. For example the "5 minutes" part of "sync for 5 minutes every hour". -->
     <string name="dialog_sync_schedule_hint_sync">Sync duration</string>
+    <!-- Title of the dialog for manually adding an allowed Wi-Fi network. -->
     <string name="dialog_wifi_network_title">Wi-Fi network</string>
+    <!-- Message shown in the dialog for manually adding an allowed Wi-Fi network. -->
     <string name="dialog_wifi_network_message">Enter the name (SSID) of the Wi-Fi network. This also works for hidden Wi-Fi networks.</string>
+    <!-- Textbox hint shown in the dialog for manually adding an allowed Wi-Fi network. -->
     <string name="dialog_wifi_network_hint">SSID</string>
 
-    <!-- Web UI extra buttons -->
+    <!-- Tooltip shown in Syncthing's web UI for selecting a local folder when adding a new shared Syncthing folder. Keep as short as possible. -->
     <string name="web_ui_select_folder">Select folder</string>
+    <!-- Tooltip shown in Syncthing's web UI for scanning a QR code when adding a new device. Keep as short as possible. -->
     <string name="web_ui_scan_qr_code">Scan QR code</string>
 
-    <!-- Notifications -->
+    <!-- Name of the Android notification channel for the background notification that is always shown. -->
     <string name="notification_channel_persistent_name">Background services</string>
+    <!-- Description of the Android notification channel for the background notification that is always shown. -->
     <string name="notification_channel_persistent_desc">Keeps Syncthing running in the background</string>
+    <!-- Name of the Android notification channel for notifications about errors. -->
     <string name="notification_channel_failure_name">Failure alerts</string>
+    <!-- Description of the Android notification channel for notifications about errors. -->
     <string name="notification_channel_failure_desc">Alerts for errors when starting Syncthing</string>
+    <!-- Status text indicating that Syncthing is running and ready to sync. -->
     <string name="notification_persistent_running_title">Syncthing is running</string>
+    <!-- Status text indicating that Syncthing is not running at all (not just paused). -->
     <string name="notification_persistent_not_running_title">Syncthing is not running</string>
+    <!-- Status text indicating that Syncthing is running, but syncing is paused. -->
     <string name="notification_persistent_paused_title">Syncthing is paused</string>
+    <!-- Status text indicating that Syncthing was previously stopped and is in the process of starting up. -->
     <string name="notification_persistent_starting_title">Syncthing is starting</string>
+    <!-- Status text indicating that Syncthing was previously running and is in the process of shutting down entirely (not pausing). -->
     <string name="notification_persistent_stopping_title">Syncthing is stopping</string>
+    <!-- Status text indicating that Syncthing was previously running and is in the process of pausing syncing. -->
     <string name="notification_persistent_pausing_title">Syncthing is pausing</string>
+    <!-- Status text indicating that the Syncthing configuration is being imported. -->
     <string name="notification_persistent_importing_title">Importing configuration</string>
+    <!-- Status text indicating that the Syncthing configuration is being exported. -->
     <string name="notification_persistent_exporting_title">Exporting configuration</string>
+    <!-- Title of the notification shown when Syncthing failed to start up. -->
     <string name="notification_failure_run_title">Failed to run Syncthing</string>
+    <!-- Message shown in the notification when Syncthing failed to start up. -->
     <string name="notification_failure_run_message">Syncthing failed to run properly. To prevent a restart loop, Syncthing has been stopped and placed in manual mode.</string>
+    <!-- Button shown in the background notification to switch from manual mode to auto mode. -->
     <string name="notification_action_auto_mode">Auto mode</string>
+    <!-- Button shown in the background notification to switch from auto mode to manual mode. -->
     <string name="notification_action_manual_mode">Manual mode</string>
+    <!-- Button shown in the background notification to start Syncthing. This is only shown in manual mode. -->
     <string name="notification_action_start">Start</string>
+    <!-- Button shown in the background notification to stop Syncthing. This is only shown in manual mode. This currently does not distinguish between stopping and pausing. The text should represent "stop". -->
     <string name="notification_action_stop">Stop</string>
 
-    <!-- Paused/stopped reason -->
+    <!-- Syncing is blocked because it was manually stopped due to switching to auto-mode and stopping/pausing the service. -->
     <string name="blocked_reason_manual">• Manually stopped</string>
+    <!-- Syncing is blocked because the device is disconnected from all networks (e.g. airplane mode). -->
     <string name="blocked_reason_disconnected">• Not connected to network</string>
+    <!-- Syncing is blocked because the device is connected to a metered network. -->
     <string name="blocked_reason_metered_network">• Connected to metered network</string>
+    <!-- Syncing is blocked because the device is connected to the wrong network type (e.g. on mobile data when only Wi-Fi is allowed). -->
     <string name="blocked_reason_bad_network_type">• Network type not allowed</string>
+    <!-- Syncing is blocked because the device is connected to a Wi-Fi network that is not in the allowed Wi-Fi network list. -->
     <string name="blocked_reason_bad_wifi_ssid">• Connected to blocked Wi-Fi network</string>
+    <!-- Syncing is blocked because the device is running on battery and the user configured the run conditions to not allow syncing on battery. -->
     <string name="blocked_reason_on_battery">• Running on battery power</string>
+    <!-- Syncing is blocked because the battery level is below the configured threshold. -->
     <string name="blocked_reason_low_battery">• Battery level is low</string>
+    <!-- Syncing is blocked because Android's battery saver mode is enabled. -->
     <string name="blocked_reason_battery_saver">• Battery saver mode is on</string>
+    <!-- Syncing is blocked because Android's auto-sync data option is disabled. -->
     <string name="blocked_reason_auto_sync_data">• Auto-sync data is off</string>
+    <!-- Syncing is blocked because the current time is outside of the time window where syncing is permitted. -->
     <string name="blocked_reason_time_schedule">• Outside of time schedule</string>
 
-    <!-- Durations -->
+    <!-- Time duration in seconds. -->
     <plurals name="duration_seconds">
         <item quantity="one">%d second</item>
         <item quantity="other">%d seconds</item>
     </plurals>
+    <!-- Time duration in minutes. -->
     <plurals name="duration_minutes">
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
+    <!-- Time duration in hours. -->
     <plurals name="duration_hours">
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
