@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.12
 
 * Update Traditional Chinese (zh-TW) translations ([PR #48])
 * Add descriptions for all translation strings ([PR #49])
