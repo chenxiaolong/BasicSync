@@ -2,15 +2,13 @@
 <!--
     SPDX-FileCopyrightText: 2026 @ClixTW
     SPDX-License-Identifier: GPL-3.0-only
--->
-<resources>
+--><resources>
     <!-- Preference headers -->
     <string name="pref_header_permissions">權限</string>
     <string name="pref_header_configuration">組態設定</string>
     <string name="pref_header_run_conditions">執行條件</string>
     <string name="pref_header_about">關於</string>
     <string name="pref_header_debug">除錯</string>
-
     <!-- Main preferences -->
     <string name="pref_inhibit_battery_opt_name">停用電池最佳化</string>
     <string name="pref_inhibit_battery_opt_desc">為確保在背景穩定執行，需要此權限。</string>
@@ -44,7 +42,6 @@
     <string name="pref_version_name">版本</string>
     <string name="pref_save_logs_name">儲存日誌</string>
     <string name="pref_save_logs_desc">將 logcat 日誌儲存至檔案。</string>
-
     <!-- Network condition preferences -->
     <string name="pref_header_allowed_network_types">允許的網路類型</string>
     <string name="pref_header_allowed_wifi_networks">允許的 Wi-Fi 網路</string>
@@ -61,11 +58,9 @@
     <string name="pref_allow_background_location_desc">在背景存取 Wi-Fi 連線詳細資訊所需。</string>
     <string name="pref_wifi_networks_info">使用 Wi-Fi 時，僅在連線至指定網路時執行。若未指定，則允許所有網路。</string>
     <string name="pref_add_wifi_network_name">手動新增 Wi-Fi 網路</string>
-
     <!-- Alerts -->
     <string name="action_details">詳細資訊</string>
     <string name="dialog_error_details_title">錯誤詳細資訊</string>
-
     <!-- Main alerts -->
     <string name="alert_import_success">組態匯入成功</string>
     <string name="alert_import_failure">組態匯入失敗</string>
@@ -75,7 +70,6 @@
     <string name="alert_export_cancelled">已取消匯出組態</string>
     <string name="alert_logcat_success">日誌已成功儲存至 %1$s</string>
     <string name="alert_logcat_failure">無法將日誌儲存至 %1$s</string>
-
     <!-- Dialogs -->
     <string name="dialog_new_folder_title">新增資料夾</string>
     <string name="dialog_new_folder_message">請輸入要在 %1$s 中建立的新資料夾名稱。</string>
@@ -97,11 +91,9 @@
     <string name="dialog_wifi_network_title">Wi-Fi 網路</string>
     <string name="dialog_wifi_network_message">請輸入 Wi-Fi 網路名稱（SSID）。亦支援隱藏的 Wi-Fi 網路。</string>
     <string name="dialog_wifi_network_hint">SSID</string>
-
     <!-- Web UI extra buttons -->
     <string name="web_ui_select_folder">選取資料夾</string>
     <string name="web_ui_scan_qr_code">掃描 QR Code</string>
-
     <!-- Notifications -->
     <string name="notification_channel_persistent_name">背景服務</string>
     <string name="notification_channel_persistent_desc">保持 Syncthing 於背景執行</string>
@@ -121,7 +113,6 @@
     <string name="notification_action_manual_mode">手動模式</string>
     <string name="notification_action_start">啟動</string>
     <string name="notification_action_stop">停止</string>
-
     <!-- Paused/stopped reason -->
     <string name="blocked_reason_manual">手動停止</string>
     <string name="blocked_reason_disconnected">未連線至網路</string>
@@ -133,18 +124,14 @@
     <string name="blocked_reason_battery_saver">省電模式已開啟</string>
     <string name="blocked_reason_auto_sync_data">自動同步數據已關閉</string>
     <string name="blocked_reason_time_schedule">不在排程時間內</string>
-
     <!-- Durations -->
     <plurals name="duration_seconds">
-        <item quantity="one">%d 秒</item>
         <item quantity="other">%d 秒</item>
     </plurals>
     <plurals name="duration_minutes">
-        <item quantity="one">%d 分鐘</item>
         <item quantity="other">%d 分鐘</item>
     </plurals>
     <plurals name="duration_hours">
-        <item quantity="one">%d 小時</item>
         <item quantity="other">%d 小時</item>
     </plurals>
 </resources>
