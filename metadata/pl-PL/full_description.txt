@@ -1,0 +1,3 @@
+BasicSync to prosta aplikacja do uruchamiania Syncthing na Androidzie.
+
+Aplikacja została celowo utrzymana w bardzo prostej formie, aby ułatwić utrzymanie i aktualizację projektu. BasicSync kontroluje tylko działanie Syncthing. Konfiguracja odbywa się za pośrednictwem interfejsu sieciowego Syncthing.
