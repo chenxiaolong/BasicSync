@@ -136,7 +136,9 @@ Even though AGP (Android Gradle Plugin) is set up so that `stbridge` is a `preBu
 
 ## Contributing
 
-Bug fix and translation pull requests are welcome and much appreciated!
+Bug fix pull requests are welcome and much appreciated!
+
+Translation updates are primarily accepted via the [hosted Weblate project](https://hosted.weblate.org/projects/syncthing/android/basicsync/), which is generously provided by the upstream Syncthing project. However, translation updates via pull requests are accepted as well.
 
 If you are interested in implementing a new feature and would like to see it included in BasicSync, please open an issue to discuss it first. This is a side project that I work on for fun, so I'm hesitant to add features I won't personally use. I intend for BasicSync to be as simple and low-maintenance as possible.
 
