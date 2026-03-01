@@ -2,15 +2,13 @@
 <!--
     SPDX-FileCopyrightText: 2026 @SanskritFritz
     SPDX-License-Identifier: GPL-3.0-only
--->
-<resources>
+--><resources>
     <!-- Preference headers -->
     <string name="pref_header_permissions">Engedélyek</string>
     <string name="pref_header_configuration">Beállítások</string>
     <string name="pref_header_run_conditions">Futtatási feltételek</string>
     <string name="pref_header_about">Névjegy</string>
     <string name="pref_header_debug">Hibakeresés</string>
-
     <!-- Main preferences -->
     <string name="pref_inhibit_battery_opt_name">Akkumulátorkímélés letiltása</string>
     <string name="pref_inhibit_battery_opt_desc">A megbízható háttérműködéshez szükséges.</string>
@@ -44,7 +42,6 @@
     <string name="pref_version_name">Verzió</string>
     <string name="pref_save_logs_name">Naplók mentése</string>
     <string name="pref_save_logs_desc">Logcat naplók mentése fájlba.</string>
-
     <!-- Network condition preferences -->
     <string name="pref_header_allowed_network_types">Engedélyezett hálózattípusok</string>
     <string name="pref_header_allowed_wifi_networks">Engedélyezett Wi-Fi hálózatok</string>
@@ -61,11 +58,9 @@
     <string name="pref_allow_background_location_desc">A Wi-Fi adatok háttérben való lekérdezéséhez szükséges.</string>
     <string name="pref_wifi_networks_info">Wi-Fi használatakor csak akkor aktív, ha a megadott hálózatokhoz csatlakozik. Ha nincs hálózat megadva, akkor az összes hálózat engedélyezve van.</string>
     <string name="pref_add_wifi_network_name">Wi-Fi hálózat hozzáadása</string>
-
     <!-- Alerts -->
     <string name="action_details">Részletek</string>
     <string name="dialog_error_details_title">Hiba részletei</string>
-
     <!-- Main alerts -->
     <string name="alert_import_success">Konfiguráció sikeresen importálva</string>
     <string name="alert_import_failure">Nem sikerült importálni a konfigurációt</string>
@@ -75,7 +70,6 @@
     <string name="alert_export_cancelled">Konfiguráció exportálása lemondva</string>
     <string name="alert_logcat_success">Naplók sikeresen lementve ide: %1$s</string>
     <string name="alert_logcat_failure">Nem sikerült lementeni a naplókat ide: %1$s</string>
-
     <!-- Dialogs -->
     <string name="dialog_new_folder_title">Új mappa</string>
     <string name="dialog_new_folder_message">Adja meg az új mappa nevét, amelyet a %1$s helyen szeretne létrehozni.</string>
@@ -97,11 +91,9 @@
     <string name="dialog_wifi_network_title">Wi-Fi hálózat</string>
     <string name="dialog_wifi_network_message">Adja meg a Wi-Fi hálózat nevét (SSID). Ez rejtett Wi-Fi hálózatokhoz is működik.</string>
     <string name="dialog_wifi_network_hint">SSID</string>
-
     <!-- Web UI extra buttons -->
     <string name="web_ui_select_folder">Mappa kiválasztása</string>
     <string name="web_ui_scan_qr_code">QR-kód beolvasása</string>
-
     <!-- Notifications -->
     <string name="notification_channel_persistent_name">Háttérszolgáltatások</string>
     <string name="notification_channel_persistent_desc">A Syncthing futtatása a háttérben</string>
@@ -121,7 +113,6 @@
     <string name="notification_action_manual_mode">Manuális mód</string>
     <string name="notification_action_start">Indítás</string>
     <string name="notification_action_stop">Leállítás</string>
-
     <!-- Paused/stopped reason -->
     <string name="blocked_reason_manual">• Manuálisan leállítva</string>
     <string name="blocked_reason_disconnected">• Nincs hálózati kapcsolat</string>
@@ -133,7 +124,6 @@
     <string name="blocked_reason_battery_saver">• Energiatakarékos mód bekapcsolva</string>
     <string name="blocked_reason_auto_sync_data">• Automatikus adatszinkronizálás tiltva</string>
     <string name="blocked_reason_time_schedule">• Időzítésen kívül</string>
-
     <!-- Durations -->
     <plurals name="duration_seconds">
         <item quantity="one">%d másodperc</item>
