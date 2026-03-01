@@ -2,15 +2,13 @@
 <!--
     SPDX-FileCopyrightText: 2026 @ygorigor
     SPDX-License-Identifier: GPL-3.0-only
--->
-<resources>
+--><resources>
     <!-- Preference headers -->
     <string name="pref_header_permissions">Permisiuni</string>
     <string name="pref_header_configuration">Configurare</string>
     <string name="pref_header_run_conditions">Condiții de rulare</string>
     <string name="pref_header_about">Despre</string>
     <string name="pref_header_debug">Depanare</string>
-
     <!-- Main preferences -->
     <string name="pref_inhibit_battery_opt_name">Dezactivează optimizarea bateriei</string>
     <string name="pref_inhibit_battery_opt_desc">Necesar pentru a rula fiabil în fundal.</string>
@@ -44,7 +42,6 @@
     <string name="pref_version_name">Versiune</string>
     <string name="pref_save_logs_name">Salvează jurnalele</string>
     <string name="pref_save_logs_desc">Salvează jurnalele logcat într-un fișier.</string>
-
     <!-- Network condition preferences -->
     <string name="pref_header_allowed_network_types">Tipuri de rețele permise</string>
     <string name="pref_header_allowed_wifi_networks">Rețele Wi-Fi permise</string>
@@ -61,11 +58,9 @@
     <string name="pref_allow_background_location_desc">Necesar pentru accesarea detaliilor conexiunii Wi-Fi în fundal.</string>
     <string name="pref_wifi_networks_info">Când utilizezi Wi-Fi, rulează numai dacă este conectat la rețelele specificate. Dacă nu sunt specificate rețele, atunci toate rețelele sunt permise.</string>
     <string name="pref_add_wifi_network_name">Adaugă manual rețeaua Wi-Fi</string>
-
     <!-- Alerts -->
     <string name="action_details">Detalii</string>
     <string name="dialog_error_details_title">Detalii eroare</string>
-
     <!-- Main alerts -->
     <string name="alert_import_success">Configurație importată cu succes</string>
     <string name="alert_import_failure">Nu s-a putut importa configurația</string>
@@ -75,7 +70,6 @@
     <string name="alert_export_cancelled">Exportul configurației a fost anulat</string>
     <string name="alert_logcat_success">Jurnale salvate cu succes în %1$s</string>
     <string name="alert_logcat_failure">Nu s-au salvat jurnalele în %1$s</string>
-
     <!-- Dialogs -->
     <string name="dialog_new_folder_title">Dosar nou</string>
     <string name="dialog_new_folder_message">Introdu numele noului dosar pentru a fi creat în %1$s.</string>
@@ -97,11 +91,9 @@
     <string name="dialog_wifi_network_title">Rețea Wi-Fi</string>
     <string name="dialog_wifi_network_message">Introdu numele (SSID) al rețelei Wi-Fi. Acest lucru funcționează și pentru rețelele Wi-Fi ascunse.</string>
     <string name="dialog_wifi_network_hint">SSID</string>
-
     <!-- Web UI extra buttons -->
     <string name="web_ui_select_folder">Selectează dosarul</string>
     <string name="web_ui_scan_qr_code">Scanează codul QR</string>
-
     <!-- Notifications -->
     <string name="notification_channel_persistent_name">Servicii de fundal</string>
     <string name="notification_channel_persistent_desc">Păstrează Syncthing să ruleze în fundal</string>
@@ -121,7 +113,6 @@
     <string name="notification_action_manual_mode">Mod manual</string>
     <string name="notification_action_start">Pornește</string>
     <string name="notification_action_stop">Oprește</string>
-
     <!-- Paused/stopped reason -->
     <string name="blocked_reason_manual">• Oprit manual</string>
     <string name="blocked_reason_disconnected">• Nu este conectat la rețea</string>
@@ -133,7 +124,6 @@
     <string name="blocked_reason_battery_saver">• Modul de economisire a bateriei este activat</string>
     <string name="blocked_reason_auto_sync_data">• Sincronizarea automată a datelor este dezactivată</string>
     <string name="blocked_reason_time_schedule">• În afara programului</string>
-
     <!-- Durations -->
     <plurals name="duration_seconds">
         <item quantity="one">%d secundă</item>
