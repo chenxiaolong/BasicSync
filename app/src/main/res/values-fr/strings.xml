@@ -2,15 +2,13 @@
 <!--
     SPDX-FileCopyrightText: 2026 @Miaourt
     SPDX-License-Identifier: GPL-3.0-only
--->
-<resources>
+--><resources>
     <!-- Preference headers -->
     <string name="pref_header_permissions">Autorisations</string>
     <string name="pref_header_configuration">Configuration</string>
     <string name="pref_header_run_conditions">Conditions d\'exécution</string>
     <string name="pref_header_about">À propos</string>
     <string name="pref_header_debug">Débogage</string>
-
     <!-- Main preferences -->
     <string name="pref_inhibit_battery_opt_name">Désactiver l\'optimisation de la batterie</string>
     <string name="pref_inhibit_battery_opt_desc">Nécessaire pour fonctionner de manière fiable en arrière-plan.</string>
@@ -32,19 +30,18 @@
     <string name="pref_network_conditions_name">Conditions réseau</string>
     <string name="pref_network_conditions_desc">Exécuter lors de la connexion à certains types de réseau ou réseaux Wi-Fi.</string>
     <string name="pref_run_on_battery_name">Fonctionner sur batterie</string>
-    <string name="pref_run_on_battery_desc">Fonctionner lorsque l\'appareil est sur batterie et que le niveau est d\'au moins %1$d%%. Syncthing fonctionne toujours lorsqu\'il est branché.</string>
+    <string name="pref_run_on_battery_desc">Fonctionner lorsque l\'appareil est sur batterie et que le niveau est d\'au moins %1$d%%. Sur chargeur, Syncthing fonctionne toujours.</string>
     <string name="pref_respect_battery_saver_name">Respecter le mode économie de batterie</string>
     <string name="pref_respect_battery_saver_desc">Ne fonctionner que lorsque le mode économie de batterie d\'Android est désactivé.</string>
     <string name="pref_respect_auto_sync_data_name">Respecter le paramètre de synchronisation automatique</string>
     <string name="pref_respect_auto_sync_data_desc">Ne fonctionner que lorsque le paramètre de synchronisation automatique d\'Android est activé.</string>
     <string name="pref_sync_schedule_name">Synchronisation planifiée</string>
-    <string name="pref_sync_schedule_desc">Synchroniser pendant %2$s sur chaque cycle de %1$s.</string>
+    <string name="pref_sync_schedule_desc">Synchroniser pendant %2$s sur chaque tranche de %1$s.</string>
     <string name="pref_keep_alive_name">Maintenir Syncthing actif</string>
-    <string name="pref_keep_alive_desc">Lorsque Syncthing ne doit pas fonctionner, le mettre en pause plutôt que de l\'arrêter. Cela évite une baisse potentielle des performances lors de l\'analyse de grands dossiers au démarrage.</string>
+    <string name="pref_keep_alive_desc">Lorsque Syncthing ne doit pas fonctionner, le mettre en pause au lieu de l\'arrêter. Cela évite une baisse potentielle des performances lors de l\'analyse de grands dossiers au démarrage.</string>
     <string name="pref_version_name">Version</string>
     <string name="pref_save_logs_name">Enregistrer les journaux</string>
     <string name="pref_save_logs_desc">Enregistrer les journaux logcat dans un fichier.</string>
-
     <!-- Network condition preferences -->
     <string name="pref_header_allowed_network_types">Types de réseau autorisés</string>
     <string name="pref_header_allowed_wifi_networks">Réseaux Wi-Fi autorisés</string>
@@ -52,20 +49,18 @@
     <string name="pref_require_unmetered_network_name">Exiger un réseau non limité</string>
     <string name="pref_network_allow_wifi_name">Autoriser le Wi-Fi</string>
     <string name="pref_network_allow_cellular_name">Autoriser les données mobiles</string>
-    <string name="pref_network_allow_ethernet_name">Autoriser l\'ethernet</string>
+    <string name="pref_network_allow_ethernet_name">Autoriser l\'Ethernet</string>
     <string name="pref_network_allow_other_name">Autoriser d\'autres interfaces réseau</string>
     <string name="pref_location_optional_info">Les autorisations de localisation sont facultatives et ne sont nécessaires que pour restreindre les réseaux Wi-Fi autorisés. Même si les autorisations sont accordées, elles ne seront pas utilisées sauf si des réseaux Wi-Fi autorisés sont configurés.</string>
     <string name="pref_allow_precise_location_name">Autoriser l\'accès à la localisation précise</string>
-    <string name="pref_allow_precise_location_desc">Requis pour accéder aux détails de connexion Wi-Fi.</string>
+    <string name="pref_allow_precise_location_desc">Requis pour accéder à tous les détails des connexions Wi-Fi.</string>
     <string name="pref_allow_background_location_name">Autoriser l\'accès à la localisation en arrière-plan</string>
     <string name="pref_allow_background_location_desc">Requis pour accéder aux détails de connexion Wi-Fi en arrière-plan.</string>
     <string name="pref_wifi_networks_info">Lors de l\'utilisation du Wi-Fi, ne fonctionner que si connecté aux réseaux spécifiés. Si aucun réseau n\'est spécifié, tous les réseaux sont autorisés.</string>
     <string name="pref_add_wifi_network_name">Ajouter manuellement un réseau Wi-Fi</string>
-
     <!-- Alerts -->
     <string name="action_details">Détails</string>
     <string name="dialog_error_details_title">Détails de l\'erreur</string>
-
     <!-- Main alerts -->
     <string name="alert_import_success">Configuration importée avec succès</string>
     <string name="alert_import_failure">Échec de l\'importation de la configuration</string>
@@ -75,10 +70,9 @@
     <string name="alert_export_cancelled">Exportation de la configuration annulée</string>
     <string name="alert_logcat_success">Journaux enregistrés avec succès dans %1$s</string>
     <string name="alert_logcat_failure">Échec de l\'enregistrement des journaux dans %1$s</string>
-
     <!-- Dialogs -->
-    <string name="dialog_new_folder_title">Nouveau dossier</string>
-    <string name="dialog_new_folder_message">Entrez le nom du nouveau dossier à créer dans %1$s.</string>
+    <string name="dialog_new_folder_title">Nouveau répertoire</string>
+    <string name="dialog_new_folder_message">Entrez le nom du nouveau répertoire à créer dans %1$s.</string>
     <string name="dialog_new_folder_hint">Nom</string>
     <string name="dialog_import_password_title">Importation de config</string>
     <string name="dialog_import_password_message">Le fichier zip sélectionné est chiffré. Entrez le mot de passe de déchiffrement pour l\'importer.</string>
@@ -91,17 +85,15 @@
     <string name="dialog_min_battery_level_message">Entrez le niveau de batterie minimum requis pour que Syncthing fonctionne.</string>
     <string name="dialog_min_battery_level_hint">Pourcentage</string>
     <string name="dialog_sync_schedule_title">Planification de synchronisation</string>
-    <string name="dialog_sync_schedule_message">Entrez la durée des cycles et la durée de synchronisation. Les suffixes <tt>h</tt> (heures), <tt>m</tt> (minutes) et <tt>s</tt> (secondes) sont acceptés.</string>
-    <string name="dialog_sync_schedule_hint_cycle">Durée du cycle</string>
+    <string name="dialog_sync_schedule_message">Entrez la durée des tranches et la durée de synchronisation. Les suffixes <tt>h</tt> (heures), <tt>m</tt> (minutes) et <tt>s</tt> (secondes) sont acceptés.</string>
+    <string name="dialog_sync_schedule_hint_cycle">Durée de tranche</string>
     <string name="dialog_sync_schedule_hint_sync">Durée de synchronisation</string>
     <string name="dialog_wifi_network_title">Réseau Wi-Fi</string>
     <string name="dialog_wifi_network_message">Entrez le nom (SSID) du réseau Wi-Fi. Cela fonctionne également pour les réseaux Wi-Fi masqués.</string>
     <string name="dialog_wifi_network_hint">SSID</string>
-
     <!-- Web UI extra buttons -->
-    <string name="web_ui_select_folder">Sélectionner un dossier</string>
+    <string name="web_ui_select_folder">Sélectionner un répertoire</string>
     <string name="web_ui_scan_qr_code">Scanner le code QR</string>
-
     <!-- Notifications -->
     <string name="notification_channel_persistent_name">Services en arrière-plan</string>
     <string name="notification_channel_persistent_desc">Maintient Syncthing en cours d\'exécution en arrière-plan</string>
@@ -116,12 +108,11 @@
     <string name="notification_persistent_importing_title">Importation de la configuration</string>
     <string name="notification_persistent_exporting_title">Exportation de la configuration</string>
     <string name="notification_failure_run_title">Échec de l\'exécution de Syncthing</string>
-    <string name="notification_failure_run_message">Syncthing n\'a pas pu fonctionner correctement. Pour éviter une boucle de redémarrage, Syncthing a été arrêté et placé en mode manuel.</string>
+    <string name="notification_failure_run_message">Syncthing n\'a pas pu fonctionner correctement. Pour éviter un redémarrage en boucle, Syncthing a été arrêté et placé en mode manuel.</string>
     <string name="notification_action_auto_mode">Mode automatique</string>
     <string name="notification_action_manual_mode">Mode manuel</string>
     <string name="notification_action_start">Démarrer</string>
     <string name="notification_action_stop">Arrêter</string>
-
     <!-- Paused/stopped reason -->
     <string name="blocked_reason_manual">• Arrêté manuellement</string>
     <string name="blocked_reason_disconnected">• Non connecté au réseau</string>
@@ -132,19 +123,21 @@
     <string name="blocked_reason_low_battery">• Niveau de batterie faible</string>
     <string name="blocked_reason_battery_saver">• Mode économie d\'énergie activé</string>
     <string name="blocked_reason_auto_sync_data">• Synchronisation automatique désactivée</string>
-    <string name="blocked_reason_time_schedule">• En dehors de la plage horaire autorisée</string>
-
+    <string name="blocked_reason_time_schedule">• En dehors de la planification</string>
     <!-- Durations -->
     <plurals name="duration_seconds">
         <item quantity="one">%d seconde</item>
+        <item quantity="many">%d secondes</item>
         <item quantity="other">%d secondes</item>
     </plurals>
     <plurals name="duration_minutes">
         <item quantity="one">%d minute</item>
+        <item quantity="many">%d minutes</item>
         <item quantity="other">%d minutes</item>
     </plurals>
     <plurals name="duration_hours">
         <item quantity="one">%d heure</item>
+        <item quantity="many">%d heures</item>
         <item quantity="other">%d heures</item>
     </plurals>
 </resources>
