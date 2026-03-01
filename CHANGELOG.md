@@ -11,6 +11,7 @@
 
 * Update Traditional Chinese (zh-TW) translations ([PR #48])
 * Add descriptions for all translation strings ([PR #49])
+* Sync translations from Weblate ([PR #51])
 
 ### Version 1.11
 
@@ -132,3 +133,4 @@
 [PR #47]: https://github.com/chenxiaolong/BasicSync/pull/47
 [PR #48]: https://github.com/chenxiaolong/BasicSync/pull/48
 [PR #49]: https://github.com/chenxiaolong/BasicSync/pull/49
+[PR #51]: https://github.com/chenxiaolong/BasicSync/pull/51
