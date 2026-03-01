@@ -14,7 +14,7 @@
     <string name="pref_disable_app_hibernation_name">App-Ruhezustand ausschalten</string>
     <string name="pref_disable_app_hibernation_desc">Erforderlich, damit Android nicht automatisch die App-Berechtigungen nach einer Weile entfernt.</string>
     <string name="pref_open_web_ui_name">Web-UI öffnen</string>
-    <string name="pref_open_web_ui_desc">Konfigurationsoberfläche von Syncthing öffnen.</string>
+    <string name="pref_open_web_ui_desc">Web-Konfigurationsoberfläche von Syncthing öffnen.</string>
     <string name="pref_import_configuration_name">Konfiguration importieren</string>
     <string name="pref_import_configuration_desc">Eine vorhandene Zipdatei mit Syncthing-Konfiguration importieren.</string>
     <string name="pref_export_configuration_name">Konfiguration exportieren</string>
