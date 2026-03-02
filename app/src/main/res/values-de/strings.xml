@@ -78,7 +78,7 @@
     <string name="dialog_sync_schedule_message">Zyklus und Synchronisierungsdauer eingeben. Die Suffixe <tt>h</tt> (Stunden), <tt>m</tt> (Minuten) und <tt>s</tt> (Sekunden) werden akzeptiert.</string>
     <string name="dialog_sync_schedule_hint_cycle">Zyklusdauer</string>
     <string name="dialog_sync_schedule_hint_sync">Synchronisationsdauer</string>
-    <string name="dialog_wifi_network_title">WLAN-Netzwerk</string>
+    <string name="dialog_wifi_network_title">WLAN</string>
     <string name="dialog_wifi_network_message">Den Namen (SSID) des WLANs eingeben. Dies funktioniert auch für versteckte WLANs.</string>
     <string name="dialog_wifi_network_hint">SSID</string>
     <string name="web_ui_select_folder">Ordner auswählen</string>
