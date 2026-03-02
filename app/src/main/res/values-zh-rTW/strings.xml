@@ -31,12 +31,12 @@
     <string name="pref_network_conditions_desc">連線至特定網路類型或 Wi-Fi 網路時執行。</string>
     <string name="pref_run_on_battery_name">使用電池電力時執行</string>
     <string name="pref_run_on_battery_desc">當裝置使用電池電力且電量至少為 %1$d%% 時執行。接上電源時 Syncthing 將始終執行。</string>
-    <string name="pref_respect_battery_saver_name">遵照省電模式</string>
+    <string name="pref_respect_battery_saver_name">配合省電模式</string>
     <string name="pref_respect_battery_saver_desc">僅在 Android 省電模式未啟用時執行。</string>
-    <string name="pref_respect_auto_sync_data_name">遵照自動同步數據設定</string>
+    <string name="pref_respect_auto_sync_data_name">配合自動同步數據設定</string>
     <string name="pref_respect_auto_sync_data_desc">僅在 Android 的自動同步數據設定啟用時執行。</string>
     <string name="pref_sync_schedule_name">依排程同步</string>
-    <string name="pref_sync_schedule_desc">在每 %1$s 的週期內進行同步 %2$s。</string>
+    <string name="pref_sync_schedule_desc">在每 %1$s的週期內進行同步 %2$s。</string>
     <string name="pref_keep_alive_name">保持 Syncthing 執行</string>
     <string name="pref_keep_alive_desc">當 Syncthing 不應執行時將其暫停而非關閉。這可以避免啟動時掃描大型資料夾造成的效能影響。</string>
     <string name="pref_version_name">版本</string>
@@ -114,16 +114,16 @@
     <string name="notification_action_start">啟動</string>
     <string name="notification_action_stop">停止</string>
     <!-- Paused/stopped reason -->
-    <string name="blocked_reason_manual">手動停止</string>
-    <string name="blocked_reason_disconnected">未連線至網路</string>
-    <string name="blocked_reason_metered_network">已連線至計量付費網路</string>
-    <string name="blocked_reason_bad_network_type">不允許的網路類型</string>
-    <string name="blocked_reason_bad_wifi_ssid">已連線至受阻擋的 Wi-Fi 網路。</string>
-    <string name="blocked_reason_on_battery">正在使用電池電力</string>
-    <string name="blocked_reason_low_battery">電池電量不足</string>
-    <string name="blocked_reason_battery_saver">省電模式已開啟</string>
-    <string name="blocked_reason_auto_sync_data">自動同步數據已關閉</string>
-    <string name="blocked_reason_time_schedule">不在排程時間內</string>
+    <string name="blocked_reason_manual">• 手動停止</string>
+    <string name="blocked_reason_disconnected">• 未連線至網路</string>
+    <string name="blocked_reason_metered_network">• 已連線至計量付費網路</string>
+    <string name="blocked_reason_bad_network_type">• 不允許的網路類型</string>
+    <string name="blocked_reason_bad_wifi_ssid">• 已連線至受阻擋的 Wi-Fi 網路</string>
+    <string name="blocked_reason_on_battery">• 正在使用電池電力</string>
+    <string name="blocked_reason_low_battery">• 電池電量不足</string>
+    <string name="blocked_reason_battery_saver">• 省電模式已開啟</string>
+    <string name="blocked_reason_auto_sync_data">• 自動同步數據已關閉</string>
+    <string name="blocked_reason_time_schedule">• 不在排程時間內</string>
     <!-- Durations -->
     <plurals name="duration_seconds">
         <item quantity="other">%d 秒</item>
