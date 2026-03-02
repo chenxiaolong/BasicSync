@@ -6,7 +6,7 @@
     <!-- Preference headers -->
     <string name="pref_header_permissions">Permisiuni</string>
     <string name="pref_header_configuration">Configurare</string>
-    <string name="pref_header_run_conditions">Condiții de rulare</string>
+    <string name="pref_header_run_conditions">Condițiile de rulare</string>
     <string name="pref_header_about">Despre</string>
     <string name="pref_header_debug">Depanare</string>
     <!-- Main preferences -->
