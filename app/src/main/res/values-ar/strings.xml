@@ -1,3 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_header_permissions">الأذونات</string>
+    <string name="pref_header_configuration">التضبيط</string>
+    <string name="pref_header_about">عن</string>
+    <string name="pref_header_debug">تصحيح العلل</string>
+    <string name="pref_inhibit_battery_opt_name">تعطيل تحسين البطارية</string>
+    <string name="pref_inhibit_battery_opt_desc">مطلوب للعمل بشكل موثوق في الخلفية.</string>
+    <string name="pref_allow_notifications_name">السماح بالإشعارات</string>
+    <string name="pref_allow_notifications_desc">مطلوب للتشغيل بشكل موثوق في الخلفية ولتشغيل وإيقاف Syncthing.</string>
+    <string name="pref_local_storage_access_name">السماح بالوصول إلى وحدة التخزين المحلية</string>
+    <string name="pref_local_storage_access_desc">مطلوب لتمكين Syncthing من الوصول إلى وحدة التخزين المحلية تحت المسار <tt>/sdcard</tt>.</string>
+    <string name="pref_disable_app_hibernation_name">تعطيل وضع سبات التطبيقات</string>
+    <string name="pref_disable_app_hibernation_desc">مطلوب لمنع نظام أندرويد من إزالة أذونات التطبيق تلقائيًا بعد مرور فترة من الوقت.</string>
+    <string name="pref_open_web_ui_name">افتح واجهة مستخدم الويب</string>
+    <string name="pref_open_web_ui_desc">افتح واجهة إعدادات Syncthing على الويب.</string>
+    <string name="pref_import_configuration_name">استورد التضبيط</string>
+    <string name="pref_import_configuration_desc">استيراد ملف zip حالي لتكوين Syncthing.</string>
+    <string name="pref_export_configuration_name">صدِّر التضبيط</string>
+    <string name="pref_export_configuration_desc">تصدير إعدادات Syncthing الحالية إلى ملف zip.</string>
+    <string name="pref_service_status_name">حالة Syncthing</string>
+    <string name="pref_auto_mode_name">الوضع التلقائي</string>
+    <string name="pref_auto_mode_desc">بدء وإيقاف التشغيل تلقائيًا بناءً على الشروط المحدّدة.</string>
+    <string name="pref_network_conditions_name">حالات الشبكة</string>
+    <string name="pref_network_conditions_desc">يتم التشغيل عند الاتصال بأنواع معينة من الشبكات أو بشبكات Wi-Fi.</string>
+    <string name="pref_run_on_battery_name">شغّل على طاقة البطارية</string>
+    <string name="pref_run_on_battery_desc">التشغيل عندما يكون الجهاز معتمدًا على طاقة البطارية ويكون مستوى البطارية %1$d%% على الأقل. يعمل Syncthing دائمًا عند توصيله بالشاحن.</string>
+    <string name="pref_respect_battery_saver_name">مراعاة وضع توفير البطارية</string>
+    <string name="pref_respect_battery_saver_desc">لا يعمل إلا عند إيقاف وضع توفير البطارية في أندرويد.</string>
+    <string name="pref_respect_auto_sync_data_name">الالتزام بإعدادات المزامنة التلقائية للبيانات</string>
+    <string name="pref_respect_auto_sync_data_desc">لا يعمل إلا عند تفعيل إعداد المزامنة التلقائية للبيانات في أندرويد.</string>
 </resources>
