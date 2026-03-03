@@ -207,7 +207,9 @@ class DeviceStateTracker(private val context: Context) :
 
     private var listener: DeviceStateListener? = null
     private val prefs = Preferences(context)
-    private val handler = Handler(Looper.myLooper()!!)
+    // We always use the main looper since we expect all callbacks to execute on the same thread and
+    // Context.registerReceiver() callbacks always run on the main thread.
+    private val handler = Handler(Looper.getMainLooper())
     private val connectivityManager = context.getSystemService(ConnectivityManager::class.java)
     private val wifiManager = context.getSystemService(WifiManager::class.java)
     private val powerManager = context.getSystemService(PowerManager::class.java)
@@ -287,28 +289,40 @@ class DeviceStateTracker(private val context: Context) :
 
     private val networkCallbackWithLocation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         object : ConnectivityManager.NetworkCallback(FLAG_INCLUDE_LOCATION_INFO) {
-            override fun onAvailable(network: Network) = onNetworkAvailable()
+            override fun onAvailable(network: Network) {
+                handler.post { onNetworkAvailable() }
+            }
 
-            override fun onLost(network: Network) = onNetworkLost()
+            override fun onLost(network: Network) {
+                handler.post { onNetworkLost() }
+            }
 
             override fun onCapabilitiesChanged(
                 network: Network,
                 networkCapabilities: NetworkCapabilities,
-            ) = onNetworkCapabilitiesChanged(networkCapabilities)
+            ) {
+                handler.post { onNetworkCapabilitiesChanged(networkCapabilities) }
+            }
         }
     } else {
         null
     }
 
     private val networkCallbackNoLocation = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) = onNetworkAvailable()
+        override fun onAvailable(network: Network) {
+            handler.post { onNetworkAvailable() }
+        }
 
-        override fun onLost(network: Network) = onNetworkLost()
+        override fun onLost(network: Network) {
+            handler.post { onNetworkLost() }
+        }
 
         override fun onCapabilitiesChanged(
             network: Network,
             networkCapabilities: NetworkCapabilities,
-        ) = onNetworkCapabilitiesChanged(networkCapabilities)
+        ) {
+            handler.post { onNetworkCapabilitiesChanged(networkCapabilities) }
+        }
     }
 
     private val networkCallback: ConnectivityManager.NetworkCallback
@@ -351,9 +365,11 @@ class DeviceStateTracker(private val context: Context) :
     private val autoSyncObserver = SyncStatusObserver {
         val canSync = ContentResolver.getMasterSyncAutomatically()
 
-        Log.d(TAG, "Auto-sync data changed: $canSync")
+        handler.post {
+            Log.d(TAG, "Auto-sync data changed: $canSync")
 
-        state = state.copy(isAutoSyncData = canSync)
+            state = state.copy(isAutoSyncData = canSync)
+        }
     }
 
     private var autoSyncHandle: Any? = null
