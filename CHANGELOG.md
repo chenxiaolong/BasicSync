@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Fix Syncthing occasionally being incorrectly stopped ([PR #56])
+
 ### Version 1.12
 
 * Update Traditional Chinese (zh-TW) translations ([PR #48])
@@ -135,3 +139,4 @@
 [PR #49]: https://github.com/chenxiaolong/BasicSync/pull/49
 [PR #51]: https://github.com/chenxiaolong/BasicSync/pull/51
 [PR #52]: https://github.com/chenxiaolong/BasicSync/pull/52
+[PR #56]: https://github.com/chenxiaolong/BasicSync/pull/56
