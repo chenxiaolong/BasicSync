@@ -76,11 +76,11 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         private val keepAlive: Boolean,
         val blockedReasons: EnumSet<BlockedReason>,
         private val isStarted: Boolean,
-        private val isActive: Boolean,
+        private val isResumed: Boolean,
         private val manualMode: Boolean,
         private val preRunAction: PreRunAction?,
     ) {
-        private val shouldRun: Boolean
+        private val shouldResume: Boolean
             get() = blockedReasons.isEmpty()
 
         val runState: RunState
@@ -90,8 +90,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     is PreRunAction.Export -> RunState.EXPORTING
                 }
             } else if (isStarted) {
-                if (isActive) {
-                    if (shouldRun) {
+                if (isResumed) {
+                    if (shouldResume) {
                         RunState.RUNNING
                     } else if (keepAlive) {
                         RunState.PAUSING
@@ -99,7 +99,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                         RunState.STOPPING
                     }
                 } else {
-                    if (shouldRun) {
+                    if (shouldResume) {
                         RunState.STARTING
                     } else if (keepAlive) {
                         RunState.PAUSED
@@ -108,10 +108,10 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     }
                 }
             } else {
-                if (isActive) {
-                    throw IllegalArgumentException("Service active, but not running?")
+                if (isResumed) {
+                    throw IllegalArgumentException("Service is resumed, but is not started?")
                 } else {
-                    if (shouldRun) {
+                    if (shouldResume) {
                         RunState.STARTING
                     } else {
                         RunState.NOT_RUNNING
@@ -125,7 +125,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     if (manualMode) {
                         add(ACTION_AUTO_MODE)
 
-                        if (shouldRun) {
+                        if (shouldResume) {
                             add(ACTION_STOP)
                         } else {
                             add(ACTION_START)
@@ -187,9 +187,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     @GuardedBy("stateLock")
     private var runningProxyInfo: ProxyInfo? = null
 
-    @GuardedBy("stateLock")
-    private var isShuttingDown = false
-
     private val blockedReasons: EnumSet<BlockedReason>
         @GuardedBy("stateLock")
         get() = if (prefs.isManualMode) {
@@ -202,13 +199,16 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             deviceState.blockedReasons(prefs)
         }
 
-    private val shouldRun: Boolean
+    @GuardedBy("stateLock")
+    private var shouldThreadRun = true
+
+    private val shouldResume: Boolean
         @GuardedBy("stateLock")
-        get() = !isShuttingDown && blockedReasons.isEmpty()
+        get() = shouldThreadRun && blockedReasons.isEmpty()
 
     private val shouldStart: Boolean
         @GuardedBy("stateLock")
-        get() = !isShuttingDown && (prefs.keepAlive || shouldRun)
+        get() = shouldThreadRun && (prefs.keepAlive || shouldResume)
 
     @GuardedBy("stateLock")
     private val preRunActions = mutableListOf<PreRunAction>()
@@ -219,17 +219,17 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     @GuardedBy("stateLock")
     private var syncthingApp: SyncthingApp? = null
 
-    private val isStarted: Boolean
-        @GuardedBy("stateLock")
-        get() = syncthingApp != null
-
-    private val isActive: Boolean
+    private val isResumed: Boolean
         @GuardedBy("stateLock")
         get() = if (prefs.keepAlive) {
             syncthingApp?.isConnectAllowed ?: false
         } else {
             isStarted
         }
+
+    private val isStarted: Boolean
+        @GuardedBy("stateLock")
+        get() = syncthingApp != null
 
     private val guiInfo: GuiInfo?
         @GuardedBy("stateLock")
@@ -265,7 +265,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         super.onDestroy()
 
         synchronized(stateLock) {
-            isShuttingDown = true
+            shouldThreadRun = false
         }
         stateChanged()
 
@@ -286,7 +286,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             ACTION_MANUAL_MODE -> {
                 // Keep the current state since the user has no way to know what the previously
                 // saved state is anyway.
-                prefs.manualShouldRun = shouldRun
+                prefs.manualShouldRun = shouldResume
                 prefs.isManualMode = true
             }
             ACTION_START -> prefs.manualShouldRun = true
@@ -338,7 +338,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         synchronized(stateLock) {
             handleStateChangeLocked()
 
-            if (isShuttingDown) {
+            if (!shouldThreadRun) {
                 ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
                 lastServiceState = null
                 return
@@ -348,7 +348,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 keepAlive = prefs.keepAlive,
                 blockedReasons = blockedReasons,
                 isStarted = isStarted,
-                isActive = isActive,
+                isResumed = isResumed,
                 manualMode = prefs.isManualMode,
                 preRunAction = currentPreRunAction,
             )
@@ -395,14 +395,14 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
         // The service needs to be restarted for proxy changes to take effect. The hack we do to set
         // the proxy on the golang side can't be made thread-safe.
-        val needFullRestart = isShuttingDown
+        val needFullRestart = !shouldThreadRun
                 || runningProxyInfo != deviceState.proxyInfo
                 || preRunActions.isNotEmpty()
 
-        if (needFullRestart || isStarted != shouldStart || isActive != shouldRun) {
+        if (needFullRestart || isStarted != shouldStart || isResumed != shouldResume) {
             if (!needFullRestart && app != null && prefs.keepAlive) {
-                Log.d(TAG, "Keep alive enabled; changing connect allowed to $shouldRun")
-                app.isConnectAllowed = shouldRun
+                Log.d(TAG, "Keep alive enabled; changing connect allowed to $shouldResume")
+                app.isConnectAllowed = shouldResume
             } else if (app != null) {
                 Log.d(TAG, "Syncthing is running; stopping service")
                 app.stopAsync()
@@ -420,7 +420,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
             synchronized(stateLock) {
                 while (preRunActions.isEmpty() && !shouldStart) {
-                    if (isShuttingDown) {
+                    if (!shouldThreadRun) {
                         Log.d(TAG, "Service is exiting; shutting down")
                         return
                     } else {
