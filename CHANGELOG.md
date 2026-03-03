@@ -9,7 +9,8 @@
 
 ### Unreleased
 
-* Fix Syncthing occasionally being incorrectly stopped ([PR #56])
+* Fix Syncthing occasionally being incorrectly stopped ([Issue #54], [PR #56])
+* Shut down Syncthing safely when Android prevents BasicSync's service from running ([PR #57])
 
 ### Version 1.12
 
@@ -99,6 +100,7 @@
 [Issue #29]: https://github.com/chenxiaolong/BasicSync/issues/29
 [Issue #36]: https://github.com/chenxiaolong/BasicSync/issues/36
 [Issue #39]: https://github.com/chenxiaolong/BasicSync/issues/39
+[Issue #54]: https://github.com/chenxiaolong/BasicSync/issues/54
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -140,3 +142,4 @@
 [PR #51]: https://github.com/chenxiaolong/BasicSync/pull/51
 [PR #52]: https://github.com/chenxiaolong/BasicSync/pull/52
 [PR #56]: https://github.com/chenxiaolong/BasicSync/pull/56
+[PR #57]: https://github.com/chenxiaolong/BasicSync/pull/57
