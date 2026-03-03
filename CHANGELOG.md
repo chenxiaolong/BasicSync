@@ -11,6 +11,7 @@
 
 * Fix Syncthing occasionally being incorrectly stopped ([Issue #54], [PR #56])
 * Shut down Syncthing safely when Android prevents BasicSync's service from running ([PR #57])
+* Sync translations from Weblate ([PR #53])
 
 ### Version 1.12
 
@@ -141,5 +142,6 @@
 [PR #49]: https://github.com/chenxiaolong/BasicSync/pull/49
 [PR #51]: https://github.com/chenxiaolong/BasicSync/pull/51
 [PR #52]: https://github.com/chenxiaolong/BasicSync/pull/52
+[PR #53]: https://github.com/chenxiaolong/BasicSync/pull/53
 [PR #56]: https://github.com/chenxiaolong/BasicSync/pull/56
 [PR #57]: https://github.com/chenxiaolong/BasicSync/pull/57
