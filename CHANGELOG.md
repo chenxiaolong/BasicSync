@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.13
 
 * Fix Syncthing occasionally being incorrectly stopped ([Issue #54], [PR #56])
 * Shut down Syncthing safely when Android prevents BasicSync's service from running ([PR #57])
