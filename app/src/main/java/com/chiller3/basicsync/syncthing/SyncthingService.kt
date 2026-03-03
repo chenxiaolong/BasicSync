@@ -187,6 +187,9 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     @GuardedBy("stateLock")
     private var runningProxyInfo: ProxyInfo? = null
 
+    @GuardedBy("stateLock")
+    private var isShuttingDown = false
+
     private val blockedReasons: EnumSet<BlockedReason>
         @GuardedBy("stateLock")
         get() = if (prefs.isManualMode) {
@@ -201,11 +204,11 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     private val shouldRun: Boolean
         @GuardedBy("stateLock")
-        get() = blockedReasons.isEmpty()
+        get() = !isShuttingDown && blockedReasons.isEmpty()
 
     private val shouldStart: Boolean
         @GuardedBy("stateLock")
-        get() = prefs.keepAlive || shouldRun
+        get() = !isShuttingDown && (prefs.keepAlive || shouldRun)
 
     @GuardedBy("stateLock")
     private val preRunActions = mutableListOf<PreRunAction>()
@@ -260,6 +263,11 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     override fun onDestroy() {
         super.onDestroy()
+
+        synchronized(stateLock) {
+            isShuttingDown = true
+        }
+        stateChanged()
 
         prefs.unregisterListener(this)
 
@@ -330,6 +338,12 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         synchronized(stateLock) {
             handleStateChangeLocked()
 
+            if (isShuttingDown) {
+                ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+                lastServiceState = null
+                return
+            }
+
             val notificationState = ServiceState(
                 keepAlive = prefs.keepAlive,
                 blockedReasons = blockedReasons,
@@ -381,7 +395,9 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
         // The service needs to be restarted for proxy changes to take effect. The hack we do to set
         // the proxy on the golang side can't be made thread-safe.
-        val needFullRestart = runningProxyInfo != deviceState.proxyInfo || preRunActions.isNotEmpty()
+        val needFullRestart = isShuttingDown
+                || runningProxyInfo != deviceState.proxyInfo
+                || preRunActions.isNotEmpty()
 
         if (needFullRestart || isStarted != shouldStart || isActive != shouldRun) {
             if (!needFullRestart && app != null && prefs.keepAlive) {
@@ -404,8 +420,13 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
             synchronized(stateLock) {
                 while (preRunActions.isEmpty() && !shouldStart) {
-                    Log.d(TAG, "Nothing to do; sleeping")
-                    stateLock.wait()
+                    if (isShuttingDown) {
+                        Log.d(TAG, "Service is exiting; shutting down")
+                        return
+                    } else {
+                        Log.d(TAG, "Nothing to do; sleeping")
+                        stateLock.wait()
+                    }
                 }
 
                 actions.addAll(preRunActions)
