@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.14
 
 * Update syncthing to 2.0.15 ([PR #58])
 * Switch to using upstream golang MTE fix ([PR #50])
