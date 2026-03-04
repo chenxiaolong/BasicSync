@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update syncthing to 2.0.15 ([PR #58])
+
 ### Version 1.13
 
 * Fix Syncthing occasionally being incorrectly stopped ([Issue #54], [PR #56])
@@ -145,3 +149,4 @@
 [PR #53]: https://github.com/chenxiaolong/BasicSync/pull/53
 [PR #56]: https://github.com/chenxiaolong/BasicSync/pull/56
 [PR #57]: https://github.com/chenxiaolong/BasicSync/pull/57
+[PR #58]: https://github.com/chenxiaolong/BasicSync/pull/58
