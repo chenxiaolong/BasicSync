@@ -7,6 +7,11 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Ensure that the background service automatically restarts after the app is killed ([PR #59])
+  * This also fixes the app not restarting for GrapheneOS users when tapping the `Tap to restart apps that were optimized` notification after an OS update.
+
 ### Version 1.14
 
 * Update syncthing to 2.0.15 ([PR #58])
@@ -152,3 +157,4 @@
 [PR #56]: https://github.com/chenxiaolong/BasicSync/pull/56
 [PR #57]: https://github.com/chenxiaolong/BasicSync/pull/57
 [PR #58]: https://github.com/chenxiaolong/BasicSync/pull/58
+[PR #59]: https://github.com/chenxiaolong/BasicSync/pull/59
