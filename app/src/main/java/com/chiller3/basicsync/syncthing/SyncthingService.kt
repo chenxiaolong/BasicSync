@@ -300,7 +300,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
         stateChanged()
 
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
