@@ -123,6 +123,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:title="@string/pref_header_advanced"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreferenceCompat
+            app:key="remote_control"
+            app:title="@string/pref_remote_control_name"
+            app:summary="@string/pref_remote_control_desc"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:title="@string/pref_header_about"
         app:iconSpaceReserved="false">
 

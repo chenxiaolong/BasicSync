@@ -105,8 +105,19 @@
             android:exported="false" />
 
         <receiver
+            android:name=".syncthing.RemoteControlReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="${applicationId}.AUTO_MODE" />
+                <action android:name="${applicationId}.MANUAL_MODE" />
+                <action android:name="${applicationId}.START" />
+                <action android:name="${applicationId}.STOP" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
             android:name=".syncthing.SyncthingBootReceiver"
-            android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

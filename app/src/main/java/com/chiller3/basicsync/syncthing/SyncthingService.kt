@@ -289,8 +289,16 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 prefs.manualShouldRun = shouldResume
                 prefs.isManualMode = true
             }
-            ACTION_START -> prefs.manualShouldRun = true
-            ACTION_STOP -> prefs.manualShouldRun = false
+            ACTION_START -> {
+                // This is reachable in auto mode via remote control.
+                prefs.manualShouldRun = true
+                prefs.isManualMode = true
+            }
+            ACTION_STOP -> {
+                // This is reachable in auto mode via remote control.
+                prefs.manualShouldRun = false
+                prefs.isManualMode = true
+            }
             ACTION_RENOTIFY -> synchronized(stateLock) {
                 forceShowNotification = true
             }

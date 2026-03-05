@@ -10,6 +10,8 @@
     <string name="pref_header_configuration">Configuration</string>
     <!-- Section header for preferences to configure when Syncthing is allowed to run. -->
     <string name="pref_header_run_conditions">Run conditions</string>
+    <!-- Section header for preferences related to advanced power-user functionality. -->
+    <string name="pref_header_advanced">Advanced</string>
     <!-- Section header for the preference showing information about the app, like version numbers. -->
     <string name="pref_header_about">About</string>
     <!-- Section header for hidden debug preferences. -->
@@ -73,6 +75,10 @@
     <string name="pref_keep_alive_name">Keep Syncthing alive</string>
     <!-- Description for the preference that keeps Syncthing always running. -->
     <string name="pref_keep_alive_desc">When Syncthing should not run, pause it instead of shutting it down. The avoids a potential performance hit when scanning large folders on startup.</string>
+    <!-- Title for the preference that allows external apps to control when Syncthing runs. -->
+    <string name="pref_remote_control_name">Allow remote control</string>
+    <!-- Description for the preference that allows external apps to control when Syncthing runs. -->
+    <string name="pref_remote_control_desc">Allow external apps to switch to auto mode or manually start and stop Syncthing.</string>
     <!-- Title for the preference that shows the version number. The description is two lines: the first line is BasicSync's version and the second line in Syncthing's version. -->
     <string name="pref_version_name">Version</string>
     <!-- Title for the debug preference that saves logs to a file. -->

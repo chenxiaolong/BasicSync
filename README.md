@@ -65,11 +65,31 @@ The app is intentionally kept very basic so that the project is easy to maintain
 * `ACCESS_WIFI_STATE`, `ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`, `ACCESS_BACKGROUND_LOCATION`, `FOREGROUND_SERVICE_LOCATION`
     * Optionally used for stopping Syncthing unless connected to specific Wi-Fi networks.
 
-## Remote access
+## Remote web UI access
 
 Syncthing listens on the loopback interface and is available via `localhost` (both IPv4 `127.0.0.1` and IPv6 `::1`). BasicSync will try to use the same port on every start (with a default of 8384), but will automatically pick a new random port if there is a conflict. The current port number can be found in Web UI -> Actions -> Settings -> GUI. HTTPS and basic authentication are both forcibly enabled every time Syncthing starts.
 
 For basic authentication, the password is the API token. Generating new API tokens is supported, but setting an arbitrary password is not. BasicSync will internally set the password to the API token on every start.
+
+## Remote control
+
+When the "Allow remote control" setting is enabled, BasicSync allows other apps to control when Syncthing runs via Android's broadcast mechanism. The following broadcast actions are supported, which behave exactly the same as the corresponding buttons in BasicSync's notification:
+
+* `com.chiller3.basicsync.AUTO_MODE`
+    * Switch to auto mode where Syncthing runs based on the configured run conditions.
+* `com.chiller3.basicsync.MANUAL_MODE`
+    * Switch to manual mode where Syncthing is manually started and stopped, but maintain the existing state.
+    * If it was previously running, it will still be running. If it was previously stopped, it will still be stopped.
+* `com.chiller3.basicsync.START`
+    * Switch to manual mode and start Syncthing.
+* `com.chiller3.basicsync.STOP`
+    * Switch to manual mode and stop Syncthing.
+
+These broadcasts can also be sent via `adb`. For example:
+
+```bash
+adb shell am broadcast -a com.chiller3.basicsync.AUTO_MODE com.chiller3.basicsync
+```
 
 ## Verifying digital signatures
 
