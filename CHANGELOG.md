@@ -11,6 +11,8 @@
 
 * Ensure that the background service automatically restarts after the app is killed ([PR #59])
   * This also fixes the app not restarting for GrapheneOS users when tapping the `Tap to restart apps that were optimized` notification after an OS update.
+* Add support for external apps to control when Syncthing runs via Android broadcasts ([PR #60])
+  * This is disabled by default.
 
 ### Version 1.14
 
@@ -158,3 +160,4 @@
 [PR #57]: https://github.com/chenxiaolong/BasicSync/pull/57
 [PR #58]: https://github.com/chenxiaolong/BasicSync/pull/58
 [PR #59]: https://github.com/chenxiaolong/BasicSync/pull/59
+[PR #60]: https://github.com/chenxiaolong/BasicSync/pull/60
