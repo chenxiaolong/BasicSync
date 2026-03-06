@@ -124,4 +124,7 @@
     </plurals>
     <string name="dialog_sync_schedule_title">Synchronisationszeitplan</string>
     <string name="blocked_reason_auto_sync_data">• Daten automatisch synchronisieren ist aus</string>
+    <string name="pref_header_advanced">Erweitert</string>
+    <string name="pref_remote_control_name">Fernsteuerung zulassen</string>
+    <string name="pref_remote_control_desc">Externen Apps erlauben, in den Automatikmodus zu wechseln oder Syncthing manuell zu starten und zu stoppen.</string>
 </resources>
