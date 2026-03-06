@@ -13,6 +13,7 @@
   * This also fixes the app not restarting for GrapheneOS users when tapping the `Tap to restart apps that were optimized` notification after an OS update.
 * Add support for external apps to control when Syncthing runs via Android broadcasts ([PR #60])
   * This is disabled by default.
+* Update golang to 1.26.1 ([PR #61])
 
 ### Version 1.14
 
@@ -161,3 +162,4 @@
 [PR #58]: https://github.com/chenxiaolong/BasicSync/pull/58
 [PR #59]: https://github.com/chenxiaolong/BasicSync/pull/59
 [PR #60]: https://github.com/chenxiaolong/BasicSync/pull/60
+[PR #61]: https://github.com/chenxiaolong/BasicSync/pull/61
