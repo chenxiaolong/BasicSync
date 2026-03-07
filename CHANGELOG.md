@@ -11,7 +11,7 @@
 
 * Ensure that the background service automatically restarts after the app is killed ([PR #59])
   * This also fixes the app not restarting for GrapheneOS users when tapping the `Tap to restart apps that were optimized` notification after an OS update.
-* Add support for external apps to control when Syncthing runs via Android broadcasts ([PR #60])
+* Add support for allowing external apps to control when Syncthing runs via Android broadcasts ([PR #60])
   * This is disabled by default.
 * Update golang to 1.26.1 ([PR #61])
 * Sync translations from Weblate ([PR #62])
