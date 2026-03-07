@@ -14,6 +14,7 @@
 * Add support for external apps to control when Syncthing runs via Android broadcasts ([PR #60])
   * This is disabled by default.
 * Update golang to 1.26.1 ([PR #61])
+* Sync translations from Weblate ([PR #62])
 
 ### Version 1.14
 
@@ -163,3 +164,4 @@
 [PR #59]: https://github.com/chenxiaolong/BasicSync/pull/59
 [PR #60]: https://github.com/chenxiaolong/BasicSync/pull/60
 [PR #61]: https://github.com/chenxiaolong/BasicSync/pull/61
+[PR #62]: https://github.com/chenxiaolong/BasicSync/pull/62
