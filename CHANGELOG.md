@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.15
 
 * Ensure that the background service automatically restarts after the app is killed ([PR #59])
   * This also fixes the app not restarting for GrapheneOS users when tapping the `Tap to restart apps that were optimized` notification after an OS update.
