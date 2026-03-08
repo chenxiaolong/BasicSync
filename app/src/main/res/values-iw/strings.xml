@@ -2,4 +2,37 @@
 <resources>
     <string name="pref_header_permissions">הרשאות</string>
     <string name="pref_header_configuration">תצורה</string>
+    <string name="pref_header_run_conditions">תנאי ריצה</string>
+    <string name="pref_header_advanced">מתקדם</string>
+    <string name="pref_header_about">אודות</string>
+    <string name="pref_header_debug">ניפוי שגיאות</string>
+    <string name="pref_inhibit_battery_opt_name">השבתת מטוב סוללה</string>
+    <string name="pref_inhibit_battery_opt_desc">נדרש כדי לרוץ באופן אמין ברקע.</string>
+    <string name="pref_allow_notifications_name">אפשור התראות</string>
+    <string name="pref_allow_notifications_desc">נדרש כדי לרוץ באופן אמין ברקע וכדי להתחיל ולעצור את Syncthing.</string>
+    <string name="pref_local_storage_access_name">אפשור גישת אחסון מקומי</string>
+    <string name="pref_local_storage_access_desc">נדרש כדי ש־Syncthing ייגש לאחסון המקומי תחת ‪<tt>/sdcard</tt>‬.</string>
+    <string name="pref_disable_app_hibernation_name">השבתת תרדמת יישום</string>
+    <string name="pref_disable_app_hibernation_desc">נדרש כדי למנוע מאנדרואיד להסיר באופן אוטומטי הרשאות יישום לאחר תקופת זמן.</string>
+    <string name="pref_open_web_ui_name">פתיחת ממשק משתמש ברשת</string>
+    <string name="pref_open_web_ui_desc">פתיחת ממשק התצורה ברשת של Syncthing.</string>
+    <string name="pref_import_configuration_name">ייבוא תצורה</string>
+    <string name="pref_import_configuration_desc">ייבוא קובץ zip של תצורת Syncthing קיימת.</string>
+    <string name="pref_export_configuration_name">ייצוא תצורה</string>
+    <string name="pref_export_configuration_desc">ייצוא תצורת Syncthing קיימת לקובץ zip.</string>
+    <string name="pref_service_status_name">מצב Syncthing</string>
+    <string name="pref_auto_mode_name">מצב אוטומטי</string>
+    <string name="pref_auto_mode_desc">התחלה ועצירה באופן אוטומטי בהתבסס על התנאים שצוינו.</string>
+    <string name="pref_network_conditions_name">תנאי רשת</string>
+    <string name="pref_network_conditions_desc">הרצה כאשר יש חיבור לסוגי רשת מסוימים או רשתות Wi-Fi מסוימות.</string>
+    <string name="pref_run_on_battery_name">הרצה על כוח סוללה</string>
+    <string name="pref_run_on_battery_desc">הרצה כאשר ההתקן פועל על כוח סוללה ורמת הסוללה היא לפחות ‪%1$d%%‬‏. Syncthing תמיד רץ כאשר יש חיבור לחשמל.</string>
+    <string name="pref_respect_battery_saver_name">כיבוד מצב חיסכון בסוללה</string>
+    <string name="pref_respect_battery_saver_desc">הרצה רק כאשר מצב החיסכון בסוללה של אנדרואיד מושבת.</string>
+    <string name="pref_respect_auto_sync_data_name">כיבוד הגדרת סנכרון נתונים אוטומטי</string>
+    <string name="pref_respect_auto_sync_data_desc">הרצה רק כאשר הגדרת סנכרון נתונים אוטומטי של אנדרואיד מופעלת.</string>
+    <string name="pref_sync_schedule_name">סנכרון לפי לוח זמנים</string>
+    <string name="pref_sync_schedule_desc">סנכרון למשך %2$s בכל חלון של %1$s.</string>
+    <string name="pref_keep_alive_name">שמירה על Syncthing בחיים</string>
+    <string name="pref_keep_alive_desc">כאשר Syncthing לא צריך לרוץ, יש להפסיק אותו במקום לכבות אותו. דבר זה מונע פגיעת ביצועים פוטנציאלית כאשר מתבצעת סריקה של תיקיות גדולות בהפעלה.</string>
 </resources>
