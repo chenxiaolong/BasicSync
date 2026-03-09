@@ -1,0 +1,1 @@
+Android'de Syncthing'i çalıştırmak için basit bir uygulama

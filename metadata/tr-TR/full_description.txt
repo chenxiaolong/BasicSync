@@ -1,0 +1,3 @@
+BasicSync, Android'de Syncthing'i çalıştırmak için basit bir uygulamadır.
+
+Uygulama kasıtlı olarak çok basit tutulmuştur böylece projenin bakımı ve güncel tutulması kolaydır. BasicSync yalnızca Syncthing çalıştığında denetler. Asıl yapılandırma Syncthing'in kendi web kullanıcı arayüzü aracılığıyla yapılır.
