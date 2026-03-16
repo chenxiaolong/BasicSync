@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_header_permissions">Õigused</string>
+    <string name="pref_header_configuration">Seadistused</string>
+    <string name="pref_header_run_conditions">Käivitamise tingimused</string>
+    <string name="pref_header_advanced">Lisaseadistused</string>
+    <string name="pref_header_about">Rakenduse teave</string>
+    <string name="pref_header_debug">Silumine ja veaotsing</string>
+    <string name="pref_inhibit_battery_opt_name">Lülita akukasutuse optimeerimine välja</string>
 </resources>
