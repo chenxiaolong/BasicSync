@@ -7,4 +7,41 @@
     <string name="pref_header_about">Rakenduse teave</string>
     <string name="pref_header_debug">Silumine ja veaotsing</string>
     <string name="pref_inhibit_battery_opt_name">Lülita akukasutuse optimeerimine välja</string>
+    <string name="pref_inhibit_battery_opt_desc">Vajalik korrektseks toimimiseks taustateenusena.</string>
+    <string name="pref_allow_notifications_name">Luba teavitused</string>
+    <string name="pref_allow_notifications_desc">Vajalik korrektseks toimimiseks taustateenusena ning Syncthingi käivitamiseks ja peatamiseks.</string>
+    <string name="pref_local_storage_access_name">Luba ligipääs kohalikule andmeruumile</string>
+    <string name="pref_version_name">Versioon</string>
+    <string name="pref_save_logs_name">Salvesta logid</string>
+    <string name="pref_save_logs_desc">Salvesta logcat-käsu logid faili.</string>
+    <string name="pref_header_allowed_network_types">Lubatud võrgutüübid</string>
+    <string name="pref_header_allowed_wifi_networks">Lubatud WiFi võrgud</string>
+    <string name="pref_header_available_wifi_networks">Saadaval WiFi võrgud</string>
+    <plurals name="duration_seconds">
+        <item quantity="one">%d sekund</item>
+        <item quantity="other">%d sekundit</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d minut</item>
+        <item quantity="other">%d minutit</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d tund</item>
+        <item quantity="other">%d tundi</item>
+    </plurals>
+    <string name="action_details">Üksikasjad</string>
+    <string name="dialog_new_folder_hint">Nimi</string>
+    <string name="dialog_min_battery_level_hint">Aku täituvuse protsent</string>
+    <string name="dialog_wifi_network_hint">Võrgu SSID</string>
+    <string name="notification_action_start">Käivita</string>
+    <string name="notification_action_stop">Peata</string>
+    <string name="pref_import_configuration_name">Impordi seadistused</string>
+    <string name="pref_export_configuration_name">Ekspordi seadistused</string>
+    <string name="pref_service_status_name">Syncthingi olek</string>
+    <string name="pref_auto_mode_name">Automaatne töörežiim</string>
+    <string name="pref_network_conditions_name">Võrguühenduse olek</string>
+    <string name="pref_network_allow_wifi_name">Luba WiFi võrgus</string>
+    <string name="pref_network_allow_ethernet_name">Luba traadiga võrgus</string>
+    <string name="dialog_error_details_title">Vea üksikasjad</string>
+    <string name="dialog_new_folder_title">Uus kaust</string>
 </resources>
