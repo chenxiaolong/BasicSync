@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.16
 
 * Update dependencies ([PR #66])
 * Sync translations from Weblate ([PR #63])
