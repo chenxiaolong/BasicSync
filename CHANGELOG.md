@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Fix typo in English description of "Keep Syncthing alive" setting ([PR #67])
+
 ### Version 1.16
 
 * Update dependencies ([PR #66])
@@ -172,3 +176,4 @@
 [PR #62]: https://github.com/chenxiaolong/BasicSync/pull/62
 [PR #63]: https://github.com/chenxiaolong/BasicSync/pull/63
 [PR #66]: https://github.com/chenxiaolong/BasicSync/pull/66
+[PR #67]: https://github.com/chenxiaolong/BasicSync/pull/67
