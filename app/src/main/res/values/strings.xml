@@ -74,7 +74,7 @@
     <!-- Title for the preference that keeps Syncthing always running. When run conditions prevent it from syncing, Syncthing is paused instead of stopped. -->
     <string name="pref_keep_alive_name">Keep Syncthing alive</string>
     <!-- Description for the preference that keeps Syncthing always running. -->
-    <string name="pref_keep_alive_desc">When Syncthing should not run, pause it instead of shutting it down. The avoids a potential performance hit when scanning large folders on startup.</string>
+    <string name="pref_keep_alive_desc">When Syncthing should not run, pause it instead of shutting it down. This avoids a potential performance hit when scanning large folders on startup.</string>
     <!-- Title for the preference that allows external apps to control when Syncthing runs. -->
     <string name="pref_remote_control_name">Allow remote control</string>
     <!-- Description for the preference that allows external apps to control when Syncthing runs. -->
