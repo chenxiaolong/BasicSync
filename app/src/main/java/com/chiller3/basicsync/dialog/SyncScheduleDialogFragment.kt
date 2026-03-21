@@ -10,7 +10,6 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputType
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
@@ -126,7 +125,7 @@ class SyncScheduleDialogFragment : DialogFragment() {
             prefs.scheduleSyncMs = syncMs!!
         }
 
-        setFragmentResult(tag!!, bundleOf(RESULT_SUCCESS to success))
+        setFragmentResult(tag!!, Bundle().apply { putBoolean(RESULT_SUCCESS, success) })
     }
 
     private fun refreshOkButtonEnabledState() {

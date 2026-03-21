@@ -6,6 +6,7 @@
 package com.chiller3.basicsync.dialog
 
 import android.content.Context
+import android.os.Bundle
 import com.chiller3.basicsync.R
 
 class NewFolderDialogFragment : TextInputDialogFragment<String>() {
@@ -13,7 +14,7 @@ class NewFolderDialogFragment : TextInputDialogFragment<String>() {
         val TAG: String = NewFolderDialogFragment::class.java.simpleName
 
         const val RESULT_SUCCESS = TextInputDialogFragment.RESULT_SUCCESS
-        const val RESULT_NAME = RESULT_VALUE
+        const val RESULT_NAME = "name"
 
         fun newInstance(context: Context, cwd: String) =
             NewFolderDialogFragment().apply {
@@ -32,4 +33,8 @@ class NewFolderDialogFragment : TextInputDialogFragment<String>() {
         } else {
             null
         }
+
+    override fun updateResult(result: Bundle, value: String?) {
+        result.putString(RESULT_NAME, value)
+    }
 }

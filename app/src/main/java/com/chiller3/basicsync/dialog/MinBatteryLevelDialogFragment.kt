@@ -40,10 +40,10 @@ class MinBatteryLevelDialogFragment : TextInputDialogFragment<Int>() {
             null
         }
 
-    override fun updateResult(result: Bundle) {
-        if (result.getBoolean(RESULT_SUCCESS)) {
+    override fun updateResult(result: Bundle, value: Int?) {
+        value?.let {
             val prefs = Preferences(requireContext())
-            prefs.minBatteryLevel = result.getInt(RESULT_VALUE)
+            prefs.minBatteryLevel = it
         }
     }
 }

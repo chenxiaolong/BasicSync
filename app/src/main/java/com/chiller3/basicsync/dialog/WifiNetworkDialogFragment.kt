@@ -6,6 +6,7 @@
 package com.chiller3.basicsync.dialog
 
 import android.content.Context
+import android.os.Bundle
 import com.chiller3.basicsync.R
 
 class WifiNetworkDialogFragment : TextInputDialogFragment<String>() {
@@ -14,7 +15,7 @@ class WifiNetworkDialogFragment : TextInputDialogFragment<String>() {
 
         const val RESULT_SUCCESS = TextInputDialogFragment.RESULT_SUCCESS
         const val RESULT_OLD_NAME = RESULT_ORIG_VALUE
-        const val RESULT_NAME = RESULT_VALUE
+        const val RESULT_NAME = "name"
 
         fun newInstance(context: Context, origName: String?) =
             WifiNetworkDialogFragment().apply {
@@ -29,4 +30,8 @@ class WifiNetworkDialogFragment : TextInputDialogFragment<String>() {
     }
 
     override fun translateInput(input: String): String? = input.ifEmpty { null }
+
+    override fun updateResult(result: Bundle, value: String?) {
+        result.putString(RESULT_NAME, value)
+    }
 }
