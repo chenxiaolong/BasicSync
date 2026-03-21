@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update dependencies ([PR #66])
+
 ### Version 1.15
 
 * Ensure that the background service automatically restarts after the app is killed ([PR #59])
@@ -165,3 +169,4 @@
 [PR #60]: https://github.com/chenxiaolong/BasicSync/pull/60
 [PR #61]: https://github.com/chenxiaolong/BasicSync/pull/61
 [PR #62]: https://github.com/chenxiaolong/BasicSync/pull/62
+[PR #66]: https://github.com/chenxiaolong/BasicSync/pull/66
