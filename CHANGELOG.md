@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Fix typo in English description of "Keep Syncthing alive" setting ([PR #67])
+* Fix reproducible builds issue caused by overridden ldflags ([PR #69])
 
 ### Version 1.16
 
@@ -177,3 +178,4 @@
 [PR #63]: https://github.com/chenxiaolong/BasicSync/pull/63
 [PR #66]: https://github.com/chenxiaolong/BasicSync/pull/66
 [PR #67]: https://github.com/chenxiaolong/BasicSync/pull/67
+[PR #69]: https://github.com/chenxiaolong/BasicSync/pull/69
