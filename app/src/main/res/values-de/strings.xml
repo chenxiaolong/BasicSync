@@ -33,7 +33,7 @@
     <string name="pref_sync_schedule_name">Nach Zeitplan synchronisieren</string>
     <string name="pref_sync_schedule_desc">Alle %1$s für %2$s synchronisieren.</string>
     <string name="pref_keep_alive_name">Syncthing aktiv halten</string>
-    <string name="pref_keep_alive_desc">Wenn Syncthing nicht ausgeführt werden soll, pausieren anstatt herunterfahren. Dies vermeidet mögliche Leistungseinbußen wenn große Ordner beim Start gescannt werden.</string>
+    <string name="pref_keep_alive_desc">Wenn Syncthing nicht ausgeführt werden soll, pausieren statt es zu beenden. Dadurch werden mögliche Leistungseinbußen beim Programmstart durch Scannen großer Ordner vermieden.</string>
     <string name="pref_version_name">Version</string>
     <string name="pref_save_logs_name">Protokoll speichern</string>
     <string name="pref_save_logs_desc">Das logcat-Protokoll in eine Datei speichern.</string>
