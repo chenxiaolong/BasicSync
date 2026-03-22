@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.17
 
 * Fix typo in English description of "Keep Syncthing alive" setting ([PR #67])
 * Fix reproducible builds issue caused by overridden ldflags ([PR #69])
