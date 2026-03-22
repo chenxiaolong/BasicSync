@@ -519,6 +519,10 @@ val stbridge = tasks.register("stbridge") {
                 "-X github.com/syncthing/syncthing/lib/build.Tags=${tags.joinToString(",")}",
                 // https://github.com/wlynxg/anet#how-to-build-with-go-1230-or-later
                 "-checklinkname=0",
+                // We need to repeat the ldflags from the goenv task. There is currently no way to
+                // extend the existing value provided via an environment variable.
+                // https://github.com/golang/go/issues/38522
+                "-buildid=",
             )
 
             executable(gomobileExecutable)
