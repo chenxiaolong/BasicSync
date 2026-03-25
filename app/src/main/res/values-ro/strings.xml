@@ -38,7 +38,7 @@
     <string name="pref_sync_schedule_name">Sincronizare programată</string>
     <string name="pref_sync_schedule_desc">Se sincronizează %2$s în timpul fiecărei ferestre de %1$s.</string>
     <string name="pref_keep_alive_name">Păstrează Syncthing pornit</string>
-    <string name="pref_keep_alive_desc">Atunci când Syncthing nu ar trebui să ruleze, se întrerupe în loc să fie oprit. Evită o potențială afectare a performanței la scanarea dosarelor mari la pornire.</string>
+    <string name="pref_keep_alive_desc">Atunci când Syncthing nu ar trebui să ruleze, se întrerupe în loc să fie oprit. Se evită o potențială afectare a performanței la scanarea dosarelor mari la pornire.</string>
     <string name="pref_version_name">Versiune</string>
     <string name="pref_save_logs_name">Salvează jurnalele</string>
     <string name="pref_save_logs_desc">Salvează jurnalele logcat într-un fișier.</string>
