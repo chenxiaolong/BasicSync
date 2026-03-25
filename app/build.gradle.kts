@@ -496,7 +496,10 @@ val stbridge = tasks.register("stbridge") {
                 "github.com/syncthing/syncthing/lib/api/auto",
                 "github.com/syncthing/syncthing/cmd/infra/strelaypoolsrv/auto",
             )
-            environment("PATH", "$binDir${File.pathSeparator}${environment["PATH"]}")
+            environment(
+                "PATH" to "$binDir${File.pathSeparator}${environment["PATH"]}",
+                "SOURCE_DATE_EPOCH" to stGitTimestamp,
+            )
             addGoEnvironment(this)
 
             workingDir(syncthingDir)
