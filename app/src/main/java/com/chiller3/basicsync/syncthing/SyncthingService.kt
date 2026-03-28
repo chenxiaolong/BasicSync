@@ -196,7 +196,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 EnumSet.of(BlockedReason.MANUAL)
             }
         } else {
-            deviceState.blockedReasons(prefs)
+            deviceState.blockedReasons(this, prefs)
         }
 
     @GuardedBy("stateLock")

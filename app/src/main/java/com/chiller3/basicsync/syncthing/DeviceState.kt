@@ -117,7 +117,7 @@ data class DeviceState(
             allowed == ssid?.let(::normalizeSsid)
     }
 
-    fun blockedReasons(prefs: Preferences): EnumSet<BlockedReason> {
+    fun blockedReasons(context: Context, prefs: Preferences): EnumSet<BlockedReason> {
         val reasons = EnumSet.noneOf(BlockedReason::class.java)
 
         if (!isNetworkConnected) {
@@ -141,10 +141,13 @@ data class DeviceState(
             }
 
             val allowedWifiNetworks = prefs.allowedWifiNetworks
-            if (networkType == NetworkType.WIFI && allowedWifiNetworks.isNotEmpty()
-                    && allowedWifiNetworks.none { ssidMatches(it, wifiSsid) }) {
-                Log.d(TAG, "Blocked due to disallowed network: ssid=$wifiSsid")
-                reasons.add(BlockedReason.BAD_WIFI_SSID)
+            if (networkType == NetworkType.WIFI && allowedWifiNetworks.isNotEmpty()) {
+                if (!DeviceStateTracker.locationAllowed(context)) {
+                    Log.w(TAG, "Ignoring allowed Wi-Fi networks because location access denied")
+                } else if (prefs.allowedWifiNetworks.none { ssidMatches(it, wifiSsid) }) {
+                    Log.d(TAG, "Blocked due to disallowed network: ssid=$wifiSsid")
+                    reasons.add(BlockedReason.BAD_WIFI_SSID)
+                }
             }
         }
 
@@ -203,6 +206,13 @@ class DeviceStateTracker(private val context: Context) :
 
             return ProxyInfo(proxy, noProxy)
         }
+
+        internal fun locationAllowed(context: Context) =
+            Permissions.have(context, Permissions.PRECISE_LOCATION)
+                    && Permissions.have(context, Permissions.BACKGROUND_LOCATION)
+
+        internal fun locationNeeded(context: Context, prefs: Preferences) =
+            prefs.allowedWifiNetworks.isNotEmpty() && locationAllowed(context)
     }
 
     private var listener: DeviceStateListener? = null
@@ -496,9 +506,7 @@ class DeviceStateTracker(private val context: Context) :
 
     // We do not use the location permissions even if we were granted them unless the user has
     // configured allowed Wi-Fi networks.
-    fun canUseLocation() = prefs.allowedWifiNetworks.isNotEmpty()
-            && Permissions.have(context, Permissions.PRECISE_LOCATION)
-            && Permissions.have(context, Permissions.BACKGROUND_LOCATION)
+    fun canUseLocation() = locationNeeded(context, prefs)
 
     fun refreshNetworkState() {
         // If the user grants the location permissions while the app is running, we'll need to
