@@ -1,0 +1,3 @@
+BasicSync on lihtne rakendus Syncthingi kasutamiseks Androidis.
+
+Rakendus on teadlikult tehtud väga lihtne ja napp ja see tagab, et projekti on lihtne hoida hallatavana ja uuendatuna. BasicSync haldab vaid seda, millal Syncthing käivitub. Tegelik seadistamine toimib Syncthingi oma veebiliidese abil.
