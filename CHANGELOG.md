@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.19
 
 * Fix Syncthing never running when location permissions are denied after setting up allowed Wi-Fi SSIDs ([Issue #68], [PR #73])
 
