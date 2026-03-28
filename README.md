@@ -9,7 +9,7 @@ BasicSync is a simple app for running Syncthing on Android.
 
 The app is intentionally kept very basic so that the project is easy to maintain and keep updated. BasicSync only controls when Syncthing runs. The actual configuration is done through Syncthing's own web UI.
 
-<img src="app/images/light.png" alt="light mode screenshot" width="200" /> <img src="app/images/dark.png" alt="dark mode screenshot" width="200" />
+<img src="metadata/en-US/images/phoneScreenshots/light.png" alt="light mode screenshot" width="200" /> <img src="metadata/en-US/images/phoneScreenshots/dark.png" alt="dark mode screenshot" width="200" />
 
 ## Features
 
