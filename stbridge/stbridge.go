@@ -17,8 +17,10 @@ import (
 	"io"
 	"log"
 	"log/slog"
+	"net"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -192,6 +194,47 @@ func InitDirs(filesDir string, cacheDir string) error {
 	return nil
 }
 
+func guiHostPort(c *config.Configuration) (string, int, error) {
+	if c.GUI.Network() != "tcp" {
+		return "", 0, fmt.Errorf("non-TCP GUI address: %q", c.GUI.RawAddress)
+	}
+
+	guiHost, guiPortStr, err := net.SplitHostPort(c.GUI.RawAddress)
+	if err != nil {
+		return "", 0, fmt.Errorf("invalid GUI address: %q: %w", c.GUI.RawAddress, err)
+	}
+
+	guiPort, err := strconv.Atoi(guiPortStr)
+	if err != nil {
+		return "", 0, fmt.Errorf("invalid GUI port: %q: %w", guiPortStr, err)
+	}
+
+	return guiHost, guiPort, nil
+}
+
+//go:linkname configGetFreePort github.com/syncthing/syncthing/lib/config.getFreePort
+func configGetFreePort(host string, ports ...int) (int, error)
+
+func tryPreserveGuiHostPort(c *config.Configuration) error {
+	const defaultPort = 8384
+
+	guiHost, guiPort, err := guiHostPort(c)
+	if err != nil {
+		log.Printf("Resetting GUI address: %w", err)
+		guiHost = "127.0.0.1"
+		guiPort = defaultPort
+	}
+
+	guiPort, err = configGetFreePort(guiHost, guiPort, defaultPort)
+	if err != nil {
+		return fmt.Errorf("failed to find free port for GUI: %w", err)
+	}
+
+	c.GUI.RawAddress = net.JoinHostPort(guiHost, strconv.Itoa(guiPort))
+
+	return nil
+}
+
 type SyncthingApp struct {
 	app     *syncthing.App
 	cfg     config.Wrapper
@@ -281,9 +324,10 @@ func Run(startup *SyncthingStartupConfig) error {
 	waiter, err := cfg.Modify(func(c *config.Configuration) {
 		// Try to stick with existing ports, but always allow picking new ones
 		// so that running multiple instances of the app (eg. for debugging) is
-		// possible.
-		if err = c.ProbeFreePorts(); err != nil {
-			log.Printf("Failed to probe free ports")
+		// possible. This intentionally does not use c.ProbeFreePorts() because
+		// that always resets the listen addresses for the sync protocol.
+		if err = tryPreserveGuiHostPort(c); err != nil {
+			log.Printf("Failed to set GUI listen address: %w", err)
 		}
 
 		// Try to prevent users from locking themselves out.
