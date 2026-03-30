@@ -7,6 +7,11 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Stop automatically replacing `127.0.0.1` with `::1` for the GUI listen address ([PR #76])
+  * This was originally intended to make the GUI dual-stack, but didn't actually work that way. Now, the default behavior matches upstream Syncthing.
+
 ### Version 1.19
 
 * Fix Syncthing never running when location permissions are denied after setting up allowed Wi-Fi SSIDs ([Issue #68], [PR #73])
@@ -192,3 +197,4 @@
 [PR #70]: https://github.com/chenxiaolong/BasicSync/pull/70
 [PR #71]: https://github.com/chenxiaolong/BasicSync/pull/71
 [PR #73]: https://github.com/chenxiaolong/BasicSync/pull/73
+[PR #76]: https://github.com/chenxiaolong/BasicSync/pull/76
