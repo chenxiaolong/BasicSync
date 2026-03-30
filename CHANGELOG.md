@@ -12,6 +12,7 @@
 * Stop automatically replacing `127.0.0.1` with `::1` for the GUI listen address ([PR #76])
   * This was originally intended to make the GUI dual-stack, but didn't actually work that way. Now, the default behavior matches upstream Syncthing.
 * Fix sync protocol listen addresses being reset after a full restart of Syncthing ([Issue #75], [PR #77])
+* Sync translations from Weblate ([PR #74])
 
 ### Version 1.19
 
@@ -199,5 +200,6 @@
 [PR #70]: https://github.com/chenxiaolong/BasicSync/pull/70
 [PR #71]: https://github.com/chenxiaolong/BasicSync/pull/71
 [PR #73]: https://github.com/chenxiaolong/BasicSync/pull/73
+[PR #74]: https://github.com/chenxiaolong/BasicSync/pull/74
 [PR #76]: https://github.com/chenxiaolong/BasicSync/pull/76
 [PR #77]: https://github.com/chenxiaolong/BasicSync/pull/77
