@@ -17,7 +17,6 @@ import (
 	"io"
 	"log"
 	"log/slog"
-	"net"
 	"os"
 	"path/filepath"
 	"strings"
@@ -280,15 +279,6 @@ func Run(startup *SyncthingStartupConfig) error {
 	go cfg.Serve(ctx)
 
 	waiter, err := cfg.Modify(func(c *config.Configuration) {
-		// Allow connecting over both IPv4 and IPv6 loopback.
-		if c.GUI.Network() == "tcp" {
-			guiHost, guiPort, err := net.SplitHostPort(c.GUI.Address())
-			if err == nil && guiHost == "127.0.0.1" {
-				log.Printf("Replacing 127.0.0.1 with ::1 for dual-stack")
-				c.GUI.RawAddress = net.JoinHostPort("::1", guiPort)
-			}
-		}
-
 		// Try to stick with existing ports, but always allow picking new ones
 		// so that running multiple instances of the app (eg. for debugging) is
 		// possible.
