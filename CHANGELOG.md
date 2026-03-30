@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.20
 
 * Stop automatically replacing `127.0.0.1` with `::1` for the GUI listen address ([PR #76])
   * This was originally intended to make the GUI dual-stack, but didn't actually work that way. Now, the default behavior matches upstream Syncthing.
