@@ -17,6 +17,7 @@ import androidx.fragment.app.setFragmentResult
 import com.chiller3.basicsync.Preferences
 import com.chiller3.basicsync.R
 import com.chiller3.basicsync.databinding.DialogTextInputBinding
+import com.chiller3.basicsync.syncthing.DeviceStateTracker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SyncScheduleDialogFragment : DialogFragment() {
@@ -134,5 +135,7 @@ class SyncScheduleDialogFragment : DialogFragment() {
 
         (dialog as AlertDialog?)?.getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled =
             cycleMs != null && syncMs != null && syncMs < cycleMs
+                    && syncMs >= DeviceStateTracker.MINIMUM_SYNC_MS
+                    && cycleMs >= DeviceStateTracker.MINIMUM_CYCLE_MS
     }
 }

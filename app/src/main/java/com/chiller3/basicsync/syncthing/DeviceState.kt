@@ -5,6 +5,7 @@
 
 package com.chiller3.basicsync.syncthing
 
+import android.app.AlarmManager
 import android.content.BroadcastReceiver
 import android.content.ContentResolver
 import android.content.Context
@@ -204,6 +205,13 @@ class DeviceStateTracker(private val context: Context) :
     companion object {
         private val TAG = DeviceStateTracker::class.java.simpleName
 
+        // Equal to AlarmManagerService.DEFAULT_MIN_FUTURITY in AOSP. This is the minimum duration
+        // in milliseconds into the future that AlarmManager allows setting an alarm for.
+        private const val MIN_FUTURITY = 5 * 1000
+
+        const val MINIMUM_CYCLE_MS = 2 * MIN_FUTURITY
+        const val MINIMUM_SYNC_MS = MIN_FUTURITY
+
         private fun getProxyInfo(): ProxyInfo {
             val proxyHost = System.getProperty("http.proxyHost")
             val proxyPort = System.getProperty("http.proxyPort")
@@ -233,8 +241,7 @@ class DeviceStateTracker(private val context: Context) :
     private val connectivityManager = context.getSystemService(ConnectivityManager::class.java)
     private val wifiManager = context.getSystemService(WifiManager::class.java)
     private val powerManager = context.getSystemService(PowerManager::class.java)
-
-    private var timeReferenceMs = SystemClock.uptimeMillis()
+    private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
     private var state: DeviceState = DeviceState(
         isBatterySaver = powerManager.isPowerSaveMode,
@@ -394,37 +401,46 @@ class DeviceStateTracker(private val context: Context) :
 
     private var autoSyncHandle: Any? = null
 
-    private val timeWindowCallback = object : Runnable {
-        override fun run() {
-            handler.removeCallbacks(this)
+    private val timeScheduleListener = object : AlarmManager.OnAlarmListener {
+        override fun onAlarm() {
+            alarmManager.cancel(this)
 
-            var canRun = true
+            val canRun = if (prefs.syncSchedule) {
+                val cycleDurationMs = max(prefs.scheduleCycleMs, MINIMUM_CYCLE_MS)
+                val syncDurationMs = max(prefs.scheduleSyncMs, MINIMUM_SYNC_MS)
+                val now = SystemClock.elapsedRealtime()
+                val inWindow = !state.isInTimeWindow
 
-            if (prefs.syncSchedule) {
-                val cycleDurationMs = max(prefs.scheduleCycleMs, 1000)
-                val syncDurationMs = max(prefs.scheduleSyncMs, 500)
-
-                val now = SystemClock.uptimeMillis()
-                val relativeStart = (now - timeReferenceMs) / cycleDurationMs * cycleDurationMs
-                val windowStart = timeReferenceMs + relativeStart
-                val windowEnd = windowStart + syncDurationMs
-                canRun = now in windowStart until windowEnd
-
-                val nextCheckMs = if (canRun) {
-                    windowEnd
+                val wake = if (inWindow) {
+                    now + syncDurationMs
                 } else {
-                    windowStart + cycleDurationMs
+                    now + (cycleDurationMs - syncDurationMs)
                 }
 
-                Log.d(TAG, "Time window updated: now=$now, window=[$windowStart, $windowEnd)")
+                alarmManager.set(
+                    AlarmManager.ELAPSED_REALTIME,
+                    wake,
+                    "time_schedule",
+                    this,
+                    handler,
+                )
 
-                handler.postAtTime(this, nextCheckMs)
+                Log.d(TAG, "Time window updated: now=$now, inWindow=$inWindow, preferredWake=$wake")
+                inWindow
             } else {
                 Log.d(TAG, "Time schedule is disabled")
+                true
             }
 
             state = state.copy(isInTimeWindow = canRun)
         }
+    }
+
+    private val timeScheduleReset = Runnable {
+        Log.d(TAG, "Resetting time schedule listener")
+
+        state = state.copy(isInTimeWindow = false)
+        timeScheduleListener.onAlarm()
     }
 
     private val proxyChangeReceiver = object : BroadcastReceiver() {
@@ -460,7 +476,11 @@ class DeviceStateTracker(private val context: Context) :
             Preferences.PREF_SYNC_SCHEDULE,
             Preferences.PREF_SCHEDULE_CYCLE_MS,
             Preferences.PREF_SCHEDULE_SYNC_MS -> {
-                timeWindowCallback.run()
+                Log.d(TAG, "Preference $key changed")
+
+                // Try to debounce since these are generally changed at the same time.
+                handler.removeCallbacks(timeScheduleReset)
+                handler.post(timeScheduleReset)
             }
             // PREF_ALLOWED_WIFI_NETWORKS is checked in SyncthingService because we need the service
             // to request the location foreground permission first.
@@ -487,7 +507,7 @@ class DeviceStateTracker(private val context: Context) :
             autoSyncObserver,
         )
         autoSyncObserver.onStatusChanged(ContentResolver.SYNC_OBSERVER_TYPE_SETTINGS)
-        timeWindowCallback.run()
+        timeScheduleListener.onAlarm()
         context.registerReceiver(
             proxyChangeReceiver,
             IntentFilter(Proxy.PROXY_CHANGE_ACTION),
@@ -508,7 +528,8 @@ class DeviceStateTracker(private val context: Context) :
         context.unregisterReceiver(batteryStatusReceiver)
         context.unregisterReceiver(batterySaverReceiver)
         ContentResolver.removeStatusChangeListener(autoSyncHandle)
-        handler.removeCallbacks(timeWindowCallback)
+        alarmManager.cancel(timeScheduleListener)
+        handler.removeCallbacks(timeScheduleReset)
         context.unregisterReceiver(proxyChangeReceiver)
 
         this.listener = null
