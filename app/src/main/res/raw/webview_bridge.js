@@ -17,12 +17,19 @@ function addFolderPicker(element) {
     button.classList.add('btn-default');
     button.setAttribute('data-container', 'body');
     button.setAttribute('data-original-title', BasicSync.getTranslation('select_folder'));
+    button.setAttribute('ng-disabled', 'editingFolderExisting()');
     $(button).tooltip();
     button.appendChild(icon);
 
     const buttonGroup = document.createElement('span');
     buttonGroup.classList.add('input-group-btn');
-    buttonGroup.appendChild(button);
+
+    angular.element(document).injector().invoke(function($compile) {
+        const scope = angular.element(element).scope();
+        $compile(button)(scope);
+
+        buttonGroup.appendChild(button);
+    });
 
     const inputGroup = document.createElement('div');
     inputGroup.classList.add('input-group');
