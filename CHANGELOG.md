@@ -22,6 +22,7 @@
 * Backport upstream golang fix to resolve crash on 32-bit devices running Android <11 ([PR #90])
 * Update golang to 1.26.2 ([PR #92])
 * Simplify workaround for avoiding pidfd crash on Android <=11 ([PR #91])
+* Sync translations from Weblate ([PR #78])
 
 ### Version 1.20
 
@@ -221,6 +222,7 @@
 [PR #74]: https://github.com/chenxiaolong/BasicSync/pull/74
 [PR #76]: https://github.com/chenxiaolong/BasicSync/pull/76
 [PR #77]: https://github.com/chenxiaolong/BasicSync/pull/77
+[PR #78]: https://github.com/chenxiaolong/BasicSync/pull/78
 [PR #84]: https://github.com/chenxiaolong/BasicSync/pull/84
 [PR #85]: https://github.com/chenxiaolong/BasicSync/pull/85
 [PR #87]: https://github.com/chenxiaolong/BasicSync/pull/87
