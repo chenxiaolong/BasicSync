@@ -124,4 +124,5 @@
     <string name="blocked_reason_battery_saver">• 省电模式已启用</string>
     <string name="blocked_reason_auto_sync_data">• 自动同步数据已禁用</string>
     <string name="blocked_reason_time_schedule">• 超出时间表范围</string>
+    <string name="blocked_reason_no_storage_permissions">• 存储权限被拒绝</string>
 </resources>
