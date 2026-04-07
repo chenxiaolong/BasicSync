@@ -11,6 +11,8 @@
 
 * Exclude Syncthing database during imports and exports ([PR #85])
   * This makes it always safe to import a config, even, for example, on a new device that doesn't have any data from the shared folders.
+* Improve Android backup opt-out to also include D2D transfers since those cannot be done safely ([PR #87])
+  * Users should use the builtin import/export mechanism instead.
 
 ### Version 1.20
 
