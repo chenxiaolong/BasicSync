@@ -19,6 +19,7 @@
   * This prevents data loss because when the permission is denied, Android only hides files, not folders. `.stfolder` remains visible, so Syncthing would think all files were deleted.
 * Fix folder picker button incorrectly being clickable when editing existing shared folder ([PR #89])
 * Backport upstream golang fix to resolve crash on 32-bit devices running Android <11 ([PR #90])
+* Simplify workaround for avoiding pidfd crash on Android <=11 ([PR #91])
 
 ### Version 1.20
 
@@ -223,3 +224,4 @@
 [PR #88]: https://github.com/chenxiaolong/BasicSync/pull/88
 [PR #89]: https://github.com/chenxiaolong/BasicSync/pull/89
 [PR #90]: https://github.com/chenxiaolong/BasicSync/pull/90
+[PR #91]: https://github.com/chenxiaolong/BasicSync/pull/91
