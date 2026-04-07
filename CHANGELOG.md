@@ -10,12 +10,12 @@
 ### Unreleased
 
 * Fix time schedule feature to use the system's realtime clock that still advances while the device is in deep sleep ([Issue #83], [PR #84])
-* Exclude Syncthing database during imports and exports ([PR #85])
+* Exclude Syncthing database during imports and exports ([Issue #86], [PR #85])
   * This prevents data loss when importing a config if the actual files in shared folders are missing. Syncthing will now download missing files instead of thinking they were deleted.
   * This also allows exporting the config on one device and importing it on a different device.
 * Improve Android backup opt-out to also include D2D transfers since those cannot be done safely ([PR #87])
   * Users should use the builtin import/export mechanism instead.
-* Prevent Syncthing from running when the local storage permission is denied ([PR #88])
+* Prevent Syncthing from running when the local storage permission is denied ([Issue #86], [PR #88])
   * This prevents data loss because when the permission is denied, Android only hides files, not folders. `.stfolder` remains visible, so Syncthing would think all files were deleted.
 * Fix folder picker button incorrectly being clickable when editing existing shared folder ([PR #89])
 * Backport upstream golang fix to resolve crash on 32-bit devices running Android <11 ([PR #90])
@@ -159,6 +159,7 @@
 [Issue #68]: https://github.com/chenxiaolong/BasicSync/issues/68
 [Issue #75]: https://github.com/chenxiaolong/BasicSync/issues/75
 [Issue #83]: https://github.com/chenxiaolong/BasicSync/issues/83
+[Issue #86]: https://github.com/chenxiaolong/BasicSync/issues/86
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
