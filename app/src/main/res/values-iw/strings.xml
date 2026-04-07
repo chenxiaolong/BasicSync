@@ -91,16 +91,16 @@
     <string name="notification_channel_persistent_desc">שומר על ריצת Syncthing ברקע</string>
     <string name="notification_channel_failure_name">התרעות כשל</string>
     <string name="notification_channel_failure_desc">התרעות עבור שגיאות בעת התחלת Syncthing</string>
-    <string name="notification_persistent_running_title">‪Syncthing‬ פועל</string>
-    <string name="notification_persistent_not_running_title">‪Syncthing‬ אינו פועל</string>
-    <string name="notification_persistent_paused_title">‪Syncthing‬ מופסק</string>
-    <string name="notification_persistent_starting_title">‪Syncthing‬ מתחיל</string>
-    <string name="notification_persistent_stopping_title">‪Syncthing‬ עוצר</string>
-    <string name="notification_persistent_pausing_title">‪Syncthing‬ מפסיק</string>
+    <string name="notification_persistent_running_title">היישום Syncthing פועל</string>
+    <string name="notification_persistent_not_running_title">היישום Syncthing אינו פועל</string>
+    <string name="notification_persistent_paused_title">היישום Syncthing מופסק</string>
+    <string name="notification_persistent_starting_title">היישום Syncthing מתחיל</string>
+    <string name="notification_persistent_stopping_title">היישום Syncthing עוצר</string>
+    <string name="notification_persistent_pausing_title">היישום Syncthing מפסיק</string>
     <string name="notification_persistent_importing_title">התצורה מיובאת</string>
     <string name="notification_persistent_exporting_title">התצורה מיוצאת</string>
     <string name="notification_failure_run_title">הרצת Syncthing נכשלה</string>
-    <string name="notification_failure_run_message">‪Syncthing‬ נכשל לרוץ כראוי. כדי למנוע לולאת אתחול, Syncthing נעצר וכוון למצב ידני.</string>
+    <string name="notification_failure_run_message">היישום Syncthing נכשל לרוץ כראוי. כדי למנוע לולאת אתחול, Syncthing נעצר וכוון למצב ידני.</string>
     <string name="notification_action_auto_mode">מצב אוטומטי</string>
     <string name="notification_action_manual_mode">מצב ידני</string>
     <string name="notification_action_start">התחלה</string>
@@ -127,7 +127,7 @@
     </plurals>
     <plurals name="duration_hours">
         <item quantity="one">שעה אחת</item>
-        <item quantity="two">%d שעות</item>
+        <item quantity="two">שעתיים</item>
         <item quantity="other">%d שעות</item>
     </plurals>
 </resources>
