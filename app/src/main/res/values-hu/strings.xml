@@ -137,4 +137,8 @@
         <item quantity="one">%d óra</item>
         <item quantity="other">%d óra</item>
     </plurals>
+    <string name="pref_remote_control_desc"></string>
+    <string name="pref_remote_control_name"></string>
+    <string name="blocked_reason_no_storage_permissions"></string>
+    <string name="pref_header_advanced"></string>
 </resources>
