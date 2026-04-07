@@ -20,7 +20,6 @@ import androidx.annotation.GuardedBy
 import androidx.annotation.WorkerThread
 import androidx.core.app.ServiceCompat
 import com.chiller3.basicsync.Notifications
-import com.chiller3.basicsync.Permissions
 import com.chiller3.basicsync.Preferences
 import com.chiller3.basicsync.binding.stbridge.Stbridge
 import com.chiller3.basicsync.binding.stbridge.SyncthingApp
