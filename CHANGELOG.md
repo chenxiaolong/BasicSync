@@ -16,6 +16,7 @@
   * Users should use the builtin import/export mechanism instead.
 * Prevent Syncthing from running when the local storage permission is denied ([PR #88])
   * This prevents data loss because when the permission is denied, Android only hides files, not folders. `.stfolder` remains visible, so Syncthing would think all files were deleted.
+* Fix folder picker button incorrectly being clickable when editing existing shared folder ([PR #89])
 
 ### Version 1.20
 
@@ -216,3 +217,4 @@
 [PR #85]: https://github.com/chenxiaolong/BasicSync/pull/85
 [PR #87]: https://github.com/chenxiaolong/BasicSync/pull/87
 [PR #88]: https://github.com/chenxiaolong/BasicSync/pull/88
+[PR #89]: https://github.com/chenxiaolong/BasicSync/pull/89
