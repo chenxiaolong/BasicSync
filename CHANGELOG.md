@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.21
 
 * Update syncthing to 2.0.16 ([PR #93])
 * Fix time schedule feature to use the system's realtime clock that still advances while the device is in deep sleep ([Issue #83], [PR #84])
