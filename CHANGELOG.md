@@ -9,6 +9,7 @@
 
 ### Unreleased
 
+* Update syncthing to 2.0.16 ([PR #93])
 * Fix time schedule feature to use the system's realtime clock that still advances while the device is in deep sleep ([Issue #83], [PR #84])
 * Exclude Syncthing database during imports and exports ([Issue #86], [PR #85])
   * This prevents data loss when importing a config if the actual files in shared folders are missing. Syncthing will now download missing files instead of thinking they were deleted.
@@ -228,3 +229,4 @@
 [PR #90]: https://github.com/chenxiaolong/BasicSync/pull/90
 [PR #91]: https://github.com/chenxiaolong/BasicSync/pull/91
 [PR #92]: https://github.com/chenxiaolong/BasicSync/pull/92
+[PR #93]: https://github.com/chenxiaolong/BasicSync/pull/93
