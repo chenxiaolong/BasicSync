@@ -9,6 +9,7 @@
 
 ### Unreleased
 
+* Fix time schedule feature to use the system's realtime clock that still advances while the device is in deep sleep ([Issue #83], [PR #84])
 * Exclude Syncthing database during imports and exports ([PR #85])
   * This prevents data loss when importing a config if the actual files in shared folders are missing. Syncthing will now download missing files instead of thinking they were deleted.
   * This also allows exporting the config on one device and importing it on a different device.
@@ -155,6 +156,7 @@
 [Issue #54]: https://github.com/chenxiaolong/BasicSync/issues/54
 [Issue #68]: https://github.com/chenxiaolong/BasicSync/issues/68
 [Issue #75]: https://github.com/chenxiaolong/BasicSync/issues/75
+[Issue #83]: https://github.com/chenxiaolong/BasicSync/issues/83
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -214,6 +216,7 @@
 [PR #74]: https://github.com/chenxiaolong/BasicSync/pull/74
 [PR #76]: https://github.com/chenxiaolong/BasicSync/pull/76
 [PR #77]: https://github.com/chenxiaolong/BasicSync/pull/77
+[PR #84]: https://github.com/chenxiaolong/BasicSync/pull/84
 [PR #85]: https://github.com/chenxiaolong/BasicSync/pull/85
 [PR #87]: https://github.com/chenxiaolong/BasicSync/pull/87
 [PR #88]: https://github.com/chenxiaolong/BasicSync/pull/88
