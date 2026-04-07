@@ -7,6 +7,11 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Exclude Syncthing database during imports and exports ([PR #85])
+  * This makes it always safe to import a config, even, for example, on a new device that doesn't have any data from the shared folders.
+
 ### Version 1.20
 
 * Stop automatically replacing `127.0.0.1` with `::1` for the GUI listen address ([PR #76])
@@ -203,3 +208,4 @@
 [PR #74]: https://github.com/chenxiaolong/BasicSync/pull/74
 [PR #76]: https://github.com/chenxiaolong/BasicSync/pull/76
 [PR #77]: https://github.com/chenxiaolong/BasicSync/pull/77
+[PR #85]: https://github.com/chenxiaolong/BasicSync/pull/85
