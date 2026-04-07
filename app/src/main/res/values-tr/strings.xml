@@ -127,4 +127,5 @@
         <item quantity="one">%d saat</item>
         <item quantity="other">%d saat</item>
     </plurals>
+    <string name="blocked_reason_no_storage_permissions"></string>
 </resources>
