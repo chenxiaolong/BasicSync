@@ -137,5 +137,4 @@
     <string name="pref_header_advanced">進階</string>
     <string name="pref_remote_control_name">允許遠端控制</string>
     <string name="pref_remote_control_desc">允許外部應用程式將 Syncthing 切換至自動模式，或手動進行啟動及停止。</string>
-    <string name="blocked_reason_no_storage_permissions"></string>
 </resources>

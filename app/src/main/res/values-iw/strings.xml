@@ -130,5 +130,4 @@
         <item quantity="two">שעתיים</item>
         <item quantity="other">%d שעות</item>
     </plurals>
-    <string name="blocked_reason_no_storage_permissions"></string>
 </resources>
