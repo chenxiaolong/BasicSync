@@ -10,9 +10,12 @@
 ### Unreleased
 
 * Exclude Syncthing database during imports and exports ([PR #85])
-  * This makes it always safe to import a config, even, for example, on a new device that doesn't have any data from the shared folders.
+  * This prevents data loss when importing a config if the actual files in shared folders are missing. Syncthing will now download missing files instead of thinking they were deleted.
+  * This also allows exporting the config on one device and importing it on a different device.
 * Improve Android backup opt-out to also include D2D transfers since those cannot be done safely ([PR #87])
   * Users should use the builtin import/export mechanism instead.
+* Prevent Syncthing from running when the local storage permission is denied ([PR #88])
+  * This prevents data loss because when the permission is denied, Android only hides files, not folders. `.stfolder` remains visible, so Syncthing would think all files were deleted.
 
 ### Version 1.20
 
@@ -211,3 +214,5 @@
 [PR #76]: https://github.com/chenxiaolong/BasicSync/pull/76
 [PR #77]: https://github.com/chenxiaolong/BasicSync/pull/77
 [PR #85]: https://github.com/chenxiaolong/BasicSync/pull/85
+[PR #87]: https://github.com/chenxiaolong/BasicSync/pull/87
+[PR #88]: https://github.com/chenxiaolong/BasicSync/pull/88
