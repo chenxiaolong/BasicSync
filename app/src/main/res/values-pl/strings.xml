@@ -133,4 +133,5 @@
     <string name="pref_header_advanced">Zaawansowane</string>
     <string name="pref_remote_control_name">Zezwól na zdalne sterowanie</string>
     <string name="pref_remote_control_desc">Zezwól zewnętrznym aplikacjom na przełączanie w tryb automatyczny lub ręczne uruchamianie i zatrzymywanie Syncthing.</string>
+    <string name="blocked_reason_no_storage_permissions">• Odmowa dostępu do plików</string>
 </resources>
