@@ -222,6 +222,8 @@
     <!-- Button shown in the background notification to stop Syncthing. This is only shown in manual mode. This currently does not distinguish between stopping and pausing. The text should represent "stop". -->
     <string name="notification_action_stop">Stop</string>
 
+    <!-- Syncing is blocked because local storage permissions have not been granted. -->
+    <string name="blocked_reason_no_storage_permissions">• Storage permissions denied</string>
     <!-- Syncing is blocked because it was manually stopped due to switching to auto-mode and stopping/pausing the service. -->
     <string name="blocked_reason_manual">• Manually stopped</string>
     <!-- Syncing is blocked because the device is disconnected from all networks (e.g. airplane mode). -->

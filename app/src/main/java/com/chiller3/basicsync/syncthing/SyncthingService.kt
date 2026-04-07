@@ -20,6 +20,7 @@ import androidx.annotation.GuardedBy
 import androidx.annotation.WorkerThread
 import androidx.core.app.ServiceCompat
 import com.chiller3.basicsync.Notifications
+import com.chiller3.basicsync.Permissions
 import com.chiller3.basicsync.Preferences
 import com.chiller3.basicsync.binding.stbridge.Stbridge
 import com.chiller3.basicsync.binding.stbridge.SyncthingApp
@@ -189,14 +190,17 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     private val blockedReasons: EnumSet<BlockedReason>
         @GuardedBy("stateLock")
-        get() = if (prefs.isManualMode) {
-            if (prefs.manualShouldRun) {
-                EnumSet.noneOf(BlockedReason::class.java)
-            } else {
-                EnumSet.of(BlockedReason.MANUAL)
+        get() = deviceState.blockedReasons(this, prefs).apply {
+            if (prefs.isManualMode) {
+                val oldSize = size
+                retainAll { it.blocksStart }
+
+                Log.d(TAG, "Ignoring ${oldSize - size} non-fatal blocked reason(s) due to manual mode")
+
+                if (!prefs.manualShouldRun) {
+                    add(BlockedReason.MANUAL)
+                }
             }
-        } else {
-            deviceState.blockedReasons(this, prefs)
         }
 
     @GuardedBy("stateLock")
@@ -209,6 +213,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     private val shouldStart: Boolean
         @GuardedBy("stateLock")
         get() = shouldThreadRun && (prefs.keepAlive || shouldResume)
+                && blockedReasons.none { it.blocksStart }
 
     @GuardedBy("stateLock")
     private val preRunActions = mutableListOf<PreRunAction>()

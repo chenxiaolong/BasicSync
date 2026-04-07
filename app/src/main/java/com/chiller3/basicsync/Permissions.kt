@@ -12,6 +12,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.core.content.ContextCompat
@@ -64,4 +65,11 @@ object Permissions {
         Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
         Uri.fromParts("package", context.packageName, null),
     )
+
+    /** Whether local storage permissions have been granted. */
+    fun haveLocalStorage(context: Context) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        Environment.isExternalStorageManager()
+    } else {
+        have(context, LEGACY_STORAGE)
+    }
 }

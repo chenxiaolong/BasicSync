@@ -45,6 +45,7 @@ data class ProxyInfo(
 )
 
 enum class BlockedReason {
+    NO_STORAGE_PERMISSIONS,
     MANUAL,
     DISCONNECTED,
     METERED_NETWORK,
@@ -58,6 +59,7 @@ enum class BlockedReason {
 
     fun toString(context: Context): String {
         val stringId = when (this) {
+            NO_STORAGE_PERMISSIONS -> R.string.blocked_reason_no_storage_permissions
             MANUAL -> R.string.blocked_reason_manual
             DISCONNECTED -> R.string.blocked_reason_disconnected
             METERED_NETWORK -> R.string.blocked_reason_metered_network
@@ -72,6 +74,10 @@ enum class BlockedReason {
 
         return context.getString(stringId)
     }
+
+    /** Whether this reason needs to entirely block Syncthing from running at all. */
+    val blocksStart: Boolean
+        get() = this == NO_STORAGE_PERMISSIONS
 }
 
 data class DeviceState(
@@ -119,6 +125,10 @@ data class DeviceState(
 
     fun blockedReasons(context: Context, prefs: Preferences): EnumSet<BlockedReason> {
         val reasons = EnumSet.noneOf(BlockedReason::class.java)
+
+        if (!Permissions.haveLocalStorage(context)) {
+            reasons.add(BlockedReason.NO_STORAGE_PERMISSIONS)
+        }
 
         if (!isNetworkConnected) {
             Log.d(TAG, "Blocked due to lack of network connectivity")

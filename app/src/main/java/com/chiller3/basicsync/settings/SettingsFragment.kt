@@ -11,7 +11,6 @@ import android.content.SharedPreferences
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
@@ -112,6 +111,12 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
             } else {
                 startActivity(Permissions.getAppInfoIntent(requireContext()))
             }
+        }
+    private val requestExternalStorageManager =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            // We intentionally don't check resultCode here because going back to the app after
+            // granting the permission results in RESULT_CANCELED.
+            SyncthingService.start(requireContext(), SyncthingService.ACTION_RENOTIFY)
         }
     private val requestDisableAppHibernation =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -310,11 +315,7 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
         val allowedNotifications = Permissions.have(context, Permissions.NOTIFICATION)
         prefAllowNotifications.isVisible = !allowedNotifications
 
-        val allowedLocalStorage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Environment.isExternalStorageManager()
-        } else {
-            Permissions.have(context, Permissions.LEGACY_STORAGE)
-        }
+        val allowedLocalStorage = Permissions.haveLocalStorage(context)
         prefLocalStorageAccess.isVisible = !allowedLocalStorage
 
         // Hide this while loading to avoid jank in the usual case.
@@ -457,7 +458,7 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
                         "package:${BuildConfig.APPLICATION_ID}".toUri(),
                     )
 
-                    startActivity(intent)
+                    requestExternalStorageManager.launch(intent)
                 } else {
                     requestPermissionRequired.launch(Permissions.LEGACY_STORAGE)
                 }
