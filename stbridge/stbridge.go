@@ -447,6 +447,10 @@ func Run(startup *SyncthingStartupConfig) error {
 	return nil
 }
 
+func isDatabase(relPath string) bool {
+	return strings.HasPrefix(filepath.Clean(relPath), "index-")
+}
+
 func ZipErrorWrongPassword() string {
 	return zip.ErrPassword.Error()
 }
@@ -498,6 +502,15 @@ func ImportConfiguration(fd int, name string, password string) error {
 		defer entry.Close()
 
 		if f.FileInfo().IsDir() {
+			return nil
+		}
+
+		// We intentionally skip the database to ensure that Syncthing pulls
+		// down missing files instead of assuming that they were deleted. The
+		// service could take much longer to rescan the folders if all of the
+		// data is already present, but this is much safer.
+		if isDatabase(f.Name) {
+			log.Printf("Skipping: %q", f.Name)
 			return nil
 		}
 
@@ -570,6 +583,11 @@ func ExportConfiguration(fd int, name string, password string) error {
 		relPath, err := filepath.Rel(configDir, path)
 		if err != nil {
 			return fmt.Errorf("failed to compute relative path: %q: %w", path, err)
+		}
+
+		if isDatabase(relPath) {
+			log.Printf("Skipping: %q", relPath)
+			return nil
 		}
 
 		input, err := os.Open(path)
