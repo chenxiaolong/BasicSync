@@ -1,0 +1,1 @@
+Una aplicación sencilla para ejecutar Syncthing en Android
