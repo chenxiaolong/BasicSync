@@ -143,4 +143,5 @@
     <string name="pref_header_advanced">Avansat</string>
     <string name="pref_remote_control_name">Permite controlul de la distanță</string>
     <string name="pref_remote_control_desc">Permite aplicațiilor externe să treacă în modul automat sau să pornească și să oprească manual Syncthing.</string>
+    <string name="blocked_reason_no_storage_permissions">• Permisiuni de stocare refuzate</string>
 </resources>
