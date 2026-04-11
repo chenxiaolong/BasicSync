@@ -418,7 +418,7 @@ class DeviceStateTracker(private val context: Context) :
                 }
 
                 alarmManager.set(
-                    AlarmManager.ELAPSED_REALTIME,
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     wake,
                     "time_schedule",
                     this,
