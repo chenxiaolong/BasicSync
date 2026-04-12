@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Switch to using exact alarms for the time schedule feature ([Issue #83], [PR #97])
+
 ### Version 1.21
 
 * Update syncthing to 2.0.16 ([PR #93])
@@ -232,3 +236,4 @@
 [PR #91]: https://github.com/chenxiaolong/BasicSync/pull/91
 [PR #92]: https://github.com/chenxiaolong/BasicSync/pull/92
 [PR #93]: https://github.com/chenxiaolong/BasicSync/pull/93
+[PR #97]: https://github.com/chenxiaolong/BasicSync/pull/97
