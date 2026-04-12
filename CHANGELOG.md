@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.22
 
 * Switch to using exact alarms for the time schedule feature ([Issue #83], [PR #97])
 * Sync translations from Weblate ([PR #94])
