@@ -6,6 +6,7 @@
 package com.chiller3.basicsync.syncthing
 
 import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.ContentResolver
 import android.content.Context
@@ -26,6 +27,8 @@ import android.os.Looper
 import android.os.PowerManager
 import android.os.SystemClock
 import android.util.Log
+import androidx.core.app.AlarmManagerCompat
+import androidx.core.content.ContextCompat
 import com.chiller3.basicsync.Permissions
 import com.chiller3.basicsync.Preferences
 import com.chiller3.basicsync.R
@@ -211,6 +214,8 @@ class DeviceStateTracker(private val context: Context) :
 
         const val MINIMUM_CYCLE_MS = 2 * MIN_FUTURITY
         const val MINIMUM_SYNC_MS = MIN_FUTURITY
+
+        private var alarmId = 0
 
         private fun getProxyInfo(): ProxyInfo {
             val proxyHost = System.getProperty("http.proxyHost")
@@ -401,9 +406,22 @@ class DeviceStateTracker(private val context: Context) :
 
     private var autoSyncHandle: Any? = null
 
-    private val timeScheduleListener = object : AlarmManager.OnAlarmListener {
-        override fun onAlarm() {
-            alarmManager.cancel(this)
+    private val timeScheduleAction = "${javaClass.canonicalName}.ALARM.$alarmId".apply {
+        alarmId += 1
+    }
+    private val timeSchedulePendingIntent = PendingIntent.getBroadcast(
+        context,
+        0,
+        Intent(timeScheduleAction).apply {
+            setPackage(context.packageName)
+        },
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+    )
+
+    // The OnAlarmListener variant of setExactAndAllowWhileIdle() isn't available until API 37.
+    private val timeScheduleReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            alarmManager.cancel(timeSchedulePendingIntent)
 
             val canRun = if (prefs.syncSchedule) {
                 val cycleDurationMs = max(prefs.scheduleCycleMs, MINIMUM_CYCLE_MS)
@@ -417,15 +435,22 @@ class DeviceStateTracker(private val context: Context) :
                     now + (cycleDurationMs - syncDurationMs)
                 }
 
-                alarmManager.set(
-                    AlarmManager.ELAPSED_REALTIME,
-                    wake,
-                    "time_schedule",
-                    this,
-                    handler,
-                )
+                val exact = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
+                if (exact) {
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        wake,
+                        timeSchedulePendingIntent,
+                    )
+                } else {
+                    alarmManager.setAndAllowWhileIdle(
+                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        wake,
+                        timeSchedulePendingIntent,
+                    )
+                }
 
-                Log.d(TAG, "Time window updated: now=$now, inWindow=$inWindow, preferredWake=$wake")
+                Log.d(TAG, "Time window updated: now=$now, inWindow=$inWindow, wake=$wake, exact=$exact")
                 inWindow
             } else {
                 Log.d(TAG, "Time schedule is disabled")
@@ -440,7 +465,7 @@ class DeviceStateTracker(private val context: Context) :
         Log.d(TAG, "Resetting time schedule listener")
 
         state = state.copy(isInTimeWindow = false)
-        timeScheduleListener.onAlarm()
+        timeScheduleReceiver.onReceive(context, Intent())
     }
 
     private val proxyChangeReceiver = object : BroadcastReceiver() {
@@ -507,7 +532,13 @@ class DeviceStateTracker(private val context: Context) :
             autoSyncObserver,
         )
         autoSyncObserver.onStatusChanged(ContentResolver.SYNC_OBSERVER_TYPE_SETTINGS)
-        timeScheduleListener.onAlarm()
+        ContextCompat.registerReceiver(
+            context,
+            timeScheduleReceiver,
+            IntentFilter(timeScheduleAction),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
+        timeScheduleReceiver.onReceive(context, Intent())
         context.registerReceiver(
             proxyChangeReceiver,
             IntentFilter(Proxy.PROXY_CHANGE_ACTION),
@@ -528,7 +559,8 @@ class DeviceStateTracker(private val context: Context) :
         context.unregisterReceiver(batteryStatusReceiver)
         context.unregisterReceiver(batterySaverReceiver)
         ContentResolver.removeStatusChangeListener(autoSyncHandle)
-        alarmManager.cancel(timeScheduleListener)
+        context.unregisterReceiver(timeScheduleReceiver)
+        alarmManager.cancel(timeSchedulePendingIntent)
         handler.removeCallbacks(timeScheduleReset)
         context.unregisterReceiver(proxyChangeReceiver)
 
