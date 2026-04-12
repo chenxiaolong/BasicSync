@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Switch to using exact alarms for the time schedule feature ([Issue #83], [PR #97])
+* Sync translations from Weblate ([PR #94])
 
 ### Version 1.21
 
@@ -236,4 +237,5 @@
 [PR #91]: https://github.com/chenxiaolong/BasicSync/pull/91
 [PR #92]: https://github.com/chenxiaolong/BasicSync/pull/92
 [PR #93]: https://github.com/chenxiaolong/BasicSync/pull/93
+[PR #94]: https://github.com/chenxiaolong/BasicSync/pull/94
 [PR #97]: https://github.com/chenxiaolong/BasicSync/pull/97
