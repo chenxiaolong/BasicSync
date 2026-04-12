@@ -64,6 +64,9 @@ The app is intentionally kept very basic so that the project is easy to maintain
     * Optionally used for scanning a device's QR code when adding a new device.
 * `ACCESS_WIFI_STATE`, `ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`, `ACCESS_BACKGROUND_LOCATION`, `FOREGROUND_SERVICE_LOCATION`
     * Optionally used for stopping Syncthing unless connected to specific Wi-Fi networks.
+* `SCHEDULE_EXACT_ALARM`
+    * Optionally used for the time schedule feature. Otherwise, Android may significantly delay both the start and end of the time windows.
+    * The app will not prompt for this permission because it is only needed when battery optimizations are still enabled, which is strongly discouraged anyway.
 
 ## Remote web UI access
 
