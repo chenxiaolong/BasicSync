@@ -94,6 +94,19 @@ These broadcasts can also be sent via `adb`. For example:
 adb shell am broadcast -a com.chiller3.basicsync.AUTO_MODE com.chiller3.basicsync
 ```
 
+## Persistent notification
+
+Android 14 and newer [no longer allow](https://developer.android.com/about/versions/14/behavior-changes-all#non-dismissable-notifications) regular apps to prevent notifications from being dismissed. If the persistent notification gets inadvertently dismissed, just open the app again and the notification will reappear.
+
+Alternatively, to prevent the notification from being dismissed, use adb to grant the `SYSTEM_EXEMPT_FROM_DISMISSIBLE_NOTIFICATIONS` appops permission:
+
+```bash
+adb shell appops set com.chiller3.basicsync SYSTEM_EXEMPT_FROM_DISMISSIBLE_NOTIFICATIONS allow
+# To unfo the change, change "allow" to "default".
+```
+
+Note that Syncthing will continue to run as normal even if the notification is not visible.
+
 ## Verifying digital signatures
 
 First, use `apksigner` to print the digests of the APK signing certificate:
