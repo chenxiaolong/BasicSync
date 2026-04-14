@@ -7,6 +7,11 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Resend persistent notification if it is inadvertently dismissed on Android 14+ ([Issue #98], [PR #99])
+  * Folks who prefer to have no notification can still disable it from Android's settings.
+
 ### Version 1.22
 
 * Switch to using exact alarms for the time schedule feature ([Issue #83], [PR #97])
@@ -168,6 +173,7 @@
 [Issue #75]: https://github.com/chenxiaolong/BasicSync/issues/75
 [Issue #83]: https://github.com/chenxiaolong/BasicSync/issues/83
 [Issue #86]: https://github.com/chenxiaolong/BasicSync/issues/86
+[Issue #98]: https://github.com/chenxiaolong/BasicSync/issues/98
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -239,3 +245,4 @@
 [PR #93]: https://github.com/chenxiaolong/BasicSync/pull/93
 [PR #94]: https://github.com/chenxiaolong/BasicSync/pull/94
 [PR #97]: https://github.com/chenxiaolong/BasicSync/pull/97
+[PR #99]: https://github.com/chenxiaolong/BasicSync/pull/99
