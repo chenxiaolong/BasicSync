@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.23
 
 * Resend persistent notification if it is inadvertently dismissed on Android 14+ ([Issue #98], [PR #99])
   * Folks who prefer to have no notification can still disable it from Android's settings.
