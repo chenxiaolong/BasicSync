@@ -96,16 +96,16 @@ adb shell am broadcast -a com.chiller3.basicsync.AUTO_MODE com.chiller3.basicsyn
 
 ## Persistent notification
 
-Android 14 and newer [no longer allow](https://developer.android.com/about/versions/14/behavior-changes-all#non-dismissable-notifications) regular apps to prevent notifications from being dismissed. If the persistent notification gets inadvertently dismissed, just open the app again and the notification will reappear.
+Android 14 and newer [no longer allow](https://developer.android.com/about/versions/14/behavior-changes-all#non-dismissable-notifications) regular apps to prevent persistent notifications from being dismissed. To work around this, BasicSync will automatically show the persistent notification again whenever it is dismissed.
 
-Alternatively, to prevent the notification from being dismissed, use adb to grant the `SYSTEM_EXEMPT_FROM_DISMISSIBLE_NOTIFICATIONS` appops permission:
+To prevent the notification from being dismissible in the first place (eliminating the UI jank from reshowing the notification), use adb to grant the `SYSTEM_EXEMPT_FROM_DISMISSIBLE_NOTIFICATIONS` appops permission:
 
 ```bash
 adb shell appops set com.chiller3.basicsync SYSTEM_EXEMPT_FROM_DISMISSIBLE_NOTIFICATIONS allow
-# To unfo the change, change "allow" to "default".
+# To undo the change, change "allow" to "default".
 ```
 
-Note that Syncthing will continue to run as normal even if the notification is not visible.
+Also, if the persistent notification is not desired, it can be disabled from Android's settings by turning off the "Background services" notification category for BasicSync. Syncthing will continue to run as normal even if the notification is not visible.
 
 ## Verifying digital signatures
 

@@ -132,6 +132,18 @@ class Notifications(private val context: Context) {
             )
             setContentIntent(primaryPendingIntent)
 
+            val onDismissIntent = SyncthingService.createIntent(
+                context,
+                SyncthingService.ACTION_RENOTIFY,
+            )
+            val onDismissPendingIntent = PendingIntent.getService(
+                context,
+                0,
+                onDismissIntent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+            setDeleteIntent(onDismissPendingIntent)
+
             // Inhibit 10-second delay when showing persistent notification
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
