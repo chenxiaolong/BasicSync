@@ -22,4 +22,9 @@
     <string name="pref_export_configuration_desc">Export the current Syncthing configuration to a zip file.</string>
     <string name="pref_service_status_name">Syncthing status</string>
     <string name="pref_auto_mode_name">Auto mode</string>
+    <string name="pref_auto_mode_desc">Automatically start and stop based on the specified conditions.</string>
+    <string name="pref_network_conditions_name">Network conditions</string>
+    <string name="pref_network_conditions_desc">Run when connected to certain network types or Wi-Fi networks.</string>
+    <string name="pref_run_on_battery_name">Run on battery power</string>
+    <string name="pref_run_on_battery_desc">Run when the device is on battery power and the battery level is at least %1$d%%. Syncthing always runs when plugged in.</string>
 </resources>
