@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.24
 
 * Add support for reporting sync conflicts ([Issue #79], [PR #102])
 * Update dependencies ([PR #103])
