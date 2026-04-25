@@ -2,9 +2,6 @@
 
 <img src="app/images/icon.svg" alt="app icon" width="72" />
 
-![latest release badge](https://img.shields.io/github/v/release/chenxiaolong/BasicSync?sort=semver)
-![license badge](https://img.shields.io/github/license/chenxiaolong/BasicSync)
-
 BasicSync is a simple app for running Syncthing on Android.
 
 The app is intentionally kept very basic so that the project is easy to maintain and keep updated. BasicSync only controls when Syncthing runs. The actual configuration is done through Syncthing's own web UI.
@@ -181,6 +178,6 @@ If you are interested in implementing a new feature and would like to see it inc
 
 ## License
 
-BasicSync itself is licensed under GPLv3. Please see [`LICENSE`](./LICENSE) for the full license text.
+BasicSync itself is licensed under GPL-3.0-only. Please see [`LICENSE`](./LICENSE) for the full license text.
 
-The bundled Syncthing, along with the additional patches applied in [BasicSync's fork](https://github.com/chenxiaolong/syncthing), is [licensed under MPL 2.0](https://github.com/syncthing/syncthing/blob/main/LICENSE).
+The bundled Syncthing, along with the additional patches applied in [BasicSync's fork](https://github.com/chenxiaolong/syncthing), is [licensed under MPL-2.0](https://github.com/syncthing/syncthing/blob/main/LICENSE).
