@@ -128,4 +128,16 @@
         <item quantity="other">%d saat</item>
     </plurals>
     <string name="blocked_reason_no_storage_permissions">• Depolama izinleri reddedildi</string>
+    <string name="pref_conflicts_name">Eşitleme çakışmaları</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="one">%d dosya eşitleme sırasında bir çakışmayla karşılaştı.</item>
+        <item quantity="other">%d dosya eşitleme sırasında çakışmalarla karşılaştı.</item>
+    </plurals>
+    <string name="pref_conflicts_info">Aşağıdaki dosyalar eşitlenme sırasında çakışmalarla karşılaştı ve bunların el ile çözülmesi gerekiyor. Sistem dosya yöneticisinde üst dizini açmak için bir dosya seçin.</string>
+    <string name="notification_channel_conflicts_name">Eşitleme çakışmaları</string>
+    <string name="notification_channel_conflicts_desc">Eşitleme sırasında karşılaşılan çakışmalar için uyarılar</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="one">%d eşitleme çakışması bulundu</item>
+        <item quantity="other">%d eşitleme çakışması bulundu</item>
+    </plurals>
 </resources>
