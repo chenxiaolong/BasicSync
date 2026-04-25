@@ -12,20 +12,26 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import com.chiller3.basicsync.extension.expandTilde
+import com.chiller3.basicsync.extension.shortenTilde
 import com.chiller3.basicsync.extension.toSingleLineString
+import com.chiller3.basicsync.settings.ConflictsActivity
 import com.chiller3.basicsync.settings.SettingsActivity
 import com.chiller3.basicsync.settings.WebUiActivity
 import com.chiller3.basicsync.syncthing.SyncthingService
+import java.io.File
 
 class Notifications(private val context: Context) {
     companion object {
         private const val CHANNEL_ID_PERSISTENT = "persistent"
         private const val CHANNEL_ID_FAILURE = "failure"
+        private const val CHANNEL_ID_CONFLICTS = "conflicts"
 
         private val LEGACY_CHANNEL_IDS = arrayOf<String>()
 
         const val ID_PERSISTENT = -1
         private const val ID_FAILURE = -2
+        private const val ID_CONFLICTS = -3
     }
 
     private val notificationManager = context.getSystemService(NotificationManager::class.java)
@@ -48,6 +54,14 @@ class Notifications(private val context: Context) {
         description = context.getString(R.string.notification_channel_failure_desc)
     }
 
+    private fun createConflictsAlertsChannel() = NotificationChannel(
+        CHANNEL_ID_CONFLICTS,
+        context.getString(R.string.notification_channel_conflicts_name),
+        NotificationManager.IMPORTANCE_HIGH,
+    ).apply {
+        description = context.getString(R.string.notification_channel_conflicts_desc)
+    }
+
     /**
      * Ensure notification channels are up-to-date.
      *
@@ -57,6 +71,7 @@ class Notifications(private val context: Context) {
         notificationManager.createNotificationChannels(listOf(
             createPersistentChannel(),
             createFailureAlertsChannel(),
+            createConflictsAlertsChannel(),
         ))
         LEGACY_CHANNEL_IDS.forEach { notificationManager.deleteNotificationChannel(it) }
     }
@@ -176,5 +191,52 @@ class Notifications(private val context: Context) {
         }
 
         notificationManager.notify(ID_FAILURE, notification)
+    }
+
+    fun sendOrClearConflictsNotification(conflicts: List<String>) {
+        if (conflicts.isEmpty()) {
+            notificationManager.cancel(ID_CONFLICTS)
+            return
+        }
+
+        val notification = Notification.Builder(context, CHANNEL_ID_CONFLICTS).run {
+            val text = buildString {
+                for ((i, conflict) in conflicts.withIndex()) {
+                    if (i > 0) {
+                        append("\n")
+                    }
+                    if (i == 3) {
+                        append('…')
+                        break
+                    } else {
+                        append(File(conflict).expandTilde().shortenTilde())
+                    }
+                }
+            }
+
+            setContentTitle(context.resources.getQuantityString(
+                R.plurals.notification_conflicts_title,
+                conflicts.size,
+                conflicts.size,
+            ))
+            setContentText(text)
+            style = Notification.BigTextStyle()
+            setSmallIcon(R.drawable.ic_notifications)
+
+            val intent = Intent(context, ConflictsActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+            setContentIntent(pendingIntent)
+
+            build()
+        }
+
+        notificationManager.notify(ID_CONFLICTS, notification)
     }
 }

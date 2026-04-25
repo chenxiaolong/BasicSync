@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chiller3.basicsync.R
 import com.chiller3.basicsync.databinding.DialogFolderPickerBinding
+import com.chiller3.basicsync.extension.EXTERNAL_DIR
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import java.io.File
@@ -47,7 +48,7 @@ class FolderPickerDialogFragment : DialogFragment(), FolderPickerAdapter.Listene
 
         if (savedInstanceState == null) {
             val initialPath = arguments.getString(ARG_PATH)?.let { File(it) }
-            viewModel.navigate(initialPath ?: FolderPickerViewModel.EXTERNAL_DIR)
+            viewModel.navigate(initialPath ?: EXTERNAL_DIR)
         }
 
         val binding = DialogFolderPickerBinding.inflate(layoutInflater)

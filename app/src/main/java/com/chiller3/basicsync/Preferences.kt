@@ -31,6 +31,7 @@ class Preferences(context: Context) {
         const val PREF_ALLOW_NOTIFICATIONS = "allow_notifications"
         const val PREF_LOCAL_STORAGE_ACCESS = "local_storage_access"
         const val PREF_DISABLE_APP_HIBERNATION = "disable_app_hibernation"
+        const val PREF_CONFLICTS = "conflicts"
         const val PREF_OPEN_WEB_UI = "open_web_ui"
         const val PREF_IMPORT_CONFIGURATION = "import_configuration"
         const val PREF_EXPORT_CONFIGURATION = "export_configuration"

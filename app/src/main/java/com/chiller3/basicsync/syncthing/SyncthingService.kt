@@ -222,6 +222,19 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     @GuardedBy("stateLock")
     private var syncthingApp: SyncthingApp? = null
+    @GuardedBy("stateLock")
+    private var syncthingConflicts = emptyList<String>()
+        set(conflicts) {
+            if (field != conflicts) {
+                field = conflicts
+
+                for (listener in listeners) {
+                    listener.onConflictsUpdated(conflicts)
+                }
+
+                notifications.sendOrClearConflictsNotification(conflicts)
+            }
+        }
 
     private val isResumed: Boolean
         @GuardedBy("stateLock")
@@ -503,7 +516,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     }
 
     @WorkerThread
-    override fun onSyncthingStart(app: SyncthingApp) {
+    override fun onSyncthingStarted(app: SyncthingApp) {
         Log.i(TAG, "Syncthing successfully started")
 
         synchronized(stateLock) {
@@ -514,13 +527,30 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     }
 
     @WorkerThread
-    override fun onSyncthingStop(app: SyncthingApp) {
-        Log.i(TAG, "Syncthing is about to stop")
+    override fun onSyncthingStopped(app: SyncthingApp) {
+        Log.i(TAG, "Syncthing successfully stopped")
 
         synchronized(stateLock) {
+            syncthingConflicts = emptyList()
             syncthingApp = null
 
             stateChanged()
+        }
+    }
+
+    @WorkerThread
+    override fun onConflictsUpdated(paths0Sep: String) {
+        val paths = if (paths0Sep.isEmpty()) {
+            emptyList()
+        } else {
+            mutableListOf<String>().apply {
+                paths0Sep.splitToSequence('\u0000').toCollection(this)
+                sort()
+            }
+        }
+
+        synchronized(stateLock) {
+            syncthingConflicts = paths
         }
     }
 
@@ -557,6 +587,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         fun onRunStateChanged(state: ServiceState, guiInfo: GuiInfo?)
 
         fun onPreRunActionResult(preRunAction: PreRunAction, exception: Exception?)
+
+        fun onConflictsUpdated(conflicts: List<String>)
     }
 
     inner class ServiceBinder : Binder() {
@@ -569,6 +601,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 }
 
                 listener.onRunStateChanged(lastServiceState!!, guiInfo)
+                listener.onConflictsUpdated(syncthingConflicts)
             }
         }
 

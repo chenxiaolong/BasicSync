@@ -80,6 +80,7 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
     private lateinit var prefAllowNotifications: Preference
     private lateinit var prefLocalStorageAccess: Preference
     private lateinit var prefDisableAppHibernation: Preference
+    private lateinit var prefConflicts: Preference
     private lateinit var prefOpenWebUi: Preference
     private lateinit var prefImportConfiguration: Preference
     private lateinit var prefExportConfiguration: Preference
@@ -164,6 +165,9 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
         prefDisableAppHibernation = findPreference(Preferences.PREF_DISABLE_APP_HIBERNATION)!!
         prefDisableAppHibernation.onPreferenceClickListener = this
 
+        prefConflicts = findPreference(Preferences.PREF_CONFLICTS)!!
+        prefConflicts.onPreferenceClickListener = this
+
         prefOpenWebUi = findPreference(Preferences.PREF_OPEN_WEB_UI)!!
         prefOpenWebUi.onPreferenceClickListener = this
 
@@ -246,6 +250,21 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
                             }
                         }
                     }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.conflicts.collect { conflicts ->
+                    val numConflicts = conflicts?.size ?: 0
+
+                    prefConflicts.isVisible = numConflicts > 0
+                    prefConflicts.summary = resources.getQuantityString(
+                        R.plurals.pref_conflicts_desc,
+                        numConflicts,
+                        numConflicts,
+                    )
                 }
             }
         }
@@ -438,6 +457,10 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
 
     override fun onPreferenceClick(preference: Preference): Boolean {
         when (preference) {
+            prefConflicts -> {
+                startActivity(Intent(requireContext(), ConflictsActivity::class.java))
+                return true
+            }
             prefOpenWebUi -> {
                 startActivity(Intent(requireContext(), WebUiActivity::class.java))
                 return true

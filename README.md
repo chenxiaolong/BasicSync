@@ -20,6 +20,7 @@ The app is intentionally kept very basic so that the project is easy to maintain
 * Runs Syncthing as a library in the main process
     * This makes BasicSync immune to Android >=12's child process restrictions
 * Small additions to Syncthing's web UI to add a folder picker and QR code scanner
+* Detects and reports sync conflicts
 
 ## Limitations
 

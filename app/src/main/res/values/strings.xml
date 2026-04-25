@@ -37,6 +37,13 @@
     <string name="pref_open_web_ui_name">Open web UI</string>
     <!-- Description for the preference to open Syncthing's web UI. -->
     <string name="pref_open_web_ui_desc">Open Syncthing\'s web configuration interface.</string>
+    <!-- Title for the preference to open the list of sync conflicts. -->
+    <string name="pref_conflicts_name">Sync conflicts</string>
+    <!-- Description for the preference to open the list of sync conflicts. -->
+    <plurals name="pref_conflicts_desc">
+        <item quantity="one">%d file encountered a conflict during syncing.</item>
+        <item quantity="other">%d files encountered conflicts during syncing.</item>
+    </plurals>
     <!-- Title for the preference to import a Syncthing configuration backup. -->
     <string name="pref_import_configuration_name">Import configuration</string>
     <!-- Description for the preference to import an existing Syncthing configuration backup from a zip file. -->
@@ -85,6 +92,9 @@
     <string name="pref_save_logs_name">Save logs</string>
     <!-- Description for the debug preference that saves logs to a file. -->
     <string name="pref_save_logs_desc">Save logcat logs to a file.</string>
+
+    <!-- Description explaining the list of sync conflicts and what can be done with them. -->
+    <string name="pref_conflicts_info">The following files encountered conflicts during syncing and need to be resolved manually. Select a file to open its parent directory in the system file manager.</string>
 
     <!-- Section header for preferences that control which type of networks (metered, Wi-Fi, cellular, etc.) that Syncthing is allowed to sync on. -->
     <string name="pref_header_allowed_network_types">Allowed network types</string>
@@ -193,6 +203,10 @@
     <string name="notification_channel_failure_name">Failure alerts</string>
     <!-- Description of the Android notification channel for notifications about errors. -->
     <string name="notification_channel_failure_desc">Alerts for errors when starting Syncthing</string>
+    <!-- Name of the Android notification channel for notifications about sync conflicts. -->
+    <string name="notification_channel_conflicts_name">Sync conflicts</string>
+    <!-- Description of the Android notification channel for notifications about sync conflicts. -->
+    <string name="notification_channel_conflicts_desc">Alerts for conflicts encountered during syncing</string>
     <!-- Status text indicating that Syncthing is running and ready to sync. -->
     <string name="notification_persistent_running_title">Syncthing is running</string>
     <!-- Status text indicating that Syncthing is not running at all (not just paused). -->
@@ -213,6 +227,11 @@
     <string name="notification_failure_run_title">Failed to run Syncthing</string>
     <!-- Message shown in the notification when Syncthing failed to start up. -->
     <string name="notification_failure_run_message">Syncthing failed to run properly. To prevent a restart loop, Syncthing has been stopped and placed in manual mode.</string>
+    <!-- Title of the notification shown when a sync conflict is detected. -->
+    <plurals name="notification_conflicts_title">
+        <item quantity="one">%d sync conflict found</item>
+        <item quantity="other">%d sync conflicts found</item>
+    </plurals>
     <!-- Button shown in the background notification to switch from manual mode to auto mode. -->
     <string name="notification_action_auto_mode">Auto mode</string>
     <!-- Button shown in the background notification to switch from auto mode to manual mode. -->

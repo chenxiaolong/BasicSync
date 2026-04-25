@@ -88,6 +88,10 @@
         </activity>
 
         <activity
+            android:name=".settings.ConflictsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".settings.NetworkConditionsActivity"
             android:exported="false" />
 
@@ -96,7 +100,7 @@
             android:exported="false" />
 
         <!--
-            These config changes are ignored because WebView has no way of persisting the Javascript
+            These config changes are ignored because WebView has no way of persisting the JavaScript
             and DOM states. Only the history is preserved.
         -->
         <activity

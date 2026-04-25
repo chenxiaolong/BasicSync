@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2026 Andrew Gunnerson
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        app:key="info_conflicts"
+        app:persistent="false"
+        app:summary="@string/pref_conflicts_info"
+        app:iconSpaceReserved="false" />
+</PreferenceScreen>

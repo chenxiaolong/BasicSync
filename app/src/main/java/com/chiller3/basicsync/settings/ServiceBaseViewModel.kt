@@ -26,6 +26,9 @@ abstract class ServiceBaseViewModel(application: Application) : AndroidViewModel
     private val _guiInfo = MutableStateFlow<SyncthingService.GuiInfo?>(null)
     val guiInfo = _guiInfo.asStateFlow()
 
+    private val _conflicts = MutableStateFlow<List<String>?>(null)
+    val conflicts = _conflicts.asStateFlow()
+
     init {
         val context = getApplication<Application>()
 
@@ -70,4 +73,8 @@ abstract class ServiceBaseViewModel(application: Application) : AndroidViewModel
         preRunAction: SyncthingService.PreRunAction,
         exception: Exception?,
     ) {}
+
+    override fun onConflictsUpdated(conflicts: List<String>) {
+        _conflicts.update { conflicts }
+    }
 }

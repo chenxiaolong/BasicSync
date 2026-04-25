@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2023 Andrew Gunnerson
+ * SPDX-FileCopyrightText: 2023-2026 Andrew Gunnerson
  * SPDX-License-Identifier: GPL-3.0-only
  */
 
@@ -8,12 +8,14 @@ package com.chiller3.basicsync.extension
 import android.content.ContentResolver
 import android.net.Uri
 
+const val DOCUMENTSUI_AUTHORITY = "com.android.externalstorage.documents"
+
 val Uri.formattedString: String
     get() = when (scheme) {
         ContentResolver.SCHEME_FILE -> path!!
         ContentResolver.SCHEME_CONTENT -> {
             val prefix = when (authority) {
-                "com.android.externalstorage.documents" -> ""
+                DOCUMENTSUI_AUTHORITY -> ""
                 // Include the authority to reduce ambiguity when this isn't a SAF URI provided by
                 // Android's local filesystem document provider
                 else -> "[$authority] "

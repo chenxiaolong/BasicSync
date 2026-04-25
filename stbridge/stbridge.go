@@ -15,6 +15,7 @@ import (
 	"encoding/pem"
 	"fmt"
 	"io"
+	"iter"
 	"log"
 	"log/slog"
 	"net"
@@ -35,6 +36,7 @@ import (
 	"github.com/syncthing/syncthing/lib/events"
 	"github.com/syncthing/syncthing/lib/fs"
 	"github.com/syncthing/syncthing/lib/locations"
+	"github.com/syncthing/syncthing/lib/protocol"
 	"github.com/syncthing/syncthing/lib/rand"
 	"github.com/syncthing/syncthing/lib/svcutil"
 	"github.com/syncthing/syncthing/lib/syncthing"
@@ -277,9 +279,171 @@ func (app *SyncthingApp) GuiTlsCert() []byte {
 }
 
 type SyncthingStatusReceiver interface {
-	OnSyncthingStart(app *SyncthingApp)
+	OnSyncthingStarted(app *SyncthingApp)
 
-	OnSyncthingStop(app *SyncthingApp)
+	OnSyncthingStopped(app *SyncthingApp)
+
+	// Can be sent before OnSyncthingStarted, but not after OnSyncthingStopped.
+	// The list of paths is separated by a '\0' byte because gomobile does not
+	// support passing a list of strings to the JVM. This works for arbitrary
+	// paths on Linux.
+	OnConflictsUpdated(paths0Sep string)
+}
+
+// db.DB is internal, so it's unnameable and we can't create a function that
+// accepts one. We only need the AllLocalFiles() function though, so just pass
+// that as a function pointer instead.
+type allLocalFilesFunc func(
+	folder string,
+	device protocol.DeviceID,
+) (iter.Seq[protocol.FileInfo], func() error)
+
+func isConflict(name string) bool {
+	return strings.Contains(filepath.Base(name), ".sync-conflict-")
+}
+
+func dispatchConflicts(
+	folderConflicts map[string]map[string]struct{},
+	folderToPath map[string]string,
+	receiver SyncthingStatusReceiver,
+) {
+	var paths0Sep strings.Builder
+
+	for folder, names := range folderConflicts {
+		folderPath := folderToPath[folder]
+
+		for name, _ := range names {
+			if paths0Sep.Len() > 0 {
+				paths0Sep.WriteRune('\u0000')
+			}
+			paths0Sep.WriteString(filepath.Join(folderPath, name))
+		}
+	}
+
+	receiver.OnConflictsUpdated(paths0Sep.String())
+}
+
+func eventLoop(
+	ctx context.Context,
+	stopped chan struct{},
+	evLogger events.Logger,
+	folderConflicts map[string]map[string]struct{},
+	folderToPath map[string]string,
+	receiver SyncthingStatusReceiver,
+) {
+	defer close(stopped)
+
+	sub := evLogger.Subscribe(
+		events.LocalChangeDetected |
+			events.RemoteChangeDetected |
+			events.ConfigSaved,
+	)
+	defer sub.Unsubscribe()
+
+	for {
+		select {
+		case evt := <-sub.C():
+			switch evt.Type {
+			// We do not use LocalIndexUpdated because it does not distinguish
+			// between added/modified and removed.
+			case events.LocalChangeDetected, events.RemoteChangeDetected:
+				data := evt.Data.(map[string]string)
+				folderID := data["folder"]
+				path := data["path"]
+
+				if !isConflict(path) {
+					continue
+				}
+
+				if data["action"] == "deleted" {
+					delete(folderConflicts[folderID], path)
+				} else {
+					if _, ok := folderConflicts[folderID]; !ok {
+						folderConflicts[folderID] = map[string]struct{}{}
+					}
+					folderConflicts[folderID][path] = struct{}{}
+				}
+
+				dispatchConflicts(folderConflicts, folderToPath, receiver)
+
+			// When a folder is deleted, we need to manually clear out the
+			// corresponding conflicts because we will not receive deletion
+			// events for them.
+			case events.ConfigSaved:
+				cfg := evt.Data.(config.Configuration)
+
+				clear(folderToPath)
+
+				for _, folder := range cfg.Folders {
+					// Never fails on Android.
+					folderToPath[folder.ID], _ = fs.ExpandTilde(folder.Path)
+				}
+
+				for key := range folderConflicts {
+					if _, ok := folderToPath[key]; !ok {
+						delete(folderConflicts, key)
+					}
+				}
+
+				dispatchConflicts(folderConflicts, folderToPath, receiver)
+
+			default:
+				// Ignore.
+			}
+
+		case <-ctx.Done():
+			return
+		}
+	}
+}
+
+func startEventLoop(
+	ctx context.Context,
+	stopped chan struct{},
+	evLogger events.Logger,
+	cfg config.Wrapper,
+	allLocalFiles allLocalFilesFunc,
+	receiver SyncthingStatusReceiver,
+) error {
+	folderConflicts := map[string]map[string]struct{}{}
+	folderToPath := map[string]string{}
+
+	// Find the initial set of conflicts from the database before starting the
+	// service. Any newly added or deleted conflicts will be reported by the
+	// service via events, so we should always have a consistent view of the
+	// world.
+	for _, folder := range cfg.FolderList() {
+		dbFiles, errFn := allLocalFiles(folder.ID, protocol.LocalDeviceID)
+		for dbFile := range dbFiles {
+			if !isConflict(dbFile.Name) || dbFile.Deleted {
+				continue
+			}
+
+			if _, ok := folderConflicts[folder.ID]; !ok {
+				folderConflicts[folder.ID] = map[string]struct{}{}
+			}
+			folderConflicts[folder.ID][dbFile.Name] = struct{}{}
+		}
+		if err := errFn(); err != nil {
+			return fmt.Errorf("failed to query database for: %q: %w", folder.ID, err)
+		}
+
+		// Never fails on Android.
+		folderToPath[folder.ID], _ = fs.ExpandTilde(folder.Path)
+	}
+
+	dispatchConflicts(folderConflicts, folderToPath, receiver)
+
+	go eventLoop(
+		ctx,
+		stopped,
+		evLogger,
+		folderConflicts,
+		folderToPath,
+		receiver,
+	)
+
+	return nil
 }
 
 type SyncthingStartupConfig struct {
@@ -417,7 +581,13 @@ func Run(startup *SyncthingStartupConfig) error {
 		return fmt.Errorf("failed to initialize syncthing: %w", err)
 	}
 
-	if err := app.Start(); err != nil {
+	eventLoopStopped := make(chan struct{})
+	if err = startEventLoop(ctx, eventLoopStopped, evLogger, cfg,
+		sdb.AllLocalFiles, startup.Receiver); err != nil {
+		return fmt.Errorf("failed to start event loop: %w", err)
+	}
+
+	if err = app.Start(); err != nil {
 		return fmt.Errorf("failed to start syncthing: %w", app.Error())
 	}
 
@@ -434,11 +604,15 @@ func Run(startup *SyncthingStartupConfig) error {
 		guiCert: guiCert,
 	}
 
-	startup.Receiver.OnSyncthingStart(appWrapper)
+	startup.Receiver.OnSyncthingStarted(appWrapper)
 
 	status := app.Wait()
 
-	startup.Receiver.OnSyncthingStop(appWrapper)
+	// Ensure we don't send any more events after OnSyncthingStop().
+	cancel()
+	<-eventLoopStopped
+
+	startup.Receiver.OnSyncthingStopped(appWrapper)
 
 	if status == svcutil.ExitError {
 		return fmt.Errorf("failed when stopping syncthing: %w", app.Error())

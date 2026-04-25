@@ -1,14 +1,15 @@
 /*
- * SPDX-FileCopyrightText: 2025 Andrew Gunnerson
+ * SPDX-FileCopyrightText: 2025-2026 Andrew Gunnerson
  * SPDX-License-Identifier: GPL-3.0-only
  */
 
 package com.chiller3.basicsync.dialog
 
-import android.annotation.SuppressLint
-import android.os.Environment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chiller3.basicsync.extension.EXTERNAL_DIR
+import com.chiller3.basicsync.extension.expandTilde
+import com.chiller3.basicsync.extension.shortenTilde
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,36 +21,9 @@ import java.text.Collator
 
 class FolderPickerViewModel : ViewModel() {
     companion object {
-        private val HOME = File("~")
-        @SuppressLint("SdCardPath")
-        private val SDCARD = File("/sdcard")
-        val EXTERNAL_DIR: File = Environment.getExternalStorageDirectory()
-
         // Same sorting method as AOSP's DocumentsUI.
         private val COLLATOR = Collator.getInstance().apply {
             strength = Collator.SECONDARY
-        }
-
-        private fun expandPath(path: File): File =
-            if (path.startsWith(HOME)) {
-                File(EXTERNAL_DIR, path.toRelativeString(HOME))
-            } else if (path.startsWith(SDCARD)) {
-                File(EXTERNAL_DIR, path.toRelativeString(SDCARD))
-            } else {
-                path
-            }
-
-        private fun shortenPath(path: File): File {
-            val relPath = path.relativeToOrSelf(EXTERNAL_DIR)
-            val relPathString = relPath.toString()
-
-            return if (relPathString.isEmpty()) {
-                HOME
-            } else if (!relPath.isAbsolute) {
-                File(HOME, relPathString)
-            } else {
-                relPath
-            }
         }
     }
 
@@ -59,7 +33,7 @@ class FolderPickerViewModel : ViewModel() {
         val childDirs: List<String>,
     ) {
         val shortCwd: File
-            get() = shortenPath(cwd)
+            get() = cwd.shortenTilde()
     }
 
     private val _state = MutableStateFlow(State(cwd = EXTERNAL_DIR, childDirs = emptyList()))
@@ -68,7 +42,7 @@ class FolderPickerViewModel : ViewModel() {
     fun navigate(path: File) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                var newCwd = _state.value.cwd.resolve(expandPath(path)).normalize()
+                var newCwd = _state.value.cwd.resolve(path.expandTilde()).normalize()
 
                 // Don't allow paths outside of the internal storage. They aren't readable anyway.
                 var relPath = newCwd.toRelativeString(EXTERNAL_DIR)

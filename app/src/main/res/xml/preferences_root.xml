@@ -44,6 +44,12 @@
         app:iconSpaceReserved="false">
 
         <Preference
+            app:key="conflicts"
+            app:persistent="false"
+            app:title="@string/pref_conflicts_name"
+            app:iconSpaceReserved="false" />
+
+        <Preference
             app:key="open_web_ui"
             app:persistent="false"
             app:title="@string/pref_open_web_ui_name"
