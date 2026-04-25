@@ -186,7 +186,7 @@ class WebUiActivity : AppCompatActivity() {
             allowFileAccess = false
             cacheMode = WebSettings.LOAD_NO_CACHE
 
-            // The web UI does not work at all without Javascript.
+            // The web UI does not work at all without JavaScript.
             @SuppressLint("SetJavaScriptEnabled")
             javaScriptEnabled = true
 
