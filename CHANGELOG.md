@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add support for reporting sync conflicts ([Issue #79], [PR #102])
+
 ### Version 1.23
 
 * Resend persistent notification if it is inadvertently dismissed on Android 14+ ([Issue #98], [PR #99])
@@ -171,6 +175,7 @@
 [Issue #54]: https://github.com/chenxiaolong/BasicSync/issues/54
 [Issue #68]: https://github.com/chenxiaolong/BasicSync/issues/68
 [Issue #75]: https://github.com/chenxiaolong/BasicSync/issues/75
+[Issue #79]: https://github.com/chenxiaolong/BasicSync/issues/79
 [Issue #83]: https://github.com/chenxiaolong/BasicSync/issues/83
 [Issue #86]: https://github.com/chenxiaolong/BasicSync/issues/86
 [Issue #98]: https://github.com/chenxiaolong/BasicSync/issues/98
@@ -246,3 +251,4 @@
 [PR #94]: https://github.com/chenxiaolong/BasicSync/pull/94
 [PR #97]: https://github.com/chenxiaolong/BasicSync/pull/97
 [PR #99]: https://github.com/chenxiaolong/BasicSync/pull/99
+[PR #102]: https://github.com/chenxiaolong/BasicSync/pull/102
