@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Add support for reporting sync conflicts ([Issue #79], [PR #102])
+* Update dependencies ([PR #103])
 
 ### Version 1.23
 
@@ -252,3 +253,4 @@
 [PR #97]: https://github.com/chenxiaolong/BasicSync/pull/97
 [PR #99]: https://github.com/chenxiaolong/BasicSync/pull/99
 [PR #102]: https://github.com/chenxiaolong/BasicSync/pull/102
+[PR #103]: https://github.com/chenxiaolong/BasicSync/pull/103
