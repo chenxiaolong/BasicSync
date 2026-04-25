@@ -131,4 +131,18 @@
         <item quantity="other">%d horas</item>
     </plurals>
     <string name="pref_local_storage_access_desc">Es necesario para que Syncthing acceda al almacenamiento local bajo <tt>/sdcard</tt>.</string>
+    <string name="pref_conflicts_name">Conflictos de sincronización</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="one">%d archivo encontró un conflicto durante la sincronización.</item>
+        <item quantity="many">%d archivos encontraron conflictos durante la sincronización.</item>
+        <item quantity="other">%d archivos encontraron conflictos durante la sincronización.</item>
+    </plurals>
+    <string name="pref_conflicts_info">Los siguientes archivos encontraron conflictos durante la sincronización y deben resolverse manualmente. Selecciona un archivo para abrir su carpeta principal en el administrador de archivos del sistema.</string>
+    <string name="notification_channel_conflicts_name">Conflictos de sincronización</string>
+    <string name="notification_channel_conflicts_desc">Alertas sobre los conflictos encontrados durante la sincronización</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="one">%d conflicto de sincronización encontrado</item>
+        <item quantity="many">%d conflictos de sincronización encontrados</item>
+        <item quantity="other">%d conflictos de sincronización encontrados</item>
+    </plurals>
 </resources>
