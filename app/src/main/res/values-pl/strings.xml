@@ -134,4 +134,20 @@
     <string name="pref_remote_control_name">Zezwól na zdalne sterowanie</string>
     <string name="pref_remote_control_desc">Zezwól zewnętrznym aplikacjom na przełączanie w tryb automatyczny lub ręczne uruchamianie i zatrzymywanie Syncthing.</string>
     <string name="blocked_reason_no_storage_permissions">• Odmowa dostępu do plików</string>
+    <string name="pref_conflicts_name">Konflikty synchronizacji</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="one">%d plik napotkał konflikt podczas synchronizacji.</item>
+        <item quantity="few">%d pliki napotkały konflikty podczas synchronizacji.</item>
+        <item quantity="many">%d plików napotkało konflikty podczas synchronizacji.</item>
+        <item quantity="other">%d plików napotkało konflikty podczas synchronizacji.</item>
+    </plurals>
+    <string name="pref_conflicts_info">Następujące pliki napotkały konflikty podczas synchronizacji i należy je rozwiązać ręcznie. Wybierz plik, aby otworzyć jego katalog nadrzędny w menedżerze plików systemowych.</string>
+    <string name="notification_channel_conflicts_name">Konflikty synchronizacji</string>
+    <string name="notification_channel_conflicts_desc">Alerty dotyczące konfliktów napotkanych podczas synchronizacji</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="one">Znaleziono %d konflikt synchronizacji</item>
+        <item quantity="few">Znaleziono %d konflikty synchronizacji</item>
+        <item quantity="many">Znaleziono %d konfliktów synchronizacji</item>
+        <item quantity="other">Znaleziono %d konfliktów synchronizacji</item>
+    </plurals>
 </resources>
