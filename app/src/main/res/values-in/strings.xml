@@ -125,4 +125,13 @@
     <plurals name="duration_hours">
         <item quantity="other">%d jam</item>
     </plurals>
+    <string name="notification_channel_conflicts_name">Konflik sinkronisasi</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="other">%d berkas mengalami konflik saat sinkronisasi.</item>
+    </plurals>
+    <string name="pref_conflicts_info">Berkas-berkas berikut mengalami konflik saat sinkronisasi dan perlu diselesaikan secara manual. Pilih sebuah berkas untuk membuka direktori induknya di pengelola berkas sistem.</string>
+    <string name="notification_channel_conflicts_desc">Peringatan untuk konflik yang ditemukan saat sinkronisasi</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="other">%d konflik sinkronisasi ditemukan</item>
+    </plurals>
 </resources>
