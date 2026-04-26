@@ -151,4 +151,10 @@
         <item quantity="other">%d fichiers ont rencontré un conflit pendant la synchronisation.</item>
     </plurals>
     <string name="pref_conflicts_info">Les fichiers suivant ont rencontré des conflits pendant la synchro qui doivent être résolus manuellement. Sélectionnez un fichier pour ouvrir son répertoire parent dans l\'explorateur de fichiers.</string>
+    <string name="notification_channel_conflicts_name">Conflits de synchro</string>
+    <string name="notification_channel_conflicts_desc">Alertes pour les conflits rencontrés durant la synchronisation</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="one">%d conflit de synchro trouvé</item>
+        <item quantity="other">%d conflits de synchro trouvés</item>
+    </plurals>
 </resources>
