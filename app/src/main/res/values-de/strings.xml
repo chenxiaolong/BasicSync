@@ -134,4 +134,10 @@
         <item quantity="one">Bei %d Datei ist ein Konflikt während der Snchronisation aufgetreten.</item>
         <item quantity="other">Bei %d Dateien sind Konflikte während der Synchronisation aufgetreten.</item>
     </plurals>
+    <string name="notification_channel_conflicts_name">Synchronisationskonflikte</string>
+    <string name="notification_channel_conflicts_desc">Benachrichtigungen für Konflikte bei der Synchronisierung</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="one">%d Synchronisierungskonflikt gefunden</item>
+        <item quantity="other">%d Synchronisierungskonflikte gefunden</item>
+    </plurals>
 </resources>
