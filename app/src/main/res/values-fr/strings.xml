@@ -155,6 +155,7 @@
     <string name="notification_channel_conflicts_desc">Alertes pour les conflits rencontrés durant la synchronisation</string>
     <plurals name="notification_conflicts_title">
         <item quantity="one">%d conflit de synchro trouvé</item>
+        <item quantity="many">%d conflits de synchro trouvés</item>
         <item quantity="other">%d conflits de synchro trouvés</item>
     </plurals>
 </resources>
