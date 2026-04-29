@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add optional button to persistent notification to exit the app entirely ([Issue #105], [PR #107])
+
 ### Version 1.24
 
 * Add support for reporting sync conflicts ([Issue #79], [PR #102])
@@ -181,6 +185,7 @@
 [Issue #83]: https://github.com/chenxiaolong/BasicSync/issues/83
 [Issue #86]: https://github.com/chenxiaolong/BasicSync/issues/86
 [Issue #98]: https://github.com/chenxiaolong/BasicSync/issues/98
+[Issue #105]: https://github.com/chenxiaolong/BasicSync/issues/105
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -256,3 +261,4 @@
 [PR #100]: https://github.com/chenxiaolong/BasicSync/pull/100
 [PR #102]: https://github.com/chenxiaolong/BasicSync/pull/102
 [PR #103]: https://github.com/chenxiaolong/BasicSync/pull/103
+[PR #107]: https://github.com/chenxiaolong/BasicSync/pull/107
