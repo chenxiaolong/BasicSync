@@ -140,4 +140,7 @@
         <item quantity="one">%d час</item>
         <item quantity="other">%d часа</item>
     </plurals>
+    <string name="pref_show_exit_name">Показване на „Изход“ бутона</string>
+    <string name="pref_show_exit_desc">Показвайте бутон „Изход“ в постоянното известие. Приложението ще се тартира автоматично след рестартиране или при получаване на команда от дистанционното управление.</string>
+    <string name="notification_action_exit">Изход</string>
 </resources>
