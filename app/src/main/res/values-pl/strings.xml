@@ -150,4 +150,7 @@
         <item quantity="many">Znaleziono %d konfliktów synchronizacji</item>
         <item quantity="other">Znaleziono %d konfliktów synchronizacji</item>
     </plurals>
+    <string name="pref_show_exit_name">Pokaż przycisk wyjścia</string>
+    <string name="pref_show_exit_desc">Wyświetl przycisk „Wyjdź” w stałym powiadomieniu. Aplikacja uruchomi się automatycznie po ponownym uruchomieniu lub po otrzymaniu polecenia zdalnego sterowania.</string>
+    <string name="notification_action_exit">Wyjdź</string>
 </resources>
