@@ -25,6 +25,7 @@ class Preferences(context: Context) {
         const val PREF_SYNC_SCHEDULE = "sync_schedule"
         const val PREF_KEEP_ALIVE = "keep_alive"
         const val PREF_REMOTE_CONTROL = "remote_control"
+        const val PREF_SHOW_EXIT = "show_exit"
 
         // Main UI actions only.
         const val PREF_INHIBIT_BATTERY_OPT = "inhibit_battery_opt"
@@ -97,6 +98,10 @@ class Preferences(context: Context) {
     var remoteControl: Boolean
         get() = prefs.getBoolean(PREF_REMOTE_CONTROL, false)
         set(enabled) = prefs.edit { putBoolean(PREF_REMOTE_CONTROL, enabled) }
+
+    var showExit: Boolean
+        get() = prefs.getBoolean(PREF_SHOW_EXIT, false)
+        set(enabled) = prefs.edit { putBoolean(PREF_SHOW_EXIT, enabled) }
 
     var requireUnmeteredNetwork: Boolean
         get() = prefs.getBoolean(PREF_REQUIRE_UNMETERED_NETWORK, true)

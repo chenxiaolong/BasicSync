@@ -37,6 +37,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             Preferences.PREF_MANUAL_MODE,
             Preferences.PREF_MANUAL_SHOULD_RUN,
             Preferences.PREF_KEEP_ALIVE,
+            Preferences.PREF_SHOW_EXIT,
         )
 
         val ACTION_AUTO_MODE = "${SyncthingService::class.java.canonicalName}.auto_mode"
@@ -44,6 +45,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         val ACTION_START = "${SyncthingService::class.java.canonicalName}.start"
         val ACTION_STOP = "${SyncthingService::class.java.canonicalName}.stop"
         val ACTION_RENOTIFY = "${SyncthingService::class.java.canonicalName}.renotify"
+        val ACTION_EXIT = "${SyncthingService::class.java.canonicalName}.exit"
 
         fun createIntent(context: Context, action: String?) =
             Intent(context, SyncthingService::class.java).apply {
@@ -79,6 +81,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         private val isResumed: Boolean,
         private val manualMode: Boolean,
         private val preRunAction: PreRunAction?,
+        private val showExit: Boolean,
     ) {
         private val shouldResume: Boolean
             get() = blockedReasons.isEmpty()
@@ -132,6 +135,10 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                         }
                     } else {
                         add(ACTION_MANUAL_MODE)
+                    }
+
+                    if (showExit) {
+                        add(ACTION_EXIT)
                     }
                 }
             }
@@ -228,9 +235,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             if (field != conflicts) {
                 field = conflicts
 
-                for (listener in listeners) {
-                    listener.onConflictsUpdated(conflicts)
-                }
+                allListeners { it.onConflictsUpdated(conflicts) }
 
                 notifications.sendOrClearConflictsNotification(conflicts)
             }
@@ -262,6 +267,11 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     @GuardedBy("stateLock")
     private val listeners = HashSet<ServiceListener>()
 
+    @GuardedBy("stateLock")
+    private fun allListeners(block: (ServiceListener) -> Unit) {
+        HashSet(listeners).forEach(block)
+    }
+
     override fun onCreate() {
         super.onCreate()
 
@@ -285,6 +295,13 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             shouldThreadRun = false
         }
         stateChanged()
+
+        // This should be quick.
+        runnerThread.join()
+
+        synchronized(stateLock) {
+            listeners.clear()
+        }
 
         prefs.unregisterListener(this)
 
@@ -318,6 +335,12 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             }
             ACTION_RENOTIFY -> synchronized(stateLock) {
                 forceShowNotification = true
+            }
+            ACTION_EXIT -> {
+                allListeners { it.onExitRequested() }
+
+                stopSelf()
+                return START_NOT_STICKY
             }
             null -> {}
             else -> Log.w(TAG, "Ignoring unrecognized intent: $intent")
@@ -376,6 +399,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 isResumed = isResumed,
                 manualMode = prefs.isManualMode,
                 preRunAction = currentPreRunAction,
+                showExit = prefs.showExit,
             )
 
             val wasChanged = notificationState != lastServiceState
@@ -386,9 +410,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 if (wasChanged) {
                     val guiInfo = guiInfo
 
-                    for (listener in listeners) {
-                        listener.onRunStateChanged(notificationState, guiInfo)
-                    }
+                    allListeners { it.onRunStateChanged(notificationState, guiInfo) }
                 }
 
                 val notification = notifications.createPersistentNotification(notificationState)
@@ -479,9 +501,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     }
 
                     synchronized(stateLock) {
-                        for (listener in listeners) {
-                            listener.onPreRunActionResult(action, exception)
-                        }
+                        allListeners { it.onPreRunActionResult(action, exception) }
 
                         currentPreRunAction = null
                         stateChanged()
@@ -584,6 +604,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     }
 
     interface ServiceListener {
+        fun onExitRequested()
+
         fun onRunStateChanged(state: ServiceState, guiInfo: GuiInfo?)
 
         fun onPreRunActionResult(preRunAction: PreRunAction, exception: Exception?)

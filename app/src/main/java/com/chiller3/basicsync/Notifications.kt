@@ -113,6 +113,7 @@ class Notifications(private val context: Context) {
                     SyncthingService.ACTION_MANUAL_MODE -> R.string.notification_action_manual_mode
                     SyncthingService.ACTION_START -> R.string.notification_action_start
                     SyncthingService.ACTION_STOP -> R.string.notification_action_stop
+                    SyncthingService.ACTION_EXIT -> R.string.notification_action_exit
                     else -> throw IllegalArgumentException("Invalid action: $action")
                 }
 

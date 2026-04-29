@@ -137,6 +137,12 @@
             app:title="@string/pref_remote_control_name"
             app:summary="@string/pref_remote_control_desc"
             app:iconSpaceReserved="false" />
+
+        <SwitchPreferenceCompat
+            app:key="show_exit"
+            app:title="@string/pref_show_exit_name"
+            app:summary="@string/pref_show_exit_desc"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
     <PreferenceCategory

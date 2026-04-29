@@ -12,13 +12,18 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import androidx.lifecycle.AndroidViewModel
 import com.chiller3.basicsync.syncthing.SyncthingService
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 abstract class ServiceBaseViewModel(application: Application) : AndroidViewModel(application),
     ServiceConnection, SyncthingService.ServiceListener {
     protected var binder: SyncthingService.ServiceBinder? = null
+
+    private val _exitRequested = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val exitRequested = _exitRequested.asSharedFlow()
 
     private val _serviceState = MutableStateFlow<SyncthingService.ServiceState?>(null)
     val serviceState = _serviceState.asStateFlow()
@@ -59,6 +64,11 @@ abstract class ServiceBaseViewModel(application: Application) : AndroidViewModel
     private fun onBinderGone() {
         binder?.unregisterListener(this)
         binder = null
+        _exitRequested.tryEmit(Unit)
+    }
+
+    override fun onExitRequested() {
+        onBinderGone()
     }
 
     override fun onRunStateChanged(

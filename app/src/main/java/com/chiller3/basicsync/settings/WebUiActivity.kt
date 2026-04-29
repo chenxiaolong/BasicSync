@@ -206,6 +206,14 @@ class WebUiActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.exitRequested.collect {
+                    finishAffinity()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.serviceState.collect {
                     if (it?.runState?.webUiAvailable == false) {
                         finish()

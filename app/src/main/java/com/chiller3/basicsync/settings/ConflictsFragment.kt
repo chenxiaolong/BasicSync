@@ -36,6 +36,14 @@ class ConflictsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClick
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.exitRequested.collect {
+                    requireActivity().finishAffinity()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.conflicts.collect { conflicts ->
                     if (conflicts == null) {
                         // Still loading.

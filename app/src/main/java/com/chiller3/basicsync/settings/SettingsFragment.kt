@@ -209,6 +209,14 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
         refreshDebugPrefs()
 
         lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.exitRequested.collect {
+                    requireActivity().finishAffinity()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.serviceState.collect { state ->
                     val runState = state?.runState

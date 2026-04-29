@@ -86,6 +86,10 @@
     <string name="pref_remote_control_name">Allow remote control</string>
     <!-- Description for the preference that allows external apps to control when Syncthing runs. -->
     <string name="pref_remote_control_desc">Allow external apps to switch to auto mode or manually start and stop Syncthing.</string>
+    <!-- Title for the preference to show an exit button in the persistent notification. -->
+    <string name="pref_show_exit_name">Show Exit button</string>
+    <!-- Description for the preference to show an exit button in the persistent notification. -->
+    <string name="pref_show_exit_desc">Show an Exit button in the persistent notification. The app will automatically start again after a reboot or when receiving a remote control command.</string>
     <!-- Title for the preference that shows the version number. The description is two lines: the first line is BasicSync's version and the second line in Syncthing's version. -->
     <string name="pref_version_name">Version</string>
     <!-- Title for the debug preference that saves logs to a file. -->
@@ -195,9 +199,9 @@
     <!-- Tooltip shown in Syncthing's web UI for scanning a QR code when adding a new device. Keep as short as possible. -->
     <string name="web_ui_scan_qr_code">Scan QR code</string>
 
-    <!-- Name of the Android notification channel for the background notification that is always shown. -->
+    <!-- Name of the Android notification channel for the persistent notification that is always shown. -->
     <string name="notification_channel_persistent_name">Background services</string>
-    <!-- Description of the Android notification channel for the background notification that is always shown. -->
+    <!-- Description of the Android notification channel for the persistent notification that is always shown. -->
     <string name="notification_channel_persistent_desc">Keeps Syncthing running in the background</string>
     <!-- Name of the Android notification channel for notifications about errors. -->
     <string name="notification_channel_failure_name">Failure alerts</string>
@@ -232,14 +236,16 @@
         <item quantity="one">%d sync conflict found</item>
         <item quantity="other">%d sync conflicts found</item>
     </plurals>
-    <!-- Button shown in the background notification to switch from manual mode to auto mode. -->
+    <!-- Button shown in the persistent notification to switch from manual mode to auto mode. -->
     <string name="notification_action_auto_mode">Auto mode</string>
-    <!-- Button shown in the background notification to switch from auto mode to manual mode. -->
+    <!-- Button shown in the persistent notification to switch from auto mode to manual mode. -->
     <string name="notification_action_manual_mode">Manual mode</string>
-    <!-- Button shown in the background notification to start Syncthing. This is only shown in manual mode. -->
+    <!-- Button shown in the persistent notification to start Syncthing. This is only shown in manual mode. -->
     <string name="notification_action_start">Start</string>
-    <!-- Button shown in the background notification to stop Syncthing. This is only shown in manual mode. This currently does not distinguish between stopping and pausing. The text should represent "stop". -->
+    <!-- Button shown in the persistent notification to stop Syncthing. This is only shown in manual mode. This currently does not distinguish between stopping and pausing. The text should represent "stop". -->
     <string name="notification_action_stop">Stop</string>
+    <!-- Button shown in the persistent notification to exit the app entirely until the next reboot or the user starts it again. -->
+    <string name="notification_action_exit">Exit</string>
 
     <!-- Syncing is blocked because local storage permissions have not been granted. -->
     <string name="blocked_reason_no_storage_permissions">• Storage permissions denied</string>
