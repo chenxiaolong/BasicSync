@@ -140,4 +140,7 @@
         <item quantity="one">%d eşitleme çakışması bulundu</item>
         <item quantity="other">%d eşitleme çakışması bulundu</item>
     </plurals>
+    <string name="pref_show_exit_name">Çıkış düğmesini göster</string>
+    <string name="pref_show_exit_desc">Kalıcı bildirimde bir Çıkış düğmesi gösterin. Uygulama, yeniden başlatmadan sonra veya uzaktan denetim komutu alındığında otomatik olarak yeniden başlayacaktır.</string>
+    <string name="notification_action_exit">Çıkış</string>
 </resources>
