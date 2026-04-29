@@ -145,4 +145,7 @@
         <item quantity="many">%d conflictos de sincronización encontrados</item>
         <item quantity="other">%d conflictos de sincronización encontrados</item>
     </plurals>
+    <string name="pref_show_exit_name">Mostrar botón Salir</string>
+    <string name="pref_show_exit_desc">Muestra el botón Salir en las notificaciones persistentes. La app se iniciará automáticamente después de un reinicio o cuando reciba órdenes de control remotas.</string>
+    <string name="notification_action_exit">Salir</string>
 </resources>
