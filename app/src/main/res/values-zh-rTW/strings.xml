@@ -138,4 +138,17 @@
     <string name="pref_remote_control_name">允許遠端控制</string>
     <string name="pref_remote_control_desc">允許外部應用程式將 Syncthing 切換至自動模式，或手動進行啟動及停止。</string>
     <string name="blocked_reason_no_storage_permissions">• 儲存空間權限遭拒</string>
+    <string name="pref_conflicts_name">同步衝突</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="other">同步期間有 %d 個檔案發生衝突。</item>
+    </plurals>
+    <string name="pref_show_exit_name">顯示結束按鈕</string>
+    <string name="pref_show_exit_desc">在常駐通知中顯示結束按鈕。應用程式會在裝置重新啟動或收到遠端控制指令後自動再次啟動。</string>
+    <string name="pref_conflicts_info">以下檔案在同步期間發生衝突，需手動解決。選取檔案可在系統的檔案管理器中開啟其所在目錄。</string>
+    <string name="notification_channel_conflicts_name">同步衝突</string>
+    <string name="notification_channel_conflicts_desc">同步期間發生衝突時的警示</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="other">發現 %d 個同步衝突</item>
+    </plurals>
+    <string name="notification_action_exit">結束</string>
 </resources>
