@@ -140,4 +140,7 @@
         <item quantity="one">%d Synchronisierungskonflikt gefunden</item>
         <item quantity="other">%d Synchronisierungskonflikte gefunden</item>
     </plurals>
+    <string name="notification_action_exit">Beenden</string>
+    <string name="pref_show_exit_desc">In der permanenten Benachrichtigung eine Schaltfläche „Beenden“ anzeigen. Die App wird nach einem Neustart oder beim Empfang eines Fernsteuerungsbefehls automatisch neu gestartet.</string>
+    <string name="pref_show_exit_name">Schaltfläche „Beenden“ anzeigen</string>
 </resources>
