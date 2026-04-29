@@ -135,4 +135,7 @@
     <plurals name="notification_conflicts_title">
         <item quantity="other">发现 %d 个同步冲突</item>
     </plurals>
+    <string name="pref_show_exit_name">显示退出按钮</string>
+    <string name="pref_show_exit_desc">在常驻通知中显示“退出”按钮。应用将在重启后或接收到远程控制命令时自动重新启动。</string>
+    <string name="notification_action_exit">退出</string>
 </resources>
