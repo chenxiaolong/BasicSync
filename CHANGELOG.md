@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.25
 
 * Add optional button to persistent notification to exit the app entirely ([Issue #105], [PR #107])
 * Sync translations from Weblate ([PR #106])
