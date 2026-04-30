@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Add optional button to persistent notification to exit the app entirely ([Issue #105], [PR #107])
+* Sync translations from Weblate ([PR #106])
 
 ### Version 1.24
 
@@ -261,4 +262,5 @@
 [PR #100]: https://github.com/chenxiaolong/BasicSync/pull/100
 [PR #102]: https://github.com/chenxiaolong/BasicSync/pull/102
 [PR #103]: https://github.com/chenxiaolong/BasicSync/pull/103
+[PR #106]: https://github.com/chenxiaolong/BasicSync/pull/106
 [PR #107]: https://github.com/chenxiaolong/BasicSync/pull/107
