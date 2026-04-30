@@ -158,4 +158,7 @@
         <item quantity="few">%d conflicte de sincronizare a fost găsite</item>
         <item quantity="other">%d de conflicte de sincronizare a fost găsite</item>
     </plurals>
+    <string name="pref_show_exit_name">Arată butonul de Ieșire</string>
+    <string name="pref_show_exit_desc">Afișează un buton Ieșire în notificarea persistentă. Aplicația va porni automat din nou după o repornire sau la primirea unei comenzi de control de la distanță.</string>
+    <string name="notification_action_exit">Ieșire</string>
 </resources>
