@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add new option to use time schedule only when running on battery power ([Issue #109], [PR #110])
+
 ### Version 1.25
 
 * Add optional button to persistent notification to exit the app entirely ([Issue #105], [PR #107])
@@ -187,6 +191,7 @@
 [Issue #86]: https://github.com/chenxiaolong/BasicSync/issues/86
 [Issue #98]: https://github.com/chenxiaolong/BasicSync/issues/98
 [Issue #105]: https://github.com/chenxiaolong/BasicSync/issues/105
+[Issue #109]: https://github.com/chenxiaolong/BasicSync/issues/109
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -264,3 +269,4 @@
 [PR #103]: https://github.com/chenxiaolong/BasicSync/pull/103
 [PR #106]: https://github.com/chenxiaolong/BasicSync/pull/106
 [PR #107]: https://github.com/chenxiaolong/BasicSync/pull/107
+[PR #110]: https://github.com/chenxiaolong/BasicSync/pull/110
