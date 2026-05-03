@@ -121,6 +121,12 @@
             app:iconSpaceReserved="false" />
 
         <SwitchPreferenceCompat
+            app:key="sync_schedule_battery_only"
+            app:title="@string/pref_sync_schedule_battery_only_name"
+            app:summary="@string/pref_sync_schedule_battery_only_desc"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreferenceCompat
             app:key="keep_alive"
             app:defaultValue="true"
             app:title="@string/pref_keep_alive_name"

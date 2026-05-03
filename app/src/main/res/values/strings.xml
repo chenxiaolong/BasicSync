@@ -78,6 +78,10 @@
     <string name="pref_sync_schedule_name">Sync on time schedule</string>
     <!-- Description for the preference that enables syncing on a time schedule. %1$s is the time window duration. %2$s is how long to sync within the time window. Both timestamps are formatted using the duration_* strings before being inserted here. -->
     <string name="pref_sync_schedule_desc">Sync for %2$s during every window of %1$s.</string>
+    <!-- Title for the preference that only enables the time schedule feature when on battery power. -->
+    <string name="pref_sync_schedule_battery_only_name">Use time schedule only on battery</string>
+    <!-- Description for the preference that only enables the time schedule feature when on battery power. -->
+    <string name="pref_sync_schedule_battery_only_desc">When plugged in, the time schedule will be ignored.</string>
     <!-- Title for the preference that keeps Syncthing always running. When run conditions prevent it from syncing, Syncthing is paused instead of stopped. -->
     <string name="pref_keep_alive_name">Keep Syncthing alive</string>
     <!-- Description for the preference that keeps Syncthing always running. -->

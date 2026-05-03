@@ -110,6 +110,7 @@ data class DeviceState(
             Preferences.PREF_MIN_BATTERY_LEVEL,
             Preferences.PREF_RESPECT_BATTERY_SAVER,
             Preferences.PREF_RESPECT_AUTO_SYNC_DATA,
+            Preferences.PREF_SYNC_SCHEDULE_BATTERY_ONLY,
         )
 
         fun normalizeSsid(ssid: String): String? =
@@ -189,8 +190,12 @@ data class DeviceState(
         }
 
         if (!isInTimeWindow) {
-            Log.d(TAG, "Blocked due to execution time window")
-            reasons.add(BlockedReason.TIME_SCHEDULE)
+            if (prefs.syncScheduleBatteryOnly && isPluggedIn) {
+                Log.d(TAG, "Ignoring sync schedule because device is plugged in")
+            } else {
+                Log.d(TAG, "Blocked due to execution time window")
+                reasons.add(BlockedReason.TIME_SCHEDULE)
+            }
         }
 
         if (reasons.isEmpty()) {

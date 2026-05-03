@@ -23,6 +23,7 @@ class Preferences(context: Context) {
         const val PREF_RESPECT_BATTERY_SAVER = "respect_battery_saver"
         const val PREF_RESPECT_AUTO_SYNC_DATA = "respect_auto_sync_data"
         const val PREF_SYNC_SCHEDULE = "sync_schedule"
+        const val PREF_SYNC_SCHEDULE_BATTERY_ONLY = "sync_schedule_battery_only"
         const val PREF_KEEP_ALIVE = "keep_alive"
         const val PREF_REMOTE_CONTROL = "remote_control"
         const val PREF_SHOW_EXIT = "show_exit"
@@ -138,6 +139,10 @@ class Preferences(context: Context) {
     var scheduleSyncMs: Int
         get() = prefs.getInt(PREF_SCHEDULE_SYNC_MS, 5 * 60 * 1000)
         set(ms) = prefs.edit { putInt(PREF_SCHEDULE_SYNC_MS, ms) }
+
+    var syncScheduleBatteryOnly: Boolean
+        get() = prefs.getBoolean(PREF_SYNC_SCHEDULE_BATTERY_ONLY, false)
+        set(enabled) = prefs.edit { putBoolean(PREF_SYNC_SCHEDULE_BATTERY_ONLY, enabled) }
 
     var isDebugMode: Boolean
         get() = prefs.getBoolean(PREF_DEBUG_MODE, false)

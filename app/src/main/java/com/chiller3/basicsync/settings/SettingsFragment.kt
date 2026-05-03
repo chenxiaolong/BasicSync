@@ -89,6 +89,7 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
     private lateinit var prefNetworkConditions: Preference
     private lateinit var prefRunOnBattery: SplitSwitchPreference
     private lateinit var prefSyncSchedule: SplitSwitchPreference
+    private lateinit var prefSyncScheduleBatteryOnly: SwitchPreferenceCompat
     private lateinit var prefVersion: LongClickablePreference
     private lateinit var prefSaveLogs: Preference
 
@@ -191,6 +192,8 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
 
         prefSyncSchedule = findPreference(Preferences.PREF_SYNC_SCHEDULE)!!
         prefSyncSchedule.onPreferenceClickListener = this
+
+        prefSyncScheduleBatteryOnly = findPreference(Preferences.PREF_SYNC_SCHEDULE_BATTERY_ONLY)!!
 
         prefVersion = findPreference(Preferences.PREF_VERSION)!!
         prefVersion.onPreferenceClickListener = this
@@ -397,6 +400,8 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
 
         prefRunOnBattery.isVisible = hasBattery
         prefRunOnBattery.summary = getString(R.string.pref_run_on_battery_desc, prefs.minBatteryLevel)
+
+        prefSyncScheduleBatteryOnly.isVisible = hasBattery
     }
 
     private fun formatDurationMs(duration: Int): String =
@@ -417,6 +422,8 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
 
         prefSyncSchedule.summary =
             getString(R.string.pref_sync_schedule_desc, cycleDuration, syncDuration)
+
+        prefSyncScheduleBatteryOnly.isEnabled = prefSyncSchedule.isChecked
     }
 
     private fun refreshVersion() {
@@ -598,6 +605,7 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             Preferences.PREF_MANUAL_MODE -> refreshService()
+            Preferences.PREF_SYNC_SCHEDULE -> refreshSchedule()
         }
     }
 
