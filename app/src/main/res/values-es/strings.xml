@@ -148,4 +148,6 @@
     <string name="pref_show_exit_name">Mostrar botón Salir</string>
     <string name="pref_show_exit_desc">Muestra el botón Salir en las notificaciones persistentes. La app se iniciará automáticamente después de un reinicio o cuando reciba órdenes de control remotas.</string>
     <string name="notification_action_exit">Salir</string>
+    <string name="pref_sync_schedule_battery_only_name">Usar el horario solo con batería</string>
+    <string name="pref_sync_schedule_battery_only_desc">Cuando esté enchufado, se ignorará el horario.</string>
 </resources>
