@@ -153,4 +153,6 @@
     <string name="pref_show_exit_name">Pokaż przycisk wyjścia</string>
     <string name="pref_show_exit_desc">Wyświetl przycisk „Wyjdź” w stałym powiadomieniu. Aplikacja uruchomi się automatycznie po ponownym uruchomieniu lub po otrzymaniu polecenia zdalnego sterowania.</string>
     <string name="notification_action_exit">Wyjdź</string>
+    <string name="pref_sync_schedule_battery_only_name">Używaj harmonogramu tylko na baterii</string>
+    <string name="pref_sync_schedule_battery_only_desc">Po podłączeniu harmonogram zostanie zignorowany.</string>
 </resources>
