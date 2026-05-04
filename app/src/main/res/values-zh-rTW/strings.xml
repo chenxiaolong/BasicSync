@@ -151,4 +151,6 @@
         <item quantity="other">發現 %d 個同步衝突</item>
     </plurals>
     <string name="notification_action_exit">結束</string>
+    <string name="pref_sync_schedule_battery_only_name">僅在電池供電時使用排程同步</string>
+    <string name="pref_sync_schedule_battery_only_desc">接上電源時，將會忽略同步排程。</string>
 </resources>
