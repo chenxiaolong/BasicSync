@@ -13,6 +13,7 @@ import (
 	"context"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"io"
 	"iter"
@@ -24,6 +25,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"syscall"
 	"time"
 	_ "unsafe"
 
@@ -629,6 +631,32 @@ func ZipErrorWrongPassword() string {
 	return zip.ErrPassword.Error()
 }
 
+func tryAtomicSwap(path1 string, path2 string) error {
+	err := unix.Renameat2(unix.AT_FDCWD, path1, unix.AT_FDCWD, path2, unix.RENAME_EXCHANGE)
+	if err == nil || !errors.Is(err, syscall.ENOSYS) {
+		return err
+	}
+
+	log.Printf("Using non-atomic rename because RENAME_EXCHANGE is not supported: %w", err)
+
+	swapDir, err := os.MkdirTemp(filepath.Dir(path2), "swap")
+	if err != nil {
+		return err
+	}
+
+	err = unix.Rename(path1, swapDir)
+	if err != nil {
+		return err
+	}
+
+	err = unix.Rename(path2, path1)
+	if err != nil {
+		return err
+	}
+
+	return unix.Rename(swapDir, path2)
+}
+
 func ImportConfiguration(fd int, name string, password string) error {
 	stLock.Lock()
 	defer stLock.Unlock()
@@ -720,9 +748,9 @@ func ImportConfiguration(fd int, name string, password string) error {
 
 	configDir := locations.GetBaseDir(locations.ConfigBaseDir)
 
-	// Atomically swap the active config dir with the temp dir. The temp dir
-	// cleanup above will delete the old files.
-	err = unix.Renameat2(unix.AT_FDCWD, tempDir, unix.AT_FDCWD, configDir, unix.RENAME_EXCHANGE)
+	// Try to atomically swap the active config dir with the temp dir. The temp
+	// dir cleanup above will delete the old files.
+	err = tryAtomicSwap(tempDir, configDir)
 	if err != nil {
 		return fmt.Errorf("failed to swap: %q <-> %q: %w", tempDir, configDir, err)
 	}
