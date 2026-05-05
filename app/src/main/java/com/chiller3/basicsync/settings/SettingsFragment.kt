@@ -41,6 +41,7 @@ import com.chiller3.basicsync.dialog.SyncScheduleDialogFragment
 import com.chiller3.basicsync.extension.formattedString
 import com.chiller3.basicsync.syncthing.SyncthingService
 import com.chiller3.basicsync.view.LongClickablePreference
+import com.chiller3.basicsync.view.OnPreferenceLongClickListener
 import com.chiller3.basicsync.view.SplitSwitchPreference
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
@@ -50,7 +51,7 @@ import java.time.format.SignStyle
 import java.time.temporal.ChronoField
 
 class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
-    Preference.OnPreferenceClickListener, LongClickablePreference.OnPreferenceLongClickListener,
+    Preference.OnPreferenceClickListener, OnPreferenceLongClickListener,
     Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         private val TAG = SettingsFragment::class.java.simpleName
