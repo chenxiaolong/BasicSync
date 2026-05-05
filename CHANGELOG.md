@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Add new option to use time schedule only when running on battery power ([Issue #109], [PR #110])
+* Minor bug fix for long-clickable preferences ([PR #113])
 
 ### Version 1.25
 
@@ -270,3 +271,4 @@
 [PR #106]: https://github.com/chenxiaolong/BasicSync/pull/106
 [PR #107]: https://github.com/chenxiaolong/BasicSync/pull/107
 [PR #110]: https://github.com/chenxiaolong/BasicSync/pull/110
+[PR #113]: https://github.com/chenxiaolong/BasicSync/pull/113
