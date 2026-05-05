@@ -12,6 +12,7 @@
 * Add new option to use time schedule only when running on battery power ([Issue #109], [PR #110])
 * Minor bug fix for long-clickable preferences ([PR #113])
 * Add fallback logic for devices running Linux kernel version <3.15 ([Issue #114], [PR #115])
+* Use distinct version code for each APK split ([Issue #111], [PR #118])
 
 ### Version 1.25
 
@@ -194,6 +195,7 @@
 [Issue #98]: https://github.com/chenxiaolong/BasicSync/issues/98
 [Issue #105]: https://github.com/chenxiaolong/BasicSync/issues/105
 [Issue #109]: https://github.com/chenxiaolong/BasicSync/issues/109
+[Issue #111]: https://github.com/chenxiaolong/BasicSync/issues/111
 [Issue #114]: https://github.com/chenxiaolong/BasicSync/issues/114
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
@@ -275,3 +277,4 @@
 [PR #110]: https://github.com/chenxiaolong/BasicSync/pull/110
 [PR #113]: https://github.com/chenxiaolong/BasicSync/pull/113
 [PR #115]: https://github.com/chenxiaolong/BasicSync/pull/115
+[PR #118]: https://github.com/chenxiaolong/BasicSync/pull/118
