@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.26
 
 * Add new option to use time schedule only when running on battery power ([Issue #109], [PR #110])
 * Minor bug fix for long-clickable preferences ([PR #113])
