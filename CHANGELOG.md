@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update golang to 1.26.3 ([PR #120])
+
 ### Version 1.26
 
 * Add new option to use time schedule only when running on battery power ([Issue #109], [PR #110])
@@ -280,3 +284,4 @@
 [PR #115]: https://github.com/chenxiaolong/BasicSync/pull/115
 [PR #117]: https://github.com/chenxiaolong/BasicSync/pull/117
 [PR #118]: https://github.com/chenxiaolong/BasicSync/pull/118
+[PR #120]: https://github.com/chenxiaolong/BasicSync/pull/120
