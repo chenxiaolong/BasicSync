@@ -85,7 +85,7 @@
     <string name="dialog_min_battery_level_message">Adja meg a Syncthing futtatásához szükséges minimális akkumulátor szintet.</string>
     <string name="dialog_min_battery_level_hint">Százalék</string>
     <string name="dialog_sync_schedule_title">Szinkronizálás időzítése</string>
-    <string name="dialog_sync_schedule_message">Adja meg a ciklust és a szinkronizálás időtartamát. Az <tt>h</tt> (óra), <tt>m</tt> (perc) és <tt>s</tt> (másodperc) utótagok elfogadottak.</string>
+    <string name="dialog_sync_schedule_message">Az <tt>h</tt> (óra), <tt>m</tt> (perc) és <tt>s</tt> (másodperc) utótagok elfogadottak.</string>
     <string name="dialog_sync_schedule_hint_cycle">Ciklus időtartama</string>
     <string name="dialog_sync_schedule_hint_sync">Szinkronizálás időtartama</string>
     <string name="dialog_wifi_network_title">Wi-Fi hálózat</string>

@@ -99,6 +99,10 @@
             android:name=".settings.QrScannerActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".settings.SyncScheduleActivity"
+            android:exported="false" />
+
         <!--
             These config changes are ignored because WebView has no way of persisting the JavaScript
             and DOM states. Only the history is preserved.

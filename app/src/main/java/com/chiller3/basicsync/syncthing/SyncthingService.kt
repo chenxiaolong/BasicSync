@@ -551,6 +551,9 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         Log.i(TAG, "Syncthing successfully stopped")
 
         synchronized(stateLock) {
+            deviceStateTracker.updateBusyFolders(0)
+            deviceStateTracker.updateConnectedDevices(0)
+
             syncthingConflicts = emptyList()
             syncthingApp = null
 
@@ -572,6 +575,16 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         synchronized(stateLock) {
             syncthingConflicts = paths
         }
+    }
+
+    @WorkerThread
+    override fun onBusyFoldersUpdated(count: Int) {
+        deviceStateTracker.updateBusyFolders(count)
+    }
+
+    @WorkerThread
+    override fun onConnectedDevicesUpdated(count: Int) {
+        deviceStateTracker.updateConnectedDevices(count)
     }
 
     data class GuiInfo(

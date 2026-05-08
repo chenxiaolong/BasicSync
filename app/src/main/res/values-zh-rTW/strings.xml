@@ -85,7 +85,7 @@
     <string name="dialog_min_battery_level_message">輸入允許 Syncthing 執行的最低電池電量。</string>
     <string name="dialog_min_battery_level_hint">百分比</string>
     <string name="dialog_sync_schedule_title">同步排程</string>
-    <string name="dialog_sync_schedule_message">輸入週期與同步時長。可接受 <tt>h</tt>（小時）、<tt>m</tt>（分鐘）及 <tt>s</tt>（秒）作為後綴。</string>
+    <string name="dialog_sync_schedule_message">可接受 <tt>h</tt>（小時）、<tt>m</tt>（分鐘）及 <tt>s</tt>（秒）作為後綴。</string>
     <string name="dialog_sync_schedule_hint_cycle">週期時長</string>
     <string name="dialog_sync_schedule_hint_sync">同步時長</string>
     <string name="dialog_wifi_network_title">Wi-Fi 網路</string>

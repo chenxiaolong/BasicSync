@@ -17,51 +17,22 @@ import androidx.fragment.app.setFragmentResult
 import com.chiller3.basicsync.Preferences
 import com.chiller3.basicsync.R
 import com.chiller3.basicsync.databinding.DialogTextInputBinding
+import com.chiller3.basicsync.dialog.SyncScheduleDialogFragment.Companion.humanToMs
+import com.chiller3.basicsync.dialog.SyncScheduleDialogFragment.Companion.msToHuman
 import com.chiller3.basicsync.syncthing.DeviceStateTracker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class SyncScheduleDialogFragment : DialogFragment() {
+class SyncScheduleIdleDialogFragment : DialogFragment() {
     companion object {
-        val TAG: String = SyncScheduleDialogFragment::class.java.simpleName
+        val TAG: String = SyncScheduleIdleDialogFragment::class.java.simpleName
 
         const val RESULT_SUCCESS = "success"
-
-        internal fun msToHuman(duration: Int): String =
-            if (duration % (60 * 60 * 1000) == 0) {
-                val hours = duration / 60 / 60 / 1000
-                "${hours}h"
-            } else if (duration % (60 * 1000) == 0) {
-                val minutes = duration / 60 / 1000
-                "${minutes}m"
-            } else {
-                val seconds = duration / 1000
-                "${seconds}s"
-            }
-
-        internal fun humanToMs(input: String): Int {
-            val multiplier = when (input.last()) {
-                'h' -> 60 * 60 * 1000
-                'm' -> 60 * 1000
-                's' -> 1000
-                else -> throw IllegalArgumentException("Unrecognized suffix in: $input")
-            }
-
-            val base = input.substring(0, input.length - 1).toInt()
-            if (base <= 0) {
-                throw IllegalArgumentException("Base value must be positive: $base")
-            } else if (base > Int.MAX_VALUE / multiplier) {
-                throw IllegalArgumentException("Duration too large as ms: $base * $multiplier")
-            }
-
-            return base * multiplier
-        }
     }
 
     private lateinit var prefs: Preferences
     private lateinit var binding: DialogTextInputBinding
     private var success: Boolean = false
-    private var cycleMs: Int? = null
-    private var syncMs: Int? = null
+    private var idleMs: Int? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = requireContext()
@@ -71,25 +42,14 @@ class SyncScheduleDialogFragment : DialogFragment() {
         binding = DialogTextInputBinding.inflate(layoutInflater)
         binding.message.setText(R.string.dialog_sync_schedule_message)
 
-        binding.textLayout.setHint(R.string.dialog_sync_schedule_hint_cycle)
-        binding.confirmTextLayout.setHint(R.string.dialog_sync_schedule_hint_sync)
-        binding.confirmTextLayout.isVisible = true
+        binding.textLayout.setHint(R.string.dialog_sync_schedule_hint_idle)
+        binding.confirmTextLayout.isVisible = false
 
         val inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
         binding.text.inputType = inputType
-        binding.confirmText.inputType = inputType
 
         binding.text.addTextChangedListener {
-            cycleMs = try {
-                humanToMs(it.toString())
-            } catch (_: Exception) {
-                null
-            }
-
-            refreshOkButtonEnabledState()
-        }
-        binding.confirmText.addTextChangedListener {
-            syncMs = try {
+            idleMs = try {
                 humanToMs(it.toString())
             } catch (_: Exception) {
                 null
@@ -99,8 +59,7 @@ class SyncScheduleDialogFragment : DialogFragment() {
         }
 
         if (savedInstanceState == null) {
-            binding.text.setText(msToHuman(prefs.scheduleCycleMs))
-            binding.confirmText.setText(msToHuman(prefs.scheduleSyncMs))
+            binding.text.setText(msToHuman(prefs.scheduleIdleMs))
         }
 
         return MaterialAlertDialogBuilder(context)
@@ -122,21 +81,17 @@ class SyncScheduleDialogFragment : DialogFragment() {
         super.onDismiss(dialog)
 
         if (success) {
-            prefs.scheduleCycleMs = cycleMs!!
-            prefs.scheduleSyncMs = syncMs!!
-            prefs.clampSyncScheduleDurations(true)
+            prefs.scheduleIdleMs = idleMs!!
+            prefs.clampSyncScheduleDurations(false)
         }
 
         setFragmentResult(tag!!, Bundle().apply { putBoolean(RESULT_SUCCESS, success) })
     }
 
     private fun refreshOkButtonEnabledState() {
-        val cycleMs = cycleMs
-        val syncMs = syncMs
+        val idleMs = idleMs
 
         (dialog as AlertDialog?)?.getButton(AlertDialog.BUTTON_POSITIVE)?.isEnabled =
-            cycleMs != null && syncMs != null && syncMs < cycleMs
-                    && syncMs >= DeviceStateTracker.MINIMUM_SYNC_MS
-                    && cycleMs >= DeviceStateTracker.MINIMUM_CYCLE_MS
+            idleMs != null && idleMs >= DeviceStateTracker.MINIMUM_IDLE_MS
     }
 }

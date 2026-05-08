@@ -79,7 +79,7 @@
     <string name="dialog_min_battery_level_message">יש להזין את רמת הסוללה המזערית הנדרשת להרצת Syncthing.</string>
     <string name="dialog_min_battery_level_hint">אחוז</string>
     <string name="dialog_sync_schedule_title">לוח זמנים לסנכרון</string>
-    <string name="dialog_sync_schedule_message">יש להזין את משך המחזור והסנכרון. הסיומות <tt>h</tt> (שעות), <tt>m</tt> (דקות), ו־<tt>s</tt> (שניות) מקובלות.</string>
+    <string name="dialog_sync_schedule_message">הסיומות <tt>h</tt> (שעות), <tt>m</tt> (דקות), ו־<tt>s</tt> (שניות) מקובלות.</string>
     <string name="dialog_sync_schedule_hint_cycle">משך מחזור</string>
     <string name="dialog_sync_schedule_hint_sync">משך סנכרון</string>
     <string name="dialog_wifi_network_title">רשת Wi-Fi</string>

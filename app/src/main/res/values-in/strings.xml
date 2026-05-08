@@ -79,7 +79,7 @@
     <string name="dialog_min_battery_level_message">Masukkan tingkat baterai minimum yang diperlukan agar Syncthing dapat berjalan.</string>
     <string name="dialog_min_battery_level_hint">Persentase</string>
     <string name="dialog_sync_schedule_title">Jadwal sinkronisasi</string>
-    <string name="dialog_sync_schedule_message">Masukkan siklus dan durasi sinkronisasi. Akhiran <tt>h</tt> (jam), <tt>m</tt> (menit), dan <tt>s</tt> (detik) diterima.</string>
+    <string name="dialog_sync_schedule_message">Akhiran <tt>h</tt> (jam), <tt>m</tt> (menit), dan <tt>s</tt> (detik) diterima.</string>
     <string name="dialog_sync_schedule_hint_cycle">Durasi siklus</string>
     <string name="dialog_sync_schedule_hint_sync">Durasi sinkronisasi</string>
     <string name="dialog_wifi_network_title">Jaringan Wi‑Fi</string>

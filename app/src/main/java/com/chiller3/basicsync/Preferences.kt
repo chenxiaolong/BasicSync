@@ -9,6 +9,8 @@ import android.content.Context
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import kotlin.math.max
+import kotlin.math.min
 
 class Preferences(context: Context) {
     companion object {
@@ -22,8 +24,6 @@ class Preferences(context: Context) {
         const val PREF_MIN_BATTERY_LEVEL = "min_battery_level"
         const val PREF_RESPECT_BATTERY_SAVER = "respect_battery_saver"
         const val PREF_RESPECT_AUTO_SYNC_DATA = "respect_auto_sync_data"
-        const val PREF_SYNC_SCHEDULE = "sync_schedule"
-        const val PREF_SYNC_SCHEDULE_BATTERY_ONLY = "sync_schedule_battery_only"
         const val PREF_KEEP_ALIVE = "keep_alive"
         const val PREF_REMOTE_CONTROL = "remote_control"
         const val PREF_SHOW_EXIT = "show_exit"
@@ -39,6 +39,7 @@ class Preferences(context: Context) {
         const val PREF_EXPORT_CONFIGURATION = "export_configuration"
         const val PREF_SERVICE_STATUS = "service_status"
         const val PREF_NETWORK_CONDITIONS = "network_conditions"
+        const val PREF_SYNC_SCHEDULE_SETTINGS = "sync_schedule_settings"
         const val PREF_VERSION = "version"
         const val PREF_SAVE_LOGS = "save_logs"
 
@@ -48,6 +49,7 @@ class Preferences(context: Context) {
         const val PREF_MANUAL_SHOULD_RUN = "manual_should_run"
         const val PREF_SCHEDULE_CYCLE_MS = "schedule_cycle_ms"
         const val PREF_SCHEDULE_SYNC_MS = "schedule_sync_ms"
+        const val PREF_SCHEDULE_IDLE_MS = "schedule_idle_ms"
 
         // Network condition preferences.
         const val CATEGORY_ALLOWED_WIFI_NETWORKS = "allowed_wifi_networks"
@@ -61,6 +63,11 @@ class Preferences(context: Context) {
         const val PREF_ALLOW_BACKGROUND_LOCATION = "allow_background_location"
         const val PREF_ADD_NEW_NETWORK = "add_new_network"
         const val PREF_ALLOWED_WIFI_NETWORKS = "allowed_wifi_networks"
+
+        // Sync schedule preferences.
+        const val PREF_SYNC_SCHEDULE = "sync_schedule"
+        const val PREF_SYNC_SCHEDULE_IDLE = "sync_schedule_idle"
+        const val PREF_SYNC_SCHEDULE_BATTERY_ONLY = "sync_schedule_battery_only"
 
         // Legacy preferences.
         private const val PREF_REQUIRE_SUFFICIENT_BATTERY = "require_sufficient_battery"
@@ -132,6 +139,10 @@ class Preferences(context: Context) {
         get() = prefs.getBoolean(PREF_SYNC_SCHEDULE, false)
         set(enabled) = prefs.edit { putBoolean(PREF_SYNC_SCHEDULE, enabled) }
 
+    var syncScheduleIdle: Boolean
+        get() = prefs.getBoolean(PREF_SYNC_SCHEDULE_IDLE, false)
+        set(enabled) = prefs.edit { putBoolean(PREF_SYNC_SCHEDULE_IDLE, enabled) }
+
     var scheduleCycleMs: Int
         get() = prefs.getInt(PREF_SCHEDULE_CYCLE_MS, 60 * 60 * 1000)
         set(ms) = prefs.edit { putInt(PREF_SCHEDULE_CYCLE_MS, ms) }
@@ -139,6 +150,10 @@ class Preferences(context: Context) {
     var scheduleSyncMs: Int
         get() = prefs.getInt(PREF_SCHEDULE_SYNC_MS, 5 * 60 * 1000)
         set(ms) = prefs.edit { putInt(PREF_SCHEDULE_SYNC_MS, ms) }
+
+    var scheduleIdleMs: Int
+        get() = prefs.getInt(PREF_SCHEDULE_IDLE_MS, 3 * 60 * 1000)
+        set(ms) = prefs.edit { putInt(PREF_SCHEDULE_IDLE_MS, ms) }
 
     var syncScheduleBatteryOnly: Boolean
         get() = prefs.getBoolean(PREF_SYNC_SCHEDULE_BATTERY_ONLY, false)
@@ -163,6 +178,17 @@ class Preferences(context: Context) {
             }
 
             prefs.edit { remove(PREF_REQUIRE_SUFFICIENT_BATTERY) }
+        }
+
+        clampSyncScheduleDurations(true)
+    }
+
+    fun clampSyncScheduleDurations(preferCycleSync: Boolean) {
+        if (preferCycleSync) {
+            scheduleIdleMs = min(scheduleIdleMs, scheduleSyncMs)
+        } else {
+            scheduleCycleMs = max(scheduleCycleMs, scheduleIdleMs)
+            scheduleSyncMs = max(scheduleSyncMs, scheduleIdleMs)
         }
     }
 }

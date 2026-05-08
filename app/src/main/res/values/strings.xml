@@ -74,14 +74,10 @@
     <string name="pref_respect_auto_sync_data_name">Respect auto-sync data setting</string>
     <!-- Description for the preference that controls whether to respect the auto-sync data option from Android's settings. -->
     <string name="pref_respect_auto_sync_data_desc">Only run when Android\'s auto-sync data setting is enabled.</string>
-    <!-- Title for the preference that enables syncing on a time schedule. Example of time schedule: run for 5 minutes every hour. -->
-    <string name="pref_sync_schedule_name">Sync on time schedule</string>
-    <!-- Description for the preference that enables syncing on a time schedule. %1$s is the time window duration. %2$s is how long to sync within the time window. Both timestamps are formatted using the duration_* strings before being inserted here. -->
-    <string name="pref_sync_schedule_desc">Sync for %2$s during every window of %1$s.</string>
-    <!-- Title for the preference that only enables the time schedule feature when on battery power. -->
-    <string name="pref_sync_schedule_battery_only_name">Use time schedule only on battery</string>
-    <!-- Description for the preference that only enables the time schedule feature when on battery power. -->
-    <string name="pref_sync_schedule_battery_only_desc">When plugged in, the time schedule will be ignored.</string>
+    <!-- Title for the preference that opens the sync schedule settings screen. -->
+    <string name="pref_sync_schedule_settings_name">Sync schedule</string>
+    <!-- Description for the preference that opens the sync schedule settings screen. -->
+    <string name="pref_sync_schedule_settings_desc">Run Syncthing periodically based on a fixed time interval.</string>
     <!-- Title for the preference that keeps Syncthing always running. When run conditions prevent it from syncing, Syncthing is paused instead of stopped. -->
     <string name="pref_keep_alive_name">Keep Syncthing alive</string>
     <!-- Description for the preference that keeps Syncthing always running. -->
@@ -135,6 +131,19 @@
     <!-- Preference for manually adding an allowed Wi-Fi network. This can be used, for example, to add hidden Wi-Fi networks or networks that are currently out of range. -->
     <string name="pref_add_wifi_network_name">Manually add Wi-Fi network</string>
 
+    <!-- Title for the preference that enables syncing on a time schedule. Example of time schedule: run for 5 minutes every hour. -->
+    <string name="pref_sync_schedule_name">Sync on time schedule</string>
+    <!-- Description for the preference that enables syncing on a time schedule. %1$s is the time window duration. %2$s is how long to sync within the time window. Both timestamps are formatted using the duration_* strings before being inserted here. -->
+    <string name="pref_sync_schedule_desc">Sync for %2$s during every window of %1$s.</string>
+    <!-- Title for the preference that enables stopping Syncthing early if it has been idle. -->
+    <string name="pref_sync_schedule_idle_name">Stop early when idle</string>
+    <!-- Description for the preference that enables stopping Syncthing early if it has been idle. %1$s is the idle duration. The timestamp is formatted using the duration_* strings before being inserted here. -->
+    <string name="pref_sync_schedule_idle_desc">Stop Syncthing before the sync window ends if at least one device connected and all folders have been idle for %1$s.</string>
+    <!-- Title for the preference that only enables the time schedule feature when on battery power. -->
+    <string name="pref_sync_schedule_battery_only_name">Use time schedule only on battery</string>
+    <!-- Description for the preference that only enables the time schedule feature when on battery power. -->
+    <string name="pref_sync_schedule_battery_only_desc">When plugged in, the time schedule will be ignored.</string>
+
     <!-- Button to open a dialog containing more details about an error that just occurred. -->
     <string name="action_details">Details</string>
     <!-- Title shown in a dialog containing more details about an error that just occurred. -->
@@ -186,11 +195,13 @@
     <!-- Title of the dialog for configuring the time schedule feature. -->
     <string name="dialog_sync_schedule_title">Sync schedule</string>
     <!-- Message shown in the dialog for configuring the time schedule feature. The 'h', 'm', and 's' suffixes are used for every language. -->
-    <string name="dialog_sync_schedule_message">Enter the cycle and sync duration. The <tt>h</tt> (hours), <tt>m</tt> (minutes), and <tt>s</tt> (seconds) suffixes are accepted.</string>
+    <string name="dialog_sync_schedule_message">The <tt>h</tt> (hours), <tt>m</tt> (minutes), and <tt>s</tt> (seconds) suffixes are accepted.</string>
     <!-- Textbox hint shown in the dialog for configuring the time schedule feature. This represents the length of the time window. For example the "every hour" part of "sync for 5 minutes every hour". -->
     <string name="dialog_sync_schedule_hint_cycle">Cycle duration</string>
     <!-- Textbox hint shown in the dialog for configuring the time schedule feature. This represents the sync duration within the time window. For example the "5 minutes" part of "sync for 5 minutes every hour". -->
     <string name="dialog_sync_schedule_hint_sync">Sync duration</string>
+    <!-- Textbox hint shown in the dialog for configuring the time schedule feature. This represents the idle duration. This is for stopping Syncthing early before the sync window ends if it's been idle for a period of time. -->
+    <string name="dialog_sync_schedule_hint_idle">Idle duration</string>
     <!-- Title of the dialog for manually adding an allowed Wi-Fi network. -->
     <string name="dialog_wifi_network_title">Wi-Fi network</string>
     <!-- Message shown in the dialog for manually adding an allowed Wi-Fi network. -->

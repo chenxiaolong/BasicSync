@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SPDX-FileCopyrightText: 2026 Andrew Gunnerson
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:title="@string/pref_header_run_conditions"
+        app:iconSpaceReserved="false">
+
+        <com.chiller3.basicsync.view.SplitSwitchPreference
+            app:key="sync_schedule"
+            app:title="@string/pref_sync_schedule_name"
+            app:iconSpaceReserved="false" />
+
+        <com.chiller3.basicsync.view.SplitSwitchPreference
+            app:key="sync_schedule_idle"
+            app:title="@string/pref_sync_schedule_idle_name"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreferenceCompat
+            app:key="sync_schedule_battery_only"
+            app:title="@string/pref_sync_schedule_battery_only_name"
+            app:summary="@string/pref_sync_schedule_battery_only_desc"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -76,7 +76,7 @@
     <string name="dialog_min_battery_level_message">Wpisz minimalny poziom naładowania baterii potrzebny do działania Syncthing.</string>
     <string name="dialog_min_battery_level_hint">Procent</string>
     <string name="dialog_sync_schedule_title">Harmonogram synchronizacji</string>
-    <string name="dialog_sync_schedule_message">Wpisz cykl i czas trwania synchronizacji. Akceptowane są sufiksy <tt>h</tt> (godziny),<tt>m</tt> (minuty) i <tt>s</tt> (sekundy).</string>
+    <string name="dialog_sync_schedule_message">Akceptowane są sufiksy <tt>h</tt> (godziny),<tt>m</tt> (minuty) i <tt>s</tt> (sekundy).</string>
     <string name="dialog_sync_schedule_hint_cycle">Czas trwania cyklu</string>
     <string name="dialog_sync_schedule_hint_sync">Czas trwania synchronizacji</string>
     <string name="dialog_wifi_network_title">Sieć Wi-Fi</string>

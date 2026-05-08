@@ -79,7 +79,7 @@
     <string name="dialog_min_battery_level_title">最低电池电量</string>
     <string name="dialog_min_battery_level_message">请输入 Syncthing 运行所需的最低电池电量。</string>
     <string name="dialog_min_battery_level_hint">百分比</string>
-    <string name="dialog_sync_schedule_message">请输入周期和同步时长。支持使用 <tt>h</tt>（小时）、<tt>m</tt>（分钟）和 <tt>s</tt>（秒）后缀。</string>
+    <string name="dialog_sync_schedule_message">支持使用 <tt>h</tt>（小时）、<tt>m</tt>（分钟）和 <tt>s</tt>（秒）后缀。</string>
     <string name="dialog_sync_schedule_title">同步时间表</string>
     <string name="dialog_sync_schedule_hint_cycle">周期时长</string>
     <string name="dialog_sync_schedule_hint_sync">同步时长</string>

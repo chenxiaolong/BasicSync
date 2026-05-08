@@ -22,6 +22,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -38,6 +39,7 @@ import (
 	"github.com/syncthing/syncthing/lib/events"
 	"github.com/syncthing/syncthing/lib/fs"
 	"github.com/syncthing/syncthing/lib/locations"
+	"github.com/syncthing/syncthing/lib/model"
 	"github.com/syncthing/syncthing/lib/protocol"
 	"github.com/syncthing/syncthing/lib/rand"
 	"github.com/syncthing/syncthing/lib/svcutil"
@@ -290,6 +292,10 @@ type SyncthingStatusReceiver interface {
 	// support passing a list of strings to the JVM. This works for arbitrary
 	// paths on Linux.
 	OnConflictsUpdated(paths0Sep string)
+
+	OnBusyFoldersUpdated(count int32)
+
+	OnConnectedDevicesUpdated(count int32)
 }
 
 // db.DB is internal, so it's unnameable and we can't create a function that
@@ -325,6 +331,38 @@ func dispatchConflicts(
 	receiver.OnConflictsUpdated(paths0Sep.String())
 }
 
+// The scanning states are intentionally excluded because we only want mutating
+// operations to interrupt the idle timer.
+var busyEvents = []string{
+	model.FolderSyncWaiting.String(),
+	model.FolderSyncPreparing.String(),
+	model.FolderSyncing.String(),
+	model.FolderCleaning.String(),
+	model.FolderCleanWaiting.String(),
+}
+
+func dispatchBusyFolders(
+	folderStates map[string]string,
+	receiver SyncthingStatusReceiver,
+) {
+	busyCount := int32(0)
+
+	for _, state := range folderStates {
+		if slices.Contains(busyEvents, state) {
+			busyCount += 1
+		}
+	}
+
+	receiver.OnBusyFoldersUpdated(busyCount)
+}
+
+func dispatchConnectedDevices(
+	devicesConnected map[string]struct{},
+	receiver SyncthingStatusReceiver,
+) {
+	receiver.OnConnectedDevicesUpdated(int32(len(devicesConnected)))
+}
+
 func eventLoop(
 	ctx context.Context,
 	stopped chan struct{},
@@ -338,9 +376,15 @@ func eventLoop(
 	sub := evLogger.Subscribe(
 		events.LocalChangeDetected |
 			events.RemoteChangeDetected |
+			events.StateChanged |
+			events.DeviceConnected |
+			events.DeviceDisconnected |
 			events.ConfigSaved,
 	)
 	defer sub.Unsubscribe()
+
+	devicesConnected := map[string]struct{}{}
+	folderStates := map[string]string{}
 
 	for {
 		select {
@@ -368,6 +412,31 @@ func eventLoop(
 
 				dispatchConflicts(folderConflicts, folderToPath, receiver)
 
+			case events.StateChanged:
+				data := evt.Data.(map[string]interface{})
+				folder := data["folder"].(string)
+				state := data["to"].(string)
+
+				folderStates[folder] = state
+
+				dispatchBusyFolders(folderStates, receiver)
+
+			case events.DeviceConnected:
+				data := evt.Data.(map[string]string)
+				deviceID := data["id"]
+
+				devicesConnected[deviceID] = struct{}{}
+
+				dispatchConnectedDevices(devicesConnected, receiver)
+
+			case events.DeviceDisconnected:
+				data := evt.Data.(map[string]string)
+				deviceID := data["id"]
+
+				delete(devicesConnected, deviceID)
+
+				dispatchConnectedDevices(devicesConnected, receiver)
+
 			// When a folder is deleted, we need to manually clear out the
 			// corresponding conflicts because we will not receive deletion
 			// events for them.
@@ -387,10 +456,21 @@ func eventLoop(
 					}
 				}
 
+				for key := range folderStates {
+					if _, ok := folderToPath[key]; !ok {
+						delete(folderStates, key)
+					}
+				}
+
 				dispatchConflicts(folderConflicts, folderToPath, receiver)
+				dispatchBusyFolders(folderStates, receiver)
+
+				// Unlike folders, we don't need to remove deleted devices from
+				// devicesConnected. We'll always receive a disconnection event
+				// when connections are closed during deletion.
 
 			default:
-				// Ignore.
+				log.Printf("Unexpected event: %+v", evt)
 			}
 
 		case <-ctx.Done():

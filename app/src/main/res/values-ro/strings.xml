@@ -85,7 +85,7 @@
     <string name="dialog_min_battery_level_message">Introdu nivelul minim al bateriei necesar pentru ca Syncthing să ruleze.</string>
     <string name="dialog_min_battery_level_hint">Procentaj</string>
     <string name="dialog_sync_schedule_title">Sincronizare programată</string>
-    <string name="dialog_sync_schedule_message">Introdu ciclul și durata de sincronizare. Sunt acceptate sufixele <tt>h</tt> (ore), <tt>m</tt> (minute) și <tt>s</tt> (secunde).</string>
+    <string name="dialog_sync_schedule_message">Sunt acceptate sufixele <tt>h</tt> (ore), <tt>m</tt> (minute) și <tt>s</tt> (secunde).</string>
     <string name="dialog_sync_schedule_hint_cycle">Durata ciclului</string>
     <string name="dialog_sync_schedule_hint_sync">Durata sincronizării</string>
     <string name="dialog_wifi_network_title">Rețea Wi-Fi</string>

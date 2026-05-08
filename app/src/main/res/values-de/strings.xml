@@ -75,7 +75,7 @@
     <string name="dialog_min_battery_level_title">Mindestakkustand</string>
     <string name="dialog_min_battery_level_message">Den für die Ausführung von Syncthing erforderlichen Mindestakkustand eingeben.</string>
     <string name="dialog_min_battery_level_hint">Prozentzahl</string>
-    <string name="dialog_sync_schedule_message">Zyklus und Synchronisierungsdauer eingeben. Die Suffixe <tt>h</tt> (Stunden), <tt>m</tt> (Minuten) und <tt>s</tt> (Sekunden) werden akzeptiert.</string>
+    <string name="dialog_sync_schedule_message">Die Suffixe <tt>h</tt> (Stunden), <tt>m</tt> (Minuten) und <tt>s</tt> (Sekunden) werden akzeptiert.</string>
     <string name="dialog_sync_schedule_hint_cycle">Zyklusdauer</string>
     <string name="dialog_sync_schedule_hint_sync">Synchronisationsdauer</string>
     <string name="dialog_wifi_network_title">WLAN</string>

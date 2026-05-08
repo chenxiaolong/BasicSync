@@ -79,7 +79,7 @@
     <string name="dialog_min_battery_level_message">Syncthing\'in çalışması için gereken en düşük pil seviyesini girin.</string>
     <string name="dialog_min_battery_level_hint">Yüzde</string>
     <string name="dialog_sync_schedule_title">Eşitleme zamanlaması</string>
-    <string name="dialog_sync_schedule_message">Döngü ve eşitleme süresini girin. <tt>h</tt> (saat), <tt>m</tt> (dakika) ve <tt>s</tt> (saniye) son ekleri kabul edilir.</string>
+    <string name="dialog_sync_schedule_message"><tt>h</tt> (saat), <tt>m</tt> (dakika) ve <tt>s</tt> (saniye) son ekleri kabul edilir.</string>
     <string name="dialog_sync_schedule_hint_cycle">Döngü süresi</string>
     <string name="dialog_sync_schedule_hint_sync">Eşitleme süresi</string>
     <string name="dialog_wifi_network_title">Kablosuz ağ</string>

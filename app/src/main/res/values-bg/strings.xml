@@ -85,7 +85,7 @@
     <string name="dialog_min_battery_level_message">Въведете минималното ниво на батерията, необходимо за работата на Syncthing.</string>
     <string name="dialog_min_battery_level_hint">Процент</string>
     <string name="dialog_sync_schedule_title">Разписание за синхронизация</string>
-    <string name="dialog_sync_schedule_message">Въведете продължителността на цикъла и синхронизацията. Приемат се наставките <tt>h</tt> (часове), <tt>m</tt> (минути) и <tt>s</tt> (секунди).</string>
+    <string name="dialog_sync_schedule_message">Приемат се наставките <tt>h</tt> (часове), <tt>m</tt> (минути) и <tt>s</tt> (секунди).</string>
     <string name="dialog_sync_schedule_hint_cycle">Продължителност на цикъла</string>
     <string name="dialog_sync_schedule_hint_sync">Продължителност на синхронизацията</string>
     <string name="dialog_wifi_network_title">Wi-Fi мрежа</string>
