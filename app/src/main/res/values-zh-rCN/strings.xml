@@ -140,4 +140,9 @@
     <string name="notification_action_exit">退出</string>
     <string name="pref_sync_schedule_battery_only_desc">当设备已连接到电源时，时间表将被忽略。</string>
     <string name="pref_sync_schedule_battery_only_name">仅在电池供电时使用时间表</string>
+    <string name="pref_sync_schedule_settings_name">同步时间表</string>
+    <string name="pref_sync_schedule_settings_desc">根据固定的时间间隔定期运行 Syncthing。</string>
+    <string name="pref_sync_schedule_idle_name">空闲时提前停止</string>
+    <string name="pref_sync_schedule_idle_desc">如果至少有一台设备已连接，且所有文件夹已空闲 %1$s，则在同步窗口结束前停止 Syncthing。</string>
+    <string name="dialog_sync_schedule_hint_idle">空闲时长</string>
 </resources>
