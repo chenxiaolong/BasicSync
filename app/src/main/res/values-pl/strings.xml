@@ -155,4 +155,9 @@
     <string name="notification_action_exit">Wyjdź</string>
     <string name="pref_sync_schedule_battery_only_name">Używaj harmonogramu tylko na baterii</string>
     <string name="pref_sync_schedule_battery_only_desc">Po podłączeniu harmonogram zostanie zignorowany.</string>
+    <string name="pref_sync_schedule_settings_name">Harmonogram synchronizacji</string>
+    <string name="pref_sync_schedule_settings_desc">Uruchamiaj Syncthing okresowo w ustalonych odstępach czasu.</string>
+    <string name="pref_sync_schedule_idle_name">Zatrzymaj wcześniej przy bezczynności</string>
+    <string name="pref_sync_schedule_idle_desc">Zatrzymaj Syncthing przed końcem okna synchronizacji, jeśli przynajmniej jedno urządzenie jest podłączone, a wszystkie foldery pozostają bezczynne przez %1$s.</string>
+    <string name="dialog_sync_schedule_hint_idle">Czas bezczynności</string>
 </resources>
