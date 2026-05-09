@@ -141,8 +141,13 @@
         <item quantity="other">%d eşitleme çakışması bulundu</item>
     </plurals>
     <string name="pref_show_exit_name">Çıkış düğmesini göster</string>
-    <string name="pref_show_exit_desc">Kalıcı bildirimde bir Çıkış düğmesi gösterin. Uygulama, yeniden başlatmadan sonra veya uzaktan denetim komutu alındığında otomatik olarak yeniden başlayacaktır.</string>
+    <string name="pref_show_exit_desc">Kalıcı bildirimde bir Çıkış düğmesi göster. Uygulama, yeniden başlatmadan sonra veya uzaktan denetim komutu alındığında otomatik olarak yeniden başlayacak.</string>
     <string name="notification_action_exit">Çıkış</string>
     <string name="pref_sync_schedule_battery_only_name">Zaman çizelgesini yalnızca pil modunda kullan</string>
     <string name="pref_sync_schedule_battery_only_desc">Prize takıldığında zaman çizelgesi yoksayılacaktır.</string>
+    <string name="pref_sync_schedule_settings_name">Eşitleme planı</string>
+    <string name="pref_sync_schedule_settings_desc">Syncthing\'i sabit bir zaman aralığına göre düzenli aralıklarla çalıştır.</string>
+    <string name="pref_sync_schedule_idle_name">Boştayken erken durdur</string>
+    <string name="pref_sync_schedule_idle_desc">En az bir cihaz bağlıysa ve tüm klasörler %1$s boyunca boştaysa, eşitleme penceresi sona ermeden Syncthing\'i durdur.</string>
+    <string name="dialog_sync_schedule_hint_idle">Boşta kalma süresi</string>
 </resources>
