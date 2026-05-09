@@ -33,9 +33,11 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     companion object {
         private val TAG = SyncthingService::class.java.simpleName
 
-        private val STATE_CHANGE_PREFS = arrayOf(
+        private val BLOCKED_REASONS_PREFS = arrayOf(
             Preferences.PREF_MANUAL_MODE,
             Preferences.PREF_MANUAL_SHOULD_RUN,
+        )
+        private val STATE_CHANGE_PREFS = arrayOf(
             Preferences.PREF_KEEP_ALIVE,
             Preferences.PREF_SHOW_EXIT,
         )
@@ -185,8 +187,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     private var lastServiceState: ServiceState? = null
     @GuardedBy("stateLock")
     private var lastUseLocation: Boolean = false
-    @GuardedBy("stateLock")
-    private var forceShowNotification = false
 
     private lateinit var deviceStateTracker: DeviceStateTracker
     @GuardedBy("stateLock")
@@ -194,20 +194,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     @GuardedBy("stateLock")
     private var runningProxyInfo: ProxyInfo? = null
 
-    private val blockedReasons: EnumSet<BlockedReason>
-        @GuardedBy("stateLock")
-        get() = deviceState.blockedReasons(this, prefs).apply {
-            if (prefs.isManualMode) {
-                val oldSize = size
-                retainAll { it.blocksStart }
-
-                Log.d(TAG, "Ignoring ${oldSize - size} non-fatal blocked reason(s) due to manual mode")
-
-                if (!prefs.manualShouldRun) {
-                    add(BlockedReason.MANUAL)
-                }
-            }
-        }
+    @GuardedBy("stateLock")
+    private var blockedReasons = EnumSet.noneOf(BlockedReason::class.java)
 
     @GuardedBy("stateLock")
     private var shouldThreadRun = true
@@ -315,6 +303,9 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "Received intent: $intent")
 
+        var recomputeBlockedReasons = false
+        var forceShowNotification = false
+
         when (intent?.action) {
             ACTION_AUTO_MODE -> prefs.isManualMode = false
             ACTION_MANUAL_MODE -> {
@@ -333,7 +324,10 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 prefs.manualShouldRun = false
                 prefs.isManualMode = true
             }
-            ACTION_RENOTIFY -> synchronized(stateLock) {
+            ACTION_RENOTIFY -> {
+                // Blocked reasons needs to be recomputed because this intent might be due to the
+                // local storage permissions being successfully granted.
+                recomputeBlockedReasons = true
                 forceShowNotification = true
             }
             ACTION_EXIT -> {
@@ -346,7 +340,10 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             else -> Log.w(TAG, "Ignoring unrecognized intent: $intent")
         }
 
-        stateChanged()
+        stateChanged(
+            recomputeBlockedReasons = recomputeBlockedReasons,
+            forceShowNotification = forceShowNotification,
+        )
 
         return START_STICKY
     }
@@ -354,24 +351,32 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         Log.d(TAG, "Preference $key changed")
 
+        var recomputeBlockedReasons = false
+
         // We have to switch foreground service and network callback types when location becomes
         // needed or no longer needed.
-        if (key == Preferences.PREF_ALLOWED_WIFI_NETWORKS) {
-            synchronized(stateLock) {
-                forceShowNotification = true
-            }
-        }
+        val forceShowNotification = key == Preferences.PREF_ALLOWED_WIFI_NETWORKS
 
         when (key) {
-            in STATE_CHANGE_PREFS, in DeviceState.PREFS -> stateChanged()
-            Preferences.PREF_DEBUG_MODE -> setLogLevel()
+            in BLOCKED_REASONS_PREFS, in DeviceState.PREFS -> recomputeBlockedReasons = true
+            in STATE_CHANGE_PREFS -> {}
+            Preferences.PREF_DEBUG_MODE -> {
+                setLogLevel()
+                return
+            }
+            else -> return
         }
+
+        stateChanged(
+            recomputeBlockedReasons = recomputeBlockedReasons,
+            forceShowNotification = forceShowNotification,
+        )
     }
 
     override fun onDeviceStateChanged(state: DeviceState) {
         synchronized(stateLock) {
             deviceState = state
-            stateChanged()
+            stateChanged(recomputeBlockedReasons = true)
         }
     }
 
@@ -382,8 +387,26 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         Stbridge.setLogLevel(level)
     }
 
-    private fun stateChanged() {
+    private fun stateChanged(
+        recomputeBlockedReasons: Boolean = false,
+        forceShowNotification: Boolean = false,
+    ) {
         synchronized(stateLock) {
+            if (recomputeBlockedReasons) {
+                blockedReasons = deviceState.blockedReasons(this, prefs).apply {
+                    if (prefs.isManualMode) {
+                        val oldSize = size
+                        retainAll { it.blocksStart }
+
+                        Log.d(TAG, "Ignoring ${oldSize - size} non-fatal blocked reason(s) due to manual mode")
+
+                        if (!prefs.manualShouldRun) {
+                            add(BlockedReason.MANUAL)
+                        }
+                    }
+                }
+            }
+
             handleStateChangeLocked()
 
             if (!shouldThreadRun) {
@@ -405,8 +428,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             val wasChanged = notificationState != lastServiceState
 
             if (wasChanged || forceShowNotification) {
-                forceShowNotification = false
-
                 if (wasChanged) {
                     val guiInfo = guiInfo
 
