@@ -9,6 +9,7 @@
 
 ### Unreleased
 
+* Add optional idle timer to stop Syncthing early when using sync schedule feature ([Issue #116], [PR #119])
 * Update golang to 1.26.3 ([PR #120])
 
 ### Version 1.26
@@ -202,6 +203,7 @@
 [Issue #109]: https://github.com/chenxiaolong/BasicSync/issues/109
 [Issue #111]: https://github.com/chenxiaolong/BasicSync/issues/111
 [Issue #114]: https://github.com/chenxiaolong/BasicSync/issues/114
+[Issue #116]: https://github.com/chenxiaolong/BasicSync/issues/116
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -284,4 +286,5 @@
 [PR #115]: https://github.com/chenxiaolong/BasicSync/pull/115
 [PR #117]: https://github.com/chenxiaolong/BasicSync/pull/117
 [PR #118]: https://github.com/chenxiaolong/BasicSync/pull/118
+[PR #119]: https://github.com/chenxiaolong/BasicSync/pull/119
 [PR #120]: https://github.com/chenxiaolong/BasicSync/pull/120
