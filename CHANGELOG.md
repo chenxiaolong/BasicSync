@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.27
 
 * Add optional idle timer to stop Syncthing early when using sync schedule feature ([Issue #116], [PR #119])
 * Update golang to 1.26.3 ([PR #120])
