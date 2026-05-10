@@ -12,6 +12,7 @@
 * Add optional idle timer to stop Syncthing early when using sync schedule feature ([Issue #116], [PR #119])
 * Update golang to 1.26.3 ([PR #120])
 * Avoid unnecessary reevaluation of run conditions to reduce log spam ([PR #122])
+* Fix titles of switch preferences being truncated when they don't fit ([PR #123])
 
 ### Version 1.26
 
@@ -290,3 +291,4 @@
 [PR #119]: https://github.com/chenxiaolong/BasicSync/pull/119
 [PR #120]: https://github.com/chenxiaolong/BasicSync/pull/120
 [PR #122]: https://github.com/chenxiaolong/BasicSync/pull/122
+[PR #123]: https://github.com/chenxiaolong/BasicSync/pull/123
