@@ -163,4 +163,9 @@
     <string name="notification_action_exit">Ieșire</string>
     <string name="pref_sync_schedule_battery_only_name">Folosește sincronizarea programată numai pe baterie</string>
     <string name="pref_sync_schedule_battery_only_desc">Când este conectat la priză, orarul va fi ignorat.</string>
+    <string name="pref_sync_schedule_settings_name">Orar sincronizare</string>
+    <string name="pref_sync_schedule_settings_desc">Rulează Syncthing periodic pe baza unui interval de timp fix.</string>
+    <string name="pref_sync_schedule_idle_name">Oprește devreme când este inactiv</string>
+    <string name="pref_sync_schedule_idle_desc">Oprește Syncthing înainte ca fereastra de sincronizare să se încheie dacă cel puțin un dispozitiv este conectat și toate dosarele au fost inactive pentru %1$s.</string>
+    <string name="dialog_sync_schedule_hint_idle">Durată inactivitate</string>
 </resources>
