@@ -163,4 +163,9 @@
     <string name="notification_action_exit">Quitter</string>
     <string name="pref_sync_schedule_battery_only_name">N\'utilisez la planification que sur batterie</string>
     <string name="pref_sync_schedule_battery_only_desc">Sur chargeur le planning sera ignoré.</string>
+    <string name="pref_sync_schedule_settings_name">Planning de synchro</string>
+    <string name="pref_sync_schedule_settings_desc">Exécute Syncthing à intervalle régulier.</string>
+    <string name="pref_sync_schedule_idle_name">Arrêter dès qu\'inactif</string>
+    <string name="pref_sync_schedule_idle_desc">Arrête Syncthing avant la fin de la fenêtre de synchro si au moins un appareil est connecté et que tous les partages sont inactifs depuis %1$s.</string>
+    <string name="dialog_sync_schedule_hint_idle">Durée d\'inactivité</string>
 </resources>
