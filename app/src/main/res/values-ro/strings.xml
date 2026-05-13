@@ -168,4 +168,7 @@
     <string name="pref_sync_schedule_idle_name">Oprește devreme când este inactiv</string>
     <string name="pref_sync_schedule_idle_desc">Oprește Syncthing înainte ca fereastra de sincronizare să se încheie dacă cel puțin un dispozitiv este conectat și toate dosarele au fost inactive pentru %1$s.</string>
     <string name="dialog_sync_schedule_hint_idle">Durată inactivitate</string>
+    <string name="quick_settings_tile_auto_mode">Mod automat</string>
+    <string name="quick_settings_tile_manual_mode_stopped">Oprit manual</string>
+    <string name="quick_settings_tile_manual_mode_started">Pornit manual</string>
 </resources>
