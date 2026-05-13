@@ -149,4 +149,7 @@
     <string name="pref_sync_schedule_idle_desc">Syncthing vor Ablauf des Synchronisierungsfensters beenden, falls mindestens ein Gerät verbunden ist und alle Ordner seit %1$s inaktiv sind.</string>
     <string name="pref_sync_schedule_settings_name">Synchronisierungsplan</string>
     <string name="pref_sync_schedule_settings_desc">Syncthing periodisch in festgelegten Zeitabständen ausführen.</string>
+    <string name="quick_settings_tile_manual_mode_started">Manuell gestartet</string>
+    <string name="quick_settings_tile_manual_mode_stopped">Manuell angehalten</string>
+    <string name="quick_settings_tile_auto_mode">Automatisch</string>
 </resources>
