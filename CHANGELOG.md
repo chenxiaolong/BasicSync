@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.28
 
 * Update syncthing to 2.1.0 ([PR #125])
 * Add quick settings tile to cycle through auto mode, manually started, and manually stopped ([Issue #124], [PR #126])
