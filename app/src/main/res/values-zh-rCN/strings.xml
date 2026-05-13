@@ -145,4 +145,7 @@
     <string name="pref_sync_schedule_idle_name">空闲时提前停止</string>
     <string name="pref_sync_schedule_idle_desc">如果至少有一台设备已连接，且所有文件夹已空闲 %1$s，则在同步窗口结束前停止 Syncthing。</string>
     <string name="dialog_sync_schedule_hint_idle">空闲时长</string>
+    <string name="quick_settings_tile_auto_mode">自动模式</string>
+    <string name="quick_settings_tile_manual_mode_started">手动启动</string>
+    <string name="quick_settings_tile_manual_mode_stopped">手动停止</string>
 </resources>
