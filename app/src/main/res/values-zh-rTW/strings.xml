@@ -153,4 +153,12 @@
     <string name="notification_action_exit">結束</string>
     <string name="pref_sync_schedule_battery_only_name">僅在電池供電時使用排程同步</string>
     <string name="pref_sync_schedule_battery_only_desc">接上電源時，將會忽略同步排程。</string>
+    <string name="pref_sync_schedule_settings_name">同步排程</string>
+    <string name="pref_sync_schedule_settings_desc">根據固定的時間間隔定期執行 Syncthing。</string>
+    <string name="pref_sync_schedule_idle_name">閒置時提前停止</string>
+    <string name="pref_sync_schedule_idle_desc">若至少有一個裝置已連線，且所有資料夾已閒置達 %1$s，則在同步期間結束前提前停止 Syncthing。</string>
+    <string name="dialog_sync_schedule_hint_idle">閒置時長</string>
+    <string name="quick_settings_tile_auto_mode">自動模式</string>
+    <string name="quick_settings_tile_manual_mode_started">手動啟動</string>
+    <string name="quick_settings_tile_manual_mode_stopped">手動停止</string>
 </resources>
