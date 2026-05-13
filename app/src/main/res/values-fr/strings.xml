@@ -168,4 +168,7 @@
     <string name="pref_sync_schedule_idle_name">Arrêter dès qu\'inactif</string>
     <string name="pref_sync_schedule_idle_desc">Arrête Syncthing avant la fin de la fenêtre de synchro si au moins un appareil est connecté et que tous les partages sont inactifs depuis %1$s.</string>
     <string name="dialog_sync_schedule_hint_idle">Durée d\'inactivité</string>
+    <string name="quick_settings_tile_auto_mode">Mode automatique</string>
+    <string name="quick_settings_tile_manual_mode_started">Démarré manuellement</string>
+    <string name="quick_settings_tile_manual_mode_stopped">Arrêté manuellement</string>
 </resources>
