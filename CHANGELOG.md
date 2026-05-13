@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update syncthing to 2.1.0 ([PR #125])
+
 ### Version 1.27
 
 * Add optional idle timer to stop Syncthing early when using sync schedule feature ([Issue #116], [PR #119])
@@ -294,3 +298,4 @@
 [PR #121]: https://github.com/chenxiaolong/BasicSync/pull/121
 [PR #122]: https://github.com/chenxiaolong/BasicSync/pull/122
 [PR #123]: https://github.com/chenxiaolong/BasicSync/pull/123
+[PR #125]: https://github.com/chenxiaolong/BasicSync/pull/125
