@@ -150,4 +150,7 @@
     <string name="pref_sync_schedule_idle_name">Boştayken erken durdur</string>
     <string name="pref_sync_schedule_idle_desc">En az bir cihaz bağlıysa ve tüm klasörler %1$s boyunca boştaysa, eşitleme penceresi sona ermeden Syncthing\'i durdur.</string>
     <string name="dialog_sync_schedule_hint_idle">Boşta kalma süresi</string>
+    <string name="quick_settings_tile_auto_mode">Otomatik modu</string>
+    <string name="quick_settings_tile_manual_mode_started">El ile başlatıldı</string>
+    <string name="quick_settings_tile_manual_mode_stopped">El ile durduruldu</string>
 </resources>
