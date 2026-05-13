@@ -160,4 +160,7 @@
     <string name="pref_sync_schedule_idle_name">Zatrzymaj wcześniej przy bezczynności</string>
     <string name="pref_sync_schedule_idle_desc">Zatrzymaj Syncthing przed końcem okna synchronizacji, jeśli przynajmniej jedno urządzenie jest podłączone, a wszystkie foldery pozostają bezczynne przez %1$s.</string>
     <string name="dialog_sync_schedule_hint_idle">Czas bezczynności</string>
+    <string name="quick_settings_tile_auto_mode">Tryb automatyczny</string>
+    <string name="quick_settings_tile_manual_mode_started">Uruchomiono ręcznie</string>
+    <string name="quick_settings_tile_manual_mode_stopped">Zatrzymano ręcznie</string>
 </resources>
