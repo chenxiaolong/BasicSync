@@ -285,6 +285,13 @@
     <!-- Syncing is blocked because the current time is outside of the time window where syncing is permitted. -->
     <string name="blocked_reason_time_schedule">• Outside of time schedule</string>
 
+    <!-- Text shown in quick settings tile when in auto mode. Keep text as short as possible. -->
+    <string name="quick_settings_tile_auto_mode">Auto mode</string>
+    <!-- Text shown in quick settings tile when in manual mode and Syncthing is started. Keep text as short as possible. -->
+    <string name="quick_settings_tile_manual_mode_started">Manually started</string>
+    <!-- Text shown in quick settings tile when in manual mode and Syncthing is stopped. Keep text as short as possible. -->
+    <string name="quick_settings_tile_manual_mode_stopped">Manually stopped</string>
+
     <!-- Time duration in seconds. -->
     <plurals name="duration_seconds">
         <item quantity="one">%d second</item>
