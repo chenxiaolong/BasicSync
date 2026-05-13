@@ -339,6 +339,7 @@ var busyEvents = []string{
 	model.FolderSyncing.String(),
 	model.FolderCleaning.String(),
 	model.FolderCleanWaiting.String(),
+	model.FolderStarting.String(),
 }
 
 func dispatchBusyFolders(
