@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Update syncthing to 2.1.0 ([PR #125])
+* Add quick settings tile to cycle through auto mode, manually started, and manually stopped ([Issue #124], [PR #126])
 
 ### Version 1.27
 
@@ -211,6 +212,7 @@
 [Issue #111]: https://github.com/chenxiaolong/BasicSync/issues/111
 [Issue #114]: https://github.com/chenxiaolong/BasicSync/issues/114
 [Issue #116]: https://github.com/chenxiaolong/BasicSync/issues/116
+[Issue #124]: https://github.com/chenxiaolong/BasicSync/issues/124
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -299,3 +301,4 @@
 [PR #122]: https://github.com/chenxiaolong/BasicSync/pull/122
 [PR #123]: https://github.com/chenxiaolong/BasicSync/pull/123
 [PR #125]: https://github.com/chenxiaolong/BasicSync/pull/125
+[PR #126]: https://github.com/chenxiaolong/BasicSync/pull/126
