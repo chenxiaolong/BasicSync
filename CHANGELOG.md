@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Fix warnings about sync conflicts being shown for files that do not exist locally ([Issue #128], [PR #129])
+
 ### Version 1.28
 
 * Update syncthing to 2.1.0 ([PR #125])
@@ -213,6 +217,7 @@
 [Issue #114]: https://github.com/chenxiaolong/BasicSync/issues/114
 [Issue #116]: https://github.com/chenxiaolong/BasicSync/issues/116
 [Issue #124]: https://github.com/chenxiaolong/BasicSync/issues/124
+[Issue #128]: https://github.com/chenxiaolong/BasicSync/issues/128
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -302,3 +307,4 @@
 [PR #123]: https://github.com/chenxiaolong/BasicSync/pull/123
 [PR #125]: https://github.com/chenxiaolong/BasicSync/pull/125
 [PR #126]: https://github.com/chenxiaolong/BasicSync/pull/126
+[PR #129]: https://github.com/chenxiaolong/BasicSync/pull/129
