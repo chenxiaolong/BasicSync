@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.29
 
 * Fix warnings about sync conflicts being shown for files that do not exist locally ([Issue #128], [PR #129])
 * Sync translations from Weblate ([PR #127])
