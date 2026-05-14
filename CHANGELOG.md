@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Fix warnings about sync conflicts being shown for files that do not exist locally ([Issue #128], [PR #129])
+* Sync translations from Weblate ([PR #127])
 
 ### Version 1.28
 
@@ -307,4 +308,5 @@
 [PR #123]: https://github.com/chenxiaolong/BasicSync/pull/123
 [PR #125]: https://github.com/chenxiaolong/BasicSync/pull/125
 [PR #126]: https://github.com/chenxiaolong/BasicSync/pull/126
+[PR #127]: https://github.com/chenxiaolong/BasicSync/pull/127
 [PR #129]: https://github.com/chenxiaolong/BasicSync/pull/129
