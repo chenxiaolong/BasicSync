@@ -134,4 +134,17 @@
     <plurals name="notification_conflicts_title">
         <item quantity="other">%d konflik sinkronisasi ditemukan</item>
     </plurals>
+    <string name="pref_sync_schedule_settings_name">Jadwal sinkronisasi</string>
+    <string name="pref_sync_schedule_settings_desc">Jalankan Syncthing secara berkala berdasarkan interval waktu tetap.</string>
+    <string name="pref_show_exit_name">Tampilkan tombol Keluar</string>
+    <string name="pref_show_exit_desc">Tampilkan tombol Keluar di notifikasi persisten. Aplikasi akan otomatis dimulai kembali setelah reboot atau saat menerima perintah kendali jarak jauh.</string>
+    <string name="pref_sync_schedule_idle_name">Berhenti lebih awal saat tidak aktif</string>
+    <string name="pref_sync_schedule_idle_desc">Hentikan Syncthing sebelum jendela sinkronisasi berakhir jika setidaknya satu perangkat terhubung dan semua folder telah tidak aktif selama %1$s.</string>
+    <string name="pref_sync_schedule_battery_only_name">Gunakan jadwal waktu hanya saat menggunakan baterai</string>
+    <string name="pref_sync_schedule_battery_only_desc">Saat terhubung ke pengisi daya, jadwal waktu akan diabaikan.</string>
+    <string name="dialog_sync_schedule_hint_idle">Durasi tidak aktif</string>
+    <string name="notification_action_exit">Keluar</string>
+    <string name="quick_settings_tile_auto_mode">Mode otomatis</string>
+    <string name="quick_settings_tile_manual_mode_started">Dimulai secara manual</string>
+    <string name="quick_settings_tile_manual_mode_stopped">Dihentikan secara manual</string>
 </resources>
