@@ -392,7 +392,9 @@ func eventLoop(
 		case evt := <-sub.C():
 			switch evt.Type {
 			// We do not use LocalIndexUpdated because it does not distinguish
-			// between added/modified and removed.
+			// between added/modified and removed. Also, emitDiskChangeEvents()
+			// already skips files where FileInfo.IsInvalid() returns true, so
+			// we don't need to manually filter out ignored paths.
 			case events.LocalChangeDetected, events.RemoteChangeDetected:
 				data := evt.Data.(map[string]string)
 				folderID := data["folder"]
@@ -498,7 +500,7 @@ func startEventLoop(
 	for _, folder := range cfg.FolderList() {
 		dbFiles, errFn := allLocalFiles(folder.ID, protocol.LocalDeviceID)
 		for dbFile := range dbFiles {
-			if !isConflict(dbFile.Name) || dbFile.Deleted {
+			if !isConflict(dbFile.Name) || dbFile.IsDeleted() || dbFile.IsInvalid() {
 				continue
 			}
 
