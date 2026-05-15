@@ -150,4 +150,12 @@
     <string name="notification_action_exit">Salir</string>
     <string name="pref_sync_schedule_battery_only_name">Usar el horario solo con batería</string>
     <string name="pref_sync_schedule_battery_only_desc">Cuando esté enchufado, se ignorará el horario.</string>
+    <string name="pref_sync_schedule_settings_name">Horario de sincronización</string>
+    <string name="pref_sync_schedule_settings_desc">Ejecutar Syncthing periodicamente a intervalos fijos.</string>
+    <string name="pref_sync_schedule_idle_name">Finalizar antes si está inactivo</string>
+    <string name="pref_sync_schedule_idle_desc">Finalizar Syncthing antes del fin de la ventana de sincronización si un dispositivo y todas las carpetas han estado inactivas durante %1$s.</string>
+    <string name="dialog_sync_schedule_hint_idle">Duración de la inactividad</string>
+    <string name="quick_settings_tile_auto_mode">Modo Auto</string>
+    <string name="quick_settings_tile_manual_mode_started">Iniciado manual</string>
+    <string name="quick_settings_tile_manual_mode_stopped">Detenido manualmente</string>
 </resources>
