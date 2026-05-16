@@ -279,13 +279,14 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     override fun onDestroy() {
         super.onDestroy()
 
+        // We intentionally don't wait for runnerThread to exit. Syncthing can sometimes take a few
+        // seconds to fully exit, which can trigger an ANR warning. This is not a problem because if
+        // a new service starts while Syncthing from this service is still shutting down, the global
+        // lock in stbridge will just block the startup.
         synchronized(stateLock) {
             shouldThreadRun = false
         }
         stateChanged()
-
-        // This should be quick.
-        runnerThread.join()
 
         synchronized(stateLock) {
             listeners.clear()
