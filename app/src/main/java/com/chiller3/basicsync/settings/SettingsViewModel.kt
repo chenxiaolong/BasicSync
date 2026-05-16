@@ -5,9 +5,9 @@
 
 package com.chiller3.basicsync.settings
 
-import android.app.Application
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chiller3.basicsync.Logcat
 import com.chiller3.basicsync.binding.stbridge.Stbridge
@@ -34,11 +34,12 @@ data class ImportExportState(
 ) {
     enum class Status {
         NEED_PASSWORD,
+        READY_TO_RUN,
         IN_PROGRESS,
     }
 }
 
-class SettingsViewModel(application: Application) : ServiceBaseViewModel(application) {
+class SettingsViewModel : ViewModel() {
     companion object {
         private val TAG = SettingsViewModel::class.java.simpleName
 
@@ -49,10 +50,14 @@ class SettingsViewModel(application: Application) : ServiceBaseViewModel(applica
     private val _alerts = MutableStateFlow<List<SettingsAlert>>(emptyList())
     val alerts = _alerts.asStateFlow()
 
+    val serviceState = MutableStateFlow<SyncthingService.ServiceState?>(null)
+
+    val conflicts = MutableStateFlow<List<String>?>(null)
+
     private val _importExportState = MutableStateFlow<ImportExportState?>(null)
     val importExportState = _importExportState.asStateFlow()
 
-    override fun onPreRunActionResult(
+    fun onPreRunActionResult(
         preRunAction: SyncthingService.PreRunAction,
         exception: Exception?,
     ) {
@@ -84,16 +89,12 @@ class SettingsViewModel(application: Application) : ServiceBaseViewModel(applica
 
         // Prompt for password immediately when exporting.
         val status = when (mode) {
-            ImportExportMode.IMPORT -> ImportExportState.Status.IN_PROGRESS
+            ImportExportMode.IMPORT -> ImportExportState.Status.READY_TO_RUN
             ImportExportMode.EXPORT -> ImportExportState.Status.NEED_PASSWORD
         }
 
         _importExportState.update {
             ImportExportState(mode, uri, SyncthingService.Password(""), status)
-        }
-
-        if (status == ImportExportState.Status.IN_PROGRESS) {
-            performImportExport()
         }
     }
 
@@ -105,10 +106,21 @@ class SettingsViewModel(application: Application) : ServiceBaseViewModel(applica
         _importExportState.update {
             it!!.copy(
                 password = password,
-                status = ImportExportState.Status.IN_PROGRESS,
+                status = ImportExportState.Status.READY_TO_RUN,
             )
         }
-        performImportExport()
+    }
+
+    fun setRunningImportExport() {
+        val state = importExportState.value
+            ?: throw IllegalStateException("Import/export not started")
+        if (state.status != ImportExportState.Status.READY_TO_RUN) {
+            throw IllegalStateException("Import/export is not ready to run: ${state.status}")
+        }
+
+        _importExportState.update {
+            it!!.copy(status = ImportExportState.Status.IN_PROGRESS)
+        }
     }
 
     fun cancelPendingImportExport() {
@@ -125,19 +137,6 @@ class SettingsViewModel(application: Application) : ServiceBaseViewModel(applica
 
         _alerts.update { it + alert }
         _importExportState.update { null }
-    }
-
-    private fun performImportExport() {
-        val state = importExportState.value
-            ?: throw IllegalStateException("Import/export not started")
-        if (state.status != ImportExportState.Status.IN_PROGRESS) {
-            throw IllegalStateException("Import/export status is not in progress")
-        }
-
-        when (state.mode) {
-            ImportExportMode.IMPORT -> binder!!.importConfiguration(state.uri, state.password)
-            ImportExportMode.EXPORT -> binder!!.exportConfiguration(state.uri, state.password)
-        }
     }
 
     fun acknowledgeFirstAlert() {

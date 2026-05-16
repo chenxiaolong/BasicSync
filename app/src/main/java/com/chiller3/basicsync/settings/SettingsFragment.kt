@@ -43,6 +43,7 @@ import com.chiller3.basicsync.view.LongClickablePreference
 import com.chiller3.basicsync.view.OnPreferenceLongClickListener
 import com.chiller3.basicsync.view.SplitSwitchPreference
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatterBuilder
@@ -51,7 +52,8 @@ import java.time.temporal.ChronoField
 
 class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
     Preference.OnPreferenceClickListener, OnPreferenceLongClickListener,
-    Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
+    Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener,
+    SyncthingService.ServiceListener {
     companion object {
         private val TAG = SettingsFragment::class.java.simpleName
 
@@ -71,6 +73,7 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
     }
 
     private val viewModel: SettingsViewModel by viewModels()
+    private lateinit var watcher: ServiceEventWatcher
 
     private lateinit var prefs: Preferences
     private lateinit var categoryPermissions: PreferenceCategory
@@ -147,6 +150,9 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
 
         val context = requireContext()
 
+        watcher = ServiceEventWatcher(context, this)
+        lifecycle.addObserver(watcher)
+
         prefs = Preferences(context)
 
         categoryPermissions = findPreference(Preferences.CATEGORY_PERMISSIONS)!!
@@ -206,14 +212,6 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
         refreshBattery()
         refreshVersion()
         refreshDebugPrefs()
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.exitRequested.collect {
-                    requireActivity().finishAffinity()
-                }
-            }
-        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
@@ -302,6 +300,17 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
                         PasswordDialogFragment.newInstance(context, state.mode)
                             .show(parentFragmentManager.beginTransaction(),
                                 TAG_IMPORT_EXPORT_PASSWORD)
+                    } else if (state.status == ImportExportState.Status.READY_TO_RUN) {
+                        watcher.runWithBinder { binder ->
+                            viewModel.setRunningImportExport()
+
+                            when (state.mode) {
+                                ImportExportMode.IMPORT ->
+                                    binder.importConfiguration(state.uri, state.password)
+                                ImportExportMode.EXPORT ->
+                                    binder.exportConfiguration(state.uri, state.password)
+                            }
+                        }
                     }
                 }
             }
@@ -616,5 +625,27 @@ class SettingsFragment : PreferenceBaseFragment(), FragmentResultListener,
                 }
             })
             .show()
+    }
+
+    override fun onExitRequested() {
+        requireActivity().finishAffinity()
+    }
+
+    override fun onRunStateChanged(
+        state: SyncthingService.ServiceState,
+        guiInfo: SyncthingService.GuiInfo?,
+    ) {
+        viewModel.serviceState.update { state }
+    }
+
+    override fun onPreRunActionResult(
+        preRunAction: SyncthingService.PreRunAction,
+        exception: Exception?,
+    ) {
+        viewModel.onPreRunActionResult(preRunAction, exception)
+    }
+
+    override fun onConflictsUpdated(conflicts: List<String>) {
+        viewModel.conflicts.update { conflicts }
     }
 }

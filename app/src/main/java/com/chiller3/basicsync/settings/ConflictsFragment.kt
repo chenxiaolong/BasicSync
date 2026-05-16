@@ -8,10 +8,6 @@ package com.chiller3.basicsync.settings
 import android.content.Intent
 import android.os.Bundle
 import android.provider.DocumentsContract
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.preference.Preference
 import androidx.preference.get
 import androidx.preference.size
@@ -21,43 +17,19 @@ import com.chiller3.basicsync.extension.DOCUMENTSUI_AUTHORITY
 import com.chiller3.basicsync.extension.EXTERNAL_DIR
 import com.chiller3.basicsync.extension.expandTilde
 import com.chiller3.basicsync.extension.shortenTilde
-import kotlinx.coroutines.launch
+import com.chiller3.basicsync.syncthing.SyncthingService
 import java.io.File
 
-class ConflictsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickListener {
+class ConflictsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClickListener,
+    SyncthingService.ServiceListener {
     companion object {
         const val PREFIX = "conflict_"
     }
 
-    private val viewModel: ConflictsViewModel by viewModels()
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences_conflicts, rootKey)
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.exitRequested.collect {
-                    requireActivity().finishAffinity()
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.conflicts.collect { conflicts ->
-                    if (conflicts == null) {
-                        // Still loading.
-                        return@collect
-                    } else if (conflicts.isEmpty()) {
-                        // All conflicts were resolved.
-                        requireActivity().finish()
-                        return@collect
-                    }
-
-                    updateDynamicPrefs(conflicts)
-                }
-            }
-        }
+        lifecycle.addObserver(ServiceEventWatcher(requireContext(), this))
     }
 
     private fun updateDynamicPrefs(conflicts: List<String>) {
@@ -107,5 +79,27 @@ class ConflictsFragment : PreferenceBaseFragment(), Preference.OnPreferenceClick
         }
 
         return false
+    }
+
+    override fun onExitRequested() {
+        requireActivity().finishAffinity()
+    }
+
+    override fun onRunStateChanged(
+        state: SyncthingService.ServiceState,
+        guiInfo: SyncthingService.GuiInfo?,
+    ) {}
+
+    override fun onPreRunActionResult(
+        preRunAction: SyncthingService.PreRunAction,
+        exception: Exception?,
+    ) {}
+
+    override fun onConflictsUpdated(conflicts: List<String>) {
+        if (conflicts.isEmpty()) {
+            requireActivity().finish()
+        } else {
+            updateDynamicPrefs(conflicts)
+        }
     }
 }

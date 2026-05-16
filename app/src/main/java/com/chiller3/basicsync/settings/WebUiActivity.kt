@@ -26,24 +26,20 @@ import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.chiller3.basicsync.R
 import com.chiller3.basicsync.databinding.WebUiActivityBinding
 import com.chiller3.basicsync.dialog.FolderPickerDialogFragment
-import kotlinx.coroutines.launch
+import com.chiller3.basicsync.syncthing.SyncthingService
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 
-class WebUiActivity : AppCompatActivity() {
+class WebUiActivity : AppCompatActivity(), SyncthingService.ServiceListener {
     companion object {
         private val TAG = WebUiActivity::class.java.simpleName
 
@@ -65,8 +61,6 @@ class WebUiActivity : AppCompatActivity() {
             }
         }
     }
-
-    private val viewModel: WebUiViewModel by viewModels()
 
     private lateinit var binding: WebUiActivityBinding
 
@@ -142,6 +136,8 @@ class WebUiActivity : AppCompatActivity() {
         binding = WebUiActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        lifecycle.addObserver(ServiceEventWatcher(this, this))
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { v, windowInsets ->
             val insets = windowInsets.getInsets(
                 WindowInsetsCompat.Type.systemBars()
@@ -204,47 +200,6 @@ class WebUiActivity : AppCompatActivity() {
 
         setTitle(R.string.app_name_upstream)
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.exitRequested.collect {
-                    finishAffinity()
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.serviceState.collect {
-                    if (it?.runState?.webUiAvailable == false) {
-                        finish()
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.guiInfo.collect {
-                    if (it != null && binding.webview.url == null) {
-                        guiUri = it.address.toUri()
-                        guiCert = loadDer(it.cert)
-
-                        // Use basic auth because Android's WebView has no sane way to pass in
-                        // "X-Api-Key" nor "Authorization: Bearer" for each request. Basic auth is
-                        // the only method that'll persist throughout the session, so stbridge
-                        // forcibly sets the password to the API key.
-                        val authorization = Base64.encodeToString(
-                            "${it.user}:${it.apiKey}".encodeToByteArray(),
-                            Base64.NO_WRAP,
-                        )
-                        val headers = mapOf("Authorization" to "Basic $authorization")
-
-                        binding.webview.loadUrl(it.address, headers)
-                    }
-                }
-            }
-        }
-
         supportFragmentManager.setFragmentResultListener(FolderPickerDialogFragment.TAG, this) { _, bundle ->
             if (bundle.getBoolean(FolderPickerDialogFragment.RESULT_SUCCESS)) {
                 val path = bundle.getString(FolderPickerDialogFragment.RESULT_PATH)!!
@@ -304,6 +259,43 @@ class WebUiActivity : AppCompatActivity() {
     private fun onDeviceIdScanned(deviceId: String) {
         binding.webview.evaluateJavascript("onDeviceIdScanned(\"${jsEscape(deviceId)}\");") {}
     }
+
+    override fun onExitRequested() {
+        finishAffinity()
+    }
+
+    override fun onRunStateChanged(
+        state: SyncthingService.ServiceState,
+        guiInfo: SyncthingService.GuiInfo?,
+    ) {
+        if (!state.runState.webUiAvailable) {
+            finish()
+        }
+
+        if (guiInfo != null && binding.webview.url == null) {
+            guiUri = guiInfo.address.toUri()
+            guiCert = loadDer(guiInfo.cert)
+
+            // Use basic auth because Android's WebView has no sane way to pass in
+            // "X-Api-Key" nor "Authorization: Bearer" for each request. Basic auth is
+            // the only method that'll persist throughout the session, so stbridge
+            // forcibly sets the password to the API key.
+            val authorization = Base64.encodeToString(
+                "${guiInfo.user}:${guiInfo.apiKey}".encodeToByteArray(),
+                Base64.NO_WRAP,
+            )
+            val headers = mapOf("Authorization" to "Basic $authorization")
+
+            binding.webview.loadUrl(guiInfo.address, headers)
+        }
+    }
+
+    override fun onPreRunActionResult(
+        preRunAction: SyncthingService.PreRunAction,
+        exception: Exception?,
+    ) {}
+
+    override fun onConflictsUpdated(conflicts: List<String>) {}
 
     @Suppress("unused")
     private inner class WebViewInterface {
