@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Fix potential ANR ("app not responding" warning) when using the Exit button if Syncthing shuts down slowly ([PR #135])
+
 ### Version 1.30
 
 * Fix exit button not working when app is in recents screen, but not currently open ([Issue #130], [PR #133])
@@ -321,3 +325,4 @@
 [PR #132]: https://github.com/chenxiaolong/BasicSync/pull/132
 [PR #133]: https://github.com/chenxiaolong/BasicSync/pull/133
 [PR #134]: https://github.com/chenxiaolong/BasicSync/pull/134
+[PR #135]: https://github.com/chenxiaolong/BasicSync/pull/135
