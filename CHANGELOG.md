@@ -11,6 +11,7 @@
 
 * Fix exit button not working when app is in recents screen, but not currently open ([Issue #130], [PR #133])
 * Fix crash when opening external links in the web UI and no browser is installed ([Issue #131], [PR #132])
+* Sync translations from Weblate ([PR #134])
 
 ### Version 1.29
 
@@ -319,3 +320,4 @@
 [PR #129]: https://github.com/chenxiaolong/BasicSync/pull/129
 [PR #132]: https://github.com/chenxiaolong/BasicSync/pull/132
 [PR #133]: https://github.com/chenxiaolong/BasicSync/pull/133
+[PR #134]: https://github.com/chenxiaolong/BasicSync/pull/134
