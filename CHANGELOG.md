@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 1.30
 
 * Fix exit button not working when app is in recents screen, but not currently open ([Issue #130], [PR #133])
 * Fix crash when opening external links in the web UI and no browser is installed ([Issue #131], [PR #132])
