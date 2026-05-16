@@ -6,6 +6,7 @@
 package com.chiller3.basicsync.settings
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
@@ -110,7 +111,11 @@ class WebUiActivity : AppCompatActivity() {
             if (uri.scheme == guiUri.scheme && uri.host == guiUri.host && uri.port == guiUri.port) {
                 return false
             } else {
-                startActivity(Intent(Intent.ACTION_VIEW, uri))
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, uri))
+                } catch (e: ActivityNotFoundException) {
+                    Log.w(TAG, "No app installed to handle $uri", e)
+                }
                 return true
             }
         }
