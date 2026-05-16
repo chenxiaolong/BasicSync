@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Fix exit button not working when app is in recents screen, but not currently open ([Issue #130], [PR #133])
+* Fix crash when opening external links in the web UI and no browser is installed ([Issue #131], [PR #132])
 
 ### Version 1.29
 
@@ -224,6 +225,7 @@
 [Issue #124]: https://github.com/chenxiaolong/BasicSync/issues/124
 [Issue #128]: https://github.com/chenxiaolong/BasicSync/issues/128
 [Issue #130]: https://github.com/chenxiaolong/BasicSync/issues/130
+[Issue #131]: https://github.com/chenxiaolong/BasicSync/issues/131
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -315,4 +317,5 @@
 [PR #126]: https://github.com/chenxiaolong/BasicSync/pull/126
 [PR #127]: https://github.com/chenxiaolong/BasicSync/pull/127
 [PR #129]: https://github.com/chenxiaolong/BasicSync/pull/129
+[PR #132]: https://github.com/chenxiaolong/BasicSync/pull/132
 [PR #133]: https://github.com/chenxiaolong/BasicSync/pull/133
