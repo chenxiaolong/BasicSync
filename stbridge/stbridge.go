@@ -12,6 +12,7 @@ import (
 
 	"context"
 	"crypto/x509"
+	"encoding/json"
 	"encoding/pem"
 	"errors"
 	"fmt"
@@ -68,14 +69,14 @@ func cleanOldFiles() {
 	for glob, dur := range globs {
 		entries, err := configFs.Glob(glob)
 		if err != nil {
-			log.Printf("Failed to match glob: %q: %w", glob, err)
+			log.Printf("Failed to match glob: %q: %v", glob, err)
 			continue
 		}
 
 		for _, entry := range entries {
 			info, err := configFs.Lstat(entry)
 			if err != nil {
-				log.Printf("Failed to stat config: %q: %w", entry, err)
+				log.Printf("Failed to stat config: %q: %v", entry, err)
 				continue
 			}
 
@@ -85,11 +86,11 @@ func cleanOldFiles() {
 			}
 
 			if err = configFs.RemoveAll(entry); err != nil {
-				log.Printf("Failed to delete old config: %q: %w", entry, err)
+				log.Printf("Failed to delete old config: %q: %v", entry, err)
 				continue
 			}
 
-			log.Printf("Deleted old config: %q: %w", entry, err)
+			log.Printf("Deleted old config: %q: %v", entry, err)
 		}
 	}
 }
@@ -226,7 +227,7 @@ func tryPreserveGuiHostPort(c *config.Configuration) error {
 
 	guiHost, guiPort, err := guiHostPort(c)
 	if err != nil {
-		log.Printf("Resetting GUI address: %w", err)
+		log.Printf("Resetting GUI address: %v", err)
 		guiHost = "127.0.0.1"
 		guiPort = defaultPort
 	}
@@ -293,6 +294,8 @@ type SyncthingStatusReceiver interface {
 	// paths on Linux.
 	OnConflictsUpdated(paths0Sep string)
 
+	OnAlertsUpdated(count int32)
+
 	OnBusyFoldersUpdated(count int32)
 
 	OnConnectedDevicesUpdated(count int32)
@@ -329,6 +332,32 @@ func dispatchConflicts(
 	}
 
 	receiver.OnConflictsUpdated(paths0Sep.String())
+}
+
+// The only type of alerts we currently don't track are those associated
+// slogutil.ErrorRecorder because it's a pain to deal with more internal types.
+type alertsInfo struct {
+	needsRestart   bool
+	pendingDevices map[string]struct{}
+	pendingFolders map[string]struct{}
+	watcherErrors  map[string]string
+}
+
+func dispatchAlerts(
+	alertsInfo *alertsInfo,
+	receiver SyncthingStatusReceiver,
+) {
+	count := 0
+
+	if alertsInfo.needsRestart {
+		count += 1
+	}
+
+	count += len(alertsInfo.pendingDevices)
+	count += len(alertsInfo.pendingFolders)
+	count += len(alertsInfo.watcherErrors)
+
+	receiver.OnAlertsUpdated(int32(count))
 }
 
 // The scanning states are intentionally excluded because we only want mutating
@@ -368,8 +397,10 @@ func eventLoop(
 	ctx context.Context,
 	stopped chan struct{},
 	evLogger events.Logger,
+	cfgWrapper config.Wrapper,
 	folderConflicts map[string]map[string]struct{},
 	folderToPath map[string]string,
+	alertsInfo *alertsInfo,
 	receiver SyncthingStatusReceiver,
 ) {
 	defer close(stopped)
@@ -377,6 +408,9 @@ func eventLoop(
 	sub := evLogger.Subscribe(
 		events.LocalChangeDetected |
 			events.RemoteChangeDetected |
+			events.PendingDevicesChanged |
+			events.PendingFoldersChanged |
+			events.FolderWatchStateChanged |
 			events.StateChanged |
 			events.DeviceConnected |
 			events.DeviceDisconnected |
@@ -414,6 +448,75 @@ func eventLoop(
 				}
 
 				dispatchConflicts(folderConflicts, folderToPath, receiver)
+
+			case events.PendingDevicesChanged:
+				if data, ok := evt.Data.(map[string][]interface{}); ok {
+					for _, device := range data["added"] {
+						deviceID := device.(map[string]string)["deviceID"]
+
+						alertsInfo.pendingDevices[deviceID] = struct{}{}
+					}
+				} else if data, ok := evt.Data.(map[string]interface{}); ok {
+					devices := data["removed"].([]map[string]string)
+
+					for _, device := range devices {
+						deviceID := device["deviceID"]
+
+						delete(alertsInfo.pendingDevices, deviceID)
+					}
+				}
+
+				dispatchAlerts(alertsInfo, receiver)
+
+			case events.PendingFoldersChanged:
+				data := evt.Data.(map[string]interface{})
+
+				if added, ok := data["added"]; ok {
+					// This is ugly and slow, but better than using
+					// unsafe.Pointer to cast to model.updatedPendingFolder.
+					rawJson, err := json.Marshal(added)
+					if err != nil {
+						log.Printf("Failed to serialize JSON: %+v: %v", added, err)
+						continue
+					}
+
+					folders := []map[string]interface{}{}
+					err = json.Unmarshal(rawJson, &folders)
+					if err != nil {
+						log.Printf("Failed to deserialize JSON: %q: %v", string(rawJson), err)
+						continue
+					}
+
+					for _, folder := range folders {
+						folderID := folder["folderID"].(string)
+
+						alertsInfo.pendingFolders[folderID] = struct{}{}
+					}
+				}
+
+				if removed, ok := data["removed"]; ok {
+					folders := removed.([]map[string]string)
+
+					for _, folder := range folders {
+						folderID := folder["folderID"]
+
+						delete(alertsInfo.pendingFolders, folderID)
+					}
+				}
+
+				dispatchAlerts(alertsInfo, receiver)
+
+			case events.FolderWatchStateChanged:
+				data := evt.Data.(map[string]interface{})
+				folderID := data["folder"].(string)
+
+				if errMsg, ok := data["to"]; ok {
+					alertsInfo.watcherErrors[folderID] = errMsg.(string)
+				} else {
+					delete(alertsInfo.watcherErrors, folderID)
+				}
+
+				dispatchAlerts(alertsInfo, receiver)
 
 			case events.StateChanged:
 				data := evt.Data.(map[string]interface{})
@@ -467,10 +570,16 @@ func eventLoop(
 
 				dispatchConflicts(folderConflicts, folderToPath, receiver)
 				dispatchBusyFolders(folderStates, receiver)
-
 				// Unlike folders, we don't need to remove deleted devices from
 				// devicesConnected. We'll always receive a disconnection event
 				// when connections are closed during deletion.
+
+				// A config.Wrapper is needed to determine if a restart is
+				// required. config.Configuration does not contain enough info.
+				// We do not need to worry about TOCTOU here because once the
+				// flag is set, it cannot ever be unset.
+				alertsInfo.needsRestart = cfgWrapper.RequiresRestart()
+				dispatchAlerts(alertsInfo, receiver)
 
 			default:
 				log.Printf("Unexpected event: %+v", evt)
@@ -519,12 +628,23 @@ func startEventLoop(
 
 	dispatchConflicts(folderConflicts, folderToPath, receiver)
 
+	alertsInfo := alertsInfo{
+		needsRestart:   cfg.RequiresRestart(),
+		pendingDevices: map[string]struct{}{},
+		pendingFolders: map[string]struct{}{},
+		watcherErrors:  map[string]string{},
+	}
+
+	dispatchAlerts(&alertsInfo, receiver)
+
 	go eventLoop(
 		ctx,
 		stopped,
 		evLogger,
+		cfg,
 		folderConflicts,
 		folderToPath,
+		&alertsInfo,
 		receiver,
 	)
 
@@ -576,7 +696,7 @@ func Run(startup *SyncthingStartupConfig) error {
 		// possible. This intentionally does not use c.ProbeFreePorts() because
 		// that always resets the listen addresses for the sync protocol.
 		if err = tryPreserveGuiHostPort(c); err != nil {
-			log.Printf("Failed to set GUI listen address: %w", err)
+			log.Printf("Failed to set GUI listen address: %v", err)
 		}
 
 		// Try to prevent users from locking themselves out.
@@ -720,7 +840,7 @@ func tryAtomicSwap(path1 string, path2 string) error {
 		return err
 	}
 
-	log.Printf("Using non-atomic rename because RENAME_EXCHANGE is not supported: %w", err)
+	log.Printf("Using non-atomic rename because RENAME_EXCHANGE is not supported: %v", err)
 
 	swapDir, err := os.MkdirTemp(filepath.Dir(path2), "swap")
 	if err != nil {
@@ -766,7 +886,7 @@ func ImportConfiguration(fd int, name string, password string) error {
 	}
 	defer func() {
 		if err := os.RemoveAll(tempDir); err != nil {
-			log.Printf("failed to delete: %q: %w", tempDir, err)
+			log.Printf("failed to delete: %q: %v", tempDir, err)
 		}
 	}()
 

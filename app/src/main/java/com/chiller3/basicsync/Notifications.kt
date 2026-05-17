@@ -26,12 +26,14 @@ class Notifications(private val context: Context) {
         private const val CHANNEL_ID_PERSISTENT = "persistent"
         private const val CHANNEL_ID_FAILURE = "failure"
         private const val CHANNEL_ID_CONFLICTS = "conflicts"
+        private const val CHANNEL_ID_ALERTS = "alerts"
 
         private val LEGACY_CHANNEL_IDS = arrayOf<String>()
 
         const val ID_PERSISTENT = -1
         private const val ID_FAILURE = -2
         private const val ID_CONFLICTS = -3
+        private const val ID_ALERTS = -4
     }
 
     private val notificationManager = context.getSystemService(NotificationManager::class.java)
@@ -62,6 +64,14 @@ class Notifications(private val context: Context) {
         description = context.getString(R.string.notification_channel_conflicts_desc)
     }
 
+    private fun createSyncthingAlertsChannel() = NotificationChannel(
+        CHANNEL_ID_ALERTS,
+        context.getString(R.string.notification_channel_alerts_name),
+        NotificationManager.IMPORTANCE_HIGH,
+    ).apply {
+        description = context.getString(R.string.notification_channel_alerts_desc)
+    }
+
     /**
      * Ensure notification channels are up-to-date.
      *
@@ -72,6 +82,7 @@ class Notifications(private val context: Context) {
             createPersistentChannel(),
             createFailureAlertsChannel(),
             createConflictsAlertsChannel(),
+            createSyncthingAlertsChannel(),
         ))
         LEGACY_CHANNEL_IDS.forEach { notificationManager.deleteNotificationChannel(it) }
     }
@@ -239,5 +250,37 @@ class Notifications(private val context: Context) {
         }
 
         notificationManager.notify(ID_CONFLICTS, notification)
+    }
+
+    fun sendOrClearAlertsNotification(alertCount: Int) {
+        if (alertCount == 0) {
+            notificationManager.cancel(ID_ALERTS)
+            return
+        }
+
+        val notification = Notification.Builder(context, CHANNEL_ID_ALERTS).run {
+            setContentTitle(context.resources.getQuantityString(
+                R.plurals.notification_syncthing_alerts_title,
+                alertCount,
+                alertCount,
+            ))
+            setSmallIcon(R.drawable.ic_notifications)
+            setOnlyAlertOnce(true)
+
+            val intent = Intent(context, WebUiActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+            setContentIntent(pendingIntent)
+
+            build()
+        }
+
+        notificationManager.notify(ID_ALERTS, notification)
     }
 }

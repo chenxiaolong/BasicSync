@@ -228,6 +228,15 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 notifications.sendOrClearConflictsNotification(conflicts)
             }
         }
+    @GuardedBy("stateLock")
+    private var syncthingAlerts = 0
+        set(count) {
+            if (field != count) {
+                field = count
+
+                notifications.sendOrClearAlertsNotification(count)
+            }
+        }
 
     private val isResumed: Boolean
         @GuardedBy("stateLock")
@@ -577,6 +586,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             deviceStateTracker.updateConnectedDevices(0)
 
             syncthingConflicts = emptyList()
+            syncthingAlerts = 0
             syncthingApp = null
 
             stateChanged()
@@ -596,6 +606,13 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
         synchronized(stateLock) {
             syncthingConflicts = paths
+        }
+    }
+
+    @WorkerThread
+    override fun onAlertsUpdated(count: Int) {
+        synchronized(stateLock) {
+            syncthingAlerts = count
         }
     }
 
