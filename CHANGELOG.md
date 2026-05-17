@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Fix potential ANR ("app not responding" warning) when using the Exit button if Syncthing shuts down slowly ([PR #135])
+* Add basic notification for Syncthing's in-app alerts, like new devices requesting to connect ([PR #136])
 
 ### Version 1.30
 
@@ -326,3 +327,4 @@
 [PR #133]: https://github.com/chenxiaolong/BasicSync/pull/133
 [PR #134]: https://github.com/chenxiaolong/BasicSync/pull/134
 [PR #135]: https://github.com/chenxiaolong/BasicSync/pull/135
+[PR #136]: https://github.com/chenxiaolong/BasicSync/pull/136
