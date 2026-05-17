@@ -313,15 +313,19 @@ func isConflict(name string) bool {
 	return strings.Contains(filepath.Base(name), ".sync-conflict-")
 }
 
+type conflictsInfo struct {
+	byFolder    map[string]map[string]struct{}
+	folderPaths map[string]string
+}
+
 func dispatchConflicts(
-	folderConflicts map[string]map[string]struct{},
-	folderToPath map[string]string,
+	conflictsInfo *conflictsInfo,
 	receiver SyncthingStatusReceiver,
 ) {
 	var paths0Sep strings.Builder
 
-	for folder, names := range folderConflicts {
-		folderPath := folderToPath[folder]
+	for folder, names := range conflictsInfo.byFolder {
+		folderPath := conflictsInfo.folderPaths[folder]
 
 		for name, _ := range names {
 			if paths0Sep.Len() > 0 {
@@ -398,8 +402,7 @@ func eventLoop(
 	stopped chan struct{},
 	evLogger events.Logger,
 	cfgWrapper config.Wrapper,
-	folderConflicts map[string]map[string]struct{},
-	folderToPath map[string]string,
+	conflictsInfo *conflictsInfo,
 	alertsInfo *alertsInfo,
 	receiver SyncthingStatusReceiver,
 ) {
@@ -439,15 +442,15 @@ func eventLoop(
 				}
 
 				if data["action"] == "deleted" {
-					delete(folderConflicts[folderID], path)
+					delete(conflictsInfo.byFolder[folderID], path)
 				} else {
-					if _, ok := folderConflicts[folderID]; !ok {
-						folderConflicts[folderID] = map[string]struct{}{}
+					if _, ok := conflictsInfo.byFolder[folderID]; !ok {
+						conflictsInfo.byFolder[folderID] = map[string]struct{}{}
 					}
-					folderConflicts[folderID][path] = struct{}{}
+					conflictsInfo.byFolder[folderID][path] = struct{}{}
 				}
 
-				dispatchConflicts(folderConflicts, folderToPath, receiver)
+				dispatchConflicts(conflictsInfo, receiver)
 
 			case events.PendingDevicesChanged:
 				if data, ok := evt.Data.(map[string][]interface{}); ok {
@@ -549,26 +552,26 @@ func eventLoop(
 			case events.ConfigSaved:
 				cfg := evt.Data.(config.Configuration)
 
-				clear(folderToPath)
+				clear(conflictsInfo.folderPaths)
 
 				for _, folder := range cfg.Folders {
 					// Never fails on Android.
-					folderToPath[folder.ID], _ = fs.ExpandTilde(folder.Path)
+					conflictsInfo.folderPaths[folder.ID], _ = fs.ExpandTilde(folder.Path)
 				}
 
-				for key := range folderConflicts {
-					if _, ok := folderToPath[key]; !ok {
-						delete(folderConflicts, key)
+				for key := range conflictsInfo.byFolder {
+					if _, ok := conflictsInfo.folderPaths[key]; !ok {
+						delete(conflictsInfo.byFolder, key)
 					}
 				}
 
 				for key := range folderStates {
-					if _, ok := folderToPath[key]; !ok {
+					if _, ok := conflictsInfo.folderPaths[key]; !ok {
 						delete(folderStates, key)
 					}
 				}
 
-				dispatchConflicts(folderConflicts, folderToPath, receiver)
+				dispatchConflicts(conflictsInfo, receiver)
 				dispatchBusyFolders(folderStates, receiver)
 				// Unlike folders, we don't need to remove deleted devices from
 				// devicesConnected. We'll always receive a disconnection event
@@ -599,8 +602,10 @@ func startEventLoop(
 	allLocalFiles allLocalFilesFunc,
 	receiver SyncthingStatusReceiver,
 ) error {
-	folderConflicts := map[string]map[string]struct{}{}
-	folderToPath := map[string]string{}
+	conflictsInfo := conflictsInfo{
+		byFolder:    map[string]map[string]struct{}{},
+		folderPaths: map[string]string{},
+	}
 
 	// Find the initial set of conflicts from the database before starting the
 	// service. Any newly added or deleted conflicts will be reported by the
@@ -613,20 +618,20 @@ func startEventLoop(
 				continue
 			}
 
-			if _, ok := folderConflicts[folder.ID]; !ok {
-				folderConflicts[folder.ID] = map[string]struct{}{}
+			if _, ok := conflictsInfo.byFolder[folder.ID]; !ok {
+				conflictsInfo.byFolder[folder.ID] = map[string]struct{}{}
 			}
-			folderConflicts[folder.ID][dbFile.Name] = struct{}{}
+			conflictsInfo.byFolder[folder.ID][dbFile.Name] = struct{}{}
 		}
 		if err := errFn(); err != nil {
 			return fmt.Errorf("failed to query database for: %q: %w", folder.ID, err)
 		}
 
 		// Never fails on Android.
-		folderToPath[folder.ID], _ = fs.ExpandTilde(folder.Path)
+		conflictsInfo.folderPaths[folder.ID], _ = fs.ExpandTilde(folder.Path)
 	}
 
-	dispatchConflicts(folderConflicts, folderToPath, receiver)
+	dispatchConflicts(&conflictsInfo, receiver)
 
 	alertsInfo := alertsInfo{
 		needsRestart:   cfg.RequiresRestart(),
@@ -642,8 +647,7 @@ func startEventLoop(
 		stopped,
 		evLogger,
 		cfg,
-		folderConflicts,
-		folderToPath,
+		&conflictsInfo,
 		&alertsInfo,
 		receiver,
 	)
