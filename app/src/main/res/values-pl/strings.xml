@@ -163,4 +163,12 @@
     <string name="quick_settings_tile_auto_mode">Tryb automatyczny</string>
     <string name="quick_settings_tile_manual_mode_started">Uruchomiono ręcznie</string>
     <string name="quick_settings_tile_manual_mode_stopped">Zatrzymano ręcznie</string>
+    <string name="notification_channel_alerts_desc">Żądania dotyczące urządzeń/folderów i inne alerty zgłaszane przez Syncthing</string>
+    <string name="notification_channel_alerts_name">Alerty Syncthing</string>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="one">%d alert Syncthing</item>
+        <item quantity="few">%d alerty Syncthing</item>
+        <item quantity="many">%d alertów Syncthing</item>
+        <item quantity="other">%d alertów Syncthing</item>
+    </plurals>
 </resources>
