@@ -153,4 +153,10 @@
     <string name="quick_settings_tile_auto_mode">Otomatik modu</string>
     <string name="quick_settings_tile_manual_mode_started">El ile başlatıldı</string>
     <string name="quick_settings_tile_manual_mode_stopped">El ile durduruldu</string>
+    <string name="notification_channel_alerts_name">Syncthing uyarıları</string>
+    <string name="notification_channel_alerts_desc">Syncthing tarafından bildirilen cihaz/klasör istekleri ve diğer uyarılar</string>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="one">%d Syncthing uyarısı</item>
+        <item quantity="other">%d Syncthing uyarısı</item>
+    </plurals>
 </resources>
