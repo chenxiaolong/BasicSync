@@ -161,4 +161,9 @@
     <string name="quick_settings_tile_auto_mode">自動模式</string>
     <string name="quick_settings_tile_manual_mode_started">手動啟動</string>
     <string name="quick_settings_tile_manual_mode_stopped">手動停止</string>
+    <string name="notification_channel_alerts_name">Syncthing 提醒</string>
+    <string name="notification_channel_alerts_desc">由 Syncthing 發出的裝置/資料夾請求及其他提醒</string>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="other">有 %d 個 Syncthing 提醒</item>
+    </plurals>
 </resources>
