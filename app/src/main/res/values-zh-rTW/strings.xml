@@ -36,7 +36,7 @@
     <string name="pref_respect_auto_sync_data_name">配合自動同步數據設定</string>
     <string name="pref_respect_auto_sync_data_desc">僅在 Android 的自動同步數據設定啟用時執行。</string>
     <string name="pref_sync_schedule_name">依排程同步</string>
-    <string name="pref_sync_schedule_desc">在每 %1$s 的週期內進行同步 %2$s。</string>
+    <string name="pref_sync_schedule_desc">在每 %1$s 的週期內同步 %2$s。</string>
     <string name="pref_keep_alive_name">保持 Syncthing 執行</string>
     <string name="pref_keep_alive_desc">當 Syncthing 不應執行時將其暫停而非關閉。這可以避免啟動時掃描大型資料夾造成的效能影響。</string>
     <string name="pref_version_name">版本</string>
@@ -82,7 +82,7 @@
     <string name="dialog_export_password_hint">加密密碼</string>
     <string name="dialog_export_password_confirm_hint">確認密碼</string>
     <string name="dialog_min_battery_level_title">最低電池電量</string>
-    <string name="dialog_min_battery_level_message">輸入允許 Syncthing 執行的最低電池電量。</string>
+    <string name="dialog_min_battery_level_message">請輸入允許 Syncthing 執行的最低電池電量。</string>
     <string name="dialog_min_battery_level_hint">百分比</string>
     <string name="dialog_sync_schedule_title">同步排程</string>
     <string name="dialog_sync_schedule_message">可接受 <tt>h</tt>（小時）、<tt>m</tt>（分鐘）及 <tt>s</tt>（秒）作為後綴。</string>
@@ -118,7 +118,7 @@
     <string name="blocked_reason_disconnected">• 未連線至網路</string>
     <string name="blocked_reason_metered_network">• 已連線至計量付費網路</string>
     <string name="blocked_reason_bad_network_type">• 不允許的網路類型</string>
-    <string name="blocked_reason_bad_wifi_ssid">• 已連線至受阻擋的 Wi-Fi 網路</string>
+    <string name="blocked_reason_bad_wifi_ssid">• 已連線至未允許的 Wi-Fi 網路</string>
     <string name="blocked_reason_on_battery">• 正在使用電池電力</string>
     <string name="blocked_reason_low_battery">• 電池電量不足</string>
     <string name="blocked_reason_battery_saver">• 省電模式已開啟</string>
@@ -142,8 +142,8 @@
     <plurals name="pref_conflicts_desc">
         <item quantity="other">同步期間有 %d 個檔案發生衝突。</item>
     </plurals>
-    <string name="pref_show_exit_name">顯示結束按鈕</string>
-    <string name="pref_show_exit_desc">在常駐通知中顯示結束按鈕。應用程式會在裝置重新啟動或收到遠端控制指令後自動再次啟動。</string>
+    <string name="pref_show_exit_name">顯示「結束」按鈕</string>
+    <string name="pref_show_exit_desc">在常駐通知中顯示「結束」按鈕。應用程式會在裝置重新啟動或收到遠端控制指令後自動再次啟動。</string>
     <string name="pref_conflicts_info">以下檔案在同步期間發生衝突，需手動解決。選取檔案可在系統檔案管理器中開啟其所在目錄。</string>
     <string name="notification_channel_conflicts_name">同步衝突</string>
     <string name="notification_channel_conflicts_desc">同步期間發生衝突時的警示</string>
