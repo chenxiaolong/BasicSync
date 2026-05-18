@@ -152,4 +152,11 @@
     <string name="quick_settings_tile_manual_mode_started">Manuell gestartet</string>
     <string name="quick_settings_tile_manual_mode_stopped">Manuell angehalten</string>
     <string name="quick_settings_tile_auto_mode">Automatisch</string>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="one">%d Syncthing-Benachrichtigung</item>
+        <item quantity="other">%d Syncthing-Benachrichtigungen</item>
+    </plurals>
+    <string name="notification_channel_alerts_desc">Von Syncthing gemeldete Geräte-/Ordneranfragen und andere Benachrichtigungen</string>
+    <string name="dialog_sync_schedule_hint_idle">Hinweis im Dialogfeld zur Konfiguration der Zeitplanfunktion. Dies entspricht der Inaktivitätsdauer. Diese dient dazu, Syncthing vorzeitig zu beenden, bevor das Synchronisierungsfenster schließt, falls das Programm eine bestimmte Zeit lang inaktiv war.</string>
+    <string name="notification_channel_alerts_name">Syncthing-Benachrichtigungen</string>
 </resources>
