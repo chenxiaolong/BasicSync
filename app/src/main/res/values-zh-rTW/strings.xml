@@ -16,7 +16,7 @@
     <string name="pref_allow_notifications_desc">為確保在背景穩定執行，以及啟動與停止 Syncthing，需要此權限。</string>
     <string name="pref_local_storage_access_name">允許存取本機儲存空間</string>
     <string name="pref_local_storage_access_desc">Syncthing 需要此權限才能存取 <tt>/sdcard</tt> 下的本機儲存空間。</string>
-    <string name="pref_disable_app_hibernation_name">停止應用程式休眠</string>
+    <string name="pref_disable_app_hibernation_name">停用應用程式休眠</string>
     <string name="pref_disable_app_hibernation_desc">防止 Android 在一段時間後自動移除應用程式權限。</string>
     <string name="pref_open_web_ui_name">開啟網頁介面</string>
     <string name="pref_open_web_ui_desc">開啟 Syncthing 的網頁設定介面。</string>
@@ -36,7 +36,7 @@
     <string name="pref_respect_auto_sync_data_name">配合自動同步數據設定</string>
     <string name="pref_respect_auto_sync_data_desc">僅在 Android 的自動同步數據設定啟用時執行。</string>
     <string name="pref_sync_schedule_name">依排程同步</string>
-    <string name="pref_sync_schedule_desc">在每 %1$s的週期內進行同步 %2$s。</string>
+    <string name="pref_sync_schedule_desc">在每 %1$s 的週期內進行同步 %2$s。</string>
     <string name="pref_keep_alive_name">保持 Syncthing 執行</string>
     <string name="pref_keep_alive_desc">當 Syncthing 不應執行時將其暫停而非關閉。這可以避免啟動時掃描大型資料夾造成的效能影響。</string>
     <string name="pref_version_name">版本</string>
@@ -136,7 +136,7 @@
     </plurals>
     <string name="pref_header_advanced">進階</string>
     <string name="pref_remote_control_name">允許遠端控制</string>
-    <string name="pref_remote_control_desc">允許外部應用程式將 Syncthing 切換至自動模式，或手動進行啟動及停止。</string>
+    <string name="pref_remote_control_desc">允許外部應用程式將 Syncthing 切換至自動模式，或手動啟動及停止。</string>
     <string name="blocked_reason_no_storage_permissions">• 儲存空間權限遭拒</string>
     <string name="pref_conflicts_name">同步衝突</string>
     <plurals name="pref_conflicts_desc">
@@ -144,7 +144,7 @@
     </plurals>
     <string name="pref_show_exit_name">顯示結束按鈕</string>
     <string name="pref_show_exit_desc">在常駐通知中顯示結束按鈕。應用程式會在裝置重新啟動或收到遠端控制指令後自動再次啟動。</string>
-    <string name="pref_conflicts_info">以下檔案在同步期間發生衝突，需手動解決。選取檔案可在系統的檔案管理器中開啟其所在目錄。</string>
+    <string name="pref_conflicts_info">以下檔案在同步期間發生衝突，需手動解決。選取檔案可在系統檔案管理器中開啟其所在目錄。</string>
     <string name="notification_channel_conflicts_name">同步衝突</string>
     <string name="notification_channel_conflicts_desc">同步期間發生衝突時的警示</string>
     <plurals name="notification_conflicts_title">
