@@ -171,4 +171,11 @@
     <string name="quick_settings_tile_auto_mode">Mod automat</string>
     <string name="quick_settings_tile_manual_mode_stopped">Oprit manual</string>
     <string name="quick_settings_tile_manual_mode_started">Pornit manual</string>
+    <string name="notification_channel_alerts_name">Alerte Syncthing</string>
+    <string name="notification_channel_alerts_desc">Solicitări de dispozitiv/dosar și alte alerte raportate de Syncthing</string>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="one">%d alertă Syncthing</item>
+        <item quantity="few">%d alerte Syncthing</item>
+        <item quantity="other">%d de alerte Syncthing</item>
+    </plurals>
 </resources>
