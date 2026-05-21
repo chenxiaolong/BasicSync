@@ -1,3 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_header_permissions">Atļaujas</string>
+    <string name="pref_header_configuration">Konfigurācija</string>
+    <string name="pref_header_about">Par lietotni</string>
+    <string name="pref_header_debug">Atkļūdošana</string>
+    <string name="pref_version_name">Versija</string>
+    <string name="dialog_new_folder_hint">Nosaukums</string>
+    <string name="dialog_min_battery_level_hint">Procenti</string>
+    <string name="dialog_wifi_network_hint">Wi-Fi nosaukums (SSID)</string>
+    <string name="notification_action_start">Palaist</string>
+    <string name="notification_action_stop">Apturēt</string>
+    <string name="notification_action_exit">Iziet</string>
+    <string name="pref_header_run_conditions">Palaist nosacījumi</string>
+    <string name="pref_allow_notifications_name">Atļaut paziņojumus</string>
+    <string name="pref_conflicts_name">Sinhronizācijas konflikti</string>
+    <string name="pref_import_configuration_name">Ievietot konfigurāciju</string>
+    <string name="pref_export_configuration_name">Izgūt konfigurāciju</string>
+    <string name="pref_service_status_name">Syncthing statuss</string>
+    <string name="pref_auto_mode_name">Automātiskais režīms</string>
+    <string name="pref_save_logs_name">Saglabāt žurnālus</string>
+    <string name="pref_network_allow_wifi_name">Atļaut bezvadu (Wi-Fi) tīklā</string>
+    <string name="dialog_error_details_title">Kļūdas informācija</string>
+    <string name="dialog_new_folder_title">Jauna mape</string>
+    <string name="dialog_import_password_title">Konfigurācijas ievietošana</string>
 </resources>
