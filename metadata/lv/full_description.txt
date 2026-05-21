@@ -1,0 +1,3 @@
+BasicSync — vienkārša lietotne, kas darbina Syncthing Android ierīcēs.
+
+Lietotne tiek apzināti saglabāta ļoti primitīva, lai projektu būtu viegli uzturēt un atjaunināt. BasicSync kontrolē tikai tad, kad Syncthing ir palaists, darbojas. Faktiskā konfigurēšana notiek, izmantojot paša Syncthing tīmekļa lietotāja saskarni.
