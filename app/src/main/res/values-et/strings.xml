@@ -44,4 +44,34 @@
     <string name="pref_network_allow_ethernet_name">Luba traadiga võrgus</string>
     <string name="dialog_error_details_title">Vea üksikasjad</string>
     <string name="dialog_new_folder_title">Uus kaust</string>
+    <string name="pref_local_storage_access_desc">Vajalik Syncthingile ligipääsuks kohalikule andmeruumile kaustas <tt>/sdcard</tt>.</string>
+    <string name="pref_disable_app_hibernation_name">Keela rakenduse uinumine</string>
+    <string name="pref_disable_app_hibernation_desc">Vajalik selleks, et Android ei eemaldaks mingi aja möödumisel rakenduse õigusi.</string>
+    <string name="pref_open_web_ui_name">Ava veebipõhine kasutajaliides</string>
+    <string name="pref_open_web_ui_desc">Ava Syncthingi veebipõhine seadistusliides.</string>
+    <string name="pref_conflicts_name">Sünkroonimiskonfliktid</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="one">%d-l failil tekkis sünkroonimise ajal failikonflikt.</item>
+        <item quantity="other">%d-l failil tekkis sünkroonimise ajal failikonflikte.</item>
+    </plurals>
+    <string name="pref_import_configuration_desc">Impordi olemasolev Syncthingi seadistus zip-failist.</string>
+    <string name="pref_export_configuration_desc">Ekspordi olemasolev Syncthingi seadistus zip-faili.</string>
+    <string name="pref_auto_mode_desc">Käivita või peata automaatselt etteantud tingimuste alusel.</string>
+    <string name="pref_require_unmetered_network_name">Eelda mahupiiranguta võrgu olemasolu</string>
+    <string name="alert_import_success">Seadistuse importimine õnnestus</string>
+    <string name="alert_import_failure">Seadistuse importimine ei õnnestunud</string>
+    <string name="alert_import_cancelled">Seadistuse importimine on katkestatud</string>
+    <string name="alert_export_success">Seadistuse eksportimine õnnestus</string>
+    <string name="alert_export_failure">Seadistuse eksportimine ei õnnestunud</string>
+    <string name="alert_export_cancelled">Seadistuse eksportimine on katkestatud</string>
+    <string name="alert_logcat_success">Logida salvestamine „%1$s“ faili õnnestus</string>
+    <string name="alert_logcat_failure">Logida salvestamine „%1$s“ faili ei õnnestunud</string>
+    <string name="dialog_new_folder_message">Sisesta uue kausta nimi, mille soovid lisada asukohta „%1$s“.</string>
+    <string name="dialog_import_password_title">Seadistuste import</string>
+    <string name="dialog_import_password_message">Valitud zip-fail on krüptitud. Importimiseks sisesta dekrüptimise salasõna.</string>
+    <string name="dialog_import_password_hint">Dekrüptimise salasõna</string>
+    <string name="dialog_export_password_title">Seadistuste eksport</string>
+    <string name="dialog_export_password_message">Sisesta salasõna valitud zip-faili krüptimiseks või krüptimise vältimiseks jäta tühjaks.</string>
+    <string name="dialog_export_password_hint">Krüptimise salasõna</string>
+    <string name="dialog_export_password_confirm_hint">Korda salasõna</string>
 </resources>
