@@ -74,4 +74,6 @@
     <string name="dialog_export_password_message">Sisesta salasõna valitud zip-faili krüptimiseks või krüptimise vältimiseks jäta tühjaks.</string>
     <string name="dialog_export_password_hint">Krüptimise salasõna</string>
     <string name="dialog_export_password_confirm_hint">Korda salasõna</string>
+    <string name="pref_network_allow_cellular_name">Luba mobiilse andmeside puhul</string>
+    <string name="pref_network_conditions_desc">Käivita, kui on olemas ühendus mõne kindla võrguga või WiFi-võrguga üldiselt.</string>
 </resources>
