@@ -158,4 +158,11 @@
     <string name="quick_settings_tile_auto_mode">Modo Auto</string>
     <string name="quick_settings_tile_manual_mode_started">Iniciado manual</string>
     <string name="quick_settings_tile_manual_mode_stopped">Detenido manualmente</string>
+    <string name="notification_channel_alerts_name">Alertas de Syncthing</string>
+    <string name="notification_channel_alerts_desc">Solicitudes de dispositivo/carpeta y otras alertas reportadas por Syncthing</string>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="one">%d alerta de Syncthing</item>
+        <item quantity="many">%d alertas de Syncthing</item>
+        <item quantity="other">%d alertas de Syncthing</item>
+    </plurals>
 </resources>
