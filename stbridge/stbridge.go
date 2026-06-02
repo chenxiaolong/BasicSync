@@ -46,7 +46,7 @@ import (
 	"github.com/syncthing/syncthing/lib/svcutil"
 	"github.com/syncthing/syncthing/lib/syncthing"
 
-	"github.com/cuhsat/go-zip/pkg/zip"
+	"go.foxforensics.dev/go-zip/pkg/zip"
 )
 
 var stLock sync.Mutex

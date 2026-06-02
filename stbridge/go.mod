@@ -1,12 +1,12 @@
 module stbridge
 
-go 1.25.6
+go 1.26
 
 require (
-	github.com/cuhsat/go-zip v0.5.3
 	github.com/syncthing/syncthing v0.0.0
-	golang.org/x/mobile v0.0.0-20260508232728-bebd421c7fa8
-	golang.org/x/sys v0.44.0
+	go.foxforensics.dev/go-zip v0.6.2
+	golang.org/x/mobile v0.0.0-20260602190626-68735029466e
+	golang.org/x/sys v0.45.0
 )
 
 replace github.com/syncthing/syncthing v0.0.0 => ../external/syncthing
@@ -70,7 +70,7 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/crypto v0.51.0 // indirect
-	golang.org/x/net v0.54.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
 	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
