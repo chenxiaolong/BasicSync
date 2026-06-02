@@ -9,7 +9,7 @@
 
 ### Unreleased
 
-* Port UI to Jetpack Compose and adopt Material 3 Expressive styling ([PR #140])
+* Port UI to Jetpack Compose and adopt Material 3 Expressive styling ([PR #140], [PR #142])
 * Update syncthing to 2.1.1 ([PR #141])
 * Fix potential ANR ("app not responding" warning) when using the Exit button if Syncthing shuts down slowly ([PR #135])
 * Add basic notification for Syncthing's in-app alerts, like new devices requesting to connect ([PR #136])
@@ -332,3 +332,4 @@
 [PR #136]: https://github.com/chenxiaolong/BasicSync/pull/136
 [PR #140]: https://github.com/chenxiaolong/BasicSync/pull/140
 [PR #141]: https://github.com/chenxiaolong/BasicSync/pull/141
+[PR #142]: https://github.com/chenxiaolong/BasicSync/pull/142
