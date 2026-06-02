@@ -15,6 +15,7 @@
 * Add basic notification for Syncthing's in-app alerts, like new devices requesting to connect ([PR #136])
 * Fix error when importing a configuration zip before Syncthing starts for the first time ([PR #144])
 * Update golang to 1.26.4 ([PR #145])
+* Sync translations from Weblate ([PR #139])
 
 ### Version 1.30
 
