@@ -956,10 +956,15 @@ func ImportConfiguration(fd int, name string, password string) error {
 
 	configDir := locations.GetBaseDir(locations.ConfigBaseDir)
 
+	// configDir might not exist if the user tried to import before Syncthing
+	// started for the first time.
+	if err = os.MkdirAll(configDir, 0o700); err != nil {
+		return fmt.Errorf("failed to create: %q: %w", configDir, err)
+	}
+
 	// Try to atomically swap the active config dir with the temp dir. The temp
 	// dir cleanup above will delete the old files.
-	err = tryAtomicSwap(tempDir, configDir)
-	if err != nil {
+	if err = tryAtomicSwap(tempDir, configDir); err != nil {
 		return fmt.Errorf("failed to swap: %q <-> %q: %w", tempDir, configDir, err)
 	}
 
