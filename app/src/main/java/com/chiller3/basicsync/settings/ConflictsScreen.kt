@@ -65,7 +65,7 @@ fun ConflictsScreen(
 
             override fun onConflictsUpdated(conflicts: List<String>) {
                 if (conflicts.isEmpty()) {
-                    onExit()
+                    onBack()
                 } else {
                     syncConflicts = conflicts
                 }
