@@ -13,6 +13,7 @@
 * Update syncthing to 2.1.1 ([PR #141])
 * Fix potential ANR ("app not responding" warning) when using the Exit button if Syncthing shuts down slowly ([PR #135])
 * Add basic notification for Syncthing's in-app alerts, like new devices requesting to connect ([PR #136])
+* Fix error when importing a configuration zip before Syncthing starts for the first time ([PR #144])
 
 ### Version 1.30
 
@@ -334,3 +335,4 @@
 [PR #141]: https://github.com/chenxiaolong/BasicSync/pull/141
 [PR #142]: https://github.com/chenxiaolong/BasicSync/pull/142
 [PR #143]: https://github.com/chenxiaolong/BasicSync/pull/143
+[PR #144]: https://github.com/chenxiaolong/BasicSync/pull/144
