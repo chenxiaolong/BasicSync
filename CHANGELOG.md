@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 2.0
 
 * Port UI to Jetpack Compose and adopt Material 3 Expressive styling ([PR #140], [PR #142], [PR #143])
 * Update syncthing to 2.1.1 ([PR #141])
@@ -333,6 +333,7 @@
 [PR #134]: https://github.com/chenxiaolong/BasicSync/pull/134
 [PR #135]: https://github.com/chenxiaolong/BasicSync/pull/135
 [PR #136]: https://github.com/chenxiaolong/BasicSync/pull/136
+[PR #139]: https://github.com/chenxiaolong/BasicSync/pull/139
 [PR #140]: https://github.com/chenxiaolong/BasicSync/pull/140
 [PR #141]: https://github.com/chenxiaolong/BasicSync/pull/141
 [PR #142]: https://github.com/chenxiaolong/BasicSync/pull/142
