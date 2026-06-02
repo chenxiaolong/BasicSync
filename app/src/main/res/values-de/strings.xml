@@ -159,4 +159,5 @@
     <string name="notification_channel_alerts_desc">Von Syncthing gemeldete Geräte-/Ordneranfragen und andere Benachrichtigungen</string>
     <string name="dialog_sync_schedule_hint_idle">Hinweis im Dialogfeld zur Konfiguration der Zeitplanfunktion. Dies entspricht der Inaktivitätsdauer. Diese dient dazu, Syncthing vorzeitig zu beenden, bevor das Synchronisierungsfenster schließt, falls das Programm eine bestimmte Zeit lang inaktiv war.</string>
     <string name="notification_channel_alerts_name">Syncthing-Benachrichtigungen</string>
+    <string name="alert_documentsui_not_found">Android\'s eigener Dateimanager (DocumentsUI) ist nicht verfügbar.</string>
 </resources>
