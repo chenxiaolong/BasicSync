@@ -20,6 +20,8 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 java {
@@ -176,8 +178,8 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        compose = true
         resValues = true
-        viewBinding = true
     }
     splits {
         // Split by ABI because compiled golang code is huge and a universal APK is nearly 200 MiB
@@ -222,18 +224,21 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.activity.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.camera.core)
-    implementation(libs.camera.camera2)
-    implementation(libs.camera.lifecycle)
-    implementation(libs.camera.view)
-    implementation(libs.core.ktx)
-    implementation(libs.fragment.ktx)
-    implementation(libs.preference.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.camera.compose)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.preference.ktx)
     implementation(libs.material)
     implementation(libs.zxing.core)
     implementation(files(stbridgeAar))
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
 val archive = tasks.register("archive") {

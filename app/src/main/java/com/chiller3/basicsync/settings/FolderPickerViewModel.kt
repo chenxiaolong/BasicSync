@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-only
  */
 
-package com.chiller3.basicsync.dialog
+package com.chiller3.basicsync.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

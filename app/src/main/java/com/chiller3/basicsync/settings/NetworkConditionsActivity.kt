@@ -5,14 +5,19 @@
 
 package com.chiller3.basicsync.settings
 
-import com.chiller3.basicsync.PreferenceBaseActivity
-import com.chiller3.basicsync.PreferenceBaseFragment
-import com.chiller3.basicsync.R
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import com.chiller3.basicsync.BaseActivity
+import com.chiller3.basicsync.ui.theme.AppTheme
 
-class NetworkConditionsActivity : PreferenceBaseActivity() {
-    override val titleResId: Int = R.string.pref_network_conditions_name
+class NetworkConditionsActivity : BaseActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override val showUpButton: Boolean = true
-
-    override fun createFragment(): PreferenceBaseFragment = NetworkConditionsFragment()
+        setContent {
+            AppTheme {
+                NetworkConditionsScreen(onBack = ::finish)
+            }
+        }
+    }
 }

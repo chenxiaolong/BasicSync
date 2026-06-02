@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2025 Andrew Gunnerson
+ * SPDX-FileCopyrightText: 2025-2026 Andrew Gunnerson
  * SPDX-License-Identifier: GPL-3.0-only
  */
 
@@ -16,7 +16,7 @@ import com.google.zxing.PlanarYUVLuminanceSource
 import com.google.zxing.ReaderException
 import com.google.zxing.common.HybridBinarizer
 
-class QrScannerAnalyzer(private val listener: Listener) : ImageAnalysis.Analyzer {
+class QrScannerAnalyzer(private val onScan: (String) -> Unit) : ImageAnalysis.Analyzer {
     private val reader = MultiFormatReader().apply {
         setHints(mapOf(
             DecodeHintType.POSSIBLE_FORMATS to listOf(BarcodeFormat.QR_CODE),
@@ -51,13 +51,9 @@ class QrScannerAnalyzer(private val listener: Listener) : ImageAnalysis.Analyzer
             reader.reset()
             try {
                 reader.decodeWithState(binaryBitmap).text?.let {
-                    listener.onQrScanned(it)
+                    onScan(it)
                 }
             } catch (_: ReaderException) {}
         }
-    }
-
-    interface Listener {
-        fun onQrScanned(data: String)
     }
 }

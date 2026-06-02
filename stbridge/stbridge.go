@@ -294,6 +294,7 @@ type SyncthingStatusReceiver interface {
 	// paths on Linux.
 	OnConflictsUpdated(paths0Sep string)
 
+	// Can be sent before OnSyncthingStarted, but not after OnSyncthingStopped.
 	OnAlertsUpdated(count int32)
 
 	OnBusyFoldersUpdated(count int32)

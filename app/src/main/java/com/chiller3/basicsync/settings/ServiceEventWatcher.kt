@@ -11,31 +11,51 @@ import android.content.ServiceConnection
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
-import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.chiller3.basicsync.syncthing.SyncthingService
 
-class ServiceEventWatcher(
-    context: Context,
+@Composable
+fun rememberServiceEventWatcher(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    listener: SyncthingService.ServiceListener,
+): ServiceEventWatcher {
+    val context = LocalContext.current
+    val watcher = remember(lifecycleOwner) { ServiceEventWatcher(listener) }
+
+    DisposableEffect(lifecycleOwner) {
+        watcher.startWatching(context)
+
+        onDispose {
+            watcher.stopWatching(context)
+        }
+    }
+
+    return watcher
+}
+
+class ServiceEventWatcher internal constructor(
     private val listener: SyncthingService.ServiceListener,
-) : DefaultLifecycleObserver,
-    ServiceConnection, SyncthingService.ServiceListener {
-    private val appContext = context.applicationContext
+) : ServiceConnection, SyncthingService.ServiceListener {
     private var binder: SyncthingService.ServiceBinder? = null
     private val handler = Handler(Looper.getMainLooper())
     private val onConnect = ArrayDeque<(SyncthingService.ServiceBinder) -> Unit>()
 
-    override fun onStart(owner: LifecycleOwner) {
-        appContext.bindService(
-            SyncthingService.createIntent(appContext, null),
+    internal fun startWatching(context: Context) {
+        context.bindService(
+            SyncthingService.createIntent(context, null),
             this,
             Context.BIND_AUTO_CREATE,
         )
     }
 
-    override fun onStop(owner: LifecycleOwner) {
+    internal fun stopWatching(context: Context) {
         onBinderGone()
-        appContext.unbindService(this)
+        context.unbindService(this)
 
         handler.removeCallbacksAndMessages(null)
     }

@@ -14,6 +14,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.SyncStatusObserver
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -61,7 +62,7 @@ enum class BlockedReason {
     AUTO_SYNC_DATA,
     TIME_SCHEDULE;
 
-    fun toString(context: Context): String {
+    fun toString(resources: Resources): String {
         val stringId = when (this) {
             NO_STORAGE_PERMISSIONS -> R.string.blocked_reason_no_storage_permissions
             MANUAL -> R.string.blocked_reason_manual
@@ -76,7 +77,7 @@ enum class BlockedReason {
             TIME_SCHEDULE -> R.string.blocked_reason_time_schedule
         }
 
-        return context.getString(stringId)
+        return resources.getString(stringId)
     }
 
     /** Whether this reason needs to entirely block Syncthing from running at all. */

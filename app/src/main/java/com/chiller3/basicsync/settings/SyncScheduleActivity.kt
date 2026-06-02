@@ -5,14 +5,19 @@
 
 package com.chiller3.basicsync.settings
 
-import com.chiller3.basicsync.PreferenceBaseActivity
-import com.chiller3.basicsync.PreferenceBaseFragment
-import com.chiller3.basicsync.R
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import com.chiller3.basicsync.BaseActivity
+import com.chiller3.basicsync.ui.theme.AppTheme
 
-class SyncScheduleActivity : PreferenceBaseActivity() {
-    override val titleResId: Int = R.string.pref_sync_schedule_settings_name
+class SyncScheduleActivity : BaseActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override val showUpButton: Boolean = true
-
-    override fun createFragment(): PreferenceBaseFragment = SyncScheduleFragment()
+        setContent {
+            AppTheme {
+                SyncScheduleScreen(onBack = ::finish)
+            }
+        }
+    }
 }

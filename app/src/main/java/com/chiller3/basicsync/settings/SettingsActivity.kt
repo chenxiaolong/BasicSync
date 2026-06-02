@@ -1,18 +1,23 @@
 /*
- * SPDX-FileCopyrightText: 2023-2024 Andrew Gunnerson
+ * SPDX-FileCopyrightText: 2023-2026 Andrew Gunnerson
  * SPDX-License-Identifier: GPL-3.0-only
  */
 
 package com.chiller3.basicsync.settings
 
-import com.chiller3.basicsync.PreferenceBaseActivity
-import com.chiller3.basicsync.PreferenceBaseFragment
-import com.chiller3.basicsync.R
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import com.chiller3.basicsync.BaseActivity
+import com.chiller3.basicsync.ui.theme.AppTheme
 
-class SettingsActivity : PreferenceBaseActivity() {
-    override val titleResId: Int = R.string.app_name
+class SettingsActivity : BaseActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override val showUpButton: Boolean = false
-
-    override fun createFragment(): PreferenceBaseFragment = SettingsFragment()
+        setContent {
+            AppTheme {
+                SettingsScreen(onExit = ::finishAffinity)
+            }
+        }
+    }
 }

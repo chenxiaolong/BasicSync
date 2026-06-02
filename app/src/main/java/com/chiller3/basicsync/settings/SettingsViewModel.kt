@@ -143,6 +143,10 @@ class SettingsViewModel : ViewModel() {
         _alerts.update { it.drop(1) }
     }
 
+    fun addAlert(alert: SettingsAlert) {
+        _alerts.update { it + alert }
+    }
+
     fun saveLogs(uri: Uri) {
         viewModelScope.launch {
             try {

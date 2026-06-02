@@ -112,7 +112,7 @@ class Notifications(private val context: Context) {
                         if (i > 0) {
                             append('\n')
                         }
-                        append(reason.toString(context))
+                        append(reason.toString(context.resources))
                     }
                 })
                 style = Notification.BigTextStyle()

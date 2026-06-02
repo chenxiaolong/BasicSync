@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    SPDX-FileCopyrightText: 2023-2024 Andrew Gunnerson
+    SPDX-FileCopyrightText: 2023-2026 Andrew Gunnerson
     SPDX-License-Identifier: GPL-3.0-only
 -->
 <resources>
-    <style name="Theme.BasicSync" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="switchPreferenceCompatStyle">@style/SwitchPreferenceCompat.Material3</item>
-        <item name="splitSwitchPreferenceStyle">@style/SplitSwitchPreference.Material3</item>
+    <style name="Theme.BasicSync" parent="Theme.Material3Expressive.DynamicColors.DayNight.NoActionBar">
+        <!--
+            This is the background in Android's splash screen and also the region outside the
+            activity when performing a predictive back gesture from one activity to another within
+            the same app.
+            This must be set statically. Keep this in sync with PreferenceDefaults.containerColor.
+        -->
+        <item name="android:colorBackground">?attr/colorSurfaceContainerHigh</item>
     </style>
 </resources>

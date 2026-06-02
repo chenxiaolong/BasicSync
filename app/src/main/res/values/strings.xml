@@ -165,6 +165,10 @@
     <string name="alert_logcat_success">Successfully saved logs to %1$s</string>
     <!-- Alert shown when saving a log file fails. %1$s is the path to the file that could not be saved. -->
     <string name="alert_logcat_failure">Failed to save logs to %1$s</string>
+    <!-- Alert shown when opening a link and there is no browser installed. -->
+    <string name="alert_browser_not_found">No web browser is available.</string>
+    <!-- Alert shown when opening the system file manager (DocumentsUI) and it is disabled or removed (eg. in custom ROM). -->
+    <string name="alert_documentsui_not_found">Android\'s builtin file manager (DocumentsUI) is unavailable.</string>
 
     <!-- Button shown in the local filesystem folder picker to create a new local folder. -->
     <string name="dialog_new_folder_title">New folder</string>

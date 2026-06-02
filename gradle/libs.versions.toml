@@ -1,29 +1,36 @@
 [versions]
-activity-ktx = "1.13.0"
 android-gradle-plugin = "9.2.1"
-appcompat = "1.7.1"
-camera = "1.6.1"
-core-ktx = "1.18.0"
+androidx-activity = "1.13.0"
+androidx-camera = "1.6.1"
+androidx-compose-bom = "2026.05.01"
+androidx-compose-material3 = "1.5.0-alpha18"
+androidx-core = "1.18.0"
+androidx-lifecycle-viewmodel-compose = "2.11.0-alpha03"
+androidx-preference = "1.2.1"
 jgit = "7.6.0.202603022253-r"
-fragment-ktx = "1.8.9"
-material = "1.13.0"
-preference-ktx = "1.2.1"
+kotlin = "2.3.21"
+material = "1.14.0"
 zxing = "3.5.4"
 
 [libraries]
-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camera" }
-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera" }
-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera" }
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment-ktx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity" }
+androidx-camera-compose = { group = "androidx.camera", name = "camera-compose", version.ref = "androidx-camera" }
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "androidx-camera" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "androidx-camera" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "androidx-camera" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidx-compose-bom" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidx-compose-material3" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle-viewmodel-compose" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "androidx-preference" }
 jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version.ref = "jgit" }
 jgit-archive = { group = "org.eclipse.jgit", name = "org.eclipse.jgit.archive", version.ref = "jgit" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference-ktx" }
 zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
