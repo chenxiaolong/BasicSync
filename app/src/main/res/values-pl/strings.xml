@@ -171,4 +171,6 @@
         <item quantity="many">%d alertów Syncthing</item>
         <item quantity="other">%d alertów Syncthing</item>
     </plurals>
+    <string name="alert_browser_not_found">Brak dostępnej przeglądarki internetowej.</string>
+    <string name="alert_documentsui_not_found">Wbudowany menedżer plików Androida (DocumentsUI) jest niedostępny.</string>
 </resources>
