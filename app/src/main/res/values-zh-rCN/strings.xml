@@ -153,4 +153,6 @@
     <plurals name="notification_syncthing_alerts_title">
         <item quantity="other">%d 个 Syncthing 提醒</item>
     </plurals>
+    <string name="alert_browser_not_found">没有可用的网络浏览器。</string>
+    <string name="alert_documentsui_not_found">Android 的内置文件管理器（DocumentsUI）不可用。</string>
 </resources>
