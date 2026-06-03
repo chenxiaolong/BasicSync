@@ -178,4 +178,6 @@
         <item quantity="few">%d alerte Syncthing</item>
         <item quantity="other">%d de alerte Syncthing</item>
     </plurals>
+    <string name="alert_browser_not_found">Nu este disponibil niciun browser web.</string>
+    <string name="alert_documentsui_not_found">Managerul de fișiere încorporat pentru Android (DocumentsUI) nu este disponibil.</string>
 </resources>
