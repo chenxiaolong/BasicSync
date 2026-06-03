@@ -159,4 +159,6 @@
         <item quantity="one">%d Syncthing uyarısı</item>
         <item quantity="other">%d Syncthing uyarısı</item>
     </plurals>
+    <string name="alert_browser_not_found">Kullanılabilir bir web tarayıcısı yok.</string>
+    <string name="alert_documentsui_not_found">Android\'in yerleşik dosya yöneticisi (DocumentsUI) kullanılabilir değil.</string>
 </resources>
