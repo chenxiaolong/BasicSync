@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 2.1
 
 * Add support for Android TV ([PR #146])
 * Sync translations from Weblate ([PR #147])
