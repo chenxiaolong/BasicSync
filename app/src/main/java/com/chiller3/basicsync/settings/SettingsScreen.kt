@@ -6,9 +6,11 @@
 package com.chiller3.basicsync.settings
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.BatteryManager
 import android.os.Build
@@ -91,6 +93,8 @@ fun SettingsScreen(
     val context = LocalContext.current
     val resources = LocalResources.current
 
+    val isTv = remember { context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK) }
+
     val prefs = remember { Preferences(context) }
     var reloadPrefs by remember { mutableIntStateOf(0) }
     val isManualMode = remember(reloadPrefs) { prefs.isManualMode }
@@ -121,6 +125,15 @@ fun SettingsScreen(
     val conflicts by viewModel.conflicts.collectAsStateWithLifecycle()
     val importExportState by viewModel.importExportState.collectAsStateWithLifecycle()
 
+    val requestInhibitBatteryOpt = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) {
+        if (it.resultCode == Activity.RESULT_CANCELED && isTv) {
+            viewModel.addAlert(SettingsAlert.TvInhibitBatteryOpt)
+        } else {
+            reloadPerms++
+        }
+    }
     val requestPermissionActivity = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
     ) {
@@ -215,6 +228,8 @@ fun SettingsScreen(
                         resources.getString(R.string.alert_logcat_failure, alert.uri.formattedString)
                     SettingsAlert.BrowserNotFound ->
                         resources.getString(R.string.alert_browser_not_found)
+                    SettingsAlert.TvInhibitBatteryOpt ->
+                        resources.getString(R.string.alert_tv_inhibit_battery_opt)
                 }
                 val details = when (alert) {
                     SettingsAlert.ImportSucceeded -> null
@@ -226,12 +241,26 @@ fun SettingsScreen(
                     is SettingsAlert.LogcatSucceeded -> null
                     is SettingsAlert.LogcatFailed -> alert.error
                     SettingsAlert.BrowserNotFound -> null
+                    is SettingsAlert.TvInhibitBatteryOpt -> buildString {
+                        append(resources.getString(R.string.alert_tv_inhibit_battery_opt_details))
+                        append("\n\n")
+                        append(alert.COMMAND)
+                    }
+                }
+
+                // Snack bars are not focusable on TVs, so just show the dialog directly.
+                if (isTv) {
+                    showErrorDialog = details
                 }
 
                 val result = params.snackbarHostState.showSnackbar(
                     message = msg,
-                    details?.let { resources.getString(R.string.action_details) },
-                    withDismissAction = true,
+                    if (isTv) {
+                        null
+                    } else {
+                        details?.let { resources.getString(R.string.action_details) }
+                    },
+                    withDismissAction = !isTv,
                 )
                 viewModel.acknowledgeFirstAlert()
 
@@ -246,6 +275,7 @@ fun SettingsScreen(
             ErrorDetailsDialog(
                 message = message,
                 onDismiss = { showErrorDialog = null },
+                showCopy = !isTv,
             )
         }
 
@@ -268,7 +298,7 @@ fun SettingsScreen(
             showExit = showExit,
             isDebugMode = isDebugMode,
             onInhibitBatteryOptGrant = {
-                requestPermissionActivity.launch(Permissions.getInhibitBatteryOptIntent(context))
+                requestInhibitBatteryOpt.launch(Permissions.getInhibitBatteryOptIntent(context))
             },
             onNotificationsGrant = {
                 requestPermissionsRequired.launch(Permissions.NOTIFICATION)

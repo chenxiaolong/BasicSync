@@ -92,6 +92,20 @@ These broadcasts can also be sent via `adb`. For example:
 adb shell am broadcast -a com.chiller3.basicsync.AUTO_MODE com.chiller3.basicsync
 ```
 
+## Android TV
+
+BasicSync has basic support for Android TV. The UI is still the same phone/tablet UI, so navigation may be a bit awkward, but most functionality is accessible using the TV remote's arrow keys, including Syncthing's web UI.
+
+However, there are several things that cannot be supported due to Android TV's limitations:
+
+* Importing and exporting the configuration, as well as saving logs via debug mode, are not supported because Android TV does not include DocumentsUI (the system file manager and file picker).
+* There is no way to see BasicSync's notification because Android TV does not support notifications from third party apps at all. BasicSync still needs to request the useless notifications permission to run Syncthing reliably in the background.
+* Android TV has no UI for disabling "battery" optimizations, but it is also required for Syncthing to run reliably in the background. This must be done via adb instead:
+
+    ```bash
+    adb shell dumpsys deviceidle whitelist +com.chiller3.basicsync
+    ```
+
 ## Persistent notification
 
 Android 14 and newer [no longer allow](https://developer.android.com/about/versions/14/behavior-changes-all#non-dismissable-notifications) regular apps to prevent persistent notifications from being dismissed. To work around this, BasicSync will automatically show the persistent notification again whenever it is dismissed.

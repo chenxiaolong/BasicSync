@@ -9,6 +9,7 @@ import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.net.http.SslCertificate
 import android.net.http.SslError
@@ -149,6 +150,10 @@ fun WebUiScreen(
         webView.evaluateJavascript("onDeviceIdScanned(\"${jsEscape(deviceId)}\");") {}
     }
 
+    fun setTvMode(enable: Boolean) {
+        webView.evaluateJavascript("setTvMode($enable);") {}
+    }
+
     val requestQrScanner = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
@@ -253,6 +258,10 @@ fun WebUiScreen(
                 }
 
                 view.evaluateJavascript(script) {}
+
+                val isTv = context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+                Log.d(TAG, "Setting TV mode: $isTv")
+                setTvMode(isTv)
             }
 
             override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {

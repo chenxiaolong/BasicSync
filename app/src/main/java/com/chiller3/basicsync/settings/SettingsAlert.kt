@@ -6,6 +6,7 @@
 package com.chiller3.basicsync.settings
 
 import android.net.Uri
+import com.chiller3.basicsync.BuildConfig
 
 sealed interface SettingsAlert {
     data object ImportSucceeded : SettingsAlert
@@ -25,4 +26,8 @@ sealed interface SettingsAlert {
     data class LogcatFailed(val uri: Uri, val error: String) : SettingsAlert
 
     data object BrowserNotFound : SettingsAlert
+
+    data object TvInhibitBatteryOpt : SettingsAlert {
+        const val COMMAND = "adb shell dumpsys deviceidle whitelist +${BuildConfig.APPLICATION_ID}"
+    }
 }

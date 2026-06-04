@@ -169,6 +169,10 @@
     <string name="alert_browser_not_found">No web browser is available.</string>
     <!-- Alert shown when opening the system file manager (DocumentsUI) and it is disabled or removed (eg. in custom ROM). -->
     <string name="alert_documentsui_not_found">Android\'s builtin file manager (DocumentsUI) is unavailable.</string>
+    <!-- Alert shown when trying to disable "battery" optimizations on Android TV. -->
+    <string name="alert_tv_inhibit_battery_opt">Disabling \"battery\" optimizations requires manual steps on Android TV.</string>
+    <!-- Detailed message for alert shown when trying to disable "battery" optimizations on Android TV. -->
+    <string name="alert_tv_inhibit_battery_opt_details">Android TV has no UI for disabling \"battery\" optimizations, but it is still required to run Syncthing in the background reliably. This must be done by running the following adb command.</string>
 
     <!-- Button shown in the local filesystem folder picker to create a new local folder. -->
     <string name="dialog_new_folder_title">New folder</string>
