@@ -173,4 +173,6 @@
     </plurals>
     <string name="alert_browser_not_found">Brak dostępnej przeglądarki internetowej.</string>
     <string name="alert_documentsui_not_found">Wbudowany menedżer plików Androida (DocumentsUI) jest niedostępny.</string>
+    <string name="alert_tv_inhibit_battery_opt">Wyłączenie optymalizacji „baterii” wymaga wykonania ręcznych czynności na telewizorze z systemem Android TV.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">Android TV nie ma interfejsu użytkownika umożliwiającego wyłączenie optymalizacji „baterii”, ale nadal jest to wymagane do niezawodnego działania Syncthing w tle. Aby to zrobić, należy uruchomić następujące polecenie adb.</string>
 </resources>
