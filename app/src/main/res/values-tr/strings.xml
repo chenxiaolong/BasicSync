@@ -161,4 +161,6 @@
     </plurals>
     <string name="alert_browser_not_found">Kullanılabilir bir web tarayıcısı yok.</string>
     <string name="alert_documentsui_not_found">Android\'in yerleşik dosya yöneticisi (DocumentsUI) kullanılabilir değil.</string>
+    <string name="alert_tv_inhibit_battery_opt">\"Pil\" optimizasyonlarını etkisizleştirmek, Android TV\'de elle adımlar gerektirir.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">Android TV\'de \"pil\" optimizasyonlarını etkisizleştirecek bir kullanıcı arayüzü yoktur, ancak Syncthing\'i arka planda güvenilir bir şekilde çalıştırmak için yine de gereklidir. Bu, aşağıdaki adb komutunu çalıştırarak yapılmak zorundadır.</string>
 </resources>
