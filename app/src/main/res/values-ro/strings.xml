@@ -180,4 +180,6 @@
     </plurals>
     <string name="alert_browser_not_found">Nu este disponibil niciun browser web.</string>
     <string name="alert_documentsui_not_found">Managerul de fișiere încorporat pentru Android (DocumentsUI) nu este disponibil.</string>
+    <string name="alert_tv_inhibit_battery_opt">Dezactivarea optimizărilor „bateriei” necesită pași manuali pe Android TV.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">Android TV nu are interfață de utilizator pentru dezactivarea optimizărilor „bateriei”, dar este totuși necesar ca Syncthing să ruleze în fundal în mod fiabil. Acest lucru trebuie făcut prin rularea următoarei comenzi adb.</string>
 </resources>
