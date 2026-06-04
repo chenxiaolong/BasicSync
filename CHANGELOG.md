@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add support for Android TV ([PR #146])
+
 ### Version 2.0
 
 * Port UI to Jetpack Compose and adopt Material 3 Expressive styling ([PR #140], [PR #142], [PR #143])
@@ -340,3 +344,4 @@
 [PR #143]: https://github.com/chenxiaolong/BasicSync/pull/143
 [PR #144]: https://github.com/chenxiaolong/BasicSync/pull/144
 [PR #145]: https://github.com/chenxiaolong/BasicSync/pull/145
+[PR #146]: https://github.com/chenxiaolong/BasicSync/pull/146
