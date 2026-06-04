@@ -161,4 +161,6 @@
     <string name="notification_channel_alerts_name">Syncthing-Benachrichtigungen</string>
     <string name="alert_documentsui_not_found">Androids eigener Dateimanager (DocumentsUI) ist nicht verfügbar.</string>
     <string name="alert_browser_not_found">Es ist kein Webbrowser verfügbar.</string>
+    <string name="alert_tv_inhibit_battery_opt">Das Deaktivieren der „Akku“-Optimierung erfordert auf Android TV manuelle Schritte.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">Android TV verfügt über keine Benutzeroberfläche zum Deaktivieren der „Akku“-Optimierungen, doch ist dies dennoch erforderlich, damit Syncthing zuverlässig im Hintergrund läuft. Dies muss durch Ausführen des folgenden adb-Befehls erfolgen.</string>
 </resources>
