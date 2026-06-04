@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Add support for Android TV ([PR #146])
+* Sync translations from Weblate ([PR #147])
 
 ### Version 2.0
 
@@ -345,3 +346,4 @@
 [PR #144]: https://github.com/chenxiaolong/BasicSync/pull/144
 [PR #145]: https://github.com/chenxiaolong/BasicSync/pull/145
 [PR #146]: https://github.com/chenxiaolong/BasicSync/pull/146
+[PR #147]: https://github.com/chenxiaolong/BasicSync/pull/147
