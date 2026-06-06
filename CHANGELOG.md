@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add new option for completely disabling auto mode ([Issue #150], [PR #151])
+
 ### Version 2.1
 
 * Add support for Android TV ([PR #146])
@@ -242,6 +246,7 @@
 [Issue #128]: https://github.com/chenxiaolong/BasicSync/issues/128
 [Issue #130]: https://github.com/chenxiaolong/BasicSync/issues/130
 [Issue #131]: https://github.com/chenxiaolong/BasicSync/issues/131
+[Issue #150]: https://github.com/chenxiaolong/BasicSync/issues/150
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -347,3 +352,4 @@
 [PR #145]: https://github.com/chenxiaolong/BasicSync/pull/145
 [PR #146]: https://github.com/chenxiaolong/BasicSync/pull/146
 [PR #147]: https://github.com/chenxiaolong/BasicSync/pull/147
+[PR #151]: https://github.com/chenxiaolong/BasicSync/pull/151
