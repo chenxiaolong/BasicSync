@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Add new option for completely disabling auto mode ([Issue #150], [PR #151])
+* Show folder state and number of connected devices in notification ([Issue #150], [PR #152])
 
 ### Version 2.1
 
@@ -353,3 +354,4 @@
 [PR #146]: https://github.com/chenxiaolong/BasicSync/pull/146
 [PR #147]: https://github.com/chenxiaolong/BasicSync/pull/147
 [PR #151]: https://github.com/chenxiaolong/BasicSync/pull/151
+[PR #152]: https://github.com/chenxiaolong/BasicSync/pull/152
