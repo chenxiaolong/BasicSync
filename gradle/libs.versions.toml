@@ -8,7 +8,7 @@ androidx-core = "1.18.0"
 androidx-lifecycle-viewmodel-compose = "2.11.0-alpha03"
 androidx-preference = "1.2.1"
 jgit = "7.6.0.202603022253-r"
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 material = "1.14.0"
 zxing = "3.5.4"
 

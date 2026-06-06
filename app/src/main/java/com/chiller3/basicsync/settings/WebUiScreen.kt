@@ -170,11 +170,9 @@ fun WebUiScreen(
             initialLocation = location,
             onSelect = { shortPath ->
                 onFolderSelected(shortPath)
-                @Suppress("AssignedValueIsNeverRead")
                 showFolderPickerDialog = null
             },
             onDismiss = {
-                @Suppress("AssignedValueIsNeverRead")
                 showFolderPickerDialog = null
             },
         )
@@ -192,7 +190,6 @@ fun WebUiScreen(
 
             @JavascriptInterface
             fun openFolderPicker(path: String) {
-                @Suppress("AssignedValueIsNeverRead")
                 showFolderPickerDialog = if (path.isNotEmpty()) {
                     FolderPickerLocation.Path(path)
                 } else {
@@ -265,7 +262,6 @@ fun WebUiScreen(
             }
 
             override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
-                @Suppress("AssignedValueIsNeverRead")
                 canGoBack = view.canGoBack()
             }
         }

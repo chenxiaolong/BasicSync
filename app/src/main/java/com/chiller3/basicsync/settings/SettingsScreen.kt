@@ -846,11 +846,9 @@ private fun SettingsContent(
             initialLevel = minBatteryLevel,
             onSelect = { level ->
                 onMinBatteryLevelChange(level)
-                @Suppress("AssignedValueIsNeverRead")
                 showMinBatteryLevelDialog = false
             },
             onDismiss = {
-                @Suppress("AssignedValueIsNeverRead")
                 showMinBatteryLevelDialog = false
             },
         )

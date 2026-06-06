@@ -165,11 +165,9 @@ fun SyncScheduleContent(
             initialSyncMs = scheduleSyncMs,
             onSelect = { cycleMs, syncMs ->
                 onScheduleCycleSyncMsChange(cycleMs, syncMs)
-                @Suppress("AssignedValueIsNeverRead")
                 showSyncScheduleDialog = false
             },
             onDismiss = {
-                @Suppress("AssignedValueIsNeverRead")
                 showSyncScheduleDialog = false
             },
         )
@@ -180,11 +178,9 @@ fun SyncScheduleContent(
             initialIdleMs = scheduleIdleMs,
             onSelect = { idleMs ->
                 onScheduleIdleMsChange(idleMs)
-                @Suppress("AssignedValueIsNeverRead")
                 showSyncScheduleIdleDialog = false
             },
             onDismiss = {
-                @Suppress("AssignedValueIsNeverRead")
                 showSyncScheduleIdleDialog = false
             },
         )

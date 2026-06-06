@@ -354,11 +354,9 @@ fun NetworkConditionsContent(
                     is WifiNetworkDialogAction.Edit -> onAllowedNetworkReplace(action.name, name)
                 }
 
-                @Suppress("AssignedValueIsNeverRead")
                 showWifiNetworkDialog = null
             },
             onDismiss = {
-                @Suppress("AssignedValueIsNeverRead")
                 showWifiNetworkDialog = null
             },
         )
