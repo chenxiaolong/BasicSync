@@ -132,7 +132,7 @@ const settingsToDisable = new Set([
     'StartBrowser',
 ]);
 
-function tryMutate() {
+function tryMutate(isTv) {
     if (!elemFolderPath) {
         elemFolderPath = document.getElementById('folderPath');
         if (elemFolderPath) {
@@ -140,7 +140,7 @@ function tryMutate() {
         }
     }
 
-    if (!elemShareDeviceIdButtons) {
+    if (!isTv && !elemShareDeviceIdButtons) {
         elemShareDeviceIdButtons = document.getElementById('shareDeviceIdButtons');
         if (elemShareDeviceIdButtons) {
             addQrScanner(elemShareDeviceIdButtons);
@@ -182,57 +182,51 @@ function onDeviceIdScanned(deviceId) {
     elemDeviceId.dispatchEvent(new InputEvent('input'));
 }
 
-if (!tryMutate()) {
-    const callback = (mutationList, observer) => {
-        // The actual elements we need are added via innerHTML by Angular, which doesn't get
-        // reported as distinct mutations. It's faster to just find by element ID than to
-        // recursively walk mutation.addedNodes.
+function bridgeInit(isTv) {
+    if (!tryMutate(isTv)) {
+        const callback = (mutationList, observer) => {
+            // The actual elements we need are added via innerHTML by Angular, which doesn't get
+            // reported as distinct mutations. It's faster to just find by element ID than to
+            // recursively walk mutation.addedNodes.
 
-        if (tryMutate()) {
-            console.log('All mutations complete; unregistering observer');
-            observer.disconnect();
-        }
-    };
+            if (tryMutate(isTv)) {
+                console.log('All mutations complete; unregistering observer');
+                observer.disconnect();
+            }
+        };
 
-    const observer = new MutationObserver(callback);
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-    });
-}
-
-// Prevent arrow keys from opening dropdown menus. There is no good way to leave the menu afterwards
-// because the up/down arrow keys are hijacked to only move within the list and a TV remote has no
-// escape button to close the menu. Spatial navigation already works very well for this use case.
-$(document).off('keydown.bs.dropdown.data-api');
-
-// This is atrocious. By default, the browser makes the up/down arrow keys adjust number inputs up
-// and down. preventDefault() stops this, but also prevents using spatial navigation to move to the
-// next element above or below the input. There is currently no way to trigger spatial navigation
-// programmatically. Instead, we'll just make the field read-only for a bit so that the arrow keys
-// don't change the value.
-$(document).on('keydown', 'input', function (e) {
-    if ((e.which == 38 || e.which == 40) && e.target.type == 'number') {
-        const wasReadOnly = e.target.readOnly;
-
-        e.target.readOnly = true;
-        if (!wasReadOnly) {
-            setTimeout(function() { e.target.readOnly = false; }, 100);
-        }
+        const observer = new MutationObserver(callback);
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+        });
     }
-});
 
-function setTvMode(enable) {
-    const currentStyle = document.getElementById('basicsync-tv-style');
+    // Prevent arrow keys from opening dropdown menus. There is no good way to leave the menu
+    // afterwards because the up/down arrow keys are hijacked to only move within the list and a TV
+    // remote has no escape button to close the menu. Spatial navigation already works very well for
+    // this use case.
+    $(document).off('keydown.bs.dropdown.data-api');
 
-    if (enable == !!currentStyle) {
-        return;
-    } else if (enable) {
+    // This is atrocious. By default, the browser makes the up/down arrow keys adjust number inputs
+    // up and down. preventDefault() stops this, but also prevents using spatial navigation to move
+    // to the next element above or below the input. There is currently no way to trigger spatial
+    // navigation programmatically. Instead, we'll just make the field read-only for a bit so that
+    // the arrow keys don't change the value.
+    $(document).on('keydown', 'input', function (e) {
+        if ((e.which == 38 || e.which == 40) && e.target.type == 'number') {
+            const wasReadOnly = e.target.readOnly;
+
+            e.target.readOnly = true;
+            if (!wasReadOnly) {
+                setTimeout(function() { e.target.readOnly = false; }, 100);
+            }
+        }
+    });
+
+    if (isTv) {
         const style = document.createElement('style');
-        style.id = 'basicsync-tv-style';
         style.innerHTML = ':focus { border: 3px dotted !important; }';
         document.body.appendChild(style);
-    } else {
-        document.body.removeChild(currentStyle);
     }
 }

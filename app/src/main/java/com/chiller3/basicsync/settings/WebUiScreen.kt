@@ -150,8 +150,8 @@ fun WebUiScreen(
         webView.evaluateJavascript("onDeviceIdScanned(\"${jsEscape(deviceId)}\");") {}
     }
 
-    fun setTvMode(enable: Boolean) {
-        webView.evaluateJavascript("setTvMode($enable);") {}
+    fun bridgeInit(isTv: Boolean) {
+        webView.evaluateJavascript("bridgeInit($isTv);") {}
     }
 
     val requestQrScanner = rememberLauncherForActivityResult(
@@ -257,8 +257,8 @@ fun WebUiScreen(
                 view.evaluateJavascript(script) {}
 
                 val isTv = context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
-                Log.d(TAG, "Setting TV mode: $isTv")
-                setTvMode(isTv)
+                Log.d(TAG, "Initializing webview bridge with TV mode: $isTv")
+                bridgeInit(isTv)
             }
 
             override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
