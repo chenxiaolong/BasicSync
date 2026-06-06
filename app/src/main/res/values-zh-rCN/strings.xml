@@ -157,4 +157,6 @@
     <string name="alert_documentsui_not_found">Android 的内置文件管理器（DocumentsUI）不可用。</string>
     <string name="alert_tv_inhibit_battery_opt">在 Android TV 上禁用“电池”优化需要手动操作。</string>
     <string name="alert_tv_inhibit_battery_opt_details">Android TV 没有提供禁用“电池”优化的用户界面，但为了确保 Syncthing 在后台稳定运行，仍然需要禁用电池优化。必须通过运行以下 adb 命令来完成此操作。</string>
+    <string name="pref_allow_auto_mode_name">允许自动模式</string>
+    <string name="pref_allow_auto_mode_desc">禁用后，所有自动模式功能将从应用、通知和快捷设置图块中完全移除。</string>
 </resources>
