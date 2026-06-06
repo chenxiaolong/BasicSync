@@ -519,7 +519,10 @@ class DeviceStateTracker(private val context: Context) :
         }
     }
 
-    fun updateBusyFolders(count: Int) {
+    fun updateBusyFolders(folderStates: SyncthingService.FolderStates) {
+        // We only want mutating operations to interrupt the idle timer.
+        val count = folderStates.syncing + folderStates.cleaning + folderStates.starting
+
         handler.post {
             if (state.busyFolders != count) {
                 alarmManager.cancel(scheduleIdlePendingIntent)

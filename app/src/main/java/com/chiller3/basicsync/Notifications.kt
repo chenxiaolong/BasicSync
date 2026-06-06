@@ -106,7 +106,30 @@ class Notifications(private val context: Context) {
             setOngoing(true)
             setOnlyAlertOnce(true)
 
-            if (runState.showBlockedReasons) {
+            if (runState.showFolderStates) {
+                setContentText(buildString {
+                    append(context.resources.getQuantityString(
+                        R.plurals.connected_devices,
+                        state.connectedDevices,
+                        state.connectedDevices,
+                    ))
+
+                    for ((resId, count) in arrayOf(
+                        R.plurals.folder_state_idle to state.folderStates.idle,
+                        R.plurals.folder_state_scanning to state.folderStates.scanning,
+                        R.plurals.folder_state_syncing to state.folderStates.syncing,
+                        R.plurals.folder_state_cleaning to state.folderStates.cleaning,
+                        R.plurals.folder_state_errored to state.folderStates.errored,
+                        R.plurals.folder_state_starting to state.folderStates.starting,
+                    )) {
+                        if (count > 0) {
+                            append('\n')
+                            append(context.resources.getQuantityString(resId, count, count))
+                        }
+                    }
+                })
+                style = Notification.BigTextStyle()
+            } else if (runState.showBlockedReasons) {
                 setContentText(buildString {
                     for ((i, reason) in state.blockedReasons.withIndex()) {
                         if (i > 0) {

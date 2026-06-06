@@ -297,7 +297,14 @@ type SyncthingStatusReceiver interface {
 	// Can be sent before OnSyncthingStarted, but not after OnSyncthingStopped.
 	OnAlertsUpdated(count int32)
 
-	OnBusyFoldersUpdated(count int32)
+	OnFolderStatesUpdated(
+		idle int32,
+		scanning int32,
+		syncing int32,
+		cleaning int32,
+		errored int32,
+		starting int32,
+	)
 
 	OnConnectedDevicesUpdated(count int32)
 }
@@ -365,30 +372,68 @@ func dispatchAlerts(
 	receiver.OnAlertsUpdated(int32(count))
 }
 
-// The scanning states are intentionally excluded because we only want mutating
-// operations to interrupt the idle timer.
-var busyEvents = []string{
-	model.FolderSyncWaiting.String(),
-	model.FolderSyncPreparing.String(),
-	model.FolderSyncing.String(),
-	model.FolderCleaning.String(),
-	model.FolderCleanWaiting.String(),
-	model.FolderStarting.String(),
-}
+var (
+	idleEvents = []string{
+		model.FolderIdle.String(),
+	}
+	scanEvents = []string{
+		model.FolderScanning.String(),
+		model.FolderScanWaiting.String(),
+	}
+	syncEvents = []string{
+		model.FolderSyncWaiting.String(),
+		model.FolderSyncPreparing.String(),
+		model.FolderSyncing.String(),
+	}
+	cleanEvents = []string{
+		model.FolderCleaning.String(),
+		model.FolderCleanWaiting.String(),
+	}
+	errorEvents = []string{
+		model.FolderError.String(),
+	}
+	startEvents = []string{
+		model.FolderStarting.String(),
+	}
+)
 
-func dispatchBusyFolders(
+func dispatchFolderStates(
 	folderStates map[string]string,
 	receiver SyncthingStatusReceiver,
 ) {
-	busyCount := int32(0)
+	idle := int32(0)
+	scanning := int32(0)
+	syncing := int32(0)
+	cleaning := int32(0)
+	errored := int32(0)
+	starting := int32(0)
 
-	for _, state := range folderStates {
-		if slices.Contains(busyEvents, state) {
-			busyCount += 1
+	for folderID, state := range folderStates {
+		if slices.Contains(idleEvents, state) {
+			idle += 1
+		} else if slices.Contains(scanEvents, state) {
+			scanning += 1
+		} else if slices.Contains(syncEvents, state) {
+			syncing += 1
+		} else if slices.Contains(cleanEvents, state) {
+			cleaning += 1
+		} else if slices.Contains(errorEvents, state) {
+			errored += 1
+		} else if slices.Contains(startEvents, state) {
+			starting += 1
+		} else {
+			log.Printf("Unknown folder state: %v: %v", folderID, state)
 		}
 	}
 
-	receiver.OnBusyFoldersUpdated(busyCount)
+	receiver.OnFolderStatesUpdated(
+		idle,
+		scanning,
+		syncing,
+		cleaning,
+		errored,
+		starting,
+	)
 }
 
 func dispatchConnectedDevices(
@@ -529,7 +574,7 @@ func eventLoop(
 
 				folderStates[folder] = state
 
-				dispatchBusyFolders(folderStates, receiver)
+				dispatchFolderStates(folderStates, receiver)
 
 			case events.DeviceConnected:
 				data := evt.Data.(map[string]string)
@@ -573,7 +618,7 @@ func eventLoop(
 				}
 
 				dispatchConflicts(conflictsInfo, receiver)
-				dispatchBusyFolders(folderStates, receiver)
+				dispatchFolderStates(folderStates, receiver)
 				// Unlike folders, we don't need to remove deleted devices from
 				// devicesConnected. We'll always receive a disconnection event
 				// when connections are closed during deletion.

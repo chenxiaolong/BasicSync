@@ -306,6 +306,42 @@
     <!-- Syncing is blocked because the current time is outside of the time window where syncing is permitted. -->
     <string name="blocked_reason_time_schedule">• Outside of time schedule</string>
 
+    <!-- Number of folders that are up to date. -->
+    <plurals name="folder_state_idle">
+        <item quantity="one">• %d folder up to date</item>
+        <item quantity="other">• %d folders up to date</item>
+    </plurals>
+    <!-- Number of folders that are scanning. -->
+    <plurals name="folder_state_scanning">
+        <item quantity="one">• %d folder scanning</item>
+        <item quantity="other">• %d folders scanning</item>
+    </plurals>
+    <!-- Number of folders that are syncing. -->
+    <plurals name="folder_state_syncing">
+        <item quantity="one">• %d folder syncing</item>
+        <item quantity="other">• %d folders syncing</item>
+    </plurals>
+    <!-- Number of folders that are cleaning up old files according to the configured file versioning. -->
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">• %d folder cleaning old files</item>
+        <item quantity="other">• %d folders cleaning old files</item>
+    </plurals>
+    <!-- Number of folders that have errors. -->
+    <plurals name="folder_state_errored">
+        <item quantity="one">• %d folder with errors</item>
+        <item quantity="other">• %d folders with errors</item>
+    </plurals>
+    <!-- Number of folders that are initializing during startup. -->
+    <plurals name="folder_state_starting">
+        <item quantity="one">• %d folder starting</item>
+        <item quantity="other">• %d folders starting</item>
+    </plurals>
+    <!-- Number of devices currently connected. -->
+    <plurals name="connected_devices">
+        <item quantity="one">• %d device connected</item>
+        <item quantity="other">• %d devices connected</item>
+    </plurals>
+
     <!-- Text shown in quick settings tile when in auto mode. Keep text as short as possible. -->
     <string name="quick_settings_tile_auto_mode">Auto mode</string>
     <!-- Text shown in quick settings tile when in manual mode and Syncthing is started. Keep text as short as possible. -->
