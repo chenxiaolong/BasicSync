@@ -13,6 +13,7 @@
 * Show folder state and number of connected devices in notification ([Issue #150], [PR #152])
 * Avoid showing QR scanner icon on Android TV ([PR #156])
 * Update dependencies ([PR #154])
+* Sync translations from Weblate ([PR #153])
 
 ### Version 2.1
 
@@ -357,5 +358,6 @@
 [PR #147]: https://github.com/chenxiaolong/BasicSync/pull/147
 [PR #151]: https://github.com/chenxiaolong/BasicSync/pull/151
 [PR #152]: https://github.com/chenxiaolong/BasicSync/pull/152
+[PR #153]: https://github.com/chenxiaolong/BasicSync/pull/153
 [PR #154]: https://github.com/chenxiaolong/BasicSync/pull/154
 [PR #156]: https://github.com/chenxiaolong/BasicSync/pull/156
