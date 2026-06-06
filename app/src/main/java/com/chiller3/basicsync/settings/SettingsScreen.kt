@@ -104,6 +104,7 @@ fun SettingsScreen(
     val respectAutoSyncData = remember(reloadPrefs) { prefs.respectAutoSyncData }
     val keepAlive = remember(reloadPrefs) { prefs.keepAlive }
     val remoteControl = remember(reloadPrefs) { prefs.remoteControl }
+    val allowAutoMode = remember(reloadPrefs) { prefs.allowAutoMode }
     val showExit = remember(reloadPrefs) { prefs.showExit }
     val isDebugMode = remember(reloadPrefs) { prefs.isDebugMode }
 
@@ -295,6 +296,7 @@ fun SettingsScreen(
             respectAutoSyncData = respectAutoSyncData,
             keepAlive = keepAlive,
             remoteControl = remoteControl,
+            allowAutoMode = allowAutoMode,
             showExit = showExit,
             isDebugMode = isDebugMode,
             onInhibitBatteryOptGrant = {
@@ -385,6 +387,18 @@ fun SettingsScreen(
             onRemoteControlChange = { enabled ->
                 prefs.remoteControl = enabled
                 reloadPrefs++
+            },
+            onAllowAutoModeChange = { enabled ->
+                prefs.allowAutoMode = enabled
+                reloadPrefs++
+
+                val action = if (enabled) {
+                    SyncthingService.ACTION_RENOTIFY
+                } else {
+                    SyncthingService.ACTION_MANUAL_MODE
+                }
+
+                SyncthingService.start(context, action)
             },
             onShowExitChange = { enabled ->
                 prefs.showExit = enabled
@@ -491,6 +505,7 @@ private fun SettingsContent(
     respectAutoSyncData: Boolean,
     keepAlive: Boolean,
     remoteControl: Boolean,
+    allowAutoMode: Boolean,
     showExit: Boolean,
     isDebugMode: Boolean,
     onInhibitBatteryOptGrant: () -> Unit,
@@ -511,6 +526,7 @@ private fun SettingsContent(
     onSyncScheduleSettingsOpen: () -> Unit,
     onKeepAliveChange: (Boolean) -> Unit,
     onRemoteControlChange: (Boolean) -> Unit,
+    onAllowAutoModeChange: (Boolean) -> Unit,
     onShowExitChange: (Boolean) -> Unit,
     onDebugModeChange: (Boolean) -> Unit,
     onSourceRepoOpen: () -> Unit,
@@ -665,73 +681,75 @@ private fun SettingsContent(
             )
         }
 
-        item(key = "auto_mode") {
-            SwitchPreference(
-                checked = !isManualMode,
-                onCheckedChange = { onManualModeChange(!it) },
-                shapes = BetterSegmentedShapes.middle(),
-                title = { Text(text = stringResource(R.string.pref_auto_mode_name)) },
-                summary = { Text(text = stringResource(R.string.pref_auto_mode_desc)) },
-                modifier = Modifier.animateItem(),
-            )
-        }
-
-        item(key = "network_conditions") {
-            Preference(
-                onClick = onNetworkConditionsOpen,
-                shapes = BetterSegmentedShapes.middle(),
-                title = { Text(text = stringResource(R.string.pref_network_conditions_name)) },
-                summary = { Text(text = stringResource(R.string.pref_network_conditions_desc)) },
-                modifier = Modifier.animateItem(),
-            )
-        }
-
-        if (hasBattery) {
-            item(key = "run_on_battery") {
-                val summary = stringResource(R.string.pref_run_on_battery_desc, minBatteryLevel)
-
-                SplitSwitchPreference(
-                    onClick = { showMinBatteryLevelDialog = true },
-                    checked = runOnBattery,
-                    onCheckedChange = onRunOnBatteryChange,
-                    shapes = BetterSegmentedShapes.middle(),
-                    title = { Text(text = stringResource(R.string.pref_run_on_battery_name)) },
-                    summary = { Text(text = summary) },
-                    modifier = Modifier.animateItem(),
-                )
-            }
-
-            item(key = "respect_battery_saver") {
+        if (allowAutoMode) {
+            item(key = "auto_mode") {
                 SwitchPreference(
-                    checked = respectBatterySaver,
-                    onCheckedChange = onRespectBatterySaverChange,
+                    checked = !isManualMode,
+                    onCheckedChange = { onManualModeChange(!it) },
                     shapes = BetterSegmentedShapes.middle(),
-                    title = { Text(text = stringResource(R.string.pref_respect_battery_saver_name)) },
-                    summary = { Text(text = stringResource(R.string.pref_respect_battery_saver_desc)) },
+                    title = { Text(text = stringResource(R.string.pref_auto_mode_name)) },
+                    summary = { Text(text = stringResource(R.string.pref_auto_mode_desc)) },
                     modifier = Modifier.animateItem(),
                 )
             }
-        }
 
-        item(key = "respect_auto_sync_data") {
-            SwitchPreference(
-                checked = respectAutoSyncData,
-                onCheckedChange = onRespectAutoSyncDataChange,
-                shapes = BetterSegmentedShapes.middle(),
-                title = { Text(text = stringResource(R.string.pref_respect_auto_sync_data_name)) },
-                summary = { Text(text = stringResource(R.string.pref_respect_auto_sync_data_desc)) },
-                modifier = Modifier.animateItem(),
-            )
-        }
+            item(key = "network_conditions") {
+                Preference(
+                    onClick = onNetworkConditionsOpen,
+                    shapes = BetterSegmentedShapes.middle(),
+                    title = { Text(text = stringResource(R.string.pref_network_conditions_name)) },
+                    summary = { Text(text = stringResource(R.string.pref_network_conditions_desc)) },
+                    modifier = Modifier.animateItem(),
+                )
+            }
 
-        item(key = "sync_schedule_settings") {
-            Preference(
-                onClick = onSyncScheduleSettingsOpen,
-                shapes = BetterSegmentedShapes.middle(),
-                title = { Text(text = stringResource(R.string.pref_sync_schedule_settings_name)) },
-                summary = { Text(text = stringResource(R.string.pref_sync_schedule_settings_desc)) },
-                modifier = Modifier.animateItem(),
-            )
+            if (hasBattery) {
+                item(key = "run_on_battery") {
+                    val summary = stringResource(R.string.pref_run_on_battery_desc, minBatteryLevel)
+
+                    SplitSwitchPreference(
+                        onClick = { showMinBatteryLevelDialog = true },
+                        checked = runOnBattery,
+                        onCheckedChange = onRunOnBatteryChange,
+                        shapes = BetterSegmentedShapes.middle(),
+                        title = { Text(text = stringResource(R.string.pref_run_on_battery_name)) },
+                        summary = { Text(text = summary) },
+                        modifier = Modifier.animateItem(),
+                    )
+                }
+
+                item(key = "respect_battery_saver") {
+                    SwitchPreference(
+                        checked = respectBatterySaver,
+                        onCheckedChange = onRespectBatterySaverChange,
+                        shapes = BetterSegmentedShapes.middle(),
+                        title = { Text(text = stringResource(R.string.pref_respect_battery_saver_name)) },
+                        summary = { Text(text = stringResource(R.string.pref_respect_battery_saver_desc)) },
+                        modifier = Modifier.animateItem(),
+                    )
+                }
+            }
+
+            item(key = "respect_auto_sync_data") {
+                SwitchPreference(
+                    checked = respectAutoSyncData,
+                    onCheckedChange = onRespectAutoSyncDataChange,
+                    shapes = BetterSegmentedShapes.middle(),
+                    title = { Text(text = stringResource(R.string.pref_respect_auto_sync_data_name)) },
+                    summary = { Text(text = stringResource(R.string.pref_respect_auto_sync_data_desc)) },
+                    modifier = Modifier.animateItem(),
+                )
+            }
+
+            item(key = "sync_schedule_settings") {
+                Preference(
+                    onClick = onSyncScheduleSettingsOpen,
+                    shapes = BetterSegmentedShapes.middle(),
+                    title = { Text(text = stringResource(R.string.pref_sync_schedule_settings_name)) },
+                    summary = { Text(text = stringResource(R.string.pref_sync_schedule_settings_desc)) },
+                    modifier = Modifier.animateItem(),
+                )
+            }
         }
 
         item(key = "keep_alive") {
@@ -759,6 +777,17 @@ private fun SettingsContent(
                 shapes = BetterSegmentedShapes.top(),
                 title = { Text(text = stringResource(R.string.pref_remote_control_name)) },
                 summary = { Text(text = stringResource(R.string.pref_remote_control_desc)) },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
+        item(key = "allow_auto_mode") {
+            SwitchPreference(
+                checked = allowAutoMode,
+                onCheckedChange = onAllowAutoModeChange,
+                shapes = BetterSegmentedShapes.middle(),
+                title = { Text(text = stringResource(R.string.pref_allow_auto_mode_name)) },
+                summary = { Text(text = stringResource(R.string.pref_allow_auto_mode_desc)) },
                 modifier = Modifier.animateItem(),
             )
         }
@@ -895,6 +924,7 @@ private fun PreviewSettingsScreen() {
         isStarted = true,
         isResumed = true,
         manualMode = false,
+        allowAutoMode = true,
         preRunAction = null,
         showExit = false,
     )
@@ -919,6 +949,7 @@ private fun PreviewSettingsScreen() {
                 respectAutoSyncData = true,
                 keepAlive = false,
                 remoteControl = false,
+                allowAutoMode = true,
                 showExit = false,
                 isDebugMode = true,
                 onInhibitBatteryOptGrant = {},
@@ -939,6 +970,7 @@ private fun PreviewSettingsScreen() {
                 onSyncScheduleSettingsOpen = {},
                 onKeepAliveChange = {},
                 onRemoteControlChange = {},
+                onAllowAutoModeChange = {},
                 onShowExitChange = {},
                 onDebugModeChange = {},
                 onSourceRepoOpen = {},

@@ -21,6 +21,7 @@ class Preferences(context: Context) {
         const val PREF_RESPECT_AUTO_SYNC_DATA = "respect_auto_sync_data"
         const val PREF_KEEP_ALIVE = "keep_alive"
         const val PREF_REMOTE_CONTROL = "remote_control"
+        const val PREF_ALLOW_AUTO_MODE = "allow_auto_mode"
         const val PREF_SHOW_EXIT = "show_exit"
         const val PREF_REQUIRE_UNMETERED_NETWORK = "require_unmetered_network"
         const val PREF_NETWORK_ALLOW_WIFI = "network_allow_wifi"
@@ -75,6 +76,10 @@ class Preferences(context: Context) {
     var remoteControl: Boolean
         get() = prefs.getBoolean(PREF_REMOTE_CONTROL, false)
         set(enabled) = prefs.edit { putBoolean(PREF_REMOTE_CONTROL, enabled) }
+
+    var allowAutoMode: Boolean
+        get() = prefs.getBoolean(PREF_ALLOW_AUTO_MODE, true)
+        set(enabled) = prefs.edit { putBoolean(PREF_ALLOW_AUTO_MODE, enabled) }
 
     var showExit: Boolean
         get() = prefs.getBoolean(PREF_SHOW_EXIT, false)

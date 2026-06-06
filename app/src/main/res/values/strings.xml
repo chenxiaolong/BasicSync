@@ -86,6 +86,10 @@
     <string name="pref_remote_control_name">Allow remote control</string>
     <!-- Description for the preference that allows external apps to control when Syncthing runs. -->
     <string name="pref_remote_control_desc">Allow external apps to switch to auto mode or manually start and stop Syncthing.</string>
+    <!-- Title for the preference for controlling whether auto mode can be used. -->
+    <string name="pref_allow_auto_mode_name">Allow auto mode</string>
+    <!-- Description for the preference for controlling whether auto mode can be used. -->
+    <string name="pref_allow_auto_mode_desc">When disabled, all auto mode functionality is completely removed from the app, notification, and quick settings tile.</string>
     <!-- Title for the preference to show an exit button in the persistent notification. -->
     <string name="pref_show_exit_name">Show Exit button</string>
     <!-- Description for the preference to show an exit button in the persistent notification. -->

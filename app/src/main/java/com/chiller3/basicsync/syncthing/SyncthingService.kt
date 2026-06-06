@@ -82,6 +82,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         private val isStarted: Boolean,
         private val isResumed: Boolean,
         private val manualMode: Boolean,
+        private val allowAutoMode: Boolean,
         private val preRunAction: PreRunAction?,
         private val showExit: Boolean,
     ) {
@@ -128,7 +129,9 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             get() = ArrayList<String>().apply {
                 if (preRunAction == null) {
                     if (manualMode) {
-                        add(ACTION_AUTO_MODE)
+                        if (allowAutoMode) {
+                            add(ACTION_AUTO_MODE)
+                        }
 
                         if (shouldResume) {
                             add(ACTION_STOP)
@@ -317,7 +320,13 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         var forceShowNotification = false
 
         when (intent?.action) {
-            ACTION_AUTO_MODE -> prefs.isManualMode = false
+            ACTION_AUTO_MODE -> {
+                if (prefs.allowAutoMode) {
+                    prefs.isManualMode = false
+                } else {
+                    Log.d(TAG, "Ignoring switch to auto mode because auto mode is blocked")
+                }
+            }
             ACTION_MANUAL_MODE -> {
                 // Keep the current state since the user has no way to know what the previously
                 // saved state is anyway.
@@ -431,6 +440,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 isStarted = isStarted,
                 isResumed = isResumed,
                 manualMode = prefs.isManualMode,
+                allowAutoMode = prefs.allowAutoMode,
                 preRunAction = currentPreRunAction,
                 showExit = prefs.showExit,
             )

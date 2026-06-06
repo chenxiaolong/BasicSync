@@ -47,9 +47,12 @@ class SyncthingTileService : TileService(), SharedPreferences.OnSharedPreference
         } else if (prefs.manualShouldRun) {
             // Manually started -> manually stopped.
             SyncthingService.ACTION_STOP
-        } else {
-            // Manually stopped -> auto mode.
+        } else if (prefs.allowAutoMode) {
+            // Manually stopped -> auto mode (when auto mode allowed).
             SyncthingService.ACTION_AUTO_MODE
+        } else {
+            // Manually stopped -> manually started (when auto mode blocked).
+            SyncthingService.ACTION_START
         }
 
         startForegroundService(SyncthingService.createIntent(this, action))
