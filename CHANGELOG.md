@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 2.2
 
 * Add new option for completely disabling auto mode ([Issue #150], [PR #151])
 * Show folder state and number of connected devices in notification ([Issue #150], [PR #152])
