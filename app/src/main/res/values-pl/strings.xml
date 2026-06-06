@@ -175,4 +175,48 @@
     <string name="alert_documentsui_not_found">Wbudowany menedżer plików Androida (DocumentsUI) jest niedostępny.</string>
     <string name="alert_tv_inhibit_battery_opt">Wyłączenie optymalizacji „baterii” wymaga wykonania ręcznych czynności na telewizorze z systemem Android TV.</string>
     <string name="alert_tv_inhibit_battery_opt_details">Android TV nie ma interfejsu użytkownika umożliwiającego wyłączenie optymalizacji „baterii”, ale nadal jest to wymagane do niezawodnego działania Syncthing w tle. Aby to zrobić, należy uruchomić następujące polecenie adb.</string>
+    <string name="pref_allow_auto_mode_name">Zezwól na tryb automatyczny</string>
+    <string name="pref_allow_auto_mode_desc">Po wyłączeniu tej opcji wszystkie funkcje trybu automatycznego zostaną całkowicie usunięte z aplikacji, powiadomień i kafelka szybkich ustawień.</string>
+    <plurals name="folder_state_idle">
+        <item quantity="one">• %d folder aktualny</item>
+        <item quantity="few">• %d foldery aktualne</item>
+        <item quantity="many">• %d folderów aktualnych</item>
+        <item quantity="other">• %d folderów aktualnych</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="one">• %d skanowany folder</item>
+        <item quantity="few">• %d skanowane foldery</item>
+        <item quantity="many">• %d skanowanych folderów</item>
+        <item quantity="other">• %d skanowanych folderów</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="one">• %d folder synchronizowany</item>
+        <item quantity="few">• %d foldery synchronizowane</item>
+        <item quantity="many">• %d folderów synchronizowanych</item>
+        <item quantity="other">• %d folderów synchronizowanych</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">• %d folder czyszczący stare pliki</item>
+        <item quantity="few">• %d foldery czyszczące stare pliki</item>
+        <item quantity="many">• %d folderów czyszczących stare pliki</item>
+        <item quantity="other">• %d folderów czyszczących stare pliki</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="one">• %d folder z błędami</item>
+        <item quantity="few">• %d foldery z błędami</item>
+        <item quantity="many">• %d folderów z błędami</item>
+        <item quantity="other">• %d folderów z błędami</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="one">• %d folder uruchamiany</item>
+        <item quantity="few">• %d foldery uruchamiane</item>
+        <item quantity="many">• %d folderów uruchamianych</item>
+        <item quantity="other">• %d folderów uruchamianych</item>
+    </plurals>
+    <plurals name="connected_devices">
+        <item quantity="one">• %d podłączone urządzenie</item>
+        <item quantity="few">• %d podłączone urządzenia</item>
+        <item quantity="many">• %d podłączonych urządzeń</item>
+        <item quantity="other">• %d podłączonych urządzeń</item>
+    </plurals>
 </resources>
