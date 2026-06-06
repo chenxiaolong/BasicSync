@@ -163,4 +163,34 @@
     <string name="alert_documentsui_not_found">Android\'in yerleşik dosya yöneticisi (DocumentsUI) kullanılabilir değil.</string>
     <string name="alert_tv_inhibit_battery_opt">\"Pil\" optimizasyonlarını etkisizleştirmek, Android TV\'de elle adımlar gerektirir.</string>
     <string name="alert_tv_inhibit_battery_opt_details">Android TV\'de \"pil\" optimizasyonlarını etkisizleştirecek bir kullanıcı arayüzü yoktur, ancak Syncthing\'i arka planda güvenilir bir şekilde çalıştırmak için yine de gereklidir. Bu, aşağıdaki adb komutunu çalıştırarak yapılmak zorundadır.</string>
+    <string name="pref_allow_auto_mode_name">Otomatik moda izin ver</string>
+    <string name="pref_allow_auto_mode_desc">Etkisizleştirildiğinde tüm otomatik mod işlevselliği uygulamadan, bildirimden ve hızlı ayarlar kutucuğundan tamamen kaldırılır.</string>
+    <plurals name="folder_state_idle">
+        <item quantity="one">• %d klasör güncel</item>
+        <item quantity="other">• %d klasör güncel</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="one">• %d klasör taranıyor</item>
+        <item quantity="other">• %d klasör taranıyor</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="one">• %d klasör eşitleniyor</item>
+        <item quantity="other">• %d klasör eşitleniyor</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">• %d klasör eski dosyaları temizliyor</item>
+        <item quantity="other">• %d klasör eski dosyaları temizliyor</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="one">• Hatalı %d klasör</item>
+        <item quantity="other">• Hatalı %d klasör</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="one">• %d klasör başlatılıyor</item>
+        <item quantity="other">• %d klasör başlatılıyor</item>
+    </plurals>
+    <plurals name="connected_devices">
+        <item quantity="one">• %d cihaz bağlandı</item>
+        <item quantity="other">• %d cihaz bağlandı</item>
+    </plurals>
 </resources>
