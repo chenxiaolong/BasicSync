@@ -926,7 +926,7 @@ private fun PreviewSettingsScreen() {
         preRunAction = null,
         showExit = false,
         folderStates = SyncthingService.FolderStates(),
-        connectedDevices = 0,
+        deviceStates = SyncthingService.DeviceStates(),
     )
 
     AppTheme {

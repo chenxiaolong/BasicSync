@@ -109,12 +109,14 @@ class Notifications(private val context: Context) {
             if (runState.showFolderStates) {
                 setContentText(buildString {
                     append(context.resources.getQuantityString(
-                        R.plurals.connected_devices,
-                        state.connectedDevices,
-                        state.connectedDevices,
+                        R.plurals.device_state_connected,
+                        state.deviceStates.connected,
+                        state.deviceStates.connected,
                     ))
 
                     for ((resId, count) in arrayOf(
+                        R.plurals.device_state_syncing to state.deviceStates.syncing,
+                        R.plurals.device_state_pending to state.deviceStates.pending,
                         R.plurals.folder_state_idle to state.folderStates.idle,
                         R.plurals.folder_state_scanning to state.folderStates.scanning,
                         R.plurals.folder_state_syncing to state.folderStates.syncing,

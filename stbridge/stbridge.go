@@ -306,7 +306,11 @@ type SyncthingStatusReceiver interface {
 		starting int32,
 	)
 
-	OnConnectedDevicesUpdated(count int32)
+	OnDeviceStatesUpdated(
+		connected int32,
+		syncing int32,
+		pending int32,
+	)
 }
 
 // db.DB is internal, so it's unnameable and we can't create a function that
@@ -436,11 +440,28 @@ func dispatchFolderStates(
 	)
 }
 
-func dispatchConnectedDevices(
-	devicesConnected map[string]struct{},
+type deviceStates struct {
+	connected map[string]struct{}
+	dirty     map[string]map[string]struct{}
+}
+
+func dispatchDeviceStates(
+	deviceStates *deviceStates,
 	receiver SyncthingStatusReceiver,
 ) {
-	receiver.OnConnectedDevicesUpdated(int32(len(devicesConnected)))
+	connected := int32(len(deviceStates.connected))
+	syncing := int32(0)
+	pending := int32(0)
+
+	for deviceID, _ := range deviceStates.dirty {
+		if _, ok := deviceStates.connected[deviceID]; ok {
+			syncing += 1
+		} else {
+			pending += 1
+		}
+	}
+
+	receiver.OnDeviceStatesUpdated(connected, syncing, pending)
 }
 
 func eventLoop(
@@ -463,12 +484,16 @@ func eventLoop(
 			events.StateChanged |
 			events.DeviceConnected |
 			events.DeviceDisconnected |
+			events.FolderCompletion |
 			events.ConfigSaved,
 	)
 	defer sub.Unsubscribe()
 
-	devicesConnected := map[string]struct{}{}
 	folderStates := map[string]string{}
+	deviceStates := deviceStates{
+		connected: map[string]struct{}{},
+		dirty:     map[string]map[string]struct{}{},
+	}
 
 	for {
 		select {
@@ -580,17 +605,46 @@ func eventLoop(
 				data := evt.Data.(map[string]string)
 				deviceID := data["id"]
 
-				devicesConnected[deviceID] = struct{}{}
+				deviceStates.connected[deviceID] = struct{}{}
 
-				dispatchConnectedDevices(devicesConnected, receiver)
+				dispatchDeviceStates(&deviceStates, receiver)
 
 			case events.DeviceDisconnected:
 				data := evt.Data.(map[string]string)
 				deviceID := data["id"]
 
-				delete(devicesConnected, deviceID)
+				delete(deviceStates.connected, deviceID)
 
-				dispatchConnectedDevices(devicesConnected, receiver)
+				dispatchDeviceStates(&deviceStates, receiver)
+
+			case events.FolderCompletion:
+				data := evt.Data.(map[string]interface{})
+				folderID := data["folder"].(string)
+				deviceID := data["device"].(string)
+
+				needBytes := data["needBytes"].(int64)
+				needItems := data["needItems"].(int)
+				needDeletes := data["needDeletes"].(int)
+
+				syncing := needBytes != 0 || needItems != 0 || needDeletes != 0
+
+				if syncing {
+					if _, ok := deviceStates.dirty[deviceID]; !ok {
+						deviceStates.dirty[deviceID] = map[string]struct{}{}
+					}
+					if _, ok := deviceStates.dirty[deviceID][folderID]; !ok {
+						deviceStates.dirty[deviceID][folderID] = struct{}{}
+					}
+				} else {
+					if folders, ok := deviceStates.dirty[deviceID]; ok {
+						delete(folders, folderID)
+						if len(folders) == 0 {
+							delete(deviceStates.dirty, deviceID)
+						}
+					}
+				}
+
+				dispatchDeviceStates(&deviceStates, receiver)
 
 			// When a folder is deleted, we need to manually clear out the
 			// corresponding conflicts because we will not receive deletion
@@ -605,23 +659,44 @@ func eventLoop(
 					conflictsInfo.folderPaths[folder.ID], _ = fs.ExpandTilde(folder.Path)
 				}
 
-				for key := range conflictsInfo.byFolder {
-					if _, ok := conflictsInfo.folderPaths[key]; !ok {
-						delete(conflictsInfo.byFolder, key)
-					}
-				}
-
-				for key := range folderStates {
-					if _, ok := conflictsInfo.folderPaths[key]; !ok {
-						delete(folderStates, key)
+				for folderID := range conflictsInfo.byFolder {
+					if _, ok := conflictsInfo.folderPaths[folderID]; !ok {
+						delete(conflictsInfo.byFolder, folderID)
 					}
 				}
 
 				dispatchConflicts(conflictsInfo, receiver)
+
+				for folderID := range folderStates {
+					if _, ok := conflictsInfo.folderPaths[folderID]; !ok {
+						delete(folderStates, folderID)
+					}
+				}
+
 				dispatchFolderStates(folderStates, receiver)
-				// Unlike folders, we don't need to remove deleted devices from
-				// devicesConnected. We'll always receive a disconnection event
-				// when connections are closed during deletion.
+
+				devices := map[string]struct{}{}
+
+				for _, device := range cfg.Devices {
+					devices[device.DeviceID.String()] = struct{}{}
+				}
+
+				// We don't need to clean up deviceStates.connected because
+				// we'll always receive a disconnection event when connections
+				// are closed during deletion.
+
+				for deviceID, folders := range deviceStates.dirty {
+					for folderID := range folders {
+						if _, ok := conflictsInfo.folderPaths[folderID]; !ok {
+							delete(folders, folderID)
+						}
+					}
+					if _, ok := devices[deviceID]; !ok || len(folders) == 0 {
+						delete(deviceStates.dirty, deviceID)
+					}
+				}
+
+				dispatchDeviceStates(&deviceStates, receiver)
 
 				// A config.Wrapper is needed to determine if a restart is
 				// required. config.Configuration does not contain enough info.

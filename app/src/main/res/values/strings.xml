@@ -337,9 +337,19 @@
         <item quantity="other">• %d folders starting</item>
     </plurals>
     <!-- Number of devices currently connected. -->
-    <plurals name="connected_devices">
+    <plurals name="device_state_connected">
         <item quantity="one">• %d device connected</item>
         <item quantity="other">• %d devices connected</item>
+    </plurals>
+    <!-- Number of devices currently syncing. -->
+    <plurals name="device_state_syncing">
+        <item quantity="one">• %d device syncing</item>
+        <item quantity="other">• %d devices syncing</item>
+    </plurals>
+    <!-- Number of devices with data that needs to be synced once connected. -->
+    <plurals name="device_state_pending">
+        <item quantity="one">• %d device pending sync</item>
+        <item quantity="other">• %d devices pending sync</item>
     </plurals>
 
     <!-- Text shown in quick settings tile when in auto mode. Keep text as short as possible. -->

@@ -535,7 +535,9 @@ class DeviceStateTracker(private val context: Context) :
         }
     }
 
-    fun updateConnectedDevices(count: Int) {
+    fun updateConnectedDevices(deviceStates: SyncthingService.DeviceStates) {
+        val count = deviceStates.connected
+
         handler.post {
             if (state.connectedDevices != count) {
                 val connectedBefore = state.connectedOnce

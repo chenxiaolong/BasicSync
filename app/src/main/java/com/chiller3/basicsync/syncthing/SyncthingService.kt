@@ -89,7 +89,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         private val preRunAction: PreRunAction?,
         private val showExit: Boolean,
         val folderStates: FolderStates,
-        val connectedDevices: Int,
+        val deviceStates: DeviceStates,
     ) {
         private val shouldResume: Boolean
             get() = blockedReasons.isEmpty()
@@ -202,6 +202,18 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         )
     }
 
+    data class DeviceStates(
+        val connected: Int,
+        val syncing: Int,
+        val pending: Int,
+    ) {
+        constructor() : this(
+            connected = 0,
+            syncing = 0,
+            pending = 0,
+        )
+    }
+
     private lateinit var prefs: Preferences
     private lateinit var notifications: Notifications
     private val runnerThread = Thread(::runner)
@@ -266,7 +278,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     @GuardedBy("stateLock")
     private var syncthingFolderStates = FolderStates()
     @GuardedBy("stateLock")
-    private var syncthingConnectedDevices = 0
+    private var syncthingDeviceStates = DeviceStates()
 
     private val isResumed: Boolean
         @GuardedBy("stateLock")
@@ -471,7 +483,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 preRunAction = currentPreRunAction,
                 showExit = prefs.showExit,
                 folderStates = syncthingFolderStates,
-                connectedDevices = syncthingConnectedDevices,
+                deviceStates = syncthingDeviceStates,
             )
 
             val wasChanged = notificationState != lastServiceState
@@ -479,7 +491,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             if (wasChanged || forceShowNotification) {
                 if (wasChanged) {
                     deviceStateTracker.updateBusyFolders(notificationState.folderStates)
-                    deviceStateTracker.updateConnectedDevices(notificationState.connectedDevices)
+                    deviceStateTracker.updateConnectedDevices(notificationState.deviceStates)
 
                     val guiInfo = guiInfo
 
@@ -627,7 +639,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             syncthingConflicts = emptyList()
             syncthingAlerts = 0
             syncthingFolderStates = FolderStates()
-            syncthingConnectedDevices = 0
+            syncthingDeviceStates = DeviceStates()
             syncthingApp = null
 
             stateChanged()
@@ -680,9 +692,13 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     }
 
     @WorkerThread
-    override fun onConnectedDevicesUpdated(count: Int) {
+    override fun onDeviceStatesUpdated(connected: Int, syncing: Int, pending: Int) {
         synchronized(stateLock) {
-            syncthingConnectedDevices = count
+            syncthingDeviceStates = DeviceStates(
+                connected = connected,
+                syncing = syncing,
+                pending = pending,
+            )
             stateChanged()
         }
     }

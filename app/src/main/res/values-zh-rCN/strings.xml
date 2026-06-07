@@ -177,7 +177,7 @@
     <plurals name="folder_state_starting">
         <item quantity="other">• %d 个文件夹正在启动</item>
     </plurals>
-    <plurals name="connected_devices">
+    <plurals name="device_state_connected">
         <item quantity="other">• %d 台设备已连接</item>
     </plurals>
 </resources>

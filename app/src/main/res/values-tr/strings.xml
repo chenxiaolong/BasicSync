@@ -189,7 +189,7 @@
         <item quantity="one">• %d klasör başlatılıyor</item>
         <item quantity="other">• %d klasör başlatılıyor</item>
     </plurals>
-    <plurals name="connected_devices">
+    <plurals name="device_state_connected">
         <item quantity="one">• %d cihaz bağlandı</item>
         <item quantity="other">• %d cihaz bağlandı</item>
     </plurals>

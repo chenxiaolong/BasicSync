@@ -213,7 +213,7 @@
         <item quantity="many">• %d folderów uruchamianych</item>
         <item quantity="other">• %d folderów uruchamianych</item>
     </plurals>
-    <plurals name="connected_devices">
+    <plurals name="device_state_connected">
         <item quantity="one">• %d podłączone urządzenie</item>
         <item quantity="few">• %d podłączone urządzenia</item>
         <item quantity="many">• %d podłączonych urządzeń</item>
