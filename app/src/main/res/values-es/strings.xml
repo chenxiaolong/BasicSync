@@ -165,4 +165,55 @@
         <item quantity="many">%d alertas de Syncthing</item>
         <item quantity="other">%d alertas de Syncthing</item>
     </plurals>
+    <string name="pref_allow_auto_mode_name">Permitir modo automático</string>
+    <string name="pref_allow_auto_mode_desc">Cuando está desactivado, toda la funcionalidad del modo automático se elimina por completo de la aplicación, las notificaciones y el mosaico de ajustes rápidos.</string>
+    <string name="alert_browser_not_found">No hay ningún navegador web disponible.</string>
+    <string name="alert_documentsui_not_found">El gestor de archivos integrado de Android (DocumentsUI) no está disponible.</string>
+    <string name="alert_tv_inhibit_battery_opt">Desactivar las optimizaciones de «batería» requiere realizar pasos manuales en Android TV.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">Android TV no ofrece ninguna interfaz para desactivar las optimizaciones de «batería», pero sigue siendo necesario hacerlo para que Syncthing pueda ejecutarse de forma fiable en segundo plano. Esto debe realizarse ejecutando el siguiente comando adb.</string>
+    <plurals name="folder_state_idle">
+        <item quantity="one">%d carpeta actualizada</item>
+        <item quantity="many">%d carpetas actualizadas</item>
+        <item quantity="other">%d carpetas actualizadas</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="one">%d carpeta en análisis</item>
+        <item quantity="many">%d carpetas en análisis</item>
+        <item quantity="other">%d carpetas en análisis</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="one">%d carpeta en sincronización</item>
+        <item quantity="many">%d carpetas en sincronización</item>
+        <item quantity="other">%d carpetas en sincronización</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">%d carpeta limpiando archivos antiguos</item>
+        <item quantity="many">%d carpetas limpiando archivos antiguos</item>
+        <item quantity="other">%d carpetas limpiando archivos antiguos</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="one">%d carpeta con errores</item>
+        <item quantity="many">%d carpetas con errores</item>
+        <item quantity="other">%d carpetas con errores</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="one">%d carpeta iniciándose</item>
+        <item quantity="many">%d carpetas iniciándose</item>
+        <item quantity="other">%d carpetas iniciándose</item>
+    </plurals>
+    <plurals name="device_state_connected">
+        <item quantity="one">%d dispositivo conectado</item>
+        <item quantity="many">%d dispositivos conectado</item>
+        <item quantity="other">%d dispositivos conectado</item>
+    </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="one">%d dispositivo sincronizándose</item>
+        <item quantity="many">%d dispositivos sincronizándose</item>
+        <item quantity="other">%d dispositivos sincronizándose</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="one">%d dispositivo con sincronización pendiente</item>
+        <item quantity="many">%d dispositivos con sincronización pendiente</item>
+        <item quantity="other">%d dispositivos con sincronización pendiente</item>
+    </plurals>
 </resources>
