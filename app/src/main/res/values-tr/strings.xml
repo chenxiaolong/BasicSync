@@ -193,4 +193,12 @@
         <item quantity="one">• %d cihaz bağlandı</item>
         <item quantity="other">• %d cihaz bağlandı</item>
     </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="one">• %d cihaz eşitleniyor</item>
+        <item quantity="other">• %d cihaz eşitleniyor</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="one">• %d cihaz eşitlenmeyi bekliyor</item>
+        <item quantity="other">• %d cihaz eşitlenmeyi bekliyor</item>
+    </plurals>
 </resources>
