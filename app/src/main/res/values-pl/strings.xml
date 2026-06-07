@@ -219,4 +219,16 @@
         <item quantity="many">• %d podłączonych urządzeń</item>
         <item quantity="other">• %d podłączonych urządzeń</item>
     </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="one">• %d urządzenie synchronizowane</item>
+        <item quantity="few">• %d urządzenia synchronizowane</item>
+        <item quantity="many">• %d urządzeń synchronizowanych</item>
+        <item quantity="other">• %d urządzeń synchronizowanych</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="one">• %d urządzenie oczekujące na synchronizację</item>
+        <item quantity="few">• %d urządzenia oczekujące na synchronizację</item>
+        <item quantity="many">• %d urządzeń oczekujących na synchronizację</item>
+        <item quantity="other">• %d urządzeń oczekujących na synchronizację</item>
+    </plurals>
 </resources>
