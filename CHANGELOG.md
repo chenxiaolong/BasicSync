@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Show device sync state in notification ([Issue #150], [PR #157])
+
 ### Version 2.2
 
 * Add new option for completely disabling auto mode ([Issue #150], [PR #151])
@@ -361,3 +365,4 @@
 [PR #153]: https://github.com/chenxiaolong/BasicSync/pull/153
 [PR #154]: https://github.com/chenxiaolong/BasicSync/pull/154
 [PR #156]: https://github.com/chenxiaolong/BasicSync/pull/156
+[PR #157]: https://github.com/chenxiaolong/BasicSync/pull/157
