@@ -64,8 +64,8 @@
     <string name="alert_export_success">Seadistuse eksportimine õnnestus</string>
     <string name="alert_export_failure">Seadistuse eksportimine ei õnnestunud</string>
     <string name="alert_export_cancelled">Seadistuse eksportimine on katkestatud</string>
-    <string name="alert_logcat_success">Logida salvestamine „%1$s“ faili õnnestus</string>
-    <string name="alert_logcat_failure">Logida salvestamine „%1$s“ faili ei õnnestunud</string>
+    <string name="alert_logcat_success">Logide salvestamine „%1$s“ faili õnnestus</string>
+    <string name="alert_logcat_failure">Logide salvestamine „%1$s“ faili ei õnnestunud</string>
     <string name="dialog_new_folder_message">Sisesta uue kausta nimi, mille soovid lisada asukohta „%1$s“.</string>
     <string name="dialog_import_password_title">Seadistuste import</string>
     <string name="dialog_import_password_message">Valitud zip-fail on krüptitud. Importimiseks sisesta dekrüptimise salasõna.</string>
@@ -76,4 +76,25 @@
     <string name="dialog_export_password_confirm_hint">Korda salasõna</string>
     <string name="pref_network_allow_cellular_name">Luba mobiilse andmeside puhul</string>
     <string name="pref_network_conditions_desc">Käivita, kui on olemas ühendus mõne kindla võrguga või WiFi-võrguga üldiselt.</string>
+    <string name="pref_conflicts_info">Järgmiste failide sünkroonimisel tekkisid failikonfliktid, mis tuleb käsitsi lahendada. Vali fail, et avada süsteemi failihalduris selle ülemkaust.</string>
+    <string name="alert_browser_not_found">Ühtegi veebibrauserit pole saadaval.</string>
+    <string name="alert_documentsui_not_found">Androidi sisseehitatud failihaldurit (DocumentsUI) pole saadaval.</string>
+    <string name="dialog_min_battery_level_title">Minimaalne akulaetus</string>
+    <string name="dialog_min_battery_level_message">Sisesta aku laetuse madalaim tase, mis peab olema täidetud, et Syncthing võiks käivituda.</string>
+    <string name="dialog_sync_schedule_title">Sünkroonimise graafik</string>
+    <string name="dialog_sync_schedule_message">Saad kasutada järgmiseid sufikseid: <tt>h</tt> (tunnid), <tt>m</tt> (minutid) ja <tt>s</tt> (sekundid).</string>
+    <string name="dialog_sync_schedule_hint_cycle">Ajaakna kestus</string>
+    <string name="dialog_sync_schedule_hint_sync">Sünkroonimise kestus</string>
+    <string name="dialog_sync_schedule_hint_idle">Jõudeoleku kestus</string>
+    <string name="dialog_wifi_network_title">WiFi võrk</string>
+    <string name="dialog_wifi_network_message">Sisesta WiFi võrgu nimi (SSID). See toimib ka peidetud WiFi võrkude puhul.</string>
+    <string name="web_ui_select_folder">Vali kaust</string>
+    <string name="web_ui_scan_qr_code">Skanneeri QR-koodi</string>
+    <string name="notification_channel_persistent_name">Taustateenused</string>
+    <string name="notification_channel_persistent_desc">Hoiab Syncthingi taustal töös</string>
+    <string name="notification_action_auto_mode">Automaatne režiim</string>
+    <string name="notification_action_manual_mode">Käsitsi režiim</string>
+    <string name="notification_action_exit">Välju</string>
+    <string name="pref_run_on_battery_name">Töötamine akutoitel</string>
+    <string name="pref_run_on_battery_desc">Töötamine akutoitel on lubatud, kui selle laetus on vähemalt %1$d%%. Laadija ühendamisel töötab Syncthing alati.</string>
 </resources>
