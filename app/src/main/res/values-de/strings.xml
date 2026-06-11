@@ -157,10 +157,48 @@
         <item quantity="other">%d Syncthing-Benachrichtigungen</item>
     </plurals>
     <string name="notification_channel_alerts_desc">Von Syncthing gemeldete Geräte-/Ordneranfragen und andere Benachrichtigungen</string>
-    <string name="dialog_sync_schedule_hint_idle">Hinweis im Dialogfeld zur Konfiguration der Zeitplanfunktion. Dies entspricht der Inaktivitätsdauer. Diese dient dazu, Syncthing vorzeitig zu beenden, bevor das Synchronisierungsfenster schließt, falls das Programm eine bestimmte Zeit lang inaktiv war.</string>
+    <string name="dialog_sync_schedule_hint_idle">Inaktivitätsdauer</string>
     <string name="notification_channel_alerts_name">Syncthing-Benachrichtigungen</string>
     <string name="alert_documentsui_not_found">Androids eigener Dateimanager (DocumentsUI) ist nicht verfügbar.</string>
     <string name="alert_browser_not_found">Es ist kein Webbrowser verfügbar.</string>
     <string name="alert_tv_inhibit_battery_opt">Das Deaktivieren der „Akku“-Optimierung erfordert auf Android TV manuelle Schritte.</string>
     <string name="alert_tv_inhibit_battery_opt_details">Android TV verfügt über keine Benutzeroberfläche zum Deaktivieren der „Akku“-Optimierungen, doch ist dies dennoch erforderlich, damit Syncthing zuverlässig im Hintergrund läuft. Dies muss durch Ausführen des folgenden adb-Befehls erfolgen.</string>
+    <string name="pref_allow_auto_mode_name">Automatikmodus erlauben</string>
+    <string name="pref_allow_auto_mode_desc">Wenn diese Option deaktiviert ist, werden alle Funktionen des Automatikmodus vollständig aus der App, den Benachrichtigungen und der Kachel Schnelleinstellungen entfernt.</string>
+    <plurals name="folder_state_syncing">
+        <item quantity="one">%d Ordner wird synchronisiert</item>
+        <item quantity="other">%d Ordner werden synchronisiert</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">%d Ordner wird von alten Dateien bereinigt</item>
+        <item quantity="other">%d Ordner werden von alten Dateien bereinigt</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="one">%d Ordner mit Fehlern</item>
+        <item quantity="other">%d Ordner mit Fehlern</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="one">%d Ordner wird gestartet</item>
+        <item quantity="other">%d Ordner werden gestartet</item>
+    </plurals>
+    <plurals name="device_state_connected">
+        <item quantity="one">%d Gerät ist verbunden</item>
+        <item quantity="other">%d Geräte sind verbunden</item>
+    </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="one">%d Gerät wird synchronisiert</item>
+        <item quantity="other">%d Geräte werden synchronisiert</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="one">%d Gerät wartet auf Synchronisierung</item>
+        <item quantity="other">%d Geräte warten auf Synchronisierung</item>
+    </plurals>
+    <plurals name="folder_state_idle">
+        <item quantity="one">%d Ordner ist aktuell</item>
+        <item quantity="other">%d Ordner sind aktuell</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="one">%d Ordner wird gescannt</item>
+        <item quantity="other">%d Ordner werden gescannt</item>
+    </plurals>
 </resources>

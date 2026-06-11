@@ -182,4 +182,51 @@
     <string name="alert_documentsui_not_found">Managerul de fișiere încorporat pentru Android (DocumentsUI) nu este disponibil.</string>
     <string name="alert_tv_inhibit_battery_opt">Dezactivarea optimizărilor „bateriei” necesită pași manuali pe Android TV.</string>
     <string name="alert_tv_inhibit_battery_opt_details">Android TV nu are interfață de utilizator pentru dezactivarea optimizărilor „bateriei”, dar este totuși necesar ca Syncthing să ruleze în fundal în mod fiabil. Acest lucru trebuie făcut prin rularea următoarei comenzi adb.</string>
+    <string name="pref_allow_auto_mode_name">Permite modul automat</string>
+    <string name="pref_allow_auto_mode_desc">Când este dezactivat, toată funcționalitatea modului automat este complet eliminată din aplicație, notificarea și dala din setările rapide.</string>
+    <plurals name="folder_state_idle">
+        <item quantity="one">• %d dosar actualizat</item>
+        <item quantity="few">• %d dosare actualizate</item>
+        <item quantity="other">• %d de dosare actualizate</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="one">• %d dosar se scanează</item>
+        <item quantity="few">• %d dosare se scanează</item>
+        <item quantity="other">• %d de dosare se scanează</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="one">• %d dosar se sincronizează</item>
+        <item quantity="few">• %d dosare se sincronizează</item>
+        <item quantity="other">• %d de dosare se sincronizează</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">• %d dosar curăță fișierele vechi</item>
+        <item quantity="few">• %d dosare curăță fișierele vechi</item>
+        <item quantity="other">• %d de dosare curăță fișierele vechi</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="one">• %d dosar cu erori</item>
+        <item quantity="few">• %d dosare cu erori</item>
+        <item quantity="other">• %d de dosare cu erori</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="one">• %d dosar pornește</item>
+        <item quantity="few">• %d dosare pornesc</item>
+        <item quantity="other">• %d de dosare pornesc</item>
+    </plurals>
+    <plurals name="device_state_connected">
+        <item quantity="one">• %d dispozitiv conectat</item>
+        <item quantity="few">• %d dispozitive conectate</item>
+        <item quantity="other">• %d de dispozitive conectate</item>
+    </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="one">• %d dispozitiv se sincronizează</item>
+        <item quantity="few">• %d dispozitive se sincronizează</item>
+        <item quantity="other">• %d de dispozitive se sincronizează</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="one">• %d dispozitiv în așteptarea sincronizării</item>
+        <item quantity="few">• %d dispozitive în așteptarea sincronizării</item>
+        <item quantity="other">• %d de dispozitive în așteptarea sincronizării</item>
+    </plurals>
 </resources>

@@ -180,4 +180,10 @@
     <plurals name="device_state_connected">
         <item quantity="other">• %d 台设备已连接</item>
     </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="other">• %d 台设备正在同步</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="other">• %d 台设备待同步</item>
+    </plurals>
 </resources>
