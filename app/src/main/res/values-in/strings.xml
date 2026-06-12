@@ -147,4 +147,42 @@
     <string name="quick_settings_tile_auto_mode">Mode otomatis</string>
     <string name="quick_settings_tile_manual_mode_started">Dimulai secara manual</string>
     <string name="quick_settings_tile_manual_mode_stopped">Dihentikan secara manual</string>
+    <string name="pref_allow_auto_mode_name">Izinkan mode otomatis</string>
+    <string name="pref_allow_auto_mode_desc">Saat dinonaktifkan, semua fungsi mode otomatis dihapus sepenuhnya dari aplikasi, notifikasi, dan tile setelan cepat.</string>
+    <string name="alert_browser_not_found">Tidak ada browser web yang tersedia.</string>
+    <string name="alert_documentsui_not_found">Pengelola file bawaan Android (DocumentsUI) tidak tersedia.</string>
+    <string name="alert_tv_inhibit_battery_opt">Menonaktifkan optimisasi \"battery\" memerlukan langkah manual di Android TV.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">Android TV tidak memiliki UI untuk menonaktifkan optimisasi \"battery\", tetapi hal ini tetap diperlukan agar Syncthing dapat berjalan andal di latar belakang. Ini harus dilakukan dengan menjalankan perintah adb berikut.</string>
+    <string name="notification_channel_alerts_name">Peringatan Syncthing</string>
+    <string name="notification_channel_alerts_desc">Permintaan perangkat/folder dan peringatan lain yang dilaporkan oleh Syncthing</string>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="other">%d peringatan Syncthing</item>
+    </plurals>
+    <plurals name="folder_state_idle">
+        <item quantity="other">• %d folder sudah mutakhir</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="other">• %d folder sedang dipindai</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="other">• %d folder sedang disinkronkan</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="other">• %d folder sedang membersihkan file lama</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="other">• %d folder mengalami kesalahan</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="other">• %d folder sedang dimulai</item>
+    </plurals>
+    <plurals name="device_state_connected">
+        <item quantity="other">• %d perangkat terhubung</item>
+    </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="other">• %d perangkat sedang menyinkronkan</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="other">• %d perangkat menunggu sinkronisasi</item>
+    </plurals>
 </resources>
