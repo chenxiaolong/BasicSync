@@ -12,6 +12,7 @@
 * Show device sync state in notification ([Issue #150], [PR #157])
 * Make Syncthing's web UI edge to edge and remove duplicate app bar ([PR #159])
 * Close open dialogs in Syncthing's web UI before closing the entire page when pressing back ([PR #160])
+* Prevent Syncthing's web UI from reloading when switching between light and dark mode ([PR #161])
 
 ### Version 2.2
 
@@ -370,3 +371,4 @@
 [PR #157]: https://github.com/chenxiaolong/BasicSync/pull/157
 [PR #159]: https://github.com/chenxiaolong/BasicSync/pull/159
 [PR #160]: https://github.com/chenxiaolong/BasicSync/pull/160
+[PR #161]: https://github.com/chenxiaolong/BasicSync/pull/161
