@@ -29,6 +29,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -84,12 +85,6 @@ fun WebUiScreen(onExit: () -> Unit) {
         }
     }
 
-    var canGoBack by remember { mutableStateOf(false) }
-    BackHandler(
-        enabled = canGoBack,
-        onBack = { webView.goBack() },
-    )
-
     var guiUri by remember { mutableStateOf<Uri?>(null) }
     var guiCert by remember { mutableStateOf<X509Certificate?>(null) }
     rememberServiceEventWatcher(
@@ -143,6 +138,23 @@ fun WebUiScreen(onExit: () -> Unit) {
         webView.evaluateJavascript("bridgeInit($isTv);") {}
     }
 
+    fun closeTopModal() {
+        webView.evaluateJavascript("closeTopModal();") {}
+    }
+
+    var modalsOpen by remember { mutableIntStateOf(0) }
+    var hasBrowserHistory by remember { mutableStateOf(false) }
+    BackHandler(
+        enabled = modalsOpen > 0 || hasBrowserHistory,
+        onBack = {
+            if (modalsOpen > 0) {
+                closeTopModal()
+            } else if (hasBrowserHistory) {
+                webView.goBack()
+            }
+        },
+    )
+
     val requestQrScanner = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
@@ -189,6 +201,11 @@ fun WebUiScreen(onExit: () -> Unit) {
             @JavascriptInterface
             fun scanQrCode() {
                 requestQrScanner.launch(Intent(context, QrScannerActivity::class.java))
+            }
+
+            @JavascriptInterface
+            fun onModalsOpenChanged(count: Int) {
+                modalsOpen = count
             }
         }
     }
@@ -251,7 +268,7 @@ fun WebUiScreen(onExit: () -> Unit) {
             }
 
             override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
-                canGoBack = view.canGoBack()
+                hasBrowserHistory = view.canGoBack()
             }
         }
     }

@@ -24,7 +24,7 @@ function addFolderPicker(element) {
     const buttonGroup = document.createElement('span');
     buttonGroup.classList.add('input-group-btn');
 
-    angular.element(document).injector().invoke(function($compile) {
+    angular.element(document).injector().invoke(function ($compile) {
         const scope = angular.element(element).scope();
         $compile(button)(scope);
 
@@ -40,7 +40,7 @@ function addFolderPicker(element) {
     inputGroup.appendChild(element);
     inputGroup.appendChild(buttonGroup);
 
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
         BasicSync.openFolderPicker(element.value);
     }, false);
 
@@ -67,14 +67,14 @@ function addQrScanner(element) {
     button.setAttribute('tooltip', '');
     button.appendChild(icon);
 
-    angular.element(document).injector().invoke(function($compile) {
+    angular.element(document).injector().invoke(function ($compile) {
         const scope = angular.element(element).scope();
         $compile(button)(scope);
 
         element.appendChild(button);
     });
 
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
         BasicSync.scanQrCode();
     }, false);
 }
@@ -150,7 +150,7 @@ function tryMutate(isTv) {
     for (const className of actionsToHide) {
         const icon = document.getElementsByClassName(className)[0];
         if (icon) {
-            hideParent(icon, function(parent) {
+            hideParent(icon, function (parent) {
                 return parent instanceof HTMLLIElement;
             });
             actionsToHide.delete(className);
@@ -182,6 +182,27 @@ function onDeviceIdScanned(deviceId) {
     elemDeviceId.dispatchEvent(new InputEvent('input'));
 }
 
+function closeTopModal() {
+    const modals = document.getElementsByClassName('modal');
+    var topModal = null;
+    var topZIndex = null;
+
+    for (const elem of modals) {
+        const modal = $(elem).data('bs.modal');
+        if (modal && modal.isShown) {
+            const zIndex = parseInt(window.getComputedStyle(elem).getPropertyValue('z-index'));
+            if (topModal === null || zIndex >= topZIndex) {
+                topModal = modal;
+                topZIndex = zIndex;
+            }
+        }
+    }
+
+    if (topModal !== null) {
+        topModal.hide();
+    }
+}
+
 function bridgeInit(isTv) {
     if (!tryMutate(isTv)) {
         const callback = (mutationList, observer) => {
@@ -202,6 +223,18 @@ function bridgeInit(isTv) {
         });
     }
 
+    var modalsOpen = 0;
+
+    $(document).on('shown.bs.modal', function (e) {
+        modalsOpen++;
+        BasicSync.onModalsOpenChanged(modalsOpen);
+    });
+
+    $(document).on('hidden.bs.modal', function (e) {
+        modalsOpen--;
+        BasicSync.onModalsOpenChanged(modalsOpen);
+    });
+
     // Prevent arrow keys from opening dropdown menus. There is no good way to leave the menu
     // afterwards because the up/down arrow keys are hijacked to only move within the list and a TV
     // remote has no escape button to close the menu. Spatial navigation already works very well for
@@ -219,7 +252,7 @@ function bridgeInit(isTv) {
 
             e.target.readOnly = true;
             if (!wasReadOnly) {
-                setTimeout(function() { e.target.readOnly = false; }, 100);
+                setTimeout(function () { e.target.readOnly = false; }, 100);
             }
         }
     });
