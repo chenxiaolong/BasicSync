@@ -26,20 +26,12 @@ import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.union
-import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -74,10 +66,7 @@ private fun jsEscape(s: String) = buildString {
 }
 
 @Composable
-fun WebUiScreen(
-    onBack: () -> Unit,
-    onExit: () -> Unit,
-) {
+fun WebUiScreen(onExit: () -> Unit) {
     val context = LocalContext.current
     val resources = LocalResources.current
 
@@ -267,11 +256,7 @@ fun WebUiScreen(
         }
     }
 
-    AppScreen(
-        title = { Text(text = stringResource(R.string.app_name_upstream)) },
-        onBack = onBack,
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.union(WindowInsets.ime),
-    ) { params ->
+    AppScreen(fullScreenContent = true) { params ->
         AndroidView(
             factory = {
                 webView.apply {
@@ -307,7 +292,6 @@ fun WebUiScreen(
             onRelease = {
                 it.destroy()
             },
-            modifier = Modifier.fillMaxSize().padding(params.contentPadding),
         )
 
         if (showBrowserAlert) {

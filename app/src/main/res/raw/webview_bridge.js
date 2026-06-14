@@ -229,4 +229,58 @@ function bridgeInit(isTv) {
         style.innerHTML = ':focus { border: 3px dotted !important; }';
         document.body.appendChild(style);
     }
+
+    // We use the bootstrap nav bar as the app nav bar, so don't let it get scrolled away.
+    const nav = document.getElementsByTagName('nav')[0];
+    nav.classList.remove('navbar-top');
+    nav.classList.add('navbar-fixed-top');
+
+    // The webview is edge-to-edge, so insets need to be handled manually.
+    const origContent = document.getElementsByClassName('content')[0];
+    const safeContent = document.createElement('div');
+    safeContent.classList.add('safe-content');
+    origContent.parentElement.insertBefore(safeContent, origContent);
+    safeContent.appendChild(origContent);
+
+    const edgeToEdgeStyle = document.createElement('style');
+    edgeToEdgeStyle.innerHTML = `
+        /*
+         * Normally, Syncthing only makes the dropdown menus scrollable on narrow screens. However,
+         * due to us using a fixed/sticky nav bar, on wide screens, it's no longer possible to
+         * scroll the menus by scrolling the page itself. We have to make the menus individually
+         * scrollable instead.
+         */
+        .dropdown-menu {
+            column-count: auto !important;
+            height: unset !important;
+            /* Roughly the amount of free space excluding insets and nav bar. */
+            max-height: max(50px, calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 60px));
+            overflow-y: scroll;
+            /* Avoid scrolling the content underneath after reaching the boundary. */
+            overscroll-behavior-y: contain;
+        }
+
+        .navbar-fixed-top {
+            /* The vendored bootstrap version is too old to have the sticky-top class. */
+            position: sticky;
+
+            padding-top: env(safe-area-inset-top);
+            padding-right: env(safe-area-inset-right);
+            padding-left: env(safe-area-inset-left);
+        }
+
+        .safe-content {
+            padding-right: env(safe-area-inset-right);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+        }
+
+        .modal-content {
+            margin-top: env(safe-area-inset-top);
+            margin-right: env(safe-area-inset-right);
+            margin-bottom: env(safe-area-inset-bottom);
+            margin-left: env(safe-area-inset-left);
+        }
+    `;
+    document.body.appendChild(edgeToEdgeStyle);
 }

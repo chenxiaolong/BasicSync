@@ -34,7 +34,7 @@ data class AppScreenParams(
 
 @Composable
 fun AppScreen(
-    title: @Composable () -> Unit,
+    title: (@Composable () -> Unit)? = null,
     onBack: (() -> Unit)? = null,
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     fullScreenContent: Boolean = false,
@@ -47,30 +47,32 @@ fun AppScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
-            TopAppBar(
-                title = title,
-                navigationIcon = {
-                    onBack?.let { onClick ->
-                        IconButton(onClick = onClick) {
-                            @SuppressLint("PrivateResource")
-                            Icon(
-                                imageVector = Icons.AutoMirrored.ArrowBack,
-                                contentDescription = stringResource(
-                                    androidx.appcompat.R.string.abc_action_bar_up_description,
-                                ),
-                            )
+            title?.let { title ->
+                TopAppBar(
+                    title = title,
+                    navigationIcon = {
+                        onBack?.let { onClick ->
+                            IconButton(onClick = onClick) {
+                                @SuppressLint("PrivateResource")
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.ArrowBack,
+                                    contentDescription = stringResource(
+                                        androidx.appcompat.R.string.abc_action_bar_up_description,
+                                    ),
+                                )
+                            }
                         }
-                    }
-                },
-                colors = PreferenceDefaults.appBarColors().let {
-                    if (fullScreenContent) {
-                        it.copy(containerColor = it.containerColor.copy(alpha = 0.5f))
-                    } else {
-                        it
-                    }
-                },
-                scrollBehavior = scrollBehavior,
-            )
+                    },
+                    colors = PreferenceDefaults.appBarColors().let {
+                        if (fullScreenContent) {
+                            it.copy(containerColor = it.containerColor.copy(alpha = 0.5f))
+                        } else {
+                            it
+                        }
+                    },
+                    scrollBehavior = scrollBehavior,
+                )
+            }
         },
         containerColor = PreferenceDefaults.containerColor,
         contentWindowInsets = contentWindowInsets,

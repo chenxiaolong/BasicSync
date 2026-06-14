@@ -6,6 +6,4 @@
 <resources>
     <string name="app_name_release" translatable="false">BasicSync</string>
     <string name="app_name_debug" translatable="false">BasicSync (Debug)</string>
-
-    <string name="app_name_upstream" translatable="false">Syncthing</string>
 </resources>
