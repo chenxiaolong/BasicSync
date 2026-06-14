@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Show device sync state in notification ([Issue #150], [PR #157])
+* Make Syncthing's web UI edge to edge and remove duplicate app bar ([PR #159])
 
 ### Version 2.2
 
@@ -366,3 +367,4 @@
 [PR #154]: https://github.com/chenxiaolong/BasicSync/pull/154
 [PR #156]: https://github.com/chenxiaolong/BasicSync/pull/156
 [PR #157]: https://github.com/chenxiaolong/BasicSync/pull/157
+[PR #159]: https://github.com/chenxiaolong/BasicSync/pull/159
