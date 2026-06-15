@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 2.4
 
 * Disable floating web UI nav bar on Android TV to fix arrow button navigation ([PR #163])
   * This was a regression introduced in version 2.3.
