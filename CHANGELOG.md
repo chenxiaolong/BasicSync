@@ -7,6 +7,11 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Disable floating web UI nav bar on Android TV to fix arrow button navigation ([PR #163])
+  * This was a regression introduced in version 2.3.
+
 ### Version 2.3
 
 * Show device sync state in notification ([Issue #150], [PR #157])
@@ -376,3 +381,4 @@
 [PR #160]: https://github.com/chenxiaolong/BasicSync/pull/160
 [PR #161]: https://github.com/chenxiaolong/BasicSync/pull/161
 [PR #162]: https://github.com/chenxiaolong/BasicSync/pull/162
+[PR #163]: https://github.com/chenxiaolong/BasicSync/pull/163
