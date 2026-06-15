@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
 import androidx.core.content.PackageManagerCompat
 import androidx.core.content.UnusedAppRestrictionsConstants
@@ -479,7 +480,7 @@ fun SettingsScreen(
             }
 
             appHibernationDisabled = !enabled
-        }, context.mainExecutor)
+        }, ContextCompat.getMainExecutor(context))
 
         onDispose {
             future.cancel(true)

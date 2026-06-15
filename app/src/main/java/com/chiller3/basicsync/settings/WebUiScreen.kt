@@ -28,6 +28,7 @@ import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,6 +36,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -73,6 +75,20 @@ private fun jsEscape(s: String) = buildString {
 fun WebUiScreen(onExit: () -> Unit) {
     val context = LocalContext.current
     val resources = LocalResources.current
+
+    val isTv = remember { context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK) }
+    val edgeToEdge = remember {
+        !isTv && run {
+            val majorVersion = WebView.getCurrentWebViewPackage()
+                ?.versionName
+                ?.substringBefore('.')
+                ?.toIntOrNull()
+            Log.d(TAG, "WebView major version: $majorVersion")
+
+            // https://developer.android.com/develop/ui/views/layout/webapps/understand-window-insets#feature-compatibility
+            if (majorVersion != null) majorVersion >= 144 else true
+        }
+    }
 
     // We intentionally do not use WebView.saveState() and WebView.restoreState(). It only supports
     // saving the back/forward history, which is pointless for the Syncthing web UI because it is an
@@ -137,8 +153,8 @@ fun WebUiScreen(onExit: () -> Unit) {
         webView.evaluateJavascript("onDeviceIdScanned(\"${jsEscape(deviceId)}\");") {}
     }
 
-    fun bridgeInit(isTv: Boolean) {
-        webView.evaluateJavascript("bridgeInit($isTv);") {}
+    fun bridgeInit(isTv: Boolean, edgeToEdge: Boolean) {
+        webView.evaluateJavascript("bridgeInit($isTv, $edgeToEdge);") {}
     }
 
     fun closeAllDropdowns() {
@@ -277,9 +293,8 @@ fun WebUiScreen(onExit: () -> Unit) {
 
                 view.evaluateJavascript(script) {}
 
-                val isTv = context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
-                Log.d(TAG, "Initializing webview bridge with TV mode: $isTv")
-                bridgeInit(isTv)
+                Log.d(TAG, "Initializing bridge: isTv=$isTv, edgeToEdge=$edgeToEdge")
+                bridgeInit(isTv, edgeToEdge)
             }
 
             override fun onLoadResource(view: WebView?, url: String?) {
@@ -355,6 +370,11 @@ fun WebUiScreen(onExit: () -> Unit) {
             },
             onRelease = {
                 it.destroy()
+            },
+            modifier = if (edgeToEdge) {
+                Modifier
+            } else {
+                Modifier.padding(paddingValues = params.contentPadding)
             },
         )
 

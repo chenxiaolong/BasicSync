@@ -131,7 +131,7 @@ android {
 
     defaultConfig {
         applicationId = "com.chiller3.basicsync"
-        minSdk = 28
+        minSdk = 26
         targetSdk = 36
         versionCode = gitVersionCode
         versionName = gitVersionName

@@ -207,7 +207,7 @@ function closeTopModal() {
     }
 }
 
-function bridgeInit(isTv) {
+function bridgeInit(isTv, edgeToEdge) {
     if (!tryMutate(isTv)) {
         const callback = (mutationList, observer) => {
             // The actual elements we need are added via innerHTML by Angular, which doesn't get
@@ -277,7 +277,9 @@ function bridgeInit(isTv) {
         const style = document.createElement('style');
         style.innerHTML = ':focus { border: 3px dotted !important; }';
         document.body.appendChild(style);
-    } else {
+    }
+
+    if (edgeToEdge) {
         // We use the bootstrap nav bar as the app nav bar, so don't let it get scrolled away.
         const nav = document.getElementsByTagName('nav')[0];
         nav.classList.remove('navbar-top');
