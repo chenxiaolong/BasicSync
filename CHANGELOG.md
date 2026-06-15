@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 2.3
 
 * Show device sync state in notification ([Issue #150], [PR #157])
 * Make Syncthing's web UI edge to edge and remove duplicate app bar ([PR #159])
