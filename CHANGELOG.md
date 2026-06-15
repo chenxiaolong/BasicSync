@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Go up one level in the folder picker dialog when pressing back ([PR #166])
+
 ### Version 2.4
 
 * Disable floating web UI nav bar on Android TV to fix arrow button navigation ([PR #163])
@@ -384,3 +388,4 @@
 [PR #162]: https://github.com/chenxiaolong/BasicSync/pull/162
 [PR #163]: https://github.com/chenxiaolong/BasicSync/pull/163
 [PR #164]: https://github.com/chenxiaolong/BasicSync/pull/164
+[PR #166]: https://github.com/chenxiaolong/BasicSync/pull/166
