@@ -14,6 +14,8 @@ import android.net.Uri
 import android.net.http.SslCertificate
 import android.net.http.SslError
 import android.os.Build
+import android.os.Environment
+import android.provider.DocumentsContract
 import android.util.Base64
 import android.util.Log
 import android.view.ViewGroup
@@ -40,6 +42,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.chiller3.basicsync.R
+import com.chiller3.basicsync.extension.DOCUMENTSUI_AUTHORITY
 import com.chiller3.basicsync.syncthing.SyncthingService
 import com.chiller3.basicsync.ui.AppScreen
 import java.io.ByteArrayInputStream
@@ -210,7 +213,7 @@ fun WebUiScreen(onExit: () -> Unit) {
         }
     }
 
-    var showBrowserAlert by remember { mutableStateOf(false) }
+    var showAlert by remember { mutableIntStateOf(0) }
 
     val webViewClient = remember {
         object : WebViewClient() {
@@ -249,7 +252,7 @@ fun WebUiScreen(onExit: () -> Unit) {
                     try {
                         context.startActivity(Intent(Intent.ACTION_VIEW, uri))
                     } catch (_: ActivityNotFoundException) {
-                        showBrowserAlert = true
+                        showAlert = R.string.alert_browser_not_found
                     }
                     return true
                 }
@@ -265,6 +268,38 @@ fun WebUiScreen(onExit: () -> Unit) {
                 val isTv = context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
                 Log.d(TAG, "Initializing webview bridge with TV mode: $isTv")
                 bridgeInit(isTv)
+            }
+
+            override fun onLoadResource(view: WebView?, url: String?) {
+                val uri = Uri.parse(url)
+                val guiUri = guiUri!!
+
+                if (uri.scheme == guiUri.scheme
+                    && uri.host == guiUri.host
+                    && uri.port == guiUri.port
+                    && uri.path == "/rest/debug/support") {
+                    // We don't support downloading. DownloadListener is a terrible API that doesn't
+                    // support reading the response to the current request. Using that to feed the
+                    // download URL to download manager would cause two support bundles to be
+                    // created. Instead, we'll just open the directory containing the support
+                    // bundles. Since AOSP's FileSystemProvider uses inotify to notify clients to
+                    // refresh, it doesn't matter that we open the file manager before the HTTP
+                    // request completes.
+                    try {
+                        val externalDir = Environment.getExternalStorageDirectory()
+                        val filesDir = context.getExternalFilesDir(null)!!
+                        val relPath = filesDir.relativeTo(externalDir)
+                        val uri = DocumentsContract.buildDocumentUri(
+                            DOCUMENTSUI_AUTHORITY, "primary:$relPath")
+                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                            setDataAndType(uri, "vnd.android.document/directory")
+                        }
+
+                        context.startActivity(intent)
+                    } catch (_: ActivityNotFoundException) {
+                        showAlert = R.string.alert_documentsui_not_found
+                    }
+                }
             }
 
             override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
@@ -311,15 +346,15 @@ fun WebUiScreen(onExit: () -> Unit) {
             },
         )
 
-        if (showBrowserAlert) {
-            val message = stringResource(R.string.alert_browser_not_found)
+        if (showAlert != 0) {
+            val message = stringResource(showAlert)
 
             LaunchedEffect(Unit) {
                 params.snackbarHostState.showSnackbar(
                     message = message,
                     withDismissAction = true,
                 )
-                showBrowserAlert = false
+                showAlert = 0
             }
         }
     }

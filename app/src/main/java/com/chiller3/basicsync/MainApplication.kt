@@ -36,6 +36,10 @@ class MainApplication : Application() {
 
         Preferences(this).migrate()
 
-        Stbridge.initDirs(filesDir.toString(), cacheDir.toString())
+        Stbridge.initDirs(
+            filesDir.toString(),
+            cacheDir.toString(),
+            getExternalFilesDir(null)!!.toString(),
+        )
     }
 }

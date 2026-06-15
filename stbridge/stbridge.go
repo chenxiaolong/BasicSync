@@ -58,39 +58,47 @@ func Version() string {
 func cleanOldFiles() {
 	// We only clean up a subset of what upstream syncthing does since the
 	// initial release started with 2.x and certain features aren't enabled.
-	globs := map[string]time.Duration{
-		"panic-*.log":      7 * 24 * time.Hour,
-		"config.xml.v*":    30 * 24 * time.Hour,
-		"support-bundle-*": 30 * 24 * time.Hour,
+	locationGlobs := map[string]map[string]time.Duration{
+		locations.GetBaseDir(locations.ConfigBaseDir): map[string]time.Duration{
+			"panic-*.log":   7 * 24 * time.Hour,
+			"config.xml.v*": 30 * 24 * time.Hour,
+			// From before version 2.3.
+			"support-bundle-*": 30 * 24 * time.Hour,
+		},
+		locations.GetBaseDir(locations.SupportBundleBaseDir): map[string]time.Duration{
+			"support-bundle-*": 30 * 24 * time.Hour,
+		},
 	}
 
-	configFs := fs.NewFilesystem(fs.FilesystemTypeBasic, locations.GetBaseDir(locations.ConfigBaseDir))
+	for baseDir, globs := range locationGlobs {
+		baseFs := fs.NewFilesystem(fs.FilesystemTypeBasic, baseDir)
 
-	for glob, dur := range globs {
-		entries, err := configFs.Glob(glob)
-		if err != nil {
-			log.Printf("Failed to match glob: %q: %v", glob, err)
-			continue
-		}
-
-		for _, entry := range entries {
-			info, err := configFs.Lstat(entry)
+		for glob, dur := range globs {
+			entries, err := baseFs.Glob(glob)
 			if err != nil {
-				log.Printf("Failed to stat config: %q: %v", entry, err)
+				log.Printf("Failed to match glob: %q: %v", glob, err)
 				continue
 			}
 
-			if time.Since(info.ModTime()) <= dur {
-				log.Printf("Skipped deleting old config: %q", entry)
-				continue
-			}
+			for _, entry := range entries {
+				info, err := baseFs.Lstat(entry)
+				if err != nil {
+					log.Printf("Failed to stat file: %q: %v", entry, err)
+					continue
+				}
 
-			if err = configFs.RemoveAll(entry); err != nil {
-				log.Printf("Failed to delete old config: %q: %v", entry, err)
-				continue
-			}
+				if time.Since(info.ModTime()) <= dur {
+					log.Printf("Skipped deleting old file: %q", entry)
+					continue
+				}
 
-			log.Printf("Deleted old config: %q: %v", entry, err)
+				if err = baseFs.RemoveAll(entry); err != nil {
+					log.Printf("Failed to delete old file: %q: %v", entry, err)
+					continue
+				}
+
+				log.Printf("Deleted old file: %q: %v", entry, err)
+			}
 		}
 	}
 }
@@ -178,7 +186,7 @@ func SetLogLevel(level string) error {
 	return nil
 }
 
-func InitDirs(filesDir string, cacheDir string) error {
+func InitDirs(filesDir string, cacheDir string, externalDir string) error {
 	stLock.Lock()
 	defer stLock.Unlock()
 
@@ -187,6 +195,8 @@ func InitDirs(filesDir string, cacheDir string) error {
 		return fmt.Errorf("failed to set config directory: %w", err)
 	} else if err := locations.SetBaseDir(locations.DataBaseDir, configDir); err != nil {
 		return fmt.Errorf("failed to set data directory: %w", err)
+	} else if err := locations.SetBaseDir(locations.SupportBundleBaseDir, externalDir); err != nil {
+		return fmt.Errorf("failed to set support bundle directory: %w", err)
 	}
 	log.Print(locations.PrettyPaths())
 
