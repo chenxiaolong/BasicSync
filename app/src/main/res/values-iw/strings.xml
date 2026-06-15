@@ -130,4 +130,90 @@
         <item quantity="two">שעתיים</item>
         <item quantity="other">%d שעות</item>
     </plurals>
+    <string name="pref_conflicts_name">קונפליקטי סנכרון</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="one">קובץ אחד נתקל בקונפליקט במהלך הסנכרון.</item>
+        <item quantity="two">שני קבצים נתקלו בקונפליקטים במהלך הסנכרון.</item>
+        <item quantity="other">%d קבצים נתקלו בקונפליקטים במהלך הסנכרון.</item>
+    </plurals>
+    <string name="pref_sync_schedule_settings_name">לוח זמני סנכרון</string>
+    <string name="pref_sync_schedule_settings_desc">הרצת Syncthing באופן תקופתי בהתבסס על מרווח זמן קבוע.</string>
+    <string name="pref_allow_auto_mode_name">אפשור מצב אוטומטי</string>
+    <string name="pref_allow_auto_mode_desc">כאשר העדפה זו מושבתת, כל השימושיות של מצב אוטומטי מוסרת לחלוטין מהיישום, מההתראה, ומאריח ההגדרות המהירות.</string>
+    <string name="pref_show_exit_name">הצגת לחצן יציאה</string>
+    <string name="pref_show_exit_desc">הצגת לחצן יציאה בהתראה המתמדת. היישום יתחיל שוב באופן אוטומטי לאחר אתחול או בעת קבלת פקודת שליטה מרחוק.</string>
+    <string name="pref_conflicts_info">הקבצים הבאים נתקלו בקונפליקטים במהלך הסנכרון וצריכים להיפתר באופן ידני. יש לבחור קובץ כדי לפתוח את תיקיית האב שלו במנהל הקבצים של המערכת.</string>
+    <string name="pref_sync_schedule_idle_name">לעצור מוקדם כשאין פעילות</string>
+    <string name="pref_sync_schedule_idle_desc">לעצור את Syncthing לפני שחלון הסנכרון מסתיים אם לפחות התקן אחד מחובר ואין פעילות באף תיקייה למשך %1$s.</string>
+    <string name="pref_sync_schedule_battery_only_name">להשתמש בלוח זמנים רק על סוללה</string>
+    <string name="pref_sync_schedule_battery_only_desc">בעת חיבור לחשמל, לא יעשה שימוש בלוח הזמנים.</string>
+    <string name="alert_browser_not_found">אין דפדפן רשת זמין.</string>
+    <string name="alert_documentsui_not_found">מנהל הקבצים המובנה של אנדרואיד (DocumentsUI) אינו זמין.</string>
+    <string name="alert_tv_inhibit_battery_opt">השבתת מיטובי \"סוללה\" דורשת צעדים ידניים באנדרואיד TV.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">לאנדרואיד TV אין ממשק משתמש עבור השבתת מיטובי סוללה, אבל צעד זה עדיין נחוץ כדי להריץ את Syncthing ברקע באופן מהימן. יש לבצע את זה על ידי הרצת פקודת ה־adb הבאה.</string>
+    <string name="dialog_sync_schedule_hint_idle">משך אי־פעילות</string>
+    <string name="notification_channel_conflicts_name">קונפליקטי סנכרון</string>
+    <string name="notification_channel_conflicts_desc">התרעות עבור קונפליקטים שנתקלו במהלך סנכרון</string>
+    <string name="notification_channel_alerts_name">התרעות Syncthing</string>
+    <string name="notification_channel_alerts_desc">בקשות התקנים/תיקיות והתרעות אחרות המדווחות על ידי Syncthing</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="one">נמצא קונפליקט סנכרון אחד</item>
+        <item quantity="two">נמצאו שני קונפליקטי סנכרון</item>
+        <item quantity="other">נמצאו %d קונפליקטי סנכרון</item>
+    </plurals>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="one">התרעת Syncthing אחת</item>
+        <item quantity="two">שני התרעות Syncthing</item>
+        <item quantity="other">%d התרעות Syncthing</item>
+    </plurals>
+    <string name="notification_action_exit">יציאה</string>
+    <string name="blocked_reason_no_storage_permissions">• הרשאות אחסון נדחתו</string>
+    <plurals name="folder_state_idle">
+        <item quantity="one">• תיקייה אחת מעודכנת</item>
+        <item quantity="two">• שתי תיקיות מעודכנות</item>
+        <item quantity="other">• %d תיקיות מעודכנות</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="one">• תיקייה אחת בסריקה</item>
+        <item quantity="two">• שתי תיקיות בסריקה</item>
+        <item quantity="other">• %d תיקיות בסריקה</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="one">• תיקייה אחת מסתנכרנת</item>
+        <item quantity="two">• שתי תיקיות מסתנכרנות</item>
+        <item quantity="other">• %d תיקיות מסתנכרנות</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">• תיקייה אחת מנקה קבצים ישנים</item>
+        <item quantity="two">• שתי תיקיות מנקות קבצים ישנים</item>
+        <item quantity="other">• %d תיקיות מנקות קבצים ישנים</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="one">• תיקייה אחת עם שגיאות</item>
+        <item quantity="two">• שתי תיקיות עם שגיאות</item>
+        <item quantity="other">• %d תיקיות עם שגיאות</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="one">• תיקייה אחת בתהליך התחלה</item>
+        <item quantity="two">• שתי תיקיות בתהליך התחלה</item>
+        <item quantity="other">• %d תיקיות בתהליך התחלה</item>
+    </plurals>
+    <plurals name="device_state_connected">
+        <item quantity="one">• התקן אחד מחובר</item>
+        <item quantity="two">• שני התקנים מחוברים</item>
+        <item quantity="other">• %d התקנים מחוברים</item>
+    </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="one">• התקן אחד מסתנכרן</item>
+        <item quantity="two">• שני התקנים מסתנכרנים</item>
+        <item quantity="other">• %d התקנים מסתנכרנים</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="one">• התקן אחד ממתין לסנכרון</item>
+        <item quantity="two">• שני התקנים ממתינים לסנכרון</item>
+        <item quantity="other">• %d התקנים ממתינים לסנכרון</item>
+    </plurals>
+    <string name="quick_settings_tile_auto_mode">מצב אוטומטי</string>
+    <string name="quick_settings_tile_manual_mode_started">הותחל ידנית</string>
+    <string name="quick_settings_tile_manual_mode_stopped">נעצר ידנית</string>
 </resources>
