@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Go up one level in the folder picker dialog when pressing back ([PR #166])
+* Reduce minimum API version to API 26 (Android 8.0) ([Issue #165], [PR #167])
 
 ### Version 2.4
 
@@ -270,6 +271,7 @@
 [Issue #130]: https://github.com/chenxiaolong/BasicSync/issues/130
 [Issue #131]: https://github.com/chenxiaolong/BasicSync/issues/131
 [Issue #150]: https://github.com/chenxiaolong/BasicSync/issues/150
+[Issue #165]: https://github.com/chenxiaolong/BasicSync/issues/165
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -389,3 +391,4 @@
 [PR #163]: https://github.com/chenxiaolong/BasicSync/pull/163
 [PR #164]: https://github.com/chenxiaolong/BasicSync/pull/164
 [PR #166]: https://github.com/chenxiaolong/BasicSync/pull/166
+[PR #167]: https://github.com/chenxiaolong/BasicSync/pull/167
