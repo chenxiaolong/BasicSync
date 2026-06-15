@@ -6,6 +6,7 @@
 package com.chiller3.basicsync.settings
 
 import android.os.Parcelable
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -61,6 +62,7 @@ fun FolderPickerDialog(
         }
 
         val state by viewModel.state.collectAsStateWithLifecycle()
+        val hasParent = ".." in state.childDirs
 
         var showNewFolderDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -79,6 +81,11 @@ fun FolderPickerDialog(
                         )
                     }
                 }
+
+                BackHandler(
+                    enabled = hasParent,
+                    onBack = { viewModel.navigate(File("..")) },
+                )
             },
             onDismissRequest = onDismiss,
             confirmButton = {
@@ -96,7 +103,7 @@ fun FolderPickerDialog(
                 }
             },
             properties = DialogProperties(
-                dismissOnBackPress = false,
+                dismissOnBackPress = !hasParent,
                 dismissOnClickOutside = false,
             ),
         )
