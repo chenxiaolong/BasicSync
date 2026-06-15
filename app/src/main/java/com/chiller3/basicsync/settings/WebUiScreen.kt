@@ -141,16 +141,23 @@ fun WebUiScreen(onExit: () -> Unit) {
         webView.evaluateJavascript("bridgeInit($isTv);") {}
     }
 
+    fun closeAllDropdowns() {
+        webView.evaluateJavascript("closeAllDropdowns();") {}
+    }
+
     fun closeTopModal() {
         webView.evaluateJavascript("closeTopModal();") {}
     }
 
+    var dropdownsOpen by remember { mutableIntStateOf(0) }
     var modalsOpen by remember { mutableIntStateOf(0) }
     var hasBrowserHistory by remember { mutableStateOf(false) }
     BackHandler(
-        enabled = modalsOpen > 0 || hasBrowserHistory,
+        enabled = dropdownsOpen > 0 || modalsOpen > 0 || hasBrowserHistory,
         onBack = {
-            if (modalsOpen > 0) {
+            if (dropdownsOpen > 0) {
+                closeAllDropdowns()
+            } else if (modalsOpen > 0) {
                 closeTopModal()
             } else if (hasBrowserHistory) {
                 webView.goBack()
@@ -204,6 +211,11 @@ fun WebUiScreen(onExit: () -> Unit) {
             @JavascriptInterface
             fun scanQrCode() {
                 requestQrScanner.launch(Intent(context, QrScannerActivity::class.java))
+            }
+
+            @JavascriptInterface
+            fun onDropdownsOpenChanged(count: Int) {
+                dropdownsOpen = count
             }
 
             @JavascriptInterface

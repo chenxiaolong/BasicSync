@@ -182,6 +182,10 @@ function onDeviceIdScanned(deviceId) {
     elemDeviceId.dispatchEvent(new InputEvent('input'));
 }
 
+function closeAllDropdowns() {
+    $('.dropdown.open > .dropdown-toggle').dropdown('toggle');
+}
+
 function closeTopModal() {
     const modals = document.getElementsByClassName('modal');
     var topModal = null;
@@ -222,6 +226,18 @@ function bridgeInit(isTv) {
             subtree: true,
         });
     }
+
+    var dropdownsOpen = 0;
+
+    $(document).on('shown.bs.dropdown', function (e) {
+        dropdownsOpen++;
+        BasicSync.onDropdownsOpenChanged(dropdownsOpen);
+    });
+
+    $(document).on('hidden.bs.dropdown', function (e) {
+        dropdownsOpen--;
+        BasicSync.onDropdownsOpenChanged(dropdownsOpen);
+    });
 
     var modalsOpen = 0;
 
@@ -282,7 +298,7 @@ function bridgeInit(isTv) {
             * possible to scroll the menus by scrolling the page itself. We have to make the menus
             * individually scrollable instead.
             */
-            .dropdown-menu {
+            .navbar-fixed-top .dropdown-menu {
                 column-count: auto !important;
                 height: unset !important;
                 /* Roughly the amount of free space excluding insets and nav bar. */
