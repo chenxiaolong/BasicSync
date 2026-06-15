@@ -11,6 +11,7 @@
 
 * Disable floating web UI nav bar on Android TV to fix arrow button navigation ([PR #163])
   * This was a regression introduced in version 2.3.
+* Close open dropdown menus in Syncthing's web UI when pressing back ([PR #164])
 
 ### Version 2.3
 
@@ -382,3 +383,4 @@
 [PR #161]: https://github.com/chenxiaolong/BasicSync/pull/161
 [PR #162]: https://github.com/chenxiaolong/BasicSync/pull/162
 [PR #163]: https://github.com/chenxiaolong/BasicSync/pull/163
+[PR #164]: https://github.com/chenxiaolong/BasicSync/pull/164
