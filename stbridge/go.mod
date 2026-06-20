@@ -6,10 +6,13 @@ require (
 	github.com/syncthing/syncthing v0.0.0
 	go.foxforensics.dev/go-zip v0.6.2
 	golang.org/x/mobile v0.0.0-20260602190626-68735029466e
-	golang.org/x/sys v0.45.0
+	golang.org/x/sys v0.46.0
 )
 
-replace github.com/syncthing/syncthing v0.0.0 => ../external/syncthing
+replace (
+	github.com/syncthing/syncthing v0.0.0 => ../external/syncthing
+	golang.org/x/sys v0.46.0 => github.com/chenxiaolong/golang-x-sys v0.46.0-basicsync.0
+)
 
 require (
 	github.com/AudriusButkevicius/recli v0.0.7 // indirect
