@@ -11,6 +11,7 @@
 
 * Go up one level in the folder picker dialog when pressing back ([PR #166])
 * Reduce minimum API version to API 26 (Android 8.0) ([Issue #165], [PR #167])
+* Add workaround to fix file watchers on x86_64 (for Android emulator and other x86_64 devices) ([PR #174])
 
 ### Version 2.4
 
@@ -392,3 +393,4 @@
 [PR #164]: https://github.com/chenxiaolong/BasicSync/pull/164
 [PR #166]: https://github.com/chenxiaolong/BasicSync/pull/166
 [PR #167]: https://github.com/chenxiaolong/BasicSync/pull/167
+[PR #174]: https://github.com/chenxiaolong/BasicSync/pull/174
