@@ -171,4 +171,62 @@
     <string name="quick_settings_tile_auto_mode">Mode automatique</string>
     <string name="quick_settings_tile_manual_mode_started">Démarré manuellement</string>
     <string name="quick_settings_tile_manual_mode_stopped">Arrêté manuellement</string>
+    <string name="pref_allow_auto_mode_name">Autoriser le mode automatique</string>
+    <string name="pref_allow_auto_mode_desc">Si désactivé, toute fonctionnalité liée au mode automatique sera supprimée de l\'application, de la notification et de la tuile des paramètres rapides.</string>
+    <string name="alert_browser_not_found">Aucun navigateur disponible.</string>
+    <string name="alert_documentsui_not_found">Le gestionnaire de fichiers intégré à Android (DocumentsUI) est indisponible.</string>
+    <string name="alert_tv_inhibit_battery_opt">Désactiver les optimisations de la \"batterie\" sur Android TV demande des étapes manuelles.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">Android TV n\'a pas d\'interface utilisateur pour désactiver les optimisations de \"batterie\", mais est tout de même requis pour exécuter Syncthing en arrière-plan. Ce doit être fait en exécutant la commande adb suivante.</string>
+    <string name="notification_channel_alerts_name">Alertes Syncthing</string>
+    <string name="notification_channel_alerts_desc">Demandes de appareil/partage et autres alertes remontées par Syncthing</string>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="one">%d alerte Syncthing</item>
+        <item quantity="many">%d alertes Syncthing</item>
+        <item quantity="other">%d alertes Syncthing</item>
+    </plurals>
+    <plurals name="folder_state_idle">
+        <item quantity="one">%d partage à jour</item>
+        <item quantity="many">%d partages à jour</item>
+        <item quantity="other">%d partages à jour</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="one">%d partage en cours d\'analyse</item>
+        <item quantity="many">%d partages en cours d\'analyse</item>
+        <item quantity="other">%d partages en cours d\'analyse</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="one">%d partage en cours de synchronisation</item>
+        <item quantity="many">%d partages en cours de synchronisation</item>
+        <item quantity="other">%d partages en cours de synchronisation</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">%d partage en nettoyage de vieux fichiers</item>
+        <item quantity="many">%d partages en nettoyage de vieux fichiers</item>
+        <item quantity="other">%d partages en nettoyage de vieux fichiers</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="one">%d partage avec erreurs</item>
+        <item quantity="many">%d partages avec erreurs</item>
+        <item quantity="other">%d partages avec erreurs</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="one">%d partage en démarrage</item>
+        <item quantity="many">%d partages en démarrage</item>
+        <item quantity="other">%d partages en démarrage</item>
+    </plurals>
+    <plurals name="device_state_connected">
+        <item quantity="one">%d appareil connecté</item>
+        <item quantity="many">%d appareils connecté</item>
+        <item quantity="other">%d appareils connecté</item>
+    </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="one">%d appareil en cours de synchronisation</item>
+        <item quantity="many">%d appareils en cours de synchronisation</item>
+        <item quantity="other">%d appareils en cours de synchronisation</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="one">%d appareil en attente de synchronisation</item>
+        <item quantity="many">%d appareils en attente de synchronisation</item>
+        <item quantity="other">%d appareils en attente de synchronisation</item>
+    </plurals>
 </resources>
