@@ -8,6 +8,7 @@ package com.chiller3.basicsync.settings
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -51,6 +52,8 @@ fun ConflictsScreen(
 
     rememberServiceEventWatcher(
         listener = object : SyncthingService.ServiceListener {
+            override fun onMissingStoragePermissions(internal: Boolean, external: List<Uri>) {}
+
             override fun onExitRequested() = onExit()
 
             override fun onRunStateChanged(

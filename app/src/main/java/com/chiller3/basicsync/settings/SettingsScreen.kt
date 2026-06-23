@@ -12,6 +12,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.BatteryManager
 import android.os.Build
 import android.provider.Settings
@@ -52,6 +53,7 @@ import com.chiller3.basicsync.Permissions
 import com.chiller3.basicsync.Preferences
 import com.chiller3.basicsync.R
 import com.chiller3.basicsync.binding.stbridge.Stbridge
+import com.chiller3.basicsync.extension.DOCUMENTSUI_AUTHORITY
 import com.chiller3.basicsync.extension.formattedString
 import com.chiller3.basicsync.syncthing.BlockedReason
 import com.chiller3.basicsync.syncthing.SyncthingService
@@ -114,7 +116,6 @@ fun SettingsScreen(
     val notificationsGranted = remember(reloadPerms) {
         Permissions.have(context, Permissions.NOTIFICATION)
     }
-    val localStorageAccess = remember(reloadPerms) { Permissions.haveLocalStorage(context) }
     // Hide this while loading to avoid jank in the usual case.
     var appHibernationDisabled by rememberSaveable { mutableStateOf(true) }
 
@@ -126,6 +127,20 @@ fun SettingsScreen(
     val serviceState by viewModel.serviceState.collectAsStateWithLifecycle()
     val conflicts by viewModel.conflicts.collectAsStateWithLifecycle()
     val importExportState by viewModel.importExportState.collectAsStateWithLifecycle()
+
+    var storagePermissionRequest by rememberSaveable { mutableStateOf(false) }
+    fun renotifyOrRestartService() {
+        // For storage permissions, we need Syncthing to restart so that it can reevaluate required
+        // permissions based on what folders are configured.
+        val action = if (storagePermissionRequest) {
+            storagePermissionRequest = false
+            SyncthingService.ACTION_RECHECK
+        } else {
+            SyncthingService.ACTION_RENOTIFY
+        }
+
+        SyncthingService.start(context, action)
+    }
 
     val requestInhibitBatteryOpt = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
@@ -139,22 +154,25 @@ fun SettingsScreen(
     val requestPermissionActivity = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
     ) {
-        // Needed for the local storage permission. We intentionally don't check resultCode here
-        // because going back to the app after granting the permission results in RESULT_CANCELED.
-        SyncthingService.start(context, SyncthingService.ACTION_RENOTIFY)
-
+        renotifyOrRestartService()
         reloadPerms++
     }
     val requestPermissionsRequired = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions(),
     ) { granted ->
         if (granted.all { it.value }) {
-            // Resend service notification so that the user can actually interact with the service.
-            SyncthingService.start(context, SyncthingService.ACTION_RENOTIFY)
-
+            renotifyOrRestartService()
             reloadPerms++
         } else {
             requestPermissionActivity.launch(Permissions.getAppInfoIntent(context))
+        }
+    }
+    val requestSafExternalStorage = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocumentTree()
+    ) { uri ->
+        uri?.let {
+            SyncthingService.persistExternalStoragePermissions(context, it)
+            renotifyOrRestartService()
         }
     }
     val requestSafImportConfiguration = rememberLauncherForActivityResult(
@@ -179,8 +197,16 @@ fun SettingsScreen(
         }
     }
 
+    var missingInternal by rememberSaveable { mutableStateOf(false) }
+    var missingExternal by rememberSaveable { mutableStateOf(emptyList<Uri>()) }
+
     val watcher = rememberServiceEventWatcher(
         listener = object : SyncthingService.ServiceListener {
+            override fun onMissingStoragePermissions(internal: Boolean, external: List<Uri>) {
+                missingInternal = internal
+                missingExternal = external
+            }
+
             override fun onExitRequested() = onExit()
 
             override fun onRunStateChanged(
@@ -286,8 +312,9 @@ fun SettingsScreen(
             importExportState = importExportState,
             inhibitBatteryOpt = inhibitBatteryOpt,
             notificationsGranted = notificationsGranted,
-            localStorageAccess = localStorageAccess,
             appHibernationDisabled = appHibernationDisabled,
+            missingInternal = missingInternal,
+            missingExternal = missingExternal,
             conflicts = conflicts ?: emptyList(),
             isManualMode = isManualMode,
             hasBattery = hasBattery,
@@ -306,7 +333,17 @@ fun SettingsScreen(
             onNotificationsGrant = {
                 requestPermissionsRequired.launch(Permissions.NOTIFICATION)
             },
-            onLocalStorageAccessGrant = {
+            onAppHibernationDisable = {
+                requestPermissionActivity.launch(
+                    IntentCompat.createManageUnusedAppRestrictionsIntent(
+                        context,
+                        context.packageName,
+                    )
+                )
+            },
+            onInternalStorageGrant = {
+                storagePermissionRequest = true
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     val intent = Intent(
                         Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
@@ -318,13 +355,9 @@ fun SettingsScreen(
                     requestPermissionsRequired.launch(Permissions.LEGACY_STORAGE)
                 }
             },
-            onAppHibernationDisable = {
-                requestPermissionActivity.launch(
-                    IntentCompat.createManageUnusedAppRestrictionsIntent(
-                        context,
-                        context.packageName,
-                    )
-                )
+            onExternalStorageGrant = { uri ->
+                storagePermissionRequest = true
+                requestSafExternalStorage.launch(uri)
             },
             onConflictsOpen = {
                 context.startActivity(Intent(context, ConflictsActivity::class.java))
@@ -495,8 +528,9 @@ private fun SettingsContent(
     importExportState: ImportExportState?,
     inhibitBatteryOpt: Boolean,
     notificationsGranted: Boolean,
-    localStorageAccess: Boolean,
     appHibernationDisabled: Boolean,
+    missingInternal: Boolean,
+    missingExternal: List<Uri>,
     conflicts: List<String>,
     isManualMode: Boolean,
     hasBattery: Boolean,
@@ -511,8 +545,9 @@ private fun SettingsContent(
     isDebugMode: Boolean,
     onInhibitBatteryOptGrant: () -> Unit,
     onNotificationsGrant: () -> Unit,
-    onLocalStorageAccessGrant: () -> Unit,
     onAppHibernationDisable: () -> Unit,
+    onInternalStorageGrant: () -> Unit,
+    onExternalStorageGrant: (Uri) -> Unit,
     onConflictsOpen: () -> Unit,
     onWebUiOpen: () -> Unit,
     onConfigurationImport: () -> Unit,
@@ -558,20 +593,28 @@ private fun SettingsContent(
                 onGrant = onNotificationsGrant,
             ))
         }
-        if (!localStorageAccess) {
-            add(MissingPermission(
-                key = "local_storage_access",
-                title = stringResource(R.string.pref_local_storage_access_name),
-                summary = stringResource(R.string.pref_local_storage_access_desc),
-                onGrant = onLocalStorageAccessGrant,
-            ))
-        }
         if (!appHibernationDisabled) {
             add(MissingPermission(
                 key = "disable_app_hibernation",
                 title = stringResource(R.string.pref_disable_app_hibernation_name),
                 summary = stringResource(R.string.pref_disable_app_hibernation_desc),
                 onGrant = onAppHibernationDisable,
+            ))
+        }
+        if (missingInternal) {
+            add(MissingPermission(
+                key = "missing_internal",
+                title = stringResource(R.string.pref_local_storage_access_name),
+                summary = stringResource(R.string.pref_local_storage_access_desc),
+                onGrant = onInternalStorageGrant,
+            ))
+        }
+        for (uri in missingExternal) {
+            add(MissingPermission(
+                key = "missing_external:$uri",
+                title = stringResource(R.string.pref_external_storage_access),
+                summary = uri.formattedString,
+                onGrant = { onExternalStorageGrant(uri) },
             ))
         }
     }
@@ -939,8 +982,9 @@ private fun PreviewSettingsScreen() {
                 importExportState = null,
                 inhibitBatteryOpt = false,
                 notificationsGranted = false,
-                localStorageAccess = false,
                 appHibernationDisabled = false,
+                missingInternal = true,
+                missingExternal = listOf("content://${DOCUMENTSUI_AUTHORITY}/tree/primary%3afile".toUri()),
                 conflicts = listOf(""),
                 isManualMode = false,
                 hasBattery = true,
@@ -955,8 +999,9 @@ private fun PreviewSettingsScreen() {
                 isDebugMode = true,
                 onInhibitBatteryOptGrant = {},
                 onNotificationsGrant = {},
-                onLocalStorageAccessGrant = {},
                 onAppHibernationDisable = {},
+                onInternalStorageGrant = {},
+                onExternalStorageGrant = {},
                 onConflictsOpen = {},
                 onWebUiOpen = {},
                 onConfigurationImport = {},

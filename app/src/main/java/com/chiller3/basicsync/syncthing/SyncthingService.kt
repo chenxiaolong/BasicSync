@@ -15,11 +15,14 @@ import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.provider.DocumentsContract
 import android.util.Log
 import androidx.annotation.GuardedBy
 import androidx.annotation.WorkerThread
 import androidx.core.app.ServiceCompat
+import androidx.core.net.toUri
 import com.chiller3.basicsync.Notifications
+import com.chiller3.basicsync.Permissions
 import com.chiller3.basicsync.Preferences
 import com.chiller3.basicsync.binding.stbridge.Stbridge
 import com.chiller3.basicsync.binding.stbridge.SyncthingApp
@@ -47,6 +50,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         val ACTION_START = "${SyncthingService::class.java.canonicalName}.start"
         val ACTION_STOP = "${SyncthingService::class.java.canonicalName}.stop"
         val ACTION_RENOTIFY = "${SyncthingService::class.java.canonicalName}.renotify"
+        val ACTION_RECHECK = "${SyncthingService::class.java.canonicalName}.restart"
         val ACTION_EXIT = "${SyncthingService::class.java.canonicalName}.exit"
 
         fun createIntent(context: Context, action: String?) =
@@ -56,6 +60,43 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
         fun start(context: Context, action: String?) {
             context.startForegroundService(createIntent(context, action))
+        }
+
+        private fun unpack0Sep(str0Sep: String): MutableList<String> =
+            mutableListOf<String>().apply {
+                if (str0Sep.isNotEmpty()) {
+                    str0Sep.splitToSequence('\u0000').toCollection(this)
+                }
+            }
+
+        fun encodeSafUri(uri: Uri, path: String? = null) = buildString {
+            append(Uri.encode(uri.toString()))
+
+            if (path != null) {
+                append('/')
+                append(path)
+            }
+        }
+
+        fun decodeSafUri(encoded: String): Pair<Uri, String?> {
+            val separator = encoded.indexOf('/')
+            val (uriEncoded, path) = if (separator < 0) {
+                encoded to null
+            } else {
+                encoded.substring(0, separator) to encoded.substring(separator + 1)
+            }
+            val uri = Uri.decode(uriEncoded).toUri()
+
+            return uri to path
+        }
+
+        fun persistExternalStoragePermissions(context: Context, uri: Uri) {
+            // Permissions are released in onCheckStoragePermissions() when unneeded.
+            context.contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+            )
         }
     }
 
@@ -159,9 +200,13 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     }
 
     sealed interface PreRunAction {
+        val needRecheck: Boolean
+
         fun perform(context: Context)
 
         data class Import(val uri: Uri, val password: Password) : PreRunAction {
+            override val needRecheck = true
+
             override fun perform(context: Context) {
                 @SuppressLint("Recycle")
                 val fd = context.contentResolver.openFileDescriptor(uri, "r")
@@ -173,6 +218,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         }
 
         data class Export(val uri: Uri, val password: Password) : PreRunAction {
+            override val needRecheck = false
+
             override fun perform(context: Context) {
                 @SuppressLint("Recycle")
                 val fd = context.contentResolver.openFileDescriptor(uri, "wt")
@@ -234,6 +281,15 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     @GuardedBy("stateLock")
     private var blockedReasons = EnumSet.noneOf(BlockedReason::class.java)
+
+    // We want to check permissions on startup, even if the user currently set Syncthing to be
+    // manually stopped.
+    @GuardedBy("stateLock")
+    private var recheckPermissions = true
+    @GuardedBy("stateLock")
+    private var missingInternal = false
+    @GuardedBy("stateLock")
+    private var missingExternal = emptyList<Uri>()
 
     @GuardedBy("stateLock")
     private var shouldThreadRun = true
@@ -355,7 +411,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "Received intent: $intent")
 
-        var recomputeBlockedReasons = false
         var forceShowNotification = false
 
         when (intent?.action) {
@@ -383,10 +438,12 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 prefs.isManualMode = true
             }
             ACTION_RENOTIFY -> {
-                // Blocked reasons needs to be recomputed because this intent might be due to the
-                // local storage permissions being successfully granted.
-                recomputeBlockedReasons = true
                 forceShowNotification = true
+            }
+            ACTION_RECHECK -> {
+                synchronized(stateLock) {
+                    recheckPermissions = true
+                }
             }
             ACTION_EXIT -> {
                 allListeners { it.onExitRequested() }
@@ -398,10 +455,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             else -> Log.w(TAG, "Ignoring unrecognized intent: $intent")
         }
 
-        stateChanged(
-            recomputeBlockedReasons = recomputeBlockedReasons,
-            forceShowNotification = forceShowNotification,
-        )
+        stateChanged(forceShowNotification = forceShowNotification)
 
         return START_STICKY
     }
@@ -461,6 +515,12 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                         if (!prefs.manualShouldRun) {
                             add(BlockedReason.MANUAL)
                         }
+                    }
+
+                    // We intentionally only check internal storage permissions. See
+                    // onCheckStoragePermissions().
+                    if (missingInternal && !recheckPermissions) {
+                        add(BlockedReason.NO_STORAGE_PERMISSIONS)
                     }
                 }
             }
@@ -530,6 +590,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         val needFullRestart = !shouldThreadRun
                 || runningProxyInfo != deviceState.proxyInfo
                 || preRunActions.isNotEmpty()
+                || recheckPermissions
 
         if (needFullRestart || isStarted != shouldStart || isResumed != shouldResume) {
             if (!needFullRestart && app != null && prefs.keepAlive) {
@@ -549,9 +610,10 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         while (true) {
             val actions = ArrayList<PreRunAction>()
             var proxyInfo: ProxyInfo
+            var recheckOnly: Boolean
 
             synchronized(stateLock) {
-                while (preRunActions.isEmpty() && !shouldStart) {
+                while (preRunActions.isEmpty() && !shouldStart && !recheckPermissions) {
                     if (!shouldThreadRun) {
                         Log.d(TAG, "Service is exiting; shutting down")
                         return
@@ -566,6 +628,9 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
                 runningProxyInfo = deviceState.proxyInfo
                 proxyInfo = deviceState.proxyInfo
+
+                // recheckPermissions is cleared in onCheckStoragePermissions().
+                recheckOnly = !shouldStart
             }
 
             if (actions.isNotEmpty()) {
@@ -586,6 +651,10 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     }
 
                     synchronized(stateLock) {
+                        if (action.needRecheck) {
+                            recheckPermissions = true
+                        }
+
                         allListeners { it.onPreRunActionResult(action, exception) }
 
                         currentPreRunAction = null
@@ -603,6 +672,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     proxy = proxyInfo.proxy
                     noProxy = proxyInfo.noProxy
                     receiver = this@SyncthingService
+                    checkOnly = recheckOnly
                 })
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to run syncthing", e)
@@ -616,6 +686,61 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 prefs.isManualMode = true
 
                 // stateChanged() will be called by onSharedPreferenceChanged().
+            }
+        }
+    }
+
+    override fun onCheckStoragePermissions(internal0Sep: String, external0Sep: String) {
+        val external = mutableSetOf<Uri>()
+
+        for (encoded in unpack0Sep(external0Sep)) {
+            try {
+                external.add(decodeSafUri(encoded).first)
+            } catch (e: Exception) {
+                Log.w(TAG, "Ignoring invalid encoded URI: $encoded", e)
+            }
+        }
+
+        for (persisted in contentResolver.persistedUriPermissions) {
+            if (!DocumentsContract.isTreeUri(persisted.uri)) {
+                continue
+            }
+
+            if (!external.remove(persisted.uri)) {
+                Log.d(TAG, "Releasing persisted permission: $persisted")
+                try {
+                    var flags = 0
+                    if (persisted.isReadPermission) {
+                        flags = flags or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    }
+                    if (persisted.isWritePermission) {
+                        flags = flags or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    }
+
+                    contentResolver.releasePersistableUriPermission(persisted.uri, flags)
+                } catch (e: Exception) {
+                    Log.w(TAG, "Failed to release persisted permission: $persisted", e)
+                }
+            }
+        }
+
+        synchronized(stateLock) {
+            recheckPermissions = false
+            missingInternal = internal0Sep.isNotEmpty() && !Permissions.haveLocalStorage(this)
+            missingExternal = external.sorted()
+
+            allListeners {
+                it.onMissingStoragePermissions(missingInternal, missingExternal)
+            }
+
+            stateChanged(recomputeBlockedReasons = true)
+
+            // We intentionally block on missing internal permissions only. If a SAF URI is
+            // inaccessible, Syncthing will completely lose access to it. However, if the local
+            // storage permission is denied, folders are still visible, so Syncthing thinks
+            // everything was deleted.
+            if (missingInternal) {
+                throw SecurityException("Missing internal storage permissions")
             }
         }
     }
@@ -648,14 +773,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     @WorkerThread
     override fun onConflictsUpdated(paths0Sep: String) {
-        val paths = if (paths0Sep.isEmpty()) {
-            emptyList()
-        } else {
-            mutableListOf<String>().apply {
-                paths0Sep.splitToSequence('\u0000').toCollection(this)
-                sort()
-            }
-        }
+        val paths = unpack0Sep(paths0Sep).apply { sort() }
 
         synchronized(stateLock) {
             syncthingConflicts = paths
@@ -733,6 +851,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     }
 
     interface ServiceListener {
+        fun onMissingStoragePermissions(internal: Boolean, external: List<Uri>)
+
         fun onExitRequested()
 
         fun onRunStateChanged(state: ServiceState, guiInfo: GuiInfo?)
@@ -751,6 +871,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     Log.w(TAG, "Listener was already registered: $listener")
                 }
 
+                listener.onMissingStoragePermissions(missingInternal, missingExternal)
                 listener.onRunStateChanged(lastServiceState!!, guiInfo)
                 listener.onConflictsUpdated(syncthingConflicts)
             }

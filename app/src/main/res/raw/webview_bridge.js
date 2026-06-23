@@ -41,12 +41,40 @@ function addFolderPicker(element) {
     inputGroup.appendChild(buttonGroup);
 
     button.addEventListener('click', function () {
-        BasicSync.openFolderPicker(element.value);
+        const filesystemType = document.getElementById('filesystemType');
+
+        BasicSync.openFolderPicker(filesystemType.value, element.value);
     }, false);
 
     // Disable the builtin autocomplete. The popup renders very poorly on mobile, with the width
     // frequently being too narrow and it not opening at the correct position.
     element.removeAttribute('list');
+}
+
+function addFilesystemType(element) {
+    console.log('Adding filesystem type box to:', element);
+
+    // Depends on addFolderPicker() having run already.
+    const origInputGroup = element.parentElement;
+
+    const filesystemType = document.createElement('input');
+    filesystemType.id = 'filesystemType';
+    filesystemType.name = 'filesystemType';
+    filesystemType.type = 'text';
+    // Angular won't update the value if type=hidden.
+    filesystemType.style = 'display: none';
+    filesystemType.classList.add('form-control');
+    filesystemType.setAttribute('ng-model', 'currentFolder.filesystemType');
+    filesystemType.setAttribute('ng-readonly', 'editingFolderExisting()');
+    filesystemType.setAttribute('ng-required', '!editingFolderDefaults()');
+    filesystemType.setAttribute('ng-aria-required', '!editingFolderDefaults()');
+
+    angular.element(document).injector().invoke(function ($compile) {
+        const scope = angular.element(element).scope();
+        $compile(filesystemType)(scope);
+
+        origInputGroup.insertAdjacentElement('afterend', filesystemType);
+    });
 }
 
 function addQrScanner(element) {
@@ -137,6 +165,7 @@ function tryMutate(isTv) {
         elemFolderPath = document.getElementById('folderPath');
         if (elemFolderPath) {
             addFolderPicker(elemFolderPath);
+            addFilesystemType(elemFolderPath);
         }
     }
 
@@ -171,9 +200,13 @@ function tryMutate(isTv) {
         && settingsToDisable.size == 0;
 }
 
-function onFolderSelected(path) {
+function onFolderSelected(type, path) {
     elemFolderPath.value = path;
     elemFolderPath.dispatchEvent(new InputEvent('input'));
+
+    const elemFilesystemType = document.getElementById('filesystemType');
+    elemFilesystemType.value = type;
+    elemFilesystemType.dispatchEvent(new InputEvent('input'));
 }
 
 function onDeviceIdScanned(deviceId) {

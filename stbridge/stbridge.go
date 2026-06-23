@@ -3,9 +3,6 @@
 
 package stbridge
 
-// #include <android/api-level.h>
-import "C"
-
 import (
 	// This package's init() MUST run first.
 	_ "stbridge/pidfdhack"
@@ -21,6 +18,7 @@ import (
 	"log"
 	"log/slog"
 	"net"
+	_ "net/http"
 	"os"
 	"path/filepath"
 	"slices"
@@ -59,13 +57,13 @@ func cleanOldFiles() {
 	// We only clean up a subset of what upstream syncthing does since the
 	// initial release started with 2.x and certain features aren't enabled.
 	locationGlobs := map[string]map[string]time.Duration{
-		locations.GetBaseDir(locations.ConfigBaseDir): map[string]time.Duration{
+		locations.GetBaseDir(locations.ConfigBaseDir): {
 			"panic-*.log":   7 * 24 * time.Hour,
 			"config.xml.v*": 30 * 24 * time.Hour,
 			// From before version 2.3.
 			"support-bundle-*": 30 * 24 * time.Hour,
 		},
-		locations.GetBaseDir(locations.SupportBundleBaseDir): map[string]time.Duration{
+		locations.GetBaseDir(locations.SupportBundleBaseDir): {
 			"support-bundle-*": 30 * 24 * time.Hour,
 		},
 	}
@@ -294,6 +292,8 @@ func (app *SyncthingApp) GuiTlsCert() []byte {
 }
 
 type SyncthingStatusReceiver interface {
+	OnCheckStoragePermissions(internal0Sep string, external0Sep string) error
+
 	OnSyncthingStarted(app *SyncthingApp)
 
 	OnSyncthingStopped(app *SyncthingApp)
@@ -349,7 +349,7 @@ func dispatchConflicts(
 	for folder, names := range conflictsInfo.byFolder {
 		folderPath := conflictsInfo.folderPaths[folder]
 
-		for name, _ := range names {
+		for name := range names {
 			if paths0Sep.Len() > 0 {
 				paths0Sep.WriteRune('\u0000')
 			}
@@ -463,7 +463,7 @@ func dispatchDeviceStates(
 	syncing := int32(0)
 	pending := int32(0)
 
-	for deviceID, _ := range deviceStates.dirty {
+	for deviceID := range deviceStates.dirty {
 		if _, ok := deviceStates.connected[deviceID]; ok {
 			syncing += 1
 		} else {
@@ -715,6 +715,10 @@ func eventLoop(
 				alertsInfo.needsRestart = cfgWrapper.RequiresRestart()
 				dispatchAlerts(alertsInfo, receiver)
 
+				// Let Syncthing service know so that outdated (ignored by user)
+				// permission warnings for external storage can be removed.
+				_ = checkStoragePermissions(cfg, receiver)
+
 			default:
 				log.Printf("Unexpected event: %+v", evt)
 			}
@@ -786,11 +790,39 @@ func startEventLoop(
 	return nil
 }
 
+func checkStoragePermissions(
+	cfg config.Configuration,
+	receiver SyncthingStatusReceiver,
+) error {
+	var internal0Sep strings.Builder
+	var external0Sep strings.Builder
+
+	for _, folder := range cfg.Folders {
+		var builder *strings.Builder
+
+		if folder.FilesystemType == config.FilesystemTypeBasic {
+			builder = &internal0Sep
+		} else if folder.FilesystemType == config.FilesystemType(filesystemTypeSaf) {
+			builder = &external0Sep
+		} else {
+			continue
+		}
+
+		if builder.Len() > 0 {
+			builder.WriteRune('\u0000')
+		}
+		builder.WriteString(folder.Path)
+	}
+
+	return receiver.OnCheckStoragePermissions(internal0Sep.String(), external0Sep.String())
+}
+
 type SyncthingStartupConfig struct {
 	DeviceModel string
 	Proxy       string
 	NoProxy     string
 	Receiver    SyncthingStatusReceiver
+	CheckOnly   bool
 }
 
 func Run(startup *SyncthingStartupConfig) error {
@@ -824,6 +856,19 @@ func Run(startup *SyncthingStartupConfig) error {
 		return fmt.Errorf("failed to load config: %w", err)
 	}
 	go cfg.Serve(ctx)
+
+	if err := checkStoragePermissions(cfg.RawCopy(), startup.Receiver); err != nil {
+		// We intentionally don't fail with an error because we don't want to
+		// show this as a fatal error to the user. There's special handling for
+		// permissions in SyncthingService.
+		log.Printf("Exiting because storage permissions denied: %v", err)
+		return nil
+	}
+
+	if startup.CheckOnly {
+		log.Print("This was a storage permission check only run")
+		return nil
+	}
 
 	waiter, err := cfg.Modify(func(c *config.Configuration) {
 		// Try to stick with existing ports, but always allow picking new ones

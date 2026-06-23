@@ -10,7 +10,8 @@ The app is intentionally kept very basic so that the project is easy to maintain
 
 ## Features
 
-* Supports Android 9 and newer
+* Supports Android 8 and newer
+* Supports folders on [external storage](#external-storage)
 * Supports importing and exporting the configuration
 * Supports pausing syncing based on network and battery conditions
 * Supports Android's HTTP proxy settings
@@ -18,14 +19,6 @@ The app is intentionally kept very basic so that the project is easy to maintain
     * This makes BasicSync immune to Android >=12's child process restrictions
 * Small additions to Syncthing's web UI to add a folder picker and QR code scanner
 * Detects and reports sync conflicts
-
-## Limitations
-
-* Android's Storage Access Framework is not supported. While, with effort, it's possible to implement a custom filesystem backend for Syncthing, SAF is not well suited for Syncthing's file access patterns.
-
-    * Accessing files by path is extremely expensive. For example, accessing `a/b/c` requires `stat`ing every file in directories `a` and `b`. This is unavoidable without caching.
-    * Syncthing is much more efficient when it can monitor for changes with inotify-style watchers. While it is technically possible to monitor for changes to directories with SAF, it does not report what changed. Computing the changes is an expensive operation. SAF also does not support watching files, only directories.
-    * Creating and opening files are two separate operations, which can result in concurrency issues and file conflicts. Furthermore, attempting to create a file that already exists results in Android creating a new file with a numbered suffix instead of returning an error.
 
 ## Usage
 
@@ -71,6 +64,34 @@ The app is intentionally kept very basic so that the project is easy to maintain
 Syncthing listens on the loopback interface and is available via `127.0.0.1:8384` by default. BasicSync will try to use the same port on every start, but will automatically pick a new random port if there is a conflict. The current port number can be found in Web UI -> Actions -> Settings -> GUI. HTTPS and basic authentication are both forcibly enabled every time Syncthing starts.
 
 For basic authentication, the password is the API token. Generating new API tokens is supported, but setting an arbitrary password is not. BasicSync will internally set the password to the API token on every start.
+
+## External storage
+
+BasicSync supports syncing files on external storage via Android's Storage Access Framework (SAF). This is primarily intended for use with SD cards and USB drives, but can work with well-behaved third party SAF provider apps as well.
+
+Where possible, sync to internal storage instead. Using external storage is discouraged because SAF is not well suited for how Syncthing accesses files.
+
+* Accessing files by path is extremely inefficient. For example, it is not possible to directly access a nested file like `a/b/c`. Instead, Android will list every file in `a` and `b` and query their metadata before `c` is accessible. To reduce the impact of this, BasicSync caches directory listings and file metadata, but it will still be significantly slower than internal storage.
+
+* SAF cannot report any watcher events more specific than "some file changed in this folder". When a file is changed, Syncthing needs to rescan the folder it's stored in instead of just the file. That said, leaving file watchers enabled is generally still a good idea if files aren't being frequently changed.
+
+* SAF cannot guarantee that a creating a file will have the expected filename. When multiple processes try to create the same file at the same time, `file.txt` may be created as, for example, `file (1).txt`. BasicSync tries to reduce the chance of this happening within Syncthing, but it cannot protect from other apps writing to the same files.
+
+When using external storage, there is higher chance of running into unexpected sync errors. If they occur, wait 5 minutes for BasicSync's caches to expire and then trigger a rescan of the folder from Syncthing's web UI. Due to SAF's limitations, this is the best that can be done.
+
+**NOTE**: External storage support is a BasicSync feature, not a Syncthing feature. BasicSync has a large amount of code for bridging Syncthing's custom filesystem support to SAF. This means if the Syncthing config is exported from BasicSync and imported into another app, folders on external storage will not work properly.
+
+### SAF custom filesystem scheme
+
+For developers of other Syncthing apps, the custom filesystem scheme that BasicSync uses is:
+
+* Filesystem type: `saf`
+* Filesystem initialization path: `<URL-encoded SAF tree URI>[/<subpath>]`
+    * The SAF tree URI is the `content://<authority>/tree/<document ID>` URI returned by Android's `ACTION_OPEN_DOCUMENT_TREE` folder selector.
+    * The SAF tree URI is URL-encoded to prevent forward slashes from being included, while keeping the string relatively human-readable. It must not have forward slashes because Syncthing uses `filepath` APIs on the string and the URI must never be split apart since it's an opaque value.
+    * When initialized with an empty string, a virtual root directory is returned containing one child entry for each of the persisted SAF URIs that the user has granted permissions to. The children's names are the URL-encoding of each persisted URI, the same as if the custom filesystem was initialized for that URI.
+    * If a subpath is present, it represents a relative path within the SAF tree indicated by the first path component.
+    * Supporting both the empty path and also subpaths allows Syncthing's `/rest/system/browse?filesystem=saf` API endpoint to work.
 
 ## Remote control
 

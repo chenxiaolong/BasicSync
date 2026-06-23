@@ -8,6 +8,7 @@ package com.chiller3.basicsync
 import android.app.Application
 import android.util.Log
 import com.chiller3.basicsync.binding.stbridge.Stbridge
+import com.chiller3.basicsync.syncthing.SyncthingSafClient
 import java.io.File
 
 class MainApplication : Application() {
@@ -41,5 +42,6 @@ class MainApplication : Application() {
             cacheDir.toString(),
             getExternalFilesDir(null)!!.toString(),
         )
+        Stbridge.setSafClient(SyncthingSafClient(this))
     }
 }

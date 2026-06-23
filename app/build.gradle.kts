@@ -464,8 +464,11 @@ val stbridge = tasks.register("stbridge") {
     inputs.files(
         goModFile,
         File(stbridgeSrcDir, "go.sum"),
+        File(stbridgeSrcDir, "saf.go"),
+        File(stbridgeSrcDir, "saf_test.go"),
         File(stbridgeSrcDir, "stbridge.go"),
         File(File(stbridgeSrcDir, "pidfdhack"), "pidfdhack.go"),
+        File(File(stbridgeSrcDir, "pidfdhack"), "pidfdhack_android.go"),
         File(syncthingGitDir, "HEAD"),
         golang.map { it.outputs.files },
         goenv.map { it.outputs.files },
@@ -520,6 +523,15 @@ val stbridge = tasks.register("stbridge") {
             addGoEnvironment(this)
 
             workingDir(syncthingDir)
+        }
+
+        injected.execOps.exec {
+            executable(goExecutable)
+            args("test", "-ldflags=-checklinkname=0")
+            environment("PATH", "$binDir${File.pathSeparator}${environment["PATH"]}")
+            addGoEnvironment(this)
+
+            workingDir(stbridgeSrcDir)
         }
 
         injected.execOps.exec {

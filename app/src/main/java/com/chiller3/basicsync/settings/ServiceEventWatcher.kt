@@ -8,6 +8,7 @@ package com.chiller3.basicsync.settings
 import android.content.ComponentName
 import android.content.Context
 import android.content.ServiceConnection
+import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -82,6 +83,10 @@ class ServiceEventWatcher internal constructor(
     private fun onBinderGone() {
         binder?.unregisterListener(this)
         binder = null
+    }
+
+    override fun onMissingStoragePermissions(internal: Boolean, external: List<Uri>) {
+        handler.post { listener.onMissingStoragePermissions(internal, external) }
     }
 
     override fun onExitRequested() {

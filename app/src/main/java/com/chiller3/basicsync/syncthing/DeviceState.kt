@@ -136,10 +136,6 @@ data class DeviceState(
     fun blockedReasons(context: Context, prefs: Preferences): EnumSet<BlockedReason> {
         val reasons = EnumSet.noneOf(BlockedReason::class.java)
 
-        if (!Permissions.haveLocalStorage(context)) {
-            reasons.add(BlockedReason.NO_STORAGE_PERMISSIONS)
-        }
-
         if (!isNetworkConnected) {
             Log.d(TAG, "Blocked due to lack of network connectivity")
             reasons.add(BlockedReason.DISCONNECTED)

@@ -29,6 +29,8 @@
     <string name="pref_local_storage_access_name">Allow local storage access</string>
     <!-- Reason why access to local storage access is needed. /sdcard should be surrounded with <tt></tt> for displaying with a monospace font. -->
     <string name="pref_local_storage_access_desc">Needed for Syncthing to access the local storage under <tt>/sdcard</tt>.</string>
+    <!-- Title for the preference shown when access to a specific external storage folder is not granted. -->
+    <string name="pref_external_storage_access">Allow external storage access</string>
     <!-- Title for the preference shown when app hibernation is enabled. App hibernation has different names in different versions of Android, like "Manage app if unused". -->
     <string name="pref_disable_app_hibernation_name">Disable app hibernation</string>
     <!-- Reason why app hibernation needs to be disabled. -->
@@ -178,6 +180,16 @@
     <!-- Detailed message for alert shown when trying to disable "battery" optimizations on Android TV. -->
     <string name="alert_tv_inhibit_battery_opt_details">Android TV has no UI for disabling \"battery\" optimizations, but it is still required to run Syncthing in the background reliably. This must be done by running the following adb command.</string>
 
+    <!-- Title of the dialog for picking whether to use internal or external storage for a shared folder. -->
+    <string name="dialog_storage_type_title">Storage type</string>
+    <!-- Choice shown in storage type dialog for putting a shared folder on internal storage. -->
+    <string name="dialog_storage_type_internal_title">Internal storage</string>
+    <!-- Description for the storage type's internal storage option indicating that this is the most reliable option for Syncthing. -->
+    <string name="dialog_storage_type_internal_desc">Faster and has better compatibility with Syncthing.</string>
+    <!-- Choice shown in storage type dialog for putting a shared folder on external storage. -->
+    <string name="dialog_storage_type_external_title">External storage</string>
+    <!-- Description for the storage type's external storage option indicating that it is slower and less reliable. -->
+    <string name="dialog_storage_type_external_desc">Less efficient and may result in unexpected sync errors.</string>
     <!-- Button shown in the local filesystem folder picker to create a new local folder. -->
     <string name="dialog_new_folder_title">New folder</string>
     <!-- Message shown in the dialog for creating a new local filesystem folder. -->
