@@ -216,4 +216,10 @@
         <item quantity="many">%d dispositivos con sincronización pendiente</item>
         <item quantity="other">%d dispositivos con sincronización pendiente</item>
     </plurals>
+    <string name="pref_external_storage_access">Permitir acceso al almacenamiento externo</string>
+    <string name="dialog_storage_type_title">Tipo de almacenamiento</string>
+    <string name="dialog_storage_type_internal_title">Almacenamiento interno</string>
+    <string name="dialog_storage_type_internal_desc">Más rápido y con mejor compatibilidad con Syncthing.</string>
+    <string name="dialog_storage_type_external_title">Almacenamiento externo</string>
+    <string name="dialog_storage_type_external_desc">Menos eficiente y puede provocar errores de sincronización inesperados.</string>
 </resources>
