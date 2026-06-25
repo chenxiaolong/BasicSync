@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
@@ -52,7 +54,12 @@ fun AppScreen(
                     title = title,
                     navigationIcon = {
                         onBack?.let { onClick ->
-                            IconButton(onClick = onClick) {
+                            IconButton(
+                                onClick = onClick,
+                                colors = IconButtonDefaults.filledIconButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                                ),
+                            ) {
                                 @SuppressLint("PrivateResource")
                                 Icon(
                                     imageVector = Icons.AutoMirrored.ArrowBack,
