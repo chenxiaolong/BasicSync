@@ -231,4 +231,10 @@
         <item quantity="many">• %d urządzeń oczekujących na synchronizację</item>
         <item quantity="other">• %d urządzeń oczekujących na synchronizację</item>
     </plurals>
+    <string name="pref_external_storage_access">Zezwól na dostęp do pamięci zewnętrznej</string>
+    <string name="dialog_storage_type_title">Typ pamięci</string>
+    <string name="dialog_storage_type_internal_title">Pamięć wewnętrzna</string>
+    <string name="dialog_storage_type_internal_desc">Szybsza i bardziej kompatybilna z Syncthing.</string>
+    <string name="dialog_storage_type_external_title">Pamięć zewnętrzna</string>
+    <string name="dialog_storage_type_external_desc">Mniej wydajna i może powodować nieoczekiwane błędy synchronizacji.</string>
 </resources>
