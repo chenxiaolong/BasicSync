@@ -201,4 +201,10 @@
         <item quantity="one">%d Ordner wird gescannt</item>
         <item quantity="other">%d Ordner werden gescannt</item>
     </plurals>
+    <string name="dialog_storage_type_title">Speichertyp</string>
+    <string name="dialog_storage_type_internal_title">Interner Speicher</string>
+    <string name="dialog_storage_type_internal_desc">Schneller und bessere Kompatibilität mit Syncthing.</string>
+    <string name="dialog_storage_type_external_title">Externer Speicher</string>
+    <string name="dialog_storage_type_external_desc">Weniger effizient und kann zu unerwarteten Synchronisationsfehlern führen.</string>
+    <string name="pref_external_storage_access">Zugriff auf externen Speicher zulassen</string>
 </resources>
