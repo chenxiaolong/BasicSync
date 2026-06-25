@@ -42,6 +42,13 @@ object Permissions {
             emptyArray()
         }
 
+    val LOCAL_NETWORK: Array<String> =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CINNAMON_BUN) {
+            arrayOf(Manifest.permission.ACCESS_LOCAL_NETWORK)
+        } else {
+            emptyArray()
+        }
+
     /** Check if all permissions have been granted. */
     fun have(context: Context, permissions: Array<String>): Boolean = permissions.all {
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED

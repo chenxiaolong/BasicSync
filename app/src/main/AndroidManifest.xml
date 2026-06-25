@@ -33,6 +33,7 @@
 
     <!-- For Syncthing to access the network. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
 
     <!-- For Syncthing to access internal storage. -->
     <uses-permission

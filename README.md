@@ -41,6 +41,8 @@ The app is intentionally kept very basic so that the project is easy to maintain
     * BasicSync does not and will never have ads or telemetry of its own.
     * Syncthing has opt-in telemetry and asks for approval before any data it sent.
     * Syncthing's crash reporting is disabled because BasicSync integrates it in a way that is not supported upstream.
+* `ACCESS_LOCAL_NETWORK` (Android >=17)
+    * Needed for directly connecting to devices on the local network instead of passing through Syncthing's relay servers.
 * `READ_SYNC_SETTINGS`
     * Used for detecting if Android's auto-sync data setting is enabled.
 * `ACCESS_NETWORK_STATE`

@@ -116,6 +116,9 @@ fun SettingsScreen(
     val notificationsGranted = remember(reloadPerms) {
         Permissions.have(context, Permissions.NOTIFICATION)
     }
+    val localNetworkGranted = remember(reloadPerms) {
+        Permissions.have(context, Permissions.LOCAL_NETWORK)
+    }
     // Hide this while loading to avoid jank in the usual case.
     var appHibernationDisabled by rememberSaveable { mutableStateOf(true) }
 
@@ -312,6 +315,7 @@ fun SettingsScreen(
             importExportState = importExportState,
             inhibitBatteryOpt = inhibitBatteryOpt,
             notificationsGranted = notificationsGranted,
+            localNetworkGranted = localNetworkGranted,
             appHibernationDisabled = appHibernationDisabled,
             missingInternal = missingInternal,
             missingExternal = missingExternal,
@@ -332,6 +336,9 @@ fun SettingsScreen(
             },
             onNotificationsGrant = {
                 requestPermissionsRequired.launch(Permissions.NOTIFICATION)
+            },
+            onLocalNetworkGrant = {
+                requestPermissionsRequired.launch(Permissions.LOCAL_NETWORK)
             },
             onAppHibernationDisable = {
                 requestPermissionActivity.launch(
@@ -528,6 +535,7 @@ private fun SettingsContent(
     importExportState: ImportExportState?,
     inhibitBatteryOpt: Boolean,
     notificationsGranted: Boolean,
+    localNetworkGranted: Boolean,
     appHibernationDisabled: Boolean,
     missingInternal: Boolean,
     missingExternal: List<Uri>,
@@ -545,6 +553,7 @@ private fun SettingsContent(
     isDebugMode: Boolean,
     onInhibitBatteryOptGrant: () -> Unit,
     onNotificationsGrant: () -> Unit,
+    onLocalNetworkGrant: () -> Unit,
     onAppHibernationDisable: () -> Unit,
     onInternalStorageGrant: () -> Unit,
     onExternalStorageGrant: (Uri) -> Unit,
@@ -591,6 +600,14 @@ private fun SettingsContent(
                 title = stringResource(R.string.pref_allow_notifications_name),
                 summary = stringResource(R.string.pref_allow_notifications_desc),
                 onGrant = onNotificationsGrant,
+            ))
+        }
+        if (!localNetworkGranted) {
+            add(MissingPermission(
+                key = "allow_local_network",
+                title = stringResource(R.string.pref_allow_local_network_name),
+                summary = stringResource(R.string.pref_allow_local_network_desc),
+                onGrant = onLocalNetworkGrant,
             ))
         }
         if (!appHibernationDisabled) {
@@ -982,6 +999,7 @@ private fun PreviewSettingsScreen() {
                 importExportState = null,
                 inhibitBatteryOpt = false,
                 notificationsGranted = false,
+                localNetworkGranted = false,
                 appHibernationDisabled = false,
                 missingInternal = true,
                 missingExternal = listOf("content://${DOCUMENTSUI_AUTHORITY}/tree/primary%3afile".toUri()),
@@ -999,6 +1017,7 @@ private fun PreviewSettingsScreen() {
                 isDebugMode = true,
                 onInhibitBatteryOptGrant = {},
                 onNotificationsGrant = {},
+                onLocalNetworkGrant = {},
                 onAppHibernationDisable = {},
                 onInternalStorageGrant = {},
                 onExternalStorageGrant = {},
