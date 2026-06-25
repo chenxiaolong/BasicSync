@@ -10,7 +10,7 @@
     <string name="pref_inhibit_battery_opt_desc">需要确保应用在后台稳定运行。</string>
     <string name="pref_allow_notifications_name">允许通知</string>
     <string name="pref_allow_notifications_desc">需要确保应用在后台稳定运行以及启动和停止 Syncthing。</string>
-    <string name="pref_local_storage_access_name">允许本地存储空间访问权限</string>
+    <string name="pref_local_storage_access_name">允许本地存储访问</string>
     <string name="pref_local_storage_access_desc">Syncthing 需要此权限才能访问 <tt>/sdcard</tt> 下的本地存储空间。</string>
     <string name="pref_disable_app_hibernation_name">禁用应用休眠</string>
     <string name="pref_disable_app_hibernation_desc">需要防止 Android 在一段时间后自动移除应用权限。</string>
@@ -50,7 +50,7 @@
     <string name="pref_network_allow_ethernet_name">允许以太网</string>
     <string name="pref_network_allow_other_name">允许其他网络接口</string>
     <string name="pref_location_optional_info">位置权限是可选的，仅在限制允许的 Wi-Fi 网络时需要。即使授予了权限，除非配置了允许的 Wi-Fi 网络，否则不会使用。</string>
-    <string name="pref_allow_precise_location_name">允许精确位置访问</string>
+    <string name="pref_allow_precise_location_name">允许确切位置访问</string>
     <string name="pref_allow_precise_location_desc">访问 Wi-Fi 连接详情需要此权限。</string>
     <string name="pref_allow_background_location_name">允许后台位置访问</string>
     <string name="pref_allow_background_location_desc">在后台访问 Wi-Fi 连接详情需要此权限。</string>
@@ -186,4 +186,10 @@
     <plurals name="device_state_pending">
         <item quantity="other">• %d 台设备待同步</item>
     </plurals>
+    <string name="pref_external_storage_access">允许外部存储访问</string>
+    <string name="dialog_storage_type_title">存储类型</string>
+    <string name="dialog_storage_type_internal_title">内部存储</string>
+    <string name="dialog_storage_type_internal_desc">速度更快，与 Syncthing 的兼容性更好。</string>
+    <string name="dialog_storage_type_external_title">外部存储</string>
+    <string name="dialog_storage_type_external_desc">效率较低，可能会导致意外的同步错误。</string>
 </resources>
