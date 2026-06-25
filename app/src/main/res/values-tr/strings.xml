@@ -201,4 +201,10 @@
         <item quantity="one">• %d cihaz eşitlenmeyi bekliyor</item>
         <item quantity="other">• %d cihaz eşitlenmeyi bekliyor</item>
     </plurals>
+    <string name="pref_external_storage_access">Harici depolama erişimine izin ver</string>
+    <string name="dialog_storage_type_title">Depolama türü</string>
+    <string name="dialog_storage_type_internal_title">Dahili depolama</string>
+    <string name="dialog_storage_type_internal_desc">Syncthing ile daha hızlı ve daha iyi uyumluluğa sahiptir.</string>
+    <string name="dialog_storage_type_external_title">Harici depolama</string>
+    <string name="dialog_storage_type_external_desc">Daha az verimlidir ve beklenmeyen eşitleme hatalarına neden olabilir.</string>
 </resources>
