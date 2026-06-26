@@ -210,6 +210,26 @@ type SafClient interface {
 	ObserveDocument(documentUri string, changeListener SafChangeListener) (SafObserver, error)
 }
 
+var globalSafClient SafClient
+
+func SetSafClient(client SafClient) {
+	globalSafClient = client
+}
+
+func globalSafOpts() (*safOpts, error) {
+	client := globalSafClient
+	if client == nil {
+		return nil, errors.New("no SafClient has been set")
+	}
+
+	safOpts := &safOpts{
+		client:        client,
+		cacheDuration: 300 * time.Second,
+	}
+
+	return safOpts, nil
+}
+
 // We report all SAF errors as file not found errors. DocumentsProvider
 // implementations can technically throw more Parcelable exceptions, but that is
 // not guaranteed to be possible by the SAF API.
@@ -1243,7 +1263,7 @@ var safTreeCache sync.Map // map[safTreeCacheKey]weak.Pointer[safNode]
 // regular map so that slow node construction for one URI does not block
 // construction of a node for a different URI.
 func newCachedSafTreeFromUri(opts *safOpts, uri string) (*safNode, error) {
-	var key = safTreeCacheKey{opts: *opts, uri: uri}
+	key := safTreeCacheKey{opts: *opts, uri: uri}
 	var node *safNode
 
 	for {
@@ -1269,12 +1289,34 @@ func newCachedSafTreeFromUri(opts *safOpts, uri string) (*safNode, error) {
 			}
 		}
 
-		if mf := value.(weak.Pointer[safNode]).Value(); mf != nil {
-			return mf, nil
+		if sn := value.(weak.Pointer[safNode]).Value(); sn != nil {
+			return sn, nil
 		}
 
 		safTreeCache.CompareAndDelete(key, value)
 	}
+}
+
+func safInvalidateVirtualRoot() error {
+	opts, err := globalSafOpts()
+	if err != nil {
+		return err
+	}
+
+	key := safTreeCacheKey{opts: *opts, uri: ""}
+	value, ok := safTreeCache.Load(key)
+	if !ok {
+		return nil
+	}
+
+	sn := value.(weak.Pointer[safNode]).Value()
+	if sn != nil {
+		sn.lock.Lock()
+		sn.updateChildrenLocked(opts, makeChildren(true), safExpired)
+		sn.lock.Unlock()
+	}
+
+	return nil
 }
 
 type safWatchManager struct {
@@ -1726,21 +1768,10 @@ func (sfs *safFilesystem) SetXattr(
 	return fs.ErrXattrsNotSupported
 }
 
-var globalSafClient SafClient
-
-func SetSafClient(client SafClient) {
-	globalSafClient = client
-}
-
 func newSafFilesystem(encodedUri string, opts ...fs.Option) (fs.Filesystem, error) {
-	client := globalSafClient
-	if client == nil {
-		return nil, errors.New("no SafClient has been set")
-	}
-
-	safOpts := &safOpts{
-		client:        client,
-		cacheDuration: 300 * time.Second,
+	safOpts, err := globalSafOpts()
+	if err != nil {
+		return nil, err
 	}
 
 	// The URI is <URL-encoded SAF tree URI>[/<relative path>]. This format is

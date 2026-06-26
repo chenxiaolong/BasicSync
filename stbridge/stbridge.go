@@ -719,6 +719,12 @@ func eventLoop(
 				// permission warnings for external storage can be removed.
 				_ = checkStoragePermissions(cfg, receiver)
 
+				// Invalidate SAF virtual root so that the next call to the
+				// /rest/system/browse endpoint will requery the list of roots.
+				if err := safInvalidateVirtualRoot(); err != nil {
+					log.Printf("failed to invalidate SAF virtual root: %v", err)
+				}
+
 			default:
 				log.Printf("Unexpected event: %+v", evt)
 			}
