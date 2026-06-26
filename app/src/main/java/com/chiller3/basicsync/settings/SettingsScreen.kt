@@ -109,6 +109,7 @@ fun SettingsScreen(
     val remoteControl = remember(reloadPrefs) { prefs.remoteControl }
     val allowAutoMode = remember(reloadPrefs) { prefs.allowAutoMode }
     val showExit = remember(reloadPrefs) { prefs.showExit }
+    val startOnBoot = remember(reloadPrefs) { prefs.startOnBoot }
     val isDebugMode = remember(reloadPrefs) { prefs.isDebugMode }
 
     var reloadPerms by remember { mutableIntStateOf(0) }
@@ -330,6 +331,7 @@ fun SettingsScreen(
             remoteControl = remoteControl,
             allowAutoMode = allowAutoMode,
             showExit = showExit,
+            startOnBoot = startOnBoot,
             isDebugMode = isDebugMode,
             onInhibitBatteryOptGrant = {
                 requestInhibitBatteryOpt.launch(Permissions.getInhibitBatteryOptIntent(context))
@@ -445,6 +447,10 @@ fun SettingsScreen(
                 prefs.showExit = enabled
                 reloadPrefs++
             },
+            onStartOnBootChange = { enabled ->
+                prefs.startOnBoot = enabled
+                reloadPrefs++
+            },
             onDebugModeChange = { enabled ->
                 prefs.isDebugMode = enabled
                 reloadPrefs++
@@ -550,6 +556,7 @@ private fun SettingsContent(
     remoteControl: Boolean,
     allowAutoMode: Boolean,
     showExit: Boolean,
+    startOnBoot: Boolean,
     isDebugMode: Boolean,
     onInhibitBatteryOptGrant: () -> Unit,
     onNotificationsGrant: () -> Unit,
@@ -573,6 +580,7 @@ private fun SettingsContent(
     onRemoteControlChange: (Boolean) -> Unit,
     onAllowAutoModeChange: (Boolean) -> Unit,
     onShowExitChange: (Boolean) -> Unit,
+    onStartOnBootChange: (Boolean) -> Unit,
     onDebugModeChange: (Boolean) -> Unit,
     onSourceRepoOpen: () -> Unit,
     onSaveLogs: () -> Unit,
@@ -857,9 +865,20 @@ private fun SettingsContent(
             SwitchPreference(
                 checked = showExit,
                 onCheckedChange = onShowExitChange,
-                shapes = BetterSegmentedShapes.bottom(),
+                shapes = BetterSegmentedShapes.middle(),
                 title = { Text(text = stringResource(R.string.pref_show_exit_name)) },
                 summary = { Text(text = stringResource(R.string.pref_show_exit_desc)) },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
+        item(key = "start_on_boot") {
+            SwitchPreference(
+                checked = startOnBoot,
+                onCheckedChange = onStartOnBootChange,
+                shapes = BetterSegmentedShapes.bottom(),
+                title = { Text(text = stringResource(R.string.pref_start_on_boot_name)) },
+                summary = { Text(text = stringResource(R.string.pref_start_on_boot_desc)) },
                 modifier = Modifier.animateItem(),
             )
         }
@@ -1014,6 +1033,7 @@ private fun PreviewSettingsScreen() {
                 remoteControl = false,
                 allowAutoMode = true,
                 showExit = false,
+                startOnBoot = true,
                 isDebugMode = true,
                 onInhibitBatteryOptGrant = {},
                 onNotificationsGrant = {},
@@ -1037,6 +1057,7 @@ private fun PreviewSettingsScreen() {
                 onRemoteControlChange = {},
                 onAllowAutoModeChange = {},
                 onShowExitChange = {},
+                onStartOnBootChange = {},
                 onDebugModeChange = {},
                 onSourceRepoOpen = {},
                 onSaveLogs = {},

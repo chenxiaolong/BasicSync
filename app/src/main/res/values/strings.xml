@@ -100,6 +100,10 @@
     <string name="pref_show_exit_name">Show Exit button</string>
     <!-- Description for the preference to show an exit button in the persistent notification. -->
     <string name="pref_show_exit_desc">Show an Exit button in the persistent notification. The app will automatically start again after a reboot or when receiving a remote control command.</string>
+    <!-- Title for the preference to start the app after a reboot. -->
+    <string name="pref_start_on_boot_name">Start on boot</string>
+    <!-- Description for the preference to start the app after a reboot. -->
+    <string name="pref_start_on_boot_desc">Automatically start the app after a reboot.</string>
     <!-- Title for the preference that shows the version number. The description is two lines: the first line is BasicSync's version and the second line in Syncthing's version. -->
     <string name="pref_version_name">Version</string>
     <!-- Title for the debug preference that saves logs to a file. -->

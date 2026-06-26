@@ -23,6 +23,7 @@ class Preferences(context: Context) {
         const val PREF_REMOTE_CONTROL = "remote_control"
         const val PREF_ALLOW_AUTO_MODE = "allow_auto_mode"
         const val PREF_SHOW_EXIT = "show_exit"
+        const val PREF_START_ON_BOOT = "start_on_boot"
         const val PREF_REQUIRE_UNMETERED_NETWORK = "require_unmetered_network"
         const val PREF_NETWORK_ALLOW_WIFI = "network_allow_wifi"
         const val PREF_NETWORK_ALLOW_CELLULAR = "network_allow_cellular"
@@ -84,6 +85,10 @@ class Preferences(context: Context) {
     var showExit: Boolean
         get() = prefs.getBoolean(PREF_SHOW_EXIT, false)
         set(enabled) = prefs.edit { putBoolean(PREF_SHOW_EXIT, enabled) }
+
+    var startOnBoot: Boolean
+        get() = prefs.getBoolean(PREF_START_ON_BOOT, true)
+        set(enabled) = prefs.edit { putBoolean(PREF_START_ON_BOOT, enabled) }
 
     var requireUnmeteredNetwork: Boolean
         get() = prefs.getBoolean(PREF_REQUIRE_UNMETERED_NETWORK, true)
