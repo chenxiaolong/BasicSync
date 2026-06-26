@@ -192,4 +192,5 @@
     <string name="dialog_storage_type_internal_desc">速度更快，与 Syncthing 的兼容性更好。</string>
     <string name="dialog_storage_type_external_title">外部存储</string>
     <string name="dialog_storage_type_external_desc">效率较低，可能会导致意外的同步错误。</string>
+    <string name="pref_allow_local_network_name">允许本地网络访问</string>
 </resources>
