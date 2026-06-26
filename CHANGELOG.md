@@ -11,12 +11,13 @@
 
 * Add support for using Android's Storage Access Framework (SAF) to access external storage (eg. SD cards) ([PR #177])
   * This is less efficient and reliable than syncing to internal storage. Please read [the documentation](./README.md#external-storage) before using it.
-* Go up one level in the folder picker dialog when pressing back ([PR #166])
 * Update target API version to API 37 (Android 17) ([PR #179])
   * **Action required**: Android 17 now blocks local network connections by default, which in many cases forces sync traffic to pass through Syncthing's relay servers. Open the app to grant the new permission for allowing local network access again.
 * Reduce minimum API version to API 26 (Android 8.0) ([Issue #165], [PR #167])
 * Add workaround to fix file watchers on x86_64 (for Android emulator and other x86_64 devices) ([PR #174])
+* Go up one level in the folder picker dialog when pressing back ([PR #166])
 * Make back navigation icon filled to match Material 3 Expressive styling in Android's system settings ([PR #180])
+* Show loading spinner when loading Syncthing's web UI ([PR #181])
 
 ### Version 2.4
 
@@ -402,3 +403,4 @@
 [PR #177]: https://github.com/chenxiaolong/BasicSync/pull/177
 [PR #179]: https://github.com/chenxiaolong/BasicSync/pull/179
 [PR #180]: https://github.com/chenxiaolong/BasicSync/pull/180
+[PR #181]: https://github.com/chenxiaolong/BasicSync/pull/181
