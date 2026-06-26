@@ -220,4 +220,10 @@
     <string name="dialog_storage_type_internal_desc">Más rápido y con mejor compatibilidad con Syncthing.</string>
     <string name="dialog_storage_type_external_title">Almacenamiento externo</string>
     <string name="dialog_storage_type_external_desc">Menos eficiente y puede provocar errores de sincronización inesperados.</string>
+    <string name="pref_allow_local_network_name">Permitir acceso a la red local</string>
+    <string name="pref_allow_local_network_desc">Necesario para conectarse directamente a los dispositivos de la red local en lugar de pasar por los servidores de retransmisión de Syncthing.</string>
+    <string name="pref_start_on_boot_name">Iniciar al arrancar</string>
+    <string name="pref_start_on_boot_desc">Iniciar la aplicación automáticamente después de un reinicio.</string>
+    <string name="notification_channel_persistent_name_started">Notificación persistente al iniciar</string>
+    <string name="notification_channel_persistent_name_stopped">Notificación persistente al detenerse</string>
 </resources>
