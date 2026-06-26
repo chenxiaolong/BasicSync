@@ -239,4 +239,6 @@
     <string name="pref_allow_local_network_desc">Potrzebne do łączenia się z urządzeniami w sieci lokalnej bezpośrednio, zamiast korzystać z serwerów przekaźnikowych Syncthing.</string>
     <string name="pref_start_on_boot_name">Uruchom przy rozruchu</string>
     <string name="pref_start_on_boot_desc">Automatycznie uruchom aplikację po zrestartowaniu urządzenia.</string>
+    <string name="notification_channel_persistent_name_started">Stałe powiadomienie po uruchomieniu</string>
+    <string name="notification_channel_persistent_name_stopped">Stałe powiadomienie po zatrzymaniu</string>
 </resources>
