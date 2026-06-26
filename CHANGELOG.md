@@ -19,6 +19,7 @@
 * Make back navigation icon filled to match Material 3 Expressive styling in Android's system settings ([PR #180])
 * Show loading spinner when loading Syncthing's web UI ([PR #181])
 * Add option to disable starting on boot ([Issue #170], [PR #183])
+* Disable quick settings tile when app is not running ([Issue #172], [PR #184])
 
 ### Version 2.4
 
@@ -281,6 +282,7 @@
 [Issue #150]: https://github.com/chenxiaolong/BasicSync/issues/150
 [Issue #165]: https://github.com/chenxiaolong/BasicSync/issues/165
 [Issue #170]: https://github.com/chenxiaolong/BasicSync/issues/170
+[Issue #172]: https://github.com/chenxiaolong/BasicSync/issues/172
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -408,3 +410,4 @@
 [PR #181]: https://github.com/chenxiaolong/BasicSync/pull/181
 [PR #182]: https://github.com/chenxiaolong/BasicSync/pull/182
 [PR #183]: https://github.com/chenxiaolong/BasicSync/pull/183
+[PR #184]: https://github.com/chenxiaolong/BasicSync/pull/184
