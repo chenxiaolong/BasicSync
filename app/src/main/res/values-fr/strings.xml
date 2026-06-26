@@ -227,4 +227,16 @@
         <item quantity="many">%d appareils en attente de synchronisation</item>
         <item quantity="other">%d appareils en attente de synchronisation</item>
     </plurals>
+    <string name="pref_allow_local_network_name">Autoriser l\'accès au réseau local</string>
+    <string name="pref_allow_local_network_desc">Requis pour la connexion aux appareils en passant directement par le réseau local au lieu des serveurs de relai de Syncthing.</string>
+    <string name="pref_external_storage_access">Autoriser l\'accès au stockage externe</string>
+    <string name="pref_start_on_boot_name">Démarrer au démarrage du système</string>
+    <string name="pref_start_on_boot_desc">Démarre l\'application automatiquement après un redémarrage du système.</string>
+    <string name="dialog_storage_type_title">Type de stockage</string>
+    <string name="dialog_storage_type_internal_title">Stockage interne</string>
+    <string name="dialog_storage_type_internal_desc">Plus rapide et meilleure compatibilité avec Syncthing.</string>
+    <string name="dialog_storage_type_external_title">Stockage externe</string>
+    <string name="dialog_storage_type_external_desc">Moins efficace et peut générer des erreurs de synchronisation inattendues.</string>
+    <string name="notification_channel_persistent_name_started">Notification persistante quand démarré</string>
+    <string name="notification_channel_persistent_name_stopped">Notification persistante quand arrêté</string>
 </resources>
