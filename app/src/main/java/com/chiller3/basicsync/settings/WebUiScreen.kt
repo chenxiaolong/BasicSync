@@ -29,7 +29,14 @@ import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.visible
+import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,6 +44,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
@@ -338,6 +346,7 @@ fun WebUiScreen(onExit: () -> Unit) {
     }
 
     var showAlert by remember { mutableIntStateOf(0) }
+    var loading by remember { mutableStateOf(true) }
 
     val webViewClient = remember {
         object : WebViewClient() {
@@ -391,6 +400,8 @@ fun WebUiScreen(onExit: () -> Unit) {
 
                 Log.d(TAG, "Initializing bridge: isTv=$isTv, edgeToEdge=$edgeToEdge")
                 bridgeInit(isTv, edgeToEdge)
+
+                loading = false
             }
 
             override fun onLoadResource(view: WebView?, url: String?) {
@@ -432,47 +443,59 @@ fun WebUiScreen(onExit: () -> Unit) {
     }
 
     AppScreen(fullScreenContent = true) { params ->
-        AndroidView(
-            factory = {
-                webView.apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                    )
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .let { if (edgeToEdge) it else it.padding(paddingValues = params.contentPadding) },
+        ) {
+            AndroidView(
+                factory = {
+                    webView.apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                        )
 
-                    settings.apply {
-                        // All required assets are served locally from the daemon.
-                        allowContentAccess = false
-                        allowFileAccess = false
-                        cacheMode = WebSettings.LOAD_NO_CACHE
+                        settings.apply {
+                            // All required assets are served locally from the daemon.
+                            allowContentAccess = false
+                            allowFileAccess = false
+                            cacheMode = WebSettings.LOAD_NO_CACHE
 
-                        // The web UI does not work at all without JavaScript.
-                        @SuppressLint("SetJavaScriptEnabled")
-                        javaScriptEnabled = true
+                            // The web UI does not work at all without JavaScript.
+                            @SuppressLint("SetJavaScriptEnabled")
+                            javaScriptEnabled = true
 
-                        // The web UI uses localStorage for a few things.
-                        domStorageEnabled = true
+                            // The web UI uses localStorage for a few things.
+                            domStorageEnabled = true
 
-                        // The NARROW_COLUMNS default is deprecated since API 29.
-                        layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
+                            // The NARROW_COLUMNS default is deprecated since API 29.
+                            layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
+                        }
+
+                        // Android Studio's lint is broken when using remember { ... }.
+                        @SuppressLint("JavascriptInterface")
+                        addJavascriptInterface(webViewInterface, "BasicSync")
+
+                        this.webViewClient = webViewClient
                     }
+                },
+                onRelease = {
+                    it.destroy()
+                },
+                // We don't use AnimatedVisibility because the WebView needs to stay loaded.
+                modifier = Modifier.visible(!loading),
+            )
 
-                    // Android Studio's lint is broken when using remember { ... }.
-                    @SuppressLint("JavascriptInterface")
-                    addJavascriptInterface(webViewInterface, "BasicSync")
-
-                    this.webViewClient = webViewClient
-                }
-            },
-            onRelease = {
-                it.destroy()
-            },
-            modifier = if (edgeToEdge) {
-                Modifier
-            } else {
-                Modifier.padding(paddingValues = params.contentPadding)
-            },
-        )
+            AnimatedVisibility(
+                visible = loading,
+                enter = fadeIn(),
+                exit = fadeOut(),
+            ) {
+                CircularWavyProgressIndicator()
+            }
+        }
 
         if (showAlert != 0) {
             val message = stringResource(showAlert)
