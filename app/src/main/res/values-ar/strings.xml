@@ -118,8 +118,6 @@
     <string name="dialog_wifi_network_hint">SSID</string>
     <string name="web_ui_select_folder">اختر مجلد</string>
     <string name="web_ui_scan_qr_code">امسح رمز QR</string>
-    <string name="notification_channel_persistent_name">خدمات الخلفية</string>
-    <string name="notification_channel_persistent_desc">يسمح لـSyncthing بالعمل في الخلفية</string>
     <string name="notification_channel_failure_name">إنذارات الأعطال</string>
     <string name="notification_channel_failure_desc">إنذارات لأخطاء بدء تشغيل Syncthing</string>
     <string name="notification_channel_conflicts_name">تعارضات المزامنة</string>

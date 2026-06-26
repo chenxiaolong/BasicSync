@@ -93,8 +93,6 @@
     <string name="dialog_wifi_network_hint">SSID</string>
     <string name="web_ui_select_folder">Изберете папка</string>
     <string name="web_ui_scan_qr_code">Сканиране на QR код</string>
-    <string name="notification_channel_persistent_name">Фонови услуги</string>
-    <string name="notification_channel_persistent_desc">Поддържа Syncthing работещ във фонов режим</string>
     <string name="notification_channel_failure_name">Сигнали за грешки</string>
     <string name="notification_channel_failure_desc">Сигнали за грешки при стартиране на Syncthing</string>
     <string name="notification_channel_conflicts_name">Конфликти при синхронизация</string>

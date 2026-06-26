@@ -95,8 +95,6 @@
     <string name="web_ui_select_folder">Mappa kiválasztása</string>
     <string name="web_ui_scan_qr_code">QR-kód beolvasása</string>
     <!-- Notifications -->
-    <string name="notification_channel_persistent_name">Háttérszolgáltatások</string>
-    <string name="notification_channel_persistent_desc">A Syncthing futtatása a háttérben</string>
     <string name="notification_channel_failure_name">Hiba értesítések</string>
     <string name="notification_channel_failure_desc">Értesítések a Syncthing indítási hibáiról</string>
     <string name="notification_persistent_running_title">A Syncthing fut</string>

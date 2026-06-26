@@ -95,8 +95,6 @@
     <string name="web_ui_select_folder">Sélectionner un répertoire</string>
     <string name="web_ui_scan_qr_code">Scanner le code QR</string>
     <!-- Notifications -->
-    <string name="notification_channel_persistent_name">Services en arrière-plan</string>
-    <string name="notification_channel_persistent_desc">Maintient Syncthing en cours d\'exécution en arrière-plan</string>
     <string name="notification_channel_failure_name">Alertes d\'échec</string>
     <string name="notification_channel_failure_desc">Alertes pour les erreurs lors du démarrage de Syncthing</string>
     <string name="notification_persistent_running_title">Syncthing est en cours d\'exécution</string>

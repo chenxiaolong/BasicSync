@@ -88,8 +88,6 @@
     <string name="dialog_wifi_network_hint">SSID</string>
     <string name="web_ui_select_folder">选择文件夹</string>
     <string name="web_ui_scan_qr_code">扫描二维码</string>
-    <string name="notification_channel_persistent_name">后台服务</string>
-    <string name="notification_channel_persistent_desc">保持 Syncthing 在后台运行</string>
     <string name="notification_channel_failure_name">失败提醒</string>
     <string name="notification_channel_failure_desc">启动 Syncthing 时出错的提醒</string>
     <string name="notification_persistent_running_title">Syncthing 正在运行</string>

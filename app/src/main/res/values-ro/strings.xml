@@ -95,8 +95,6 @@
     <string name="web_ui_select_folder">Selectează dosarul</string>
     <string name="web_ui_scan_qr_code">Scanează codul QR</string>
     <!-- Notifications -->
-    <string name="notification_channel_persistent_name">Servicii de fundal</string>
-    <string name="notification_channel_persistent_desc">Păstrează Syncthing să ruleze în fundal</string>
     <string name="notification_channel_failure_name">Alerte de defecțiuni</string>
     <string name="notification_channel_failure_desc">Alerte pentru erori la pornirea Syncthing</string>
     <string name="notification_persistent_running_title">Syncthing rulează</string>

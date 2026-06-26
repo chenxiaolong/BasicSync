@@ -143,6 +143,9 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         IMPORTING,
         EXPORTING;
 
+        val showAsRunning: Boolean
+            get() = this == RUNNING || this == STARTING
+
         val showFolderStates: Boolean
             get() = this == RUNNING
 
@@ -593,7 +596,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     allListeners { it.onRunStateChanged(notificationState, guiInfo) }
                 }
 
-                val notification = notifications.createPersistentNotification(notificationState)
+                val (id, notification) = notifications.createPersistentNotification(notificationState)
                 val useLocation = deviceStateTracker.canUseLocation()
                 var type = 0
 
@@ -604,7 +607,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
                 }
 
-                ServiceCompat.startForeground(this, Notifications.ID_PERSISTENT, notification, type)
+                ServiceCompat.startForeground(this, id, notification, type)
+                notifications.cancelOppositePersistentNotification(id)
 
                 if (lastUseLocation != useLocation) {
                     deviceStateTracker.refreshNetworkState()

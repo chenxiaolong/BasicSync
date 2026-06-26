@@ -84,8 +84,6 @@
     <string name="dialog_wifi_network_hint">SSID</string>
     <string name="web_ui_select_folder">Wybierz folder</string>
     <string name="web_ui_scan_qr_code">Skanuj kod QR</string>
-    <string name="notification_channel_persistent_name">Usługi w tle</string>
-    <string name="notification_channel_persistent_desc">Utrzymuje działanie Syncthing w tle</string>
     <string name="notification_channel_failure_name">Alerty o awariach</string>
     <string name="notification_channel_failure_desc">Alerty dotyczące błędów podczas uruchamiania Syncthing</string>
     <string name="notification_persistent_running_title">Syncthing działa</string>

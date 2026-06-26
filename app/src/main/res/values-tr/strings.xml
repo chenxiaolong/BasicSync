@@ -87,8 +87,6 @@
     <string name="dialog_wifi_network_hint">SSID</string>
     <string name="web_ui_select_folder">Klasör seç</string>
     <string name="web_ui_scan_qr_code">QR kodunu tara</string>
-    <string name="notification_channel_persistent_name">Arka plan hizmetleri</string>
-    <string name="notification_channel_persistent_desc">Syncthing\'i arka planda çalışır tutar</string>
     <string name="notification_channel_failure_name">Arıza uyarıları</string>
     <string name="notification_channel_failure_desc">Eşitleme başlatılırken hataların uyarıları</string>
     <string name="notification_persistent_running_title">Syncthing çalışıyor</string>

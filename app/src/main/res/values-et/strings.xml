@@ -90,8 +90,6 @@
     <string name="dialog_wifi_network_message">Sisesta WiFi võrgu nimi (SSID). See toimib ka peidetud WiFi võrkude puhul.</string>
     <string name="web_ui_select_folder">Vali kaust</string>
     <string name="web_ui_scan_qr_code">Skanneeri QR-koodi</string>
-    <string name="notification_channel_persistent_name">Taustateenused</string>
-    <string name="notification_channel_persistent_desc">Hoiab Syncthingi taustal töös</string>
     <string name="notification_action_auto_mode">Automaatne režiim</string>
     <string name="notification_action_manual_mode">Käsitsi režiim</string>
     <string name="notification_action_exit">Välju</string>

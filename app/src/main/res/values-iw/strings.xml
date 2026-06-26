@@ -87,8 +87,6 @@
     <string name="dialog_wifi_network_hint">SSID</string>
     <string name="web_ui_select_folder">בחירת תיקייה</string>
     <string name="web_ui_scan_qr_code">סריקת קוד QR</string>
-    <string name="notification_channel_persistent_name">שירותי רקע</string>
-    <string name="notification_channel_persistent_desc">שומר על ריצת Syncthing ברקע</string>
     <string name="notification_channel_failure_name">התרעות כשל</string>
     <string name="notification_channel_failure_desc">התרעות עבור שגיאות בעת התחלת Syncthing</string>
     <string name="notification_persistent_running_title">היישום Syncthing פועל</string>

@@ -246,10 +246,10 @@
     <!-- Tooltip shown in Syncthing's web UI for scanning a QR code when adding a new device. Keep as short as possible. -->
     <string name="web_ui_scan_qr_code">Scan QR code</string>
 
-    <!-- Name of the Android notification channel for the persistent notification that is always shown. -->
-    <string name="notification_channel_persistent_name">Background services</string>
-    <!-- Description of the Android notification channel for the persistent notification that is always shown. -->
-    <string name="notification_channel_persistent_desc">Keeps Syncthing running in the background</string>
+    <!-- Name of the Android notification channel for the persistent notification when Syncthing is running. -->
+    <string name="notification_channel_persistent_name_started">Persistent notification when started</string>
+    <!-- Name of the Android notification channel for the persistent notification when Syncthing is stopped. -->
+    <string name="notification_channel_persistent_name_stopped">Persistent notification when stopped</string>
     <!-- Name of the Android notification channel for notifications about errors. -->
     <string name="notification_channel_failure_name">Failure alerts</string>
     <!-- Description of the Android notification channel for notifications about errors. -->

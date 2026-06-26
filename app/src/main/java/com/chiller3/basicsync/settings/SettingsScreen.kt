@@ -739,8 +739,7 @@ private fun SettingsContent(
 
         item(key = "service_status") {
             SwitchPreference(
-                checked = runState == SyncthingService.RunState.RUNNING
-                        || runState == SyncthingService.RunState.STARTING,
+                checked = runState?.showAsRunning == true,
                 onCheckedChange = onServiceStatusChange,
                 enabled = isManualMode,
                 shapes = BetterSegmentedShapes.top(),

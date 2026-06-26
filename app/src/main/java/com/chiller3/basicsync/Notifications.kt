@@ -23,28 +23,36 @@ import java.io.File
 
 class Notifications(private val context: Context) {
     companion object {
-        private const val CHANNEL_ID_PERSISTENT = "persistent"
+        private const val CHANNEL_ID_PERSISTENT_STARTED = "persistent"
+        private const val CHANNEL_ID_PERSISTENT_STOPPED = "persistent_stopped"
         private const val CHANNEL_ID_FAILURE = "failure"
         private const val CHANNEL_ID_CONFLICTS = "conflicts"
         private const val CHANNEL_ID_ALERTS = "alerts"
 
         private val LEGACY_CHANNEL_IDS = arrayOf<String>()
 
-        const val ID_PERSISTENT = -1
-        private const val ID_FAILURE = -2
-        private const val ID_CONFLICTS = -3
-        private const val ID_ALERTS = -4
+        const val ID_PERSISTENT_STARTED = -1
+        const val ID_PERSISTENT_STOPPED = -2
+        private const val ID_FAILURE = -3
+        private const val ID_CONFLICTS = -4
+        private const val ID_ALERTS = -5
     }
 
     private val notificationManager = context.getSystemService(NotificationManager::class.java)
 
-    /** Create a low priority notification channel for the persistent notification. */
-    private fun createPersistentChannel() = NotificationChannel(
-        CHANNEL_ID_PERSISTENT,
-        context.getString(R.string.notification_channel_persistent_name),
+    private fun createPersistentStartedChannel() = NotificationChannel(
+        CHANNEL_ID_PERSISTENT_STARTED,
+        context.getString(R.string.notification_channel_persistent_name_started),
         NotificationManager.IMPORTANCE_LOW,
     ).apply {
-        description = context.getString(R.string.notification_channel_persistent_desc)
+        setShowBadge(false)
+    }
+
+    private fun createPersistentStoppedChannel() = NotificationChannel(
+        CHANNEL_ID_PERSISTENT_STOPPED,
+        context.getString(R.string.notification_channel_persistent_name_stopped),
+        NotificationManager.IMPORTANCE_LOW,
+    ).apply {
         setShowBadge(false)
     }
 
@@ -79,7 +87,8 @@ class Notifications(private val context: Context) {
      */
     fun updateChannels() {
         notificationManager.createNotificationChannels(listOf(
-            createPersistentChannel(),
+            createPersistentStartedChannel(),
+            createPersistentStoppedChannel(),
             createFailureAlertsChannel(),
             createConflictsAlertsChannel(),
             createSyncthingAlertsChannel(),
@@ -87,7 +96,7 @@ class Notifications(private val context: Context) {
         LEGACY_CHANNEL_IDS.forEach { notificationManager.deleteNotificationChannel(it) }
     }
 
-    fun createPersistentNotification(state: SyncthingService.ServiceState): Notification {
+    fun createPersistentNotification(state: SyncthingService.ServiceState): Pair<Int, Notification> {
         val runState = state.runState
         val titleResId = when (runState) {
             SyncthingService.RunState.RUNNING -> R.string.notification_persistent_running_title
@@ -100,7 +109,13 @@ class Notifications(private val context: Context) {
             SyncthingService.RunState.EXPORTING -> R.string.notification_persistent_exporting_title
         }
 
-        return Notification.Builder(context, CHANNEL_ID_PERSISTENT).run {
+        val (id, channel) = if (runState.showAsRunning) {
+            ID_PERSISTENT_STARTED to CHANNEL_ID_PERSISTENT_STARTED
+        } else {
+            ID_PERSISTENT_STOPPED to CHANNEL_ID_PERSISTENT_STOPPED
+        }
+
+        val notification = Notification.Builder(context, channel).run {
             setContentTitle(context.getString(titleResId))
             setSmallIcon(R.drawable.ic_notifications)
             setOngoing(true)
@@ -203,6 +218,18 @@ class Notifications(private val context: Context) {
 
             build()
         }
+
+        return id to notification
+    }
+
+    fun cancelOppositePersistentNotification(id: Int) {
+        val cancelId = when (id) {
+            ID_PERSISTENT_STARTED -> ID_PERSISTENT_STOPPED
+            ID_PERSISTENT_STOPPED -> ID_PERSISTENT_STARTED
+            else -> throw IllegalArgumentException("Cancelling invalid notification: $id")
+        }
+
+        notificationManager.cancel(cancelId)
     }
 
     fun sendFailureNotification(exception: Exception) {

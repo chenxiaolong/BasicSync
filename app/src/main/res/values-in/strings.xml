@@ -87,8 +87,6 @@
     <string name="dialog_wifi_network_hint">SSID</string>
     <string name="web_ui_select_folder">Pilih folder</string>
     <string name="web_ui_scan_qr_code">Pindai kode QR</string>
-    <string name="notification_channel_persistent_name">Layanan latar belakang</string>
-    <string name="notification_channel_persistent_desc">Menjaga Syncthing tetap berjalan di latar belakang</string>
     <string name="notification_channel_failure_name">Peringatan kegagalan</string>
     <string name="notification_channel_failure_desc">Peringatan untuk kesalahan saat memulai Syncthing</string>
     <string name="notification_persistent_running_title">Syncthing sedang berjalan</string>

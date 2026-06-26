@@ -95,8 +95,6 @@
     <string name="web_ui_select_folder">選取資料夾</string>
     <string name="web_ui_scan_qr_code">掃描 QR Code</string>
     <!-- Notifications -->
-    <string name="notification_channel_persistent_name">背景服務</string>
-    <string name="notification_channel_persistent_desc">保持 Syncthing 於背景執行</string>
     <string name="notification_channel_failure_name">失敗警示</string>
     <string name="notification_channel_failure_desc">啟動 Syncthing 發生錯誤時的警示</string>
     <string name="notification_persistent_running_title">Syncthing 正在執行</string>
