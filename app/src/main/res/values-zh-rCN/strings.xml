@@ -194,4 +194,6 @@
     <string name="pref_allow_local_network_desc">需要直接连接到本地网络上的设备，而不是通过 Syncthing 的中继服务器。</string>
     <string name="pref_start_on_boot_name">开机时启动</string>
     <string name="pref_start_on_boot_desc">重新启动后自动启动应用。</string>
+    <string name="notification_channel_persistent_name_started">启动时的常驻通知</string>
+    <string name="notification_channel_persistent_name_stopped">停止时的常驻通知</string>
 </resources>
