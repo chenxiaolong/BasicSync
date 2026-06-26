@@ -21,6 +21,7 @@
 * Add option to disable starting on boot ([Issue #170], [PR #183])
 * Disable quick settings tile when app is not running ([Issue #172], [PR #184])
 * Add separate notification channel for the persistent notification when Syncthing is stopped ([Issue #175], [PR #185])
+* Update dependencies ([PR #187])
 * Sync translations from Weblate ([PR #173])
 
 ### Version 2.4
@@ -416,3 +417,4 @@
 [PR #183]: https://github.com/chenxiaolong/BasicSync/pull/183
 [PR #184]: https://github.com/chenxiaolong/BasicSync/pull/184
 [PR #185]: https://github.com/chenxiaolong/BasicSync/pull/185
+[PR #187]: https://github.com/chenxiaolong/BasicSync/pull/187
