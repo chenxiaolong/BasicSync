@@ -20,6 +20,7 @@
 * Show loading spinner when loading Syncthing's web UI ([PR #181])
 * Add option to disable starting on boot ([Issue #170], [PR #183])
 * Disable quick settings tile when app is not running ([Issue #172], [PR #184])
+* Add separate notification channel for the persistent notification when Syncthing is stopped ([Issue #175], [PR #185])
 * Sync translations from Weblate ([PR #173])
 
 ### Version 2.4
@@ -284,6 +285,7 @@
 [Issue #165]: https://github.com/chenxiaolong/BasicSync/issues/165
 [Issue #170]: https://github.com/chenxiaolong/BasicSync/issues/170
 [Issue #172]: https://github.com/chenxiaolong/BasicSync/issues/172
+[Issue #175]: https://github.com/chenxiaolong/BasicSync/issues/175
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -413,3 +415,4 @@
 [PR #182]: https://github.com/chenxiaolong/BasicSync/pull/182
 [PR #183]: https://github.com/chenxiaolong/BasicSync/pull/183
 [PR #184]: https://github.com/chenxiaolong/BasicSync/pull/184
+[PR #185]: https://github.com/chenxiaolong/BasicSync/pull/185
