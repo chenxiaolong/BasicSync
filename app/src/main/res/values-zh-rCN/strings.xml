@@ -136,7 +136,7 @@
         <item quantity="other">发现 %d 个同步冲突</item>
     </plurals>
     <string name="pref_show_exit_name">显示退出按钮</string>
-    <string name="pref_show_exit_desc">在常驻通知中显示“退出”按钮。应用将在重启后或接收到远程控制命令时自动重新启动。</string>
+    <string name="pref_show_exit_desc">在常驻通知中显示退出按钮。在重新启动后或接收到远程控制命令时，应用将自动再次启动。</string>
     <string name="notification_action_exit">退出</string>
     <string name="pref_sync_schedule_battery_only_desc">当设备已连接到电源时，时间表将被忽略。</string>
     <string name="pref_sync_schedule_battery_only_name">仅在电池供电时使用时间表</string>
@@ -194,4 +194,6 @@
     <string name="dialog_storage_type_external_desc">效率较低，可能会导致意外的同步错误。</string>
     <string name="pref_allow_local_network_name">允许本地网络访问</string>
     <string name="pref_allow_local_network_desc">需要直接连接到本地网络上的设备，而不是通过 Syncthing 的中继服务器。</string>
+    <string name="pref_start_on_boot_name">开机时启动</string>
+    <string name="pref_start_on_boot_desc">重新启动后自动启动应用。</string>
 </resources>
