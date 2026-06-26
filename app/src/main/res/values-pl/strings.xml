@@ -237,4 +237,6 @@
     <string name="dialog_storage_type_external_desc">Mniej wydajna i może powodować nieoczekiwane błędy synchronizacji.</string>
     <string name="pref_allow_local_network_name">Zezwól na dostęp do sieci lokalnej</string>
     <string name="pref_allow_local_network_desc">Potrzebne do łączenia się z urządzeniami w sieci lokalnej bezpośrednio, zamiast korzystać z serwerów przekaźnikowych Syncthing.</string>
+    <string name="pref_start_on_boot_name">Uruchom przy rozruchu</string>
+    <string name="pref_start_on_boot_desc">Automatycznie uruchom aplikację po zrestartowaniu urządzenia.</string>
 </resources>
