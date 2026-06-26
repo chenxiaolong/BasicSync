@@ -53,6 +53,35 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         val ACTION_RECHECK = "${SyncthingService::class.java.canonicalName}.restart"
         val ACTION_EXIT = "${SyncthingService::class.java.canonicalName}.exit"
 
+        private val isRunningListeners = HashSet<OnServiceRunningChange>()
+        private var isRunning: Boolean = false
+            set(value) {
+                synchronized(isRunningListeners) {
+                    field = value
+                    for (listener in isRunningListeners) {
+                        listener.onServiceRunningChanged(value)
+                    }
+                }
+            }
+
+        fun registerIsRunningListener(listener: OnServiceRunningChange) {
+            synchronized(isRunningListeners) {
+                if (!isRunningListeners.add(listener)) {
+                    Log.w(TAG, "Listener was already registered: $listener")
+                }
+
+                listener.onServiceRunningChanged(isRunning)
+            }
+        }
+
+        fun unregisterIsRunningListener(listener: OnServiceRunningChange) {
+            synchronized(isRunningListeners) {
+                if (!isRunningListeners.remove(listener)) {
+                    Log.w(TAG, "Listener was never registered: $listener")
+                }
+            }
+        }
+
         fun createIntent(context: Context, action: String?) =
             Intent(context, SyncthingService::class.java).apply {
                 this.action = action
@@ -98,6 +127,10 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                         or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
             )
         }
+    }
+
+    interface OnServiceRunningChange {
+        fun onServiceRunningChanged(isRunning: Boolean)
     }
 
     enum class RunState {
@@ -369,6 +402,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     override fun onCreate() {
         super.onCreate()
+        isRunning = true
 
         prefs = Preferences(this)
         prefs.registerListener(this)
@@ -385,6 +419,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     override fun onDestroy() {
         super.onDestroy()
+        isRunning = false
 
         // We intentionally don't wait for runnerThread to exit. Syncthing can sometimes take a few
         // seconds to fully exit, which can trigger an ANR warning. This is not a problem because if

@@ -13,12 +13,14 @@ import android.util.Log
 import com.chiller3.basicsync.Preferences
 import com.chiller3.basicsync.R
 
-class SyncthingTileService : TileService(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SyncthingTileService : TileService(), SharedPreferences.OnSharedPreferenceChangeListener,
+    SyncthingService.OnServiceRunningChange {
     companion object {
         private val TAG = SyncthingTileService::class.java.simpleName
     }
 
     private lateinit var prefs: Preferences
+    private var serviceRunning = false
 
     override fun onCreate() {
         super.onCreate()
@@ -29,6 +31,7 @@ class SyncthingTileService : TileService(), SharedPreferences.OnSharedPreference
     override fun onStartListening() {
         super.onStartListening()
         prefs.registerListener(this)
+        SyncthingService.registerIsRunningListener(this)
 
         refreshTileState()
     }
@@ -36,12 +39,16 @@ class SyncthingTileService : TileService(), SharedPreferences.OnSharedPreference
     override fun onStopListening() {
         super.onStopListening()
         prefs.unregisterListener(this)
+        SyncthingService.unregisterIsRunningListener(this)
     }
 
     override fun onClick() {
         super.onClick()
 
-        val action = if (!prefs.isManualMode) {
+        val action = if (!serviceRunning) {
+            // Exited -> previous desired state.
+            SyncthingService.ACTION_RENOTIFY
+        } else if (!prefs.isManualMode) {
             // Auto mode -> manually started.
             SyncthingService.ACTION_START
         } else if (prefs.manualShouldRun) {
@@ -69,7 +76,12 @@ class SyncthingTileService : TileService(), SharedPreferences.OnSharedPreference
             return
         }
 
-        if (!prefs.isManualMode) {
+        if (!serviceRunning) {
+            // Exited.
+            tile.state = Tile.STATE_INACTIVE
+            tile.label = getString(R.string.app_name)
+            tile.icon = Icon.createWithResource(this, R.drawable.ic_notifications)
+        } else if (!prefs.isManualMode) {
             // Auto mode.
             tile.state = Tile.STATE_ACTIVE
             tile.label = getString(R.string.quick_settings_tile_auto_mode)
@@ -87,5 +99,10 @@ class SyncthingTileService : TileService(), SharedPreferences.OnSharedPreference
         }
 
         tile.updateTile()
+    }
+
+    override fun onServiceRunningChanged(isRunning: Boolean) {
+        serviceRunning = isRunning
+        refreshTileState()
     }
 }
