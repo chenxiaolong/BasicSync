@@ -205,4 +205,10 @@
     <string name="dialog_storage_type_internal_desc">Syncthing ile daha hızlı ve daha iyi uyumluluğa sahiptir.</string>
     <string name="dialog_storage_type_external_title">Harici depolama</string>
     <string name="dialog_storage_type_external_desc">Daha az verimlidir ve beklenmeyen eşitleme hatalarına neden olabilir.</string>
+    <string name="pref_allow_local_network_name">Yerel ağ erişimine izin ver</string>
+    <string name="pref_allow_local_network_desc">Syncthing\'in geçiş sunucularından geçmek yerine, yerel ağdaki cihazlara doğrudan bağlanmak gerekir.</string>
+    <string name="pref_start_on_boot_name">Önyüklemede başlat</string>
+    <string name="pref_start_on_boot_desc">Yeniden başlatmadan sonra uygulamayı otomatik olarak başlatın.</string>
+    <string name="notification_channel_persistent_name_started">Başlatıldığında kalıcı bildirim</string>
+    <string name="notification_channel_persistent_name_stopped">Durdurulduğunda kalıcı bildirim</string>
 </resources>
