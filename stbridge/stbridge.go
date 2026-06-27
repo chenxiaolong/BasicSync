@@ -344,17 +344,23 @@ func dispatchConflicts(
 	conflictsInfo *conflictsInfo,
 	receiver SyncthingStatusReceiver,
 ) {
-	var paths0Sep strings.Builder
+	unique := map[string]struct{}{}
 
 	for folder, names := range conflictsInfo.byFolder {
 		folderPath := conflictsInfo.folderPaths[folder]
 
 		for name := range names {
-			if paths0Sep.Len() > 0 {
-				paths0Sep.WriteRune('\u0000')
-			}
-			paths0Sep.WriteString(filepath.Join(folderPath, name))
+			unique[filepath.Join(folderPath, name)] = struct{}{}
 		}
+	}
+
+	var paths0Sep strings.Builder
+
+	for path := range unique {
+		if paths0Sep.Len() > 0 {
+			paths0Sep.WriteRune('\u0000')
+		}
+		paths0Sep.WriteString(path)
 	}
 
 	receiver.OnConflictsUpdated(paths0Sep.String())
