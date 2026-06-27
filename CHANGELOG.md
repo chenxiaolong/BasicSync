@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Fix UI crash when viewing sync conflicts if the files are reachable from multiple shared folders ([Issue #188], [PR #189])
+* Improve fade transition from loading spinner to the Syncthing web UI ([PR #190])
 
 ### Version 3.0
 
@@ -425,3 +426,4 @@
 [PR #186]: https://github.com/chenxiaolong/BasicSync/pull/186
 [PR #187]: https://github.com/chenxiaolong/BasicSync/pull/187
 [PR #189]: https://github.com/chenxiaolong/BasicSync/pull/189
+[PR #190]: https://github.com/chenxiaolong/BasicSync/pull/190
