@@ -32,10 +32,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.visible
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,6 +58,7 @@ import com.chiller3.basicsync.R
 import com.chiller3.basicsync.extension.DOCUMENTSUI_AUTHORITY
 import com.chiller3.basicsync.syncthing.SyncthingService
 import com.chiller3.basicsync.ui.AppScreen
+import com.chiller3.basicsync.ui.PreferenceDefaults
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
@@ -443,55 +444,61 @@ fun WebUiScreen(onExit: () -> Unit) {
     }
 
     AppScreen(fullScreenContent = true) { params ->
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .let { if (edgeToEdge) it else it.padding(paddingValues = params.contentPadding) },
-        ) {
-            AndroidView(
-                factory = {
-                    webView.apply {
-                        layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                        )
+        AndroidView(
+            factory = {
+                webView.apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                    )
 
-                        settings.apply {
-                            // All required assets are served locally from the daemon.
-                            allowContentAccess = false
-                            allowFileAccess = false
-                            cacheMode = WebSettings.LOAD_NO_CACHE
+                    settings.apply {
+                        // All required assets are served locally from the daemon.
+                        allowContentAccess = false
+                        allowFileAccess = false
+                        cacheMode = WebSettings.LOAD_NO_CACHE
 
-                            // The web UI does not work at all without JavaScript.
-                            @SuppressLint("SetJavaScriptEnabled")
-                            javaScriptEnabled = true
+                        // The web UI does not work at all without JavaScript.
+                        @SuppressLint("SetJavaScriptEnabled")
+                        javaScriptEnabled = true
 
-                            // The web UI uses localStorage for a few things.
-                            domStorageEnabled = true
+                        // The web UI uses localStorage for a few things.
+                        domStorageEnabled = true
 
-                            // The NARROW_COLUMNS default is deprecated since API 29.
-                            layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
-                        }
-
-                        // Android Studio's lint is broken when using remember { ... }.
-                        @SuppressLint("JavascriptInterface")
-                        addJavascriptInterface(webViewInterface, "BasicSync")
-
-                        this.webViewClient = webViewClient
+                        // The NARROW_COLUMNS default is deprecated since API 29.
+                        layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
                     }
-                },
-                onRelease = {
-                    it.destroy()
-                },
-                // We don't use AnimatedVisibility because the WebView needs to stay loaded.
-                modifier = Modifier.visible(!loading),
-            )
 
-            AnimatedVisibility(
-                visible = loading,
-                enter = fadeIn(),
-                exit = fadeOut(),
+                    // Android Studio's lint is broken when using remember { ... }.
+                    @SuppressLint("JavascriptInterface")
+                    addJavascriptInterface(webViewInterface, "BasicSync")
+
+                    this.webViewClient = webViewClient
+                }
+            },
+            onRelease = {
+                it.destroy()
+            },
+            // We don't use AnimatedVisibility nor AnimatedContent because the WebView needs to load
+            // immediately and stay loaded. Instead, the loading spinner will just be a full screen
+            // overlay.
+            modifier = if (edgeToEdge) {
+                Modifier
+            } else {
+                Modifier.padding(paddingValues = params.contentPadding)
+            },
+        )
+
+        AnimatedVisibility(
+            visible = loading,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(PreferenceDefaults.containerColor),
             ) {
                 CircularWavyProgressIndicator()
             }
