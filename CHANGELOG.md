@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.0
 
 * Add support for using Android's Storage Access Framework (SAF) to access external storage (eg. SD cards) ([PR #177], [PR #182])
   * This is less efficient and reliable than syncing to internal storage. Please read [the documentation](./README.md#external-storage) before using it.
