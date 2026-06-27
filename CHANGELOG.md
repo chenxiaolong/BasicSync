@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Fix UI crash when viewing sync conflicts if the files are reachable from multiple shared folders ([Issue #188], [PR #189])
+
 ### Version 3.0
 
 * Add support for using Android's Storage Access Framework (SAF) to access external storage (eg. SD cards) ([PR #177], [PR #182])
@@ -287,6 +291,7 @@
 [Issue #170]: https://github.com/chenxiaolong/BasicSync/issues/170
 [Issue #172]: https://github.com/chenxiaolong/BasicSync/issues/172
 [Issue #175]: https://github.com/chenxiaolong/BasicSync/issues/175
+[Issue #188]: https://github.com/chenxiaolong/BasicSync/issues/188
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -419,3 +424,4 @@
 [PR #185]: https://github.com/chenxiaolong/BasicSync/pull/185
 [PR #186]: https://github.com/chenxiaolong/BasicSync/pull/186
 [PR #187]: https://github.com/chenxiaolong/BasicSync/pull/187
+[PR #189]: https://github.com/chenxiaolong/BasicSync/pull/189
