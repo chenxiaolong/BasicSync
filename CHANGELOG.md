@@ -7,9 +7,9 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.1
 
-* Fix UI crash when viewing sync conflicts if the files are reachable from multiple shared folders ([Issue #188], [PR #189])
+* Fix UI crash when viewing sync conflicts if the same file is reported multiple times ([Issue #188], [PR #189])
 * Improve fade transition from loading spinner to the Syncthing web UI ([PR #190])
 * Sync translations from Weblate ([PR #191])
 
