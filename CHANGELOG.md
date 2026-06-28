@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.2
 
 * Add optional `INTERACT_ACROSS_USERS` permission to allow two copies of BasicSync installed in different users/profiles on the same device to communicate with each other over localhost on Android 17 ([Issue #192], [PR #193])
 
