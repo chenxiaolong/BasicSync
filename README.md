@@ -60,6 +60,8 @@ The app is intentionally kept very basic so that the project is easy to maintain
 * `SCHEDULE_EXACT_ALARM`
     * Optionally used for the time schedule feature. Otherwise, Android may significantly delay both the start and end of the time windows.
     * The app will not prompt for this permission because it is only needed when battery optimizations are still enabled, which is strongly discouraged anyway.
+* `INTERACT_ACROSS_USERS` (Android >=17)
+    * Optionally used to allow two separate BasicSync instances installed in different Android profiles or users to talk to each other over localhost. Can only be granted via `adb`. See the [cross-user communication](#cross-user-communication) section for more details.
 
 ## Remote web UI access
 
@@ -141,6 +143,40 @@ adb shell appops set com.chiller3.basicsync SYSTEM_EXEMPT_FROM_DISMISSIBLE_NOTIF
 ```
 
 Also, if the persistent notification is not desired, it can be disabled from Android's settings by turning off the "Background services" notification category for BasicSync. Syncthing will continue to run as normal even if the notification is not visible.
+
+## Cross-user communication
+
+Android 17 [no longer allows](https://developer.android.com/about/versions/17/behavior-changes-all#block-cross-profile-loopback) apps to communicate with each other over localhost when they are running in different users. The affects both actual users and also profiles (eg. private space or work profile). For folks who run multiple instances of BasicSync to sync files locally between users, the sync traffic is now forced to go through Syncthing's relays due to this restriction.
+
+However, the cross-profile/user communication permission can still be manually granted. This requires `adb` and BasicSync version 3.2 or newer.
+
+1. Download the [`interact_across_users.sh`](./scripts/interact_across_users.sh) script from this repo. (Use the "Raw" button in the toolbar to get the file as plain text.)
+
+2. Push the script to the device:
+
+    ```bash
+    adb push interact_across_users.sh /tmp/
+    ```
+
+3. Grant the `INTERACT_ACROSS_USERS` permission:
+
+    ```bash
+    adb shell sh /tmp/interact_across_users.sh grant
+    ```
+
+    This will grant the permission to every installed copy of BasicSync in any user and restart the app. If BasicSync is later installed in a new user, the script needs to be rerun.
+
+    To undo the changes and revoke the permission, run:
+
+    ```bash
+    adb shell sh /tmp/interact_across_users.sh revoke
+    ```
+
+To actually set up communication between two BasicSync devices via localhost:
+
+1. In each BasicSync instance, go to `Web UI -> Actions -> Settings -> Connections -> Sync Protocol Listen Addresses` and set a listen address with a fixed port number, such as `tcp://:22000`. Each instance needs a different port number.
+
+2. After adding one BasicSync instance as a remote device to another BasicSync instance, go to `Web UI -> <Device name> -> Edit -> Advanced -> Addresses` and change the value from `dynamic` to `tcp://localhost:<port>`. This is necessary because Syncthing does not try to connect over localhost by default.
 
 ## Verifying digital signatures
 

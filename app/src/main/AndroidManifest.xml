@@ -34,6 +34,10 @@
     <!-- For Syncthing to access the network. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
+    <uses-permission
+        android:name="android.permission.INTERACT_ACROSS_USERS"
+        android:minSdkVersion="37"
+        tools:ignore="ProtectedPermissions" />
 
     <!-- For Syncthing to access internal storage. -->
     <uses-permission
