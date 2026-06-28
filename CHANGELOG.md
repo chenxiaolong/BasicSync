@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add optional `INTERACT_ACROSS_USERS` permission to allow two copies of BasicSync installed in different users/profiles on the same device to communicate with each other over localhost on Android 17 ([Issue #192], [PR #193])
+
 ### Version 3.1
 
 * Fix UI crash when viewing sync conflicts if the same file is reported multiple times ([Issue #188], [PR #189])
@@ -294,6 +298,7 @@
 [Issue #172]: https://github.com/chenxiaolong/BasicSync/issues/172
 [Issue #175]: https://github.com/chenxiaolong/BasicSync/issues/175
 [Issue #188]: https://github.com/chenxiaolong/BasicSync/issues/188
+[Issue #192]: https://github.com/chenxiaolong/BasicSync/issues/192
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -429,3 +434,4 @@
 [PR #189]: https://github.com/chenxiaolong/BasicSync/pull/189
 [PR #190]: https://github.com/chenxiaolong/BasicSync/pull/190
 [PR #191]: https://github.com/chenxiaolong/BasicSync/pull/191
+[PR #193]: https://github.com/chenxiaolong/BasicSync/pull/193
