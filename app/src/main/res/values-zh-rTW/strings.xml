@@ -164,4 +164,49 @@
     <plurals name="notification_syncthing_alerts_title">
         <item quantity="other">有 %d 個 Syncthing 提醒</item>
     </plurals>
+    <string name="pref_allow_local_network_name">允許存取區域網路</string>
+    <string name="pref_allow_local_network_desc">直接連線至區域網路上的裝置，不依賴 Syncthing 的中繼伺服器時，需要此權限。</string>
+    <string name="pref_external_storage_access">允許存取外部儲存空間</string>
+    <string name="pref_allow_auto_mode_name">允許自動模式</string>
+    <string name="pref_allow_auto_mode_desc">停用時，將會從應用程式、通知和快速設定面板中完全移除自動模式功能。</string>
+    <string name="pref_start_on_boot_name">開機時啟動</string>
+    <string name="pref_start_on_boot_desc">在裝置重新啟動後，自動啟動應用程式。</string>
+    <string name="alert_browser_not_found">無可用的網頁瀏覽器。</string>
+    <string name="alert_documentsui_not_found">無法使用 Android 內建的系統檔案管理器（DocumentsUI）。</string>
+    <string name="alert_tv_inhibit_battery_opt">在 Android TV 上，停用「電池」最佳化需要手動步驟。</string>
+    <string name="alert_tv_inhibit_battery_opt_details">Android TV 沒有停用「電池」最佳化的使用者介面，但要讓 Syncthing 在背景穩定執行需要此設定。您必須執行以下 adb 指令來完成此操作。</string>
+    <string name="dialog_storage_type_title">儲存空間類型</string>
+    <string name="dialog_storage_type_internal_title">內部儲存空間</string>
+    <string name="dialog_storage_type_internal_desc">速度較快，且與 Syncthing 有更佳的相容性。</string>
+    <string name="dialog_storage_type_external_title">外部儲存空間</string>
+    <string name="dialog_storage_type_external_desc">速度較慢，且可能導致預期外的同步錯誤。</string>
+    <string name="notification_channel_persistent_name_started">啟動時的常駐通知</string>
+    <string name="notification_channel_persistent_name_stopped">停止時的常駐通知</string>
+    <plurals name="folder_state_idle">
+        <item quantity="other">• %d 個資料夾已是最新狀態</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="other">• %d 個資料夾正在掃描</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="other">• %d 個資料夾正在同步</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="other">• %d 個資料夾正在清理舊檔案</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="other">• %d 個資料夾發生錯誤</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="other">• %d 個資料夾正在啟動</item>
+    </plurals>
+    <plurals name="device_state_connected">
+        <item quantity="other">• %d 個裝置已連線</item>
+    </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="other">• %d 個裝置正在同步</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="other">• %d 個裝置等待同步</item>
+    </plurals>
 </resources>
