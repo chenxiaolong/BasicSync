@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update dynamic background color to match AOSP Settings ([PR #195])
+
 ### Version 3.2
 
 * Add optional `INTERACT_ACROSS_USERS` permission to allow two copies of BasicSync installed in different users/profiles on the same device to communicate with each other over localhost on Android 17 ([Issue #192], [PR #193])
@@ -435,3 +439,4 @@
 [PR #190]: https://github.com/chenxiaolong/BasicSync/pull/190
 [PR #191]: https://github.com/chenxiaolong/BasicSync/pull/191
 [PR #193]: https://github.com/chenxiaolong/BasicSync/pull/193
+[PR #195]: https://github.com/chenxiaolong/BasicSync/pull/195
