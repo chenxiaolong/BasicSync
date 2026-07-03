@@ -78,9 +78,9 @@ object PreferenceDefaults {
     val ListPadding = PaddingValues(horizontal = HorizontalPadding)
 
     val containerColor: Color
-        @Composable get() = MaterialTheme.colorScheme.surfaceContainerHigh
+        @Composable get() = MaterialTheme.colorScheme.surfaceContainer
     val scrolledContainerColor: Color
-        @Composable get() = MaterialTheme.colorScheme.surfaceContainerLow
+        @Composable get() = MaterialTheme.colorScheme.surfaceContainerHighest
 
     @Composable
     fun appBarColors() = TopAppBarDefaults.topAppBarColors(
