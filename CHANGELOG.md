@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Update dynamic background color to match AOSP Settings ([PR #195])
+* Fix back button background being opaque on QR code scanner screen ([PR #196])
 
 ### Version 3.2
 
@@ -440,3 +441,4 @@
 [PR #191]: https://github.com/chenxiaolong/BasicSync/pull/191
 [PR #193]: https://github.com/chenxiaolong/BasicSync/pull/193
 [PR #195]: https://github.com/chenxiaolong/BasicSync/pull/195
+[PR #196]: https://github.com/chenxiaolong/BasicSync/pull/196
