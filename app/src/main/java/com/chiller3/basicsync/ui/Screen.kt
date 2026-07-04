@@ -56,7 +56,13 @@ fun AppScreen(
                             IconButton(
                                 onClick = onClick,
                                 colors = IconButtonDefaults.filledIconButtonColors(
-                                    containerColor = PreferenceDefaults.scrolledContainerColor,
+                                    containerColor = PreferenceDefaults.scrolledContainerColor.let {
+                                        if (fullScreenContent) {
+                                            it.copy(alpha = 0.5f)
+                                        } else {
+                                            it
+                                        }
+                                    },
                                 ),
                             ) {
                                 @SuppressLint("PrivateResource")
