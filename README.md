@@ -37,7 +37,8 @@ The app is intentionally kept very basic so that the project is easy to maintain
 * `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE` (Android >=14)
     * Needed to run Syncthing in the background indefinitely.
 * `POST_NOTIFICATIONS`
-    * Needed to run Syncthing in the background and also to manually start and stop Syncthing if desired.
+    * Used for displaying the sync status and for providing a convenient way to manually start and stop Syncthing.
+    * Android requires foreground services to show a notification to run reliably. Unwanted notifications can be hidden by disabling the relevant notification channel from Android's settings while still granting the overall permission.
 * `INTERNET`
     * Only used to allow Syncthing to connect to the network.
     * BasicSync does not and will never have ads or telemetry of its own.
@@ -53,12 +54,13 @@ The app is intentionally kept very basic so that the project is easy to maintain
     * Needed for Syncthing to access files on the internal storage (`/sdcard`).
 * `RECEIVE_BOOT_COMPLETED`
     * Needed for automatically starting Syncthing after a reboot.
+    * Autostart can be disabled from BasicSync's settings if desired.
 * `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`
     * Needed to allow asking for permission to disable battery optimizations.
 * `CAMERA`
     * Optionally used for scanning a device's QR code when adding a new device.
 * `ACCESS_WIFI_STATE`, `ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`, `ACCESS_BACKGROUND_LOCATION`, `FOREGROUND_SERVICE_LOCATION`
-    * Optionally used for stopping Syncthing unless connected to specific Wi-Fi networks.
+    * Optionally used for stopping Syncthing unless connected to specific Wi-Fi networks. Android does not allow access to the SSID (Wi-Fi network name) without location permissions.
 * `SCHEDULE_EXACT_ALARM`
     * Optionally used for the time schedule feature. Otherwise, Android may significantly delay both the start and end of the time windows.
     * The app will not prompt for this permission because it is only needed when battery optimizations are still enabled, which is strongly discouraged anyway.
