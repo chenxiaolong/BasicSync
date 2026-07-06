@@ -13,8 +13,10 @@ The app is intentionally kept very basic so that the project is easy to maintain
 * Supports Android 8 and newer
 * Supports folders on [external storage](#external-storage)
 * Supports importing and exporting the configuration
-* Supports pausing syncing based on network and battery conditions
+* Supports pausing syncing based on network and battery conditions or on a periodic schedule
 * Supports Android's HTTP proxy settings
+* Quick settings tile to toggle between automatic and manual modes
+* Optionally allows external apps to [start and stop](#remote-control) Syncthing
 * Runs Syncthing as a library in the main process
     * This makes BasicSync immune to Android >=12's child process restrictions
 * Small additions to Syncthing's web UI to add a folder picker and QR code scanner
