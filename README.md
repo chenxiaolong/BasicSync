@@ -146,7 +146,7 @@ adb shell appops set com.chiller3.basicsync SYSTEM_EXEMPT_FROM_DISMISSIBLE_NOTIF
 # To undo the change, change "allow" to "default".
 ```
 
-Also, if the persistent notification is not desired, it can be disabled from Android's settings by turning off the "Background services" notification category for BasicSync. Syncthing will continue to run as normal even if the notification is not visible.
+Also, if the persistent notification is not desired, it can be disabled from Android's settings by turning off the two "Persistent notification" notification channels for BasicSync. Syncthing will continue to run as normal even if the notification is not visible as long as the overall notification permission is still granted.
 
 ## Cross-user communication
 
