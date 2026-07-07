@@ -12,6 +12,7 @@
 * Update dynamic background color to match AOSP Settings ([PR #195])
 * Fix back button background being opaque on QR code scanner screen ([PR #196])
 * Update golang to 1.26.5 ([PR #199])
+* Sync translations from Weblate ([PR #194])
 
 ### Version 3.2
 
@@ -441,6 +442,7 @@
 [PR #190]: https://github.com/chenxiaolong/BasicSync/pull/190
 [PR #191]: https://github.com/chenxiaolong/BasicSync/pull/191
 [PR #193]: https://github.com/chenxiaolong/BasicSync/pull/193
+[PR #194]: https://github.com/chenxiaolong/BasicSync/pull/194
 [PR #195]: https://github.com/chenxiaolong/BasicSync/pull/195
 [PR #196]: https://github.com/chenxiaolong/BasicSync/pull/196
 [PR #199]: https://github.com/chenxiaolong/BasicSync/pull/199
