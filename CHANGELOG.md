@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.3
 
 * Update dynamic background color to match AOSP Settings ([PR #195])
 * Fix back button background being opaque on QR code scanner screen ([PR #196])
