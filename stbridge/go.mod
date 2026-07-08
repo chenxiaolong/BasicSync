@@ -6,13 +6,10 @@ require (
 	github.com/syncthing/syncthing v0.0.0
 	go.foxforensics.dev/go-zip v0.6.2
 	golang.org/x/mobile v0.0.0-20260602190626-68735029466e
-	golang.org/x/sys v0.46.0
+	golang.org/x/sys v0.47.0
 )
 
-replace (
-	github.com/syncthing/syncthing v0.0.0 => ../external/syncthing
-	golang.org/x/sys v0.46.0 => github.com/chenxiaolong/golang-x-sys v0.46.0-basicsync.0
-)
+replace github.com/syncthing/syncthing v0.0.0 => ../external/syncthing
 
 require (
 	github.com/AudriusButkevicius/recli v0.0.7 // indirect
@@ -42,12 +39,12 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lufia/plan9stats v0.0.0-20240909124753-873cd0166683 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mattn/go-sqlite3 v1.14.44 // indirect
+	github.com/mattn/go-sqlite3 v1.14.45 // indirect
 	github.com/miscreant/miscreant.go v0.0.0-20200214223636-26d376326b75 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/ncruces/go-strftime v1.0.0 // indirect
 	github.com/onsi/gomega v1.36.3 // indirect
-	github.com/pierrec/lz4/v4 v4.1.26 // indirect
+	github.com/pierrec/lz4/v4 v4.1.27 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
@@ -55,11 +52,11 @@ require (
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.66.1 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
-	github.com/quic-go/quic-go v0.59.0 // indirect
+	github.com/quic-go/quic-go v0.60.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20250401214520-65e299d6c5c9 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/shirou/gopsutil/v4 v4.26.4 // indirect
+	github.com/shirou/gopsutil/v4 v4.26.5 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/syncthing/notify v0.0.0-20250528144937-c7027d4f7465 // indirect
@@ -72,14 +69,14 @@ require (
 	github.com/wlynxg/anet v0.0.5 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
-	golang.org/x/crypto v0.51.0 // indirect
-	golang.org/x/net v0.55.0 // indirect
-	golang.org/x/text v0.37.0 // indirect
+	golang.org/x/crypto v0.53.0 // indirect
+	golang.org/x/net v0.56.0 // indirect
+	golang.org/x/text v0.38.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	modernc.org/libc v1.72.0 // indirect
+	modernc.org/libc v1.72.3 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.11.0 // indirect
-	modernc.org/sqlite v1.50.0 // indirect
+	modernc.org/sqlite v1.52.0 // indirect
 )

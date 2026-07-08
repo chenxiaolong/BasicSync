@@ -925,12 +925,9 @@ func Run(startup *SyncthingStartupConfig) error {
 
 		// /sdcard does not support permissions.
 		c.Defaults.Folder.IgnorePerms = true
-		// Reduce CPU usage due to file hashing.
-		c.Defaults.Folder.Hashers = 1
 
 		for _, folder := range c.Folders {
 			folder.IgnorePerms = true
-			folder.Hashers = 1
 
 			c.SetFolder(folder)
 		}
