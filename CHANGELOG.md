@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update syncthing to 2.1.2 ([PR #200])
+
 ### Version 3.3
 
 * Update dynamic background color to match AOSP Settings ([PR #195])
@@ -446,3 +450,4 @@
 [PR #195]: https://github.com/chenxiaolong/BasicSync/pull/195
 [PR #196]: https://github.com/chenxiaolong/BasicSync/pull/196
 [PR #199]: https://github.com/chenxiaolong/BasicSync/pull/199
+[PR #200]: https://github.com/chenxiaolong/BasicSync/pull/200
