@@ -167,7 +167,7 @@
     <string name="pref_allow_local_network_name">允許存取區域網路</string>
     <string name="pref_allow_local_network_desc">直接連線至區域網路上的裝置，不依賴 Syncthing 的中繼伺服器時，需要此權限。</string>
     <string name="pref_allow_auto_mode_name">允許自動模式</string>
-    <string name="pref_allow_auto_mode_desc">停用時，將會從應用程式、通知和快速設定面板中完全移除自動模式功能。</string>
+    <string name="pref_allow_auto_mode_desc">停用後，將會從應用程式、通知和快速設定面板中完全移除自動模式功能。</string>
     <string name="pref_start_on_boot_name">開機時啟動</string>
     <string name="pref_start_on_boot_desc">在裝置重新啟動後，自動啟動應用程式。</string>
     <string name="alert_browser_not_found">無可用的網頁瀏覽器。</string>
