@@ -12,14 +12,11 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.chiller3.basicsync.extension.expandTilde
-import com.chiller3.basicsync.extension.shortenTilde
 import com.chiller3.basicsync.extension.toSingleLineString
 import com.chiller3.basicsync.settings.ConflictsActivity
 import com.chiller3.basicsync.settings.SettingsActivity
 import com.chiller3.basicsync.settings.WebUiActivity
 import com.chiller3.basicsync.syncthing.SyncthingService
-import java.io.File
 
 class Notifications(private val context: Context) {
     companion object {
@@ -257,7 +254,8 @@ class Notifications(private val context: Context) {
         notificationManager.notify(ID_FAILURE, notification)
     }
 
-    fun sendOrClearConflictsNotification(conflicts: List<String>) {
+    fun sendOrClearConflictsNotification(conflictsInfo: SyncthingService.ConflictsInfo) {
+        val conflicts = conflictsInfo.items(context)
         if (conflicts.isEmpty()) {
             notificationManager.cancel(ID_CONFLICTS)
             return
@@ -273,7 +271,7 @@ class Notifications(private val context: Context) {
                         append('…')
                         break
                     } else {
-                        append(File(conflict).expandTilde().shortenTilde())
+                        append(conflict.displayName)
                     }
                 }
             }

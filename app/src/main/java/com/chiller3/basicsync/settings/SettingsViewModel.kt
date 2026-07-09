@@ -52,8 +52,6 @@ class SettingsViewModel : ViewModel() {
 
     val serviceState = MutableStateFlow<SyncthingService.ServiceState?>(null)
 
-    val conflicts = MutableStateFlow<List<String>?>(null)
-
     private val _importExportState = MutableStateFlow<ImportExportState?>(null)
     val importExportState = _importExportState.asStateFlow()
 

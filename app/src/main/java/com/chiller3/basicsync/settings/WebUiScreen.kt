@@ -56,6 +56,8 @@ import com.chiller3.basicsync.BuildConfig
 import com.chiller3.basicsync.Permissions
 import com.chiller3.basicsync.R
 import com.chiller3.basicsync.extension.DOCUMENTSUI_AUTHORITY
+import com.chiller3.basicsync.extension.DOCUMENTSUI_PRIMARY_ID
+import com.chiller3.basicsync.syncthing.SyncthingSafClient
 import com.chiller3.basicsync.syncthing.SyncthingService
 import com.chiller3.basicsync.ui.AppScreen
 import com.chiller3.basicsync.ui.PreferenceDefaults
@@ -120,7 +122,7 @@ fun WebUiScreen(onExit: () -> Unit) {
     var guiCert by remember { mutableStateOf<X509Certificate?>(null) }
     rememberServiceEventWatcher(
         listener = object : SyncthingService.ServiceListener {
-            override fun onMissingStoragePermissions(internal: Boolean, external: List<Uri>) {}
+            override fun onMissingStoragePermissions(local: Boolean, saf: List<Uri>) {}
 
             override fun onExitRequested() = onExit()
 
@@ -155,7 +157,7 @@ fun WebUiScreen(onExit: () -> Unit) {
                 exception: Exception?,
             ) {}
 
-            override fun onConflictsUpdated(conflicts: List<String>) {}
+            override fun onConflictsUpdated(conflictsInfo: SyncthingService.ConflictsInfo) {}
         },
     )
 
@@ -241,11 +243,11 @@ fun WebUiScreen(onExit: () -> Unit) {
         }
     }
 
-    val requestSafExternalStorage = rememberLauncherForActivityResult(
+    val requestSafTree = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocumentTree()
     ) { uri ->
         uri?.let {
-            SyncthingService.persistExternalStoragePermissions(context, it)
+            SyncthingService.persistSafPermissions(context, it)
 
             onFolderSelected("saf", SyncthingService.encodeSafUri(it))
         }
@@ -257,7 +259,7 @@ fun WebUiScreen(onExit: () -> Unit) {
         StorageChoiceDialog(
             onSelect = { type ->
                 when (type) {
-                    StorageChoice.INTERNAL -> {
+                    StorageChoice.LOCAL -> {
                         if (showFolderPicker(false)) {
                             // Already have permissions.
                         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -271,8 +273,8 @@ fun WebUiScreen(onExit: () -> Unit) {
                             requestPermissionsRequired.launch(Permissions.LEGACY_STORAGE)
                         }
                     }
-                    StorageChoice.EXTERNAL -> {
-                        requestSafExternalStorage.launch(existingFolderPath?.toUri())
+                    StorageChoice.SAF -> {
+                        requestSafTree.launch(existingFolderPath?.toUri())
                         existingFolderPath = null
                     }
                 }
@@ -319,10 +321,14 @@ fun WebUiScreen(onExit: () -> Unit) {
                         "saf" -> {
                             // DocumentsUI does not support tree URIs for EXTRA_INITIAL_URI.
                             val treeUri = SyncthingService.decodeSafUri(path).first
-                            existingFolderPath = DocumentsContract.buildDocumentUri(
-                                treeUri.authority,
-                                DocumentsContract.getTreeDocumentId(treeUri),
-                            ).toString()
+                            try {
+                                existingFolderPath = DocumentsContract.buildDocumentUri(
+                                    treeUri.authority,
+                                    SyncthingSafClient.getNarrowestDocumentId(treeUri),
+                                ).toString()
+                            } catch (e: IllegalArgumentException) {
+                                Log.w(TAG, "Invalid initial URI: $treeUri", e)
+                            }
                         }
                         else -> Log.w(TAG, "Ignoring unrecognized filesystem type: $filesystemType")
                     }
@@ -425,7 +431,9 @@ fun WebUiScreen(onExit: () -> Unit) {
                         val filesDir = context.getExternalFilesDir(null)!!
                         val relPath = filesDir.relativeTo(externalDir)
                         val uri = DocumentsContract.buildDocumentUri(
-                            DOCUMENTSUI_AUTHORITY, "primary:$relPath")
+                            DOCUMENTSUI_AUTHORITY,
+                            "$DOCUMENTSUI_PRIMARY_ID:$relPath",
+                        )
                         val intent = Intent(Intent.ACTION_VIEW).apply {
                             setDataAndType(uri, "vnd.android.document/directory")
                         }

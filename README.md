@@ -11,7 +11,8 @@ The app is intentionally kept very basic so that the project is easy to maintain
 ## Features
 
 * Supports Android 8 and newer
-* Supports folders on [external storage](#external-storage)
+* Supports external storage, like SD cards and USB drives
+* Supports Android's [storage access framework](#storage-access-framework)
 * Supports importing and exporting the configuration
 * Supports pausing syncing based on network and battery conditions or on a periodic schedule
 * Supports Android's HTTP proxy settings
@@ -51,7 +52,7 @@ The app is intentionally kept very basic so that the project is easy to maintain
 * `ACCESS_NETWORK_STATE`
     * Used for detecting when the device is connected to the network and if the network is unmetered.
 * `MANAGE_EXTERNAL_STORAGE` (Android >=11), `READ_EXTERNAL_STORAGE`/`WRITE_EXTERNAL_STORAGE` (Android <11)
-    * Needed for Syncthing to access files on the internal storage (`/sdcard`).
+    * Optionally used for accessing internal and external storage when a folder is configured for direct file access instead of using Android's [storage access framework](#storage-access-framework).
 * `RECEIVE_BOOT_COMPLETED`
     * Needed for automatically starting Syncthing after a reboot.
     * Autostart can be disabled from BasicSync's settings if desired.
@@ -73,11 +74,13 @@ Syncthing listens on the loopback interface and is available via `127.0.0.1:8384
 
 For basic authentication, the password is the API token. Generating new API tokens is supported, but setting an arbitrary password is not. BasicSync will internally set the password to the API token on every start.
 
-## External storage
+## Storage access framework
 
-BasicSync supports syncing files on external storage via Android's Storage Access Framework (SAF). This is primarily intended for use with SD cards and USB drives, but can work with well-behaved third party SAF provider apps as well.
+**For GrapheneOS users**: Use the OS-level storage scopes feature instead. It allows direct file access without the limitations of Android's storage access framework described below.
 
-Where possible, sync to internal storage instead. Using external storage is discouraged because SAF is not well suited for how Syncthing accesses files.
+BasicSync supports file access via Android's storage access framework (SAF) as an alternative to direct file access. This limits permissions so that Syncthing only has access to specific folders instead of all internal and external storage.
+
+However, despite not having granular permissions, using direct file access is still recommended. SAF is discouraged because it is not well suited for how Syncthing accesses files.
 
 * Accessing files by path is extremely inefficient. For example, it is not possible to directly access a nested file like `a/b/c`. Instead, Android will list every file in `a` and `b` and query their metadata before `c` is accessible. To reduce the impact of this, BasicSync caches directory listings and file metadata, but it will still be significantly slower than internal storage.
 
@@ -85,9 +88,9 @@ Where possible, sync to internal storage instead. Using external storage is disc
 
 * SAF cannot guarantee that a creating a file will have the expected filename. When multiple processes try to create the same file at the same time, `file.txt` may be created as, for example, `file (1).txt`. BasicSync tries to reduce the chance of this happening within Syncthing, but it cannot protect from other apps writing to the same files.
 
-When using external storage, there is higher chance of running into unexpected sync errors. If they occur, wait 5 minutes for BasicSync's caches to expire and then trigger a rescan of the folder from Syncthing's web UI. Due to SAF's limitations, this is the best that can be done.
+When using SAF, there is higher chance of running into unexpected sync errors. If they occur, wait 5 minutes for BasicSync's caches to expire and then trigger a rescan of the folder from Syncthing's web UI. Due to SAF's limitations, this is the best that can be done.
 
-**NOTE**: External storage support is a BasicSync feature, not a Syncthing feature. BasicSync has a large amount of code for bridging Syncthing's custom filesystem support to SAF. This means if the Syncthing config is exported from BasicSync and imported into another app, folders on external storage will not work properly.
+**NOTE**: SAF support is a BasicSync feature, not a Syncthing feature. BasicSync has a large amount of code for bridging Syncthing's custom filesystem support to SAF. This means if the Syncthing config is exported from BasicSync and imported into another app, folders using SAF will not work properly.
 
 ### SAF custom filesystem scheme
 

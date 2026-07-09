@@ -9,7 +9,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
-import android.provider.DocumentsContract
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -22,14 +21,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.chiller3.basicsync.R
-import com.chiller3.basicsync.extension.DOCUMENTSUI_AUTHORITY
-import com.chiller3.basicsync.extension.EXTERNAL_DIR
-import com.chiller3.basicsync.extension.expandTilde
-import com.chiller3.basicsync.extension.shortenTilde
 import com.chiller3.basicsync.syncthing.SyncthingService
 import com.chiller3.basicsync.ui.AppScreen
 import com.chiller3.basicsync.ui.BetterSegmentedShapes
@@ -38,7 +32,6 @@ import com.chiller3.basicsync.ui.PreferenceColumn
 import com.chiller3.basicsync.ui.PreferenceDefaults
 import com.chiller3.basicsync.ui.betterSegmentedShapes
 import com.chiller3.basicsync.ui.theme.AppTheme
-import java.io.File
 
 @Composable
 fun ConflictsScreen(
@@ -47,12 +40,14 @@ fun ConflictsScreen(
 ) {
     val context = LocalContext.current
 
-    var syncConflicts by rememberSaveable { mutableStateOf(emptyList<String>()) }
+    var syncConflicts by rememberSaveable {
+        mutableStateOf(emptyList<SyncthingService.ConflictItem>())
+    }
     var showDocumentsUIAlert by rememberSaveable { mutableStateOf(false) }
 
     rememberServiceEventWatcher(
         listener = object : SyncthingService.ServiceListener {
-            override fun onMissingStoragePermissions(internal: Boolean, external: List<Uri>) {}
+            override fun onMissingStoragePermissions(local: Boolean, saf: List<Uri>) {}
 
             override fun onExitRequested() = onExit()
 
@@ -66,7 +61,8 @@ fun ConflictsScreen(
                 exception: Exception?,
             ) {}
 
-            override fun onConflictsUpdated(conflicts: List<String>) {
+            override fun onConflictsUpdated(conflictsInfo: SyncthingService.ConflictsInfo) {
+                val conflicts = conflictsInfo.items(context)
                 if (conflicts.isEmpty()) {
                     onBack()
                 } else {
@@ -82,13 +78,9 @@ fun ConflictsScreen(
     ) { params ->
         ConflictsContent(
             conflicts = syncConflicts,
-            onConflictOpen = { relPath ->
+            onConflictOpen = { uri ->
                 try {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
-                        val uri = DocumentsContract.buildDocumentUri(
-                            DOCUMENTSUI_AUTHORITY,
-                            "primary:$relPath",
-                        )
                         setDataAndType(uri, "vnd.android.document/directory")
                     }
 
@@ -117,8 +109,8 @@ fun ConflictsScreen(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ConflictsContent(
-    conflicts: List<String>,
-    onConflictOpen: (String) -> Unit,
+    conflicts: List<SyncthingService.ConflictItem>,
+    onConflictOpen: (Uri) -> Unit,
     contentPadding: PaddingValues = PaddingValues(),
 ) {
     PreferenceColumn(contentPadding = contentPadding) {
@@ -133,27 +125,11 @@ fun ConflictsContent(
             )
         }
 
-        itemsIndexed(conflicts, key = { _, n -> "conflict_$n" }) { index, path ->
-            val expanded: File
-            val shortened: File
-            val relPath: File
-
-            if (LocalInspectionMode.current) {
-                // EXTERNAL_DIR fails with NPE in compose previewer.
-                val externalDir = "/storage/emulated/0"
-                expanded = File(path.replaceFirst("~", externalDir))
-                shortened = File(path.replaceFirst(externalDir, "~"))
-                relPath = expanded.relativeTo(File(externalDir))
-            } else {
-                expanded = File(path).expandTilde()
-                shortened = expanded.shortenTilde()
-                relPath = expanded.relativeTo(EXTERNAL_DIR)
-            }
-
+        itemsIndexed(conflicts, key = { _, c -> "conflict_${c.displayName}" }) { index, conflict ->
             Preference(
-                onClick = { onConflictOpen(relPath.toString()) },
+                onClick = { conflict.parentUri?.let(onConflictOpen) },
                 shapes = betterSegmentedShapes(index, conflicts.size),
-                title = { Text(text = shortened.toString()) },
+                title = { Text(text = conflict.displayName) },
                 modifier = Modifier.animateItem(),
             )
         }
@@ -172,8 +148,9 @@ fun ConflictsContent(
 @Composable
 private fun PreviewConflictsScreen() {
     val conflicts = listOf(
-        "/storage/emulated/0/DCIM/Camera/picture.sync-conflict-20260101-000000-ABCDEFG.jpg",
-        "/storage/emulated/0/Sync/test.sync-conflict-20260101-000000-ABCDEFG.txt",
+        SyncthingService.ConflictItem("~/Sync/test.sync-conflict-20260101-000000-ABCDEFG.txt", null),
+        SyncthingService.ConflictItem("/storage/0000-0000/Sync/test.sync-conflict-20260101-000000-ABCDEFG.txt", null),
+        SyncthingService.ConflictItem("0000-0000:test.sync-conflict-20260101-000000-ABCDEFG.txt", null),
     )
 
     AppTheme {

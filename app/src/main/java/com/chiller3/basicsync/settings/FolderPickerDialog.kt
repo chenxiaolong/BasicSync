@@ -18,6 +18,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,7 +27,7 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.rememberViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chiller3.basicsync.R
-import com.chiller3.basicsync.extension.EXTERNAL_DIR
+import com.chiller3.basicsync.extension.shortenTilde
 import com.chiller3.basicsync.ui.Preference
 import com.chiller3.basicsync.ui.PreferenceColumn
 import com.chiller3.basicsync.ui.betterSegmentedShapes
@@ -48,49 +50,62 @@ fun FolderPickerDialog(
     onSelect: (String) -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val context = LocalContext.current
     val scopedOwner = rememberViewModelStoreOwner()
 
     CompositionLocalProvider(LocalViewModelStoreOwner provides scopedOwner) {
-        val viewModel: FolderPickerViewModel = viewModel()
-        rememberSaveable {
+        val viewModel = viewModel {
             val initialPath = when (initialLocation) {
-                FolderPickerLocation.Default -> EXTERNAL_DIR
+                FolderPickerLocation.Default -> FolderPickerViewModel.VIRTUAL_ROOT
                 is FolderPickerLocation.Path -> File(initialLocation.path)
             }
-            viewModel.navigate(initialPath)
-            true
+
+            FolderPickerViewModel(context, initialPath)
         }
 
         val state by viewModel.state.collectAsStateWithLifecycle()
-        val hasParent = ".." in state.childDirs
+        val isRoot = state.cwd == FolderPickerViewModel.VIRTUAL_ROOT
+        val shortCwd = state.cwd.shortenTilde().toString()
 
         var showNewFolderDialog by rememberSaveable { mutableStateOf(false) }
 
         AlertDialog(
-            title = { Text(text = state.shortCwd.toString()) },
+            title = {
+                if (!isRoot) {
+                    Text(text = shortCwd)
+                }
+            },
             text = {
                 PreferenceColumn(fillScreen = false) {
-                    itemsIndexed(state.childDirs, key = { _, c -> c }) { index, childDir ->
+                    itemsIndexed(state.childDirs, key = { _, c -> c.cdPath }) { index, childDir ->
                         Preference(
-                            onClick = { viewModel.navigate(File(childDir)) },
+                            onClick = { viewModel.navigate(state.cwd, childDir.cdPath) },
                             shapes = betterSegmentedShapes(
                                 index = index,
                                 count = state.childDirs.size,
                             ),
-                            title = { Text(text = "$childDir/") },
+                            enabled = childDir.enabled,
+                            title = { Text(text = childDir.title) },
+                            summary = childDir.summary?.let { { Text(text = it) } },
+                            // This is uglier, but having the fade out animation delays the
+                            // shrinking of the dialog window noticeably when navigating to a
+                            // smaller directory.
+                            modifier = Modifier.animateItem(fadeOutSpec = null),
                         )
                     }
                 }
 
                 BackHandler(
-                    enabled = hasParent,
-                    onBack = { viewModel.navigate(File("..")) },
+                    enabled = !isRoot,
+                    onBack = { viewModel.navigate(state.cwd, File("..")) },
                 )
             },
             onDismissRequest = onDismiss,
             confirmButton = {
-                TextButton(onClick = { onSelect(state.shortCwd.toString()) }) {
-                    Text(text = stringResource(android.R.string.ok))
+                if (!isRoot) {
+                    TextButton(onClick = { onSelect(shortCwd) }) {
+                        Text(text = stringResource(android.R.string.ok))
+                    }
                 }
             },
             dismissButton = {
@@ -98,21 +113,23 @@ fun FolderPickerDialog(
                     Text(text = stringResource(android.R.string.cancel))
                 }
 
-                TextButton(onClick = { showNewFolderDialog = true }) {
-                    Text(text = stringResource(R.string.dialog_new_folder_title))
+                if (!isRoot) {
+                    TextButton(onClick = { showNewFolderDialog = true }) {
+                        Text(text = stringResource(R.string.dialog_new_folder_title))
+                    }
                 }
             },
             properties = DialogProperties(
-                dismissOnBackPress = !hasParent,
+                dismissOnBackPress = isRoot,
                 dismissOnClickOutside = false,
             ),
         )
 
         if (showNewFolderDialog) {
             NewFolderDialog(
-                cwd = state.shortCwd.toString(),
-                onSelect = { name ->
-                    viewModel.mkdir(File(name))
+                cwd = state.cwd,
+                onSelect = { cwd, name ->
+                    viewModel.mkdir(cwd, name)
                     showNewFolderDialog = false
                 },
                 onDismiss = {

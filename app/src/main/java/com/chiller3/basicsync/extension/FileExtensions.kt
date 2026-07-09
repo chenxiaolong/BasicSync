@@ -12,7 +12,7 @@ import java.io.File
 private val HOME = File("~")
 @SuppressLint("SdCardPath")
 private val SDCARD = File("/sdcard")
-val EXTERNAL_DIR: File = Environment.getExternalStorageDirectory()
+private val EXTERNAL_DIR: File = Environment.getExternalStorageDirectory()
 
 fun File.expandTilde(): File =
     if (startsWith(HOME)) {
@@ -23,15 +23,9 @@ fun File.expandTilde(): File =
         this
     }
 
-fun File.shortenTilde(): File {
-    val relPath = relativeToOrSelf(EXTERNAL_DIR)
-    val relPathString = relPath.toString()
-
-    return if (relPathString.isEmpty()) {
-        HOME
-    } else if (!relPath.isAbsolute) {
-        File(HOME, relPathString)
+fun File.shortenTilde(): File =
+    if (startsWith(EXTERNAL_DIR)) {
+        File(HOME, toRelativeString(EXTERNAL_DIR))
     } else {
-        relPath
+        this
     }
-}

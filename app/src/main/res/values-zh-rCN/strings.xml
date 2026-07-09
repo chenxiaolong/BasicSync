@@ -184,12 +184,7 @@
     <plurals name="device_state_pending">
         <item quantity="other">• %d 台设备待同步</item>
     </plurals>
-    <string name="pref_external_storage_access">允许外部存储访问</string>
     <string name="dialog_storage_type_title">存储类型</string>
-    <string name="dialog_storage_type_internal_title">内部存储</string>
-    <string name="dialog_storage_type_internal_desc">速度更快，与 Syncthing 的兼容性更好。</string>
-    <string name="dialog_storage_type_external_title">外部存储</string>
-    <string name="dialog_storage_type_external_desc">效率较低，可能会导致意外的同步错误。</string>
     <string name="pref_allow_local_network_name">允许本地网络访问</string>
     <string name="pref_allow_local_network_desc">需要直接连接到本地网络上的设备，而不是通过 Syncthing 的中继服务器。</string>
     <string name="pref_start_on_boot_name">开机时启动</string>

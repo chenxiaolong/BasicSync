@@ -31,7 +31,6 @@
     <string name="pref_respect_auto_sync_data_desc">لا يعمل إلا عند تفعيل إعداد المزامنة التلقائية للبيانات في أندرويد.</string>
     <string name="pref_header_run_conditions">حالات التشغيل</string>
     <string name="pref_header_advanced">متقدم</string>
-    <string name="pref_external_storage_access">السماح بالوصول لوحدة التخزين الخارجية</string>
     <string name="pref_conflicts_name">تداخلات المزامنة</string>
     <plurals name="pref_conflicts_desc">
         <item quantity="zero">حدث تعارض لـ%d ملف أثناء المزامنة.</item>
@@ -91,10 +90,6 @@
     <string name="alert_tv_inhibit_battery_opt">تعطيل تحسين \"البطارية\" يتطلب بعض الخطوات اليدوية على Android TV.</string>
     <string name="alert_tv_inhibit_battery_opt_details">لا توجد واجهة مستخدم في Android TV لتعطيل تحسين \"البطارية\"، لكن تعطيله مطلوب ليعمل Syncthing في الخلفية بكفاءة. يمكن تعطيل التحسين عبر أمر adb التالي.</string>
     <string name="dialog_storage_type_title">نوع وحدة التخزين</string>
-    <string name="dialog_storage_type_internal_title">وحدة التخزين الداخلية</string>
-    <string name="dialog_storage_type_internal_desc">اسرع ويملك توافقية أفضل مع Syncthing.</string>
-    <string name="dialog_storage_type_external_title">وحدة التخزين الخارجية</string>
-    <string name="dialog_storage_type_external_desc">أقل كفاءة وقد يتسبب بأخطاء غير متوقعة أثناء المزامنة.</string>
     <string name="dialog_new_folder_title">مجلد جديد</string>
     <string name="dialog_new_folder_message">ادخل اسم المجلد الذي ترغب بإنشائه في %1$s.</string>
     <string name="dialog_new_folder_hint">الاسم</string>

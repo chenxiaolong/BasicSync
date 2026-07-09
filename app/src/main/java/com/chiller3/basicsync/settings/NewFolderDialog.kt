@@ -24,11 +24,13 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.chiller3.basicsync.R
+import com.chiller3.basicsync.extension.shortenTilde
+import java.io.File
 
 @Composable
 fun NewFolderDialog(
-    cwd: String,
-    onSelect: (String) -> Unit,
+    cwd: File,
+    onSelect: (File, String) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val input = rememberTextFieldState()
@@ -38,7 +40,7 @@ fun NewFolderDialog(
         title = { Text(text = stringResource(R.string.dialog_new_folder_title)) },
         text = {
             Column(modifier = Modifier.verticalScroll(state = rememberScrollState())) {
-                Text(text = stringResource(R.string.dialog_new_folder_message, cwd))
+                Text(text = stringResource(R.string.dialog_new_folder_message, cwd.shortenTilde()))
 
                 OutlinedTextField(
                     state = input,
@@ -55,7 +57,7 @@ fun NewFolderDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
-                onClick = { onSelect(name!!) },
+                onClick = { onSelect(cwd, name!!) },
                 enabled = name != null,
             ) {
                 Text(text = stringResource(android.R.string.ok))
@@ -73,9 +75,7 @@ fun NewFolderDialog(
     )
 }
 
-private fun tryParseInput(input: String): String? =
-    if (input.isNotEmpty() && !input.contains('/') && input != "." && input != "..") {
-        input
-    } else {
-        null
-    }
+private fun tryParseInput(input: String): String? = input.takeIf(::isSafeName)
+
+fun isSafeName(name: String) =
+    name.isNotEmpty() && !name.contains('/') && name != "." && name != ".."

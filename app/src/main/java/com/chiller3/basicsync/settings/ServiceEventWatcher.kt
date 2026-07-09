@@ -85,8 +85,8 @@ class ServiceEventWatcher internal constructor(
         binder = null
     }
 
-    override fun onMissingStoragePermissions(internal: Boolean, external: List<Uri>) {
-        handler.post { listener.onMissingStoragePermissions(internal, external) }
+    override fun onMissingStoragePermissions(local: Boolean, saf: List<Uri>) {
+        handler.post { listener.onMissingStoragePermissions(local, saf) }
     }
 
     override fun onExitRequested() {
@@ -107,8 +107,8 @@ class ServiceEventWatcher internal constructor(
         handler.post { listener.onPreRunActionResult(preRunAction, exception) }
     }
 
-    override fun onConflictsUpdated(conflicts: List<String>) {
-        handler.post { listener.onConflictsUpdated(conflicts) }
+    override fun onConflictsUpdated(conflictsInfo: SyncthingService.ConflictsInfo) {
+        handler.post { listener.onConflictsUpdated(conflictsInfo) }
     }
 
     fun runWithBinder(block: (SyncthingService.ServiceBinder) -> Unit) {

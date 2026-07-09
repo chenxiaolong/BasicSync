@@ -229,12 +229,7 @@
         <item quantity="many">• %d urządzeń oczekujących na synchronizację</item>
         <item quantity="other">• %d urządzeń oczekujących na synchronizację</item>
     </plurals>
-    <string name="pref_external_storage_access">Zezwól na dostęp do pamięci zewnętrznej</string>
     <string name="dialog_storage_type_title">Typ pamięci</string>
-    <string name="dialog_storage_type_internal_title">Pamięć wewnętrzna</string>
-    <string name="dialog_storage_type_internal_desc">Szybsza i bardziej kompatybilna z Syncthing.</string>
-    <string name="dialog_storage_type_external_title">Pamięć zewnętrzna</string>
-    <string name="dialog_storage_type_external_desc">Mniej wydajna i może powodować nieoczekiwane błędy synchronizacji.</string>
     <string name="pref_allow_local_network_name">Zezwól na dostęp do sieci lokalnej</string>
     <string name="pref_allow_local_network_desc">Potrzebne do łączenia się z urządzeniami w sieci lokalnej bezpośrednio, zamiast korzystać z serwerów przekaźnikowych Syncthing.</string>
     <string name="pref_start_on_boot_name">Uruchom przy rozruchu</string>

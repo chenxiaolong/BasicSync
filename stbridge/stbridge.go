@@ -292,17 +292,14 @@ func (app *SyncthingApp) GuiTlsCert() []byte {
 }
 
 type SyncthingStatusReceiver interface {
-	OnCheckStoragePermissions(internal0Sep string, external0Sep string) error
+	OnCheckStoragePermissions(local0Sep string, saf0Sep string) error
 
 	OnSyncthingStarted(app *SyncthingApp)
 
 	OnSyncthingStopped(app *SyncthingApp)
 
 	// Can be sent before OnSyncthingStarted, but not after OnSyncthingStopped.
-	// The list of paths is separated by a '\0' byte because gomobile does not
-	// support passing a list of strings to the JVM. This works for arbitrary
-	// paths on Linux.
-	OnConflictsUpdated(paths0Sep string)
+	OnConflictsUpdated(local0Sep string, safChildParent0Sep string)
 
 	// Can be sent before OnSyncthingStarted, but not after OnSyncthingStopped.
 	OnAlertsUpdated(count int32)
@@ -336,34 +333,79 @@ func isConflict(name string) bool {
 }
 
 type conflictsInfo struct {
-	byFolder    map[string]map[string]struct{}
-	folderPaths map[string]string
+	byFolder        map[string]map[string]struct{}
+	folderPaths     map[string]string
+	filesystemTypes map[string]config.FilesystemType
 }
 
 func dispatchConflicts(
 	conflictsInfo *conflictsInfo,
 	receiver SyncthingStatusReceiver,
 ) {
-	unique := map[string]struct{}{}
+	uniqueLocal := map[string]struct{}{}
+	uniqueSaf := map[string]string{}
 
 	for folder, names := range conflictsInfo.byFolder {
 		folderPath := conflictsInfo.folderPaths[folder]
+		filesystemType := conflictsInfo.filesystemTypes[folder]
 
-		for name := range names {
-			unique[filepath.Join(folderPath, name)] = struct{}{}
+		if filesystemType == config.FilesystemTypeBasic {
+			// Never fails on Android.
+			expanded, _ := fs.ExpandTilde(folderPath)
+
+			for name := range names {
+				uniqueLocal[filepath.Join(expanded, name)] = struct{}{}
+			}
+		} else if filesystemType == config.FilesystemType(filesystemTypeSaf) {
+			// We need to get the URI of the conflicting files (for display) and
+			// the URI of the parent directories (for opening). We do this on
+			// the stbridge side to take advantage of the cached safNodes.
+			filesystem := fs.NewFilesystem(fs.FilesystemType(filesystemType), folderPath)
+
+			for name := range names {
+				parent := filepath.Dir(name)
+				parentFileInfo, err := filesystem.Stat(parent)
+				if err != nil {
+					log.Printf("Failed to stat SAF conflict dir: %q", rawPathJoin(folderPath, parent))
+					continue
+				}
+				parentSafInfo := parentFileInfo.(*safFileInfo)
+
+				childFileInfo, err := filesystem.Stat(name)
+				if err != nil {
+					log.Printf("Failed to stat SAF conflict file: %q", rawPathJoin(folderPath, name))
+					continue
+				}
+				childSafInfo := childFileInfo.(*safFileInfo)
+
+				uniqueSaf[childSafInfo.Uri] = parentSafInfo.Uri
+			}
+		} else {
+			log.Printf("Skipping unsupported filesystem type: %v", filesystemType)
+			continue
 		}
 	}
 
-	var paths0Sep strings.Builder
+	var local0Sep strings.Builder
+	var safChildParent0Sep strings.Builder
 
-	for path := range unique {
-		if paths0Sep.Len() > 0 {
-			paths0Sep.WriteRune('\u0000')
+	for path := range uniqueLocal {
+		if local0Sep.Len() > 0 {
+			local0Sep.WriteRune('\u0000')
 		}
-		paths0Sep.WriteString(path)
+		local0Sep.WriteString(path)
 	}
 
-	receiver.OnConflictsUpdated(paths0Sep.String())
+	for child, parent := range uniqueSaf {
+		if safChildParent0Sep.Len() > 0 {
+			safChildParent0Sep.WriteRune('\u0000')
+		}
+		safChildParent0Sep.WriteString(child)
+		safChildParent0Sep.WriteRune('\u0000')
+		safChildParent0Sep.WriteString(parent)
+	}
+
+	receiver.OnConflictsUpdated(local0Sep.String(), safChildParent0Sep.String())
 }
 
 // The only type of alerts we currently don't track are those associated
@@ -669,10 +711,11 @@ func eventLoop(
 				cfg := evt.Data.(config.Configuration)
 
 				clear(conflictsInfo.folderPaths)
+				clear(conflictsInfo.filesystemTypes)
 
 				for _, folder := range cfg.Folders {
-					// Never fails on Android.
-					conflictsInfo.folderPaths[folder.ID], _ = fs.ExpandTilde(folder.Path)
+					conflictsInfo.folderPaths[folder.ID] = folder.Path
+					conflictsInfo.filesystemTypes[folder.ID] = folder.FilesystemType
 				}
 
 				for folderID := range conflictsInfo.byFolder {
@@ -722,7 +765,7 @@ func eventLoop(
 				dispatchAlerts(alertsInfo, receiver)
 
 				// Let Syncthing service know so that outdated (ignored by user)
-				// permission warnings for external storage can be removed.
+				// permission warnings for SAF URIs can be removed.
 				_ = checkStoragePermissions(cfg, receiver)
 
 				// Invalidate SAF virtual root so that the next call to the
@@ -750,8 +793,9 @@ func startEventLoop(
 	receiver SyncthingStatusReceiver,
 ) error {
 	conflictsInfo := conflictsInfo{
-		byFolder:    map[string]map[string]struct{}{},
-		folderPaths: map[string]string{},
+		byFolder:        map[string]map[string]struct{}{},
+		folderPaths:     map[string]string{},
+		filesystemTypes: map[string]config.FilesystemType{},
 	}
 
 	// Find the initial set of conflicts from the database before starting the
@@ -774,8 +818,8 @@ func startEventLoop(
 			return fmt.Errorf("failed to query database for: %q: %w", folder.ID, err)
 		}
 
-		// Never fails on Android.
-		conflictsInfo.folderPaths[folder.ID], _ = fs.ExpandTilde(folder.Path)
+		conflictsInfo.folderPaths[folder.ID] = folder.Path
+		conflictsInfo.filesystemTypes[folder.ID] = folder.FilesystemType
 	}
 
 	dispatchConflicts(&conflictsInfo, receiver)
@@ -806,16 +850,16 @@ func checkStoragePermissions(
 	cfg config.Configuration,
 	receiver SyncthingStatusReceiver,
 ) error {
-	var internal0Sep strings.Builder
-	var external0Sep strings.Builder
+	var local0Sep strings.Builder
+	var saf0Sep strings.Builder
 
 	for _, folder := range cfg.Folders {
 		var builder *strings.Builder
 
 		if folder.FilesystemType == config.FilesystemTypeBasic {
-			builder = &internal0Sep
+			builder = &local0Sep
 		} else if folder.FilesystemType == config.FilesystemType(filesystemTypeSaf) {
-			builder = &external0Sep
+			builder = &saf0Sep
 		} else {
 			continue
 		}
@@ -826,7 +870,7 @@ func checkStoragePermissions(
 		builder.WriteString(folder.Path)
 	}
 
-	return receiver.OnCheckStoragePermissions(internal0Sep.String(), external0Sep.String())
+	return receiver.OnCheckStoragePermissions(local0Sep.String(), saf0Sep.String())
 }
 
 type SyncthingStartupConfig struct {

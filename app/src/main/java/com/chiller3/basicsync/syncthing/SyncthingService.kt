@@ -15,6 +15,8 @@ import android.net.Uri
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.os.Parcelable
+import android.os.storage.StorageManager
 import android.provider.DocumentsContract
 import android.util.Log
 import androidx.annotation.GuardedBy
@@ -28,6 +30,14 @@ import com.chiller3.basicsync.binding.stbridge.Stbridge
 import com.chiller3.basicsync.binding.stbridge.SyncthingApp
 import com.chiller3.basicsync.binding.stbridge.SyncthingStartupConfig
 import com.chiller3.basicsync.binding.stbridge.SyncthingStatusReceiver
+import com.chiller3.basicsync.extension.DOCUMENTSUI_AUTHORITY
+import com.chiller3.basicsync.extension.DOCUMENTSUI_PRIMARY_ID
+import com.chiller3.basicsync.extension.directoryCompat
+import com.chiller3.basicsync.extension.expandTilde
+import com.chiller3.basicsync.extension.formattedString
+import com.chiller3.basicsync.extension.shortenTilde
+import kotlinx.parcelize.Parcelize
+import java.io.File
 import java.io.IOException
 import java.util.EnumSet
 
@@ -91,11 +101,11 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             context.startForegroundService(createIntent(context, action))
         }
 
-        private fun unpack0Sep(str0Sep: String): MutableList<String> =
-            mutableListOf<String>().apply {
-                if (str0Sep.isNotEmpty()) {
-                    str0Sep.splitToSequence('\u0000').toCollection(this)
-                }
+        private fun unpack0Sep(str0Sep: String): Sequence<String> =
+            if (str0Sep.isNotEmpty()) {
+                str0Sep.splitToSequence('\u0000')
+            } else {
+                emptySequence()
             }
 
         fun encodeSafUri(uri: Uri, path: String? = null) = buildString {
@@ -119,7 +129,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             return uri to path
         }
 
-        fun persistExternalStoragePermissions(context: Context, uri: Uri) {
+        fun persistSafPermissions(context: Context, uri: Uri) {
             // Permissions are released in onCheckStoragePermissions() when unneeded.
             context.contentResolver.takePersistableUriPermission(
                 uri,
@@ -267,6 +277,79 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         }
     }
 
+    @Parcelize
+    data class ConflictItem(
+        val displayName: String,
+        val parentUri: Uri?,
+    ) : Parcelable
+
+    data class ConflictsInfo(
+        val local: List<File>,
+        val saf: Map<Uri, Uri>,
+    ) {
+        constructor() : this(
+            local = emptyList(),
+            saf = emptyMap(),
+        )
+
+        fun items(context: Context): List<ConflictItem> =
+            mutableListOf<ConflictItem>().apply {
+                val storageManager = context.getSystemService(StorageManager::class.java)
+
+                val mountPoints = mutableMapOf<String, File>().apply {
+                    for (volume in storageManager.storageVolumes) {
+                        val mountPoint = volume.directoryCompat ?: continue
+                        if (volume.isPrimary) {
+                            put(DOCUMENTSUI_PRIMARY_ID, mountPoint)
+                        } else {
+                            val uuid = volume.uuid ?: continue
+                            put(uuid, mountPoint)
+                        }
+                    }
+                }
+
+                for (path in local) {
+                    // expandTilde() is only for expanding /sdcard. stbridge already expanded actual
+                    // tilde characters.
+                    val expandedPath = path.expandTilde()
+                    val shortenedPath = expandedPath.shortenTilde()
+
+                    val parentDir = expandedPath.parentFile
+                    if (parentDir == null) {
+                        Log.w(TAG, "Skipping due to unknown parent directory: $parentDir")
+                        add(ConflictItem(shortenedPath.toString(), null))
+                        continue
+                    }
+
+                    val volume = mountPoints.entries.find { parentDir.startsWith(it.value) }
+                    if (volume == null) {
+                        Log.w(TAG, "Skipping due to unknown mount point: $parentDir")
+                        add(ConflictItem(shortenedPath.toString(), null))
+                        continue
+                    }
+
+                    val relPath = parentDir.relativeTo(volume.value)
+                    val uri = DocumentsContract.buildDocumentUri(
+                        DOCUMENTSUI_AUTHORITY,
+                        "${volume.key}:$relPath",
+                    )
+
+                    add(ConflictItem(shortenedPath.toString(), uri))
+                }
+
+                for ((child, parent) in saf) {
+                    // This will never throw IllegalArgumentException. The URIs returned here by
+                    // stbridge originate from SyncthingSafClient.
+                    val parentDocumentUri = DocumentsContract.buildDocumentUri(
+                        parent.authority,
+                        SyncthingSafClient.getNarrowestDocumentId(parent),
+                    )
+
+                    add(ConflictItem(child.formattedString, parentDocumentUri))
+                }
+            }
+        }
+
     data class FolderStates(
         val idle: Int,
         val scanning: Int,
@@ -323,9 +406,9 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     @GuardedBy("stateLock")
     private var recheckPermissions = true
     @GuardedBy("stateLock")
-    private var missingInternal = false
+    private var missingLocal = false
     @GuardedBy("stateLock")
-    private var missingExternal = emptyList<Uri>()
+    private var missingSaf = emptyList<Uri>()
 
     @GuardedBy("stateLock")
     private var shouldThreadRun = true
@@ -348,7 +431,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     @GuardedBy("stateLock")
     private var syncthingApp: SyncthingApp? = null
     @GuardedBy("stateLock")
-    private var syncthingConflicts = emptyList<String>()
+    private var syncthingConflicts = ConflictsInfo()
         set(conflicts) {
             if (field != conflicts) {
                 field = conflicts
@@ -555,9 +638,9 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                         }
                     }
 
-                    // We intentionally only check internal storage permissions. See
+                    // We intentionally only check local storage permissions. See
                     // onCheckStoragePermissions().
-                    if (missingInternal && !recheckPermissions) {
+                    if (missingLocal && !recheckPermissions) {
                         add(BlockedReason.NO_STORAGE_PERMISSIONS)
                     }
                 }
@@ -729,12 +812,12 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         }
     }
 
-    override fun onCheckStoragePermissions(internal0Sep: String, external0Sep: String) {
-        val external = mutableSetOf<Uri>()
+    override fun onCheckStoragePermissions(local0Sep: String, saf0Sep: String) {
+        val saf = mutableSetOf<Uri>()
 
-        for (encoded in unpack0Sep(external0Sep)) {
+        for (encoded in unpack0Sep(saf0Sep)) {
             try {
-                external.add(decodeSafUri(encoded).first)
+                saf.add(decodeSafUri(encoded).first)
             } catch (e: Exception) {
                 Log.w(TAG, "Ignoring invalid encoded URI: $encoded", e)
             }
@@ -745,7 +828,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 continue
             }
 
-            if (!external.remove(persisted.uri)) {
+            if (!saf.remove(persisted.uri)) {
                 Log.d(TAG, "Releasing persisted permission: $persisted")
                 try {
                     var flags = 0
@@ -765,21 +848,21 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
         synchronized(stateLock) {
             recheckPermissions = false
-            missingInternal = internal0Sep.isNotEmpty() && !Permissions.haveLocalStorage(this)
-            missingExternal = external.sorted()
+            missingLocal = local0Sep.isNotEmpty() && !Permissions.haveLocalStorage(this)
+            missingSaf = saf.sorted()
 
             allListeners {
-                it.onMissingStoragePermissions(missingInternal, missingExternal)
+                it.onMissingStoragePermissions(missingLocal, missingSaf)
             }
 
             stateChanged(recomputeBlockedReasons = true)
 
-            // We intentionally block on missing internal permissions only. If a SAF URI is
+            // We intentionally block on missing local storage permissions only. If a SAF URI is
             // inaccessible, Syncthing will completely lose access to it. However, if the local
             // storage permission is denied, folders are still visible, so Syncthing thinks
             // everything was deleted.
-            if (missingInternal) {
-                throw SecurityException("Missing internal storage permissions")
+            if (missingLocal) {
+                throw SecurityException("Missing local storage permissions")
             }
         }
     }
@@ -800,7 +883,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         Log.i(TAG, "Syncthing successfully stopped")
 
         synchronized(stateLock) {
-            syncthingConflicts = emptyList()
+            syncthingConflicts = ConflictsInfo()
             syncthingAlerts = 0
             syncthingFolderStates = FolderStates()
             syncthingDeviceStates = DeviceStates()
@@ -811,11 +894,19 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     }
 
     @WorkerThread
-    override fun onConflictsUpdated(paths0Sep: String) {
-        val paths = unpack0Sep(paths0Sep).apply { sort() }
+    override fun onConflictsUpdated(local0Sep: String, safChildParent0Sep: String) {
+        val local = unpack0Sep(local0Sep)
+            .map(::File)
+            .sorted()
+            .toList()
+
+        val safChildParent = unpack0Sep(safChildParent0Sep)
+        val saf = safChildParent
+            .chunked(2)
+            .associate { it[0].toUri() to it[1].toUri() }
 
         synchronized(stateLock) {
-            syncthingConflicts = paths
+            syncthingConflicts = ConflictsInfo(local = local, saf = saf)
         }
     }
 
@@ -890,7 +981,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     }
 
     interface ServiceListener {
-        fun onMissingStoragePermissions(internal: Boolean, external: List<Uri>)
+        fun onMissingStoragePermissions(local: Boolean, saf: List<Uri>)
 
         fun onExitRequested()
 
@@ -898,7 +989,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
         fun onPreRunActionResult(preRunAction: PreRunAction, exception: Exception?)
 
-        fun onConflictsUpdated(conflicts: List<String>)
+        fun onConflictsUpdated(conflictsInfo: ConflictsInfo)
     }
 
     inner class ServiceBinder : Binder() {
@@ -910,7 +1001,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     Log.w(TAG, "Listener was already registered: $listener")
                 }
 
-                listener.onMissingStoragePermissions(missingInternal, missingExternal)
+                listener.onMissingStoragePermissions(missingLocal, missingSaf)
                 listener.onRunStateChanged(lastServiceState!!, guiInfo)
                 listener.onConflictsUpdated(syncthingConflicts)
             }

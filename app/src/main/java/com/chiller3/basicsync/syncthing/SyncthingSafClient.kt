@@ -20,6 +20,15 @@ import org.json.JSONObject
 import java.io.IOException
 
 class SyncthingSafClient(private val context: Context) : SafClient {
+    companion object {
+        fun getNarrowestDocumentId(uri: Uri): String =
+            try {
+                DocumentsContract.getDocumentId(uri)
+            } catch (_: IllegalArgumentException) {
+                DocumentsContract.getTreeDocumentId(uri)
+            }
+    }
+
     private fun Cursor.asSequence() = generateSequence(seed = takeIf { it.moveToFirst() }) {
         takeIf { it.moveToNext() }
     }
@@ -67,13 +76,6 @@ class SyncthingSafClient(private val context: Context) : SafClient {
             })
         }
     }
-
-    private fun getNarrowestDocumentId(uri: Uri): String =
-        try {
-            DocumentsContract.getDocumentId(uri)
-        } catch (_: IllegalArgumentException) {
-            DocumentsContract.getTreeDocumentId(uri)
-        }
 
     override fun toTreeDocumentUri(treeUri: String): String {
         val uri = treeUri.toUri()

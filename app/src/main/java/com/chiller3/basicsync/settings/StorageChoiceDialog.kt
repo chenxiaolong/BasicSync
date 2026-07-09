@@ -21,8 +21,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 enum class StorageChoice : Parcelable {
-    INTERNAL,
-    EXTERNAL,
+    LOCAL,
+    SAF,
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -39,16 +39,16 @@ fun StorageChoiceDialog(
             PreferenceColumn(fillScreen = false) {
                 itemsIndexed(choices) { index, choice ->
                     val title = when (choice) {
-                        StorageChoice.INTERNAL ->
-                            stringResource(R.string.dialog_storage_type_internal_title)
-                        StorageChoice.EXTERNAL ->
-                            stringResource(R.string.dialog_storage_type_external_title)
+                        StorageChoice.LOCAL ->
+                            stringResource(R.string.dialog_storage_type_local_title)
+                        StorageChoice.SAF ->
+                            stringResource(R.string.dialog_storage_type_saf_title)
                     }
                     val summary = when (choice) {
-                        StorageChoice.INTERNAL ->
-                            stringResource(R.string.dialog_storage_type_internal_desc)
-                        StorageChoice.EXTERNAL ->
-                            stringResource(R.string.dialog_storage_type_external_desc)
+                        StorageChoice.LOCAL ->
+                            stringResource(R.string.dialog_storage_type_local_desc)
+                        StorageChoice.SAF ->
+                            stringResource(R.string.dialog_storage_type_saf_desc)
                     }
 
                     Preference(

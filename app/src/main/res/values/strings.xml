@@ -29,12 +29,12 @@
     <string name="pref_allow_local_network_name">Allow local network access</string>
     <!-- Reason for why the local network access permission is required. -->
     <string name="pref_allow_local_network_desc">Needed to connect to devices on the local network directly instead of passing through Syncthing\'s relay servers.</string>
-    <!-- Title for the preference shown when access to the local storage is not granted. -->
+    <!-- Title for the preference shown when access to the local storage is not granted. This refers to Android's "all files access" permission. -->
     <string name="pref_local_storage_access_name">Allow local storage access</string>
-    <!-- Reason why access to local storage access is needed. /sdcard should be surrounded with <tt></tt> for displaying with a monospace font. -->
-    <string name="pref_local_storage_access_desc">Needed for Syncthing to access the local storage under <tt>/sdcard</tt>.</string>
-    <!-- Title for the preference shown when access to a specific external storage folder is not granted. -->
-    <string name="pref_external_storage_access">Allow external storage access</string>
+    <!-- Reason why access to local storage access is needed. Local storage includes both internal storage and external storage. -->
+    <string name="pref_local_storage_access_desc">Needed for Syncthing to have direct file access to internal and external storage.</string>
+    <!-- Title for the preference shown when access to a specific folder via Android's storage access framework is needed. -->
+    <string name="pref_saf_folder_access_name">Allow folder access</string>
     <!-- Title for the preference shown when app hibernation is enabled. App hibernation has different names in different versions of Android, like "Manage app if unused". -->
     <string name="pref_disable_app_hibernation_name">Disable app hibernation</string>
     <!-- Reason why app hibernation needs to be disabled. -->
@@ -188,16 +188,16 @@
     <!-- Detailed message for alert shown when trying to disable "battery" optimizations on Android TV. -->
     <string name="alert_tv_inhibit_battery_opt_details">Android TV has no UI for disabling \"battery\" optimizations, but it is still required to run Syncthing in the background reliably. This must be done by running the following adb command.</string>
 
-    <!-- Title of the dialog for picking whether to use internal or external storage for a shared folder. -->
+    <!-- Title of the dialog for picking whether to use direct file access or Android's storage access framework. -->
     <string name="dialog_storage_type_title">Storage type</string>
-    <!-- Choice shown in storage type dialog for putting a shared folder on internal storage. -->
-    <string name="dialog_storage_type_internal_title">Internal storage</string>
-    <!-- Description for the storage type's internal storage option indicating that this is the most reliable option for Syncthing. -->
-    <string name="dialog_storage_type_internal_desc">Faster and has better compatibility with Syncthing.</string>
-    <!-- Choice shown in storage type dialog for putting a shared folder on external storage. -->
-    <string name="dialog_storage_type_external_title">External storage</string>
-    <!-- Description for the storage type's external storage option indicating that it is slower and less reliable. -->
-    <string name="dialog_storage_type_external_desc">Less efficient and may result in unexpected sync errors.</string>
+    <!-- Choice shown in storage type dialog for accessing files directly. -->
+    <string name="dialog_storage_type_local_title">Direct file access</string>
+    <!-- Description for the direct file access storage type option. -->
+    <string name="dialog_storage_type_local_desc">Requires the \"all files access\" permission, but is more efficient and has better compatibility with Syncthing.</string>
+    <!-- Choice shown in storage type dialog for accessing files via Android's storage access framework. -->
+    <string name="dialog_storage_type_saf_title">Storage access framework</string>
+    <!-- Description for the storage access framework storage type option. -->
+    <string name="dialog_storage_type_saf_desc">Only grants permissions to the selected folder, but is slower and may result in unexpected sync errors.</string>
     <!-- Button shown in the local filesystem folder picker to create a new local folder. -->
     <string name="dialog_new_folder_title">New folder</string>
     <!-- Message shown in the dialog for creating a new local filesystem folder. -->

@@ -9,6 +9,7 @@ import android.content.ContentResolver
 import android.net.Uri
 
 const val DOCUMENTSUI_AUTHORITY = "com.android.externalstorage.documents"
+const val DOCUMENTSUI_PRIMARY_ID = "primary"
 
 val Uri.formattedString: String
     get() = when (scheme) {

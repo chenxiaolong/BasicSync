@@ -39,7 +39,7 @@
         android:minSdkVersion="37"
         tools:ignore="ProtectedPermissions" />
 
-    <!-- For Syncthing to access internal storage. -->
+    <!-- For Syncthing to access local storage. -->
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="AllFilesAccessPolicy,ScopedStorage" />

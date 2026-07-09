@@ -15,6 +15,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.BatteryManager
 import android.os.Build
+import android.provider.DocumentsContract
 import android.provider.Settings
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -56,6 +57,7 @@ import com.chiller3.basicsync.binding.stbridge.Stbridge
 import com.chiller3.basicsync.extension.DOCUMENTSUI_AUTHORITY
 import com.chiller3.basicsync.extension.formattedString
 import com.chiller3.basicsync.syncthing.BlockedReason
+import com.chiller3.basicsync.syncthing.SyncthingSafClient
 import com.chiller3.basicsync.syncthing.SyncthingService
 import com.chiller3.basicsync.ui.AppScreen
 import com.chiller3.basicsync.ui.BetterSegmentedShapes
@@ -129,7 +131,6 @@ fun SettingsScreen(
     }
 
     val serviceState by viewModel.serviceState.collectAsStateWithLifecycle()
-    val conflicts by viewModel.conflicts.collectAsStateWithLifecycle()
     val importExportState by viewModel.importExportState.collectAsStateWithLifecycle()
 
     var storagePermissionRequest by rememberSaveable { mutableStateOf(false) }
@@ -171,11 +172,11 @@ fun SettingsScreen(
             requestPermissionActivity.launch(Permissions.getAppInfoIntent(context))
         }
     }
-    val requestSafExternalStorage = rememberLauncherForActivityResult(
+    val requestSafTree = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocumentTree()
     ) { uri ->
         uri?.let {
-            SyncthingService.persistExternalStoragePermissions(context, it)
+            SyncthingService.persistSafPermissions(context, it)
             renotifyOrRestartService()
         }
     }
@@ -201,14 +202,15 @@ fun SettingsScreen(
         }
     }
 
-    var missingInternal by rememberSaveable { mutableStateOf(false) }
-    var missingExternal by rememberSaveable { mutableStateOf(emptyList<Uri>()) }
+    var missingLocal by rememberSaveable { mutableStateOf(false) }
+    var missingSaf by rememberSaveable { mutableStateOf(emptyList<Uri>()) }
+    var conflicts by rememberSaveable { mutableIntStateOf(0) }
 
     val watcher = rememberServiceEventWatcher(
         listener = object : SyncthingService.ServiceListener {
-            override fun onMissingStoragePermissions(internal: Boolean, external: List<Uri>) {
-                missingInternal = internal
-                missingExternal = external
+            override fun onMissingStoragePermissions(local: Boolean, saf: List<Uri>) {
+                missingLocal = local
+                missingSaf = saf
             }
 
             override fun onExitRequested() = onExit()
@@ -227,8 +229,8 @@ fun SettingsScreen(
                 viewModel.onPreRunActionResult(preRunAction, exception)
             }
 
-            override fun onConflictsUpdated(conflicts: List<String>) {
-                viewModel.conflicts.update { conflicts }
+            override fun onConflictsUpdated(conflictsInfo: SyncthingService.ConflictsInfo) {
+                conflicts = conflictsInfo.local.size + conflictsInfo.saf.size
             }
         },
     )
@@ -318,9 +320,9 @@ fun SettingsScreen(
             notificationsGranted = notificationsGranted,
             localNetworkGranted = localNetworkGranted,
             appHibernationDisabled = appHibernationDisabled,
-            missingInternal = missingInternal,
-            missingExternal = missingExternal,
-            conflicts = conflicts ?: emptyList(),
+            missingLocalStorage = missingLocal,
+            missingSafStorage = missingSaf,
+            conflicts = conflicts,
             isManualMode = isManualMode,
             hasBattery = hasBattery,
             runOnBattery = runOnBattery,
@@ -350,7 +352,7 @@ fun SettingsScreen(
                     )
                 )
             },
-            onInternalStorageGrant = {
+            onLocalStorageGrant = {
                 storagePermissionRequest = true
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -364,9 +366,20 @@ fun SettingsScreen(
                     requestPermissionsRequired.launch(Permissions.LEGACY_STORAGE)
                 }
             },
-            onExternalStorageGrant = { uri ->
+            onSafStorageGrant = { uri ->
+                // DocumentsUI does not support tree URIs for EXTRA_INITIAL_URI.
+                val documentUri = try {
+                    DocumentsContract.buildDocumentUri(
+                        uri.authority,
+                        SyncthingSafClient.getNarrowestDocumentId(uri),
+                    )
+                } catch (e: IllegalArgumentException) {
+                    Log.w(TAG, "Invalid initial URI: $uri", e)
+                    null
+                }
+
                 storagePermissionRequest = true
-                requestSafExternalStorage.launch(uri)
+                requestSafTree.launch(documentUri)
             },
             onConflictsOpen = {
                 context.startActivity(Intent(context, ConflictsActivity::class.java))
@@ -543,9 +556,9 @@ private fun SettingsContent(
     notificationsGranted: Boolean,
     localNetworkGranted: Boolean,
     appHibernationDisabled: Boolean,
-    missingInternal: Boolean,
-    missingExternal: List<Uri>,
-    conflicts: List<String>,
+    missingLocalStorage: Boolean,
+    missingSafStorage: List<Uri>,
+    conflicts: Int,
     isManualMode: Boolean,
     hasBattery: Boolean,
     runOnBattery: Boolean,
@@ -562,8 +575,8 @@ private fun SettingsContent(
     onNotificationsGrant: () -> Unit,
     onLocalNetworkGrant: () -> Unit,
     onAppHibernationDisable: () -> Unit,
-    onInternalStorageGrant: () -> Unit,
-    onExternalStorageGrant: (Uri) -> Unit,
+    onLocalStorageGrant: () -> Unit,
+    onSafStorageGrant: (Uri) -> Unit,
     onConflictsOpen: () -> Unit,
     onWebUiOpen: () -> Unit,
     onConfigurationImport: () -> Unit,
@@ -626,20 +639,20 @@ private fun SettingsContent(
                 onGrant = onAppHibernationDisable,
             ))
         }
-        if (missingInternal) {
+        if (missingLocalStorage) {
             add(MissingPermission(
-                key = "missing_internal",
+                key = "missing_local",
                 title = stringResource(R.string.pref_local_storage_access_name),
                 summary = stringResource(R.string.pref_local_storage_access_desc),
-                onGrant = onInternalStorageGrant,
+                onGrant = onLocalStorageGrant,
             ))
         }
-        for (uri in missingExternal) {
+        for (uri in missingSafStorage) {
             add(MissingPermission(
-                key = "missing_external:$uri",
-                title = stringResource(R.string.pref_external_storage_access),
+                key = "missing_saf:$uri",
+                title = stringResource(R.string.pref_saf_folder_access_name),
                 summary = uri.formattedString,
-                onGrant = { onExternalStorageGrant(uri) },
+                onGrant = { onSafStorageGrant(uri) },
             ))
         }
     }
@@ -675,12 +688,12 @@ private fun SettingsContent(
             )
         }
 
-        if (conflicts.isNotEmpty()) {
+        if (conflicts > 0) {
             item(key = "conflicts") {
                 val summary = pluralStringResource(
                     R.plurals.pref_conflicts_desc,
-                    conflicts.size,
-                    conflicts.size,
+                    conflicts,
+                    conflicts,
                 )
 
                 Preference(
@@ -697,7 +710,7 @@ private fun SettingsContent(
             Preference(
                 onClick = onWebUiOpen,
                 enabled = runState?.webUiAvailable == true,
-                shapes = if (conflicts.isNotEmpty()) {
+                shapes = if (conflicts > 0) {
                     BetterSegmentedShapes.middle()
                 } else {
                     BetterSegmentedShapes.top()
@@ -1019,9 +1032,9 @@ private fun PreviewSettingsScreen() {
                 notificationsGranted = false,
                 localNetworkGranted = false,
                 appHibernationDisabled = false,
-                missingInternal = true,
-                missingExternal = listOf("content://${DOCUMENTSUI_AUTHORITY}/tree/primary%3afile".toUri()),
-                conflicts = listOf(""),
+                missingLocalStorage = true,
+                missingSafStorage = listOf("content://${DOCUMENTSUI_AUTHORITY}/tree/primary%3afile".toUri()),
+                conflicts = 1,
                 isManualMode = false,
                 hasBattery = true,
                 runOnBattery = true,
@@ -1038,8 +1051,8 @@ private fun PreviewSettingsScreen() {
                 onNotificationsGrant = {},
                 onLocalNetworkGrant = {},
                 onAppHibernationDisable = {},
-                onInternalStorageGrant = {},
-                onExternalStorageGrant = {},
+                onLocalStorageGrant = {},
+                onSafStorageGrant = {},
                 onConflictsOpen = {},
                 onWebUiOpen = {},
                 onConfigurationImport = {},

@@ -229,14 +229,9 @@
     </plurals>
     <string name="pref_allow_local_network_name">Permite accesul la rețeaua locală</string>
     <string name="pref_allow_local_network_desc">Este necesar pentru conectarea directă la dispozitivele din rețeaua locală, în loc să treacă prin serverele de releu Syncthing.</string>
-    <string name="pref_external_storage_access">Permite accesul la stocarea externă</string>
     <string name="pref_start_on_boot_name">Pornire împreună cu sistemul de operare</string>
     <string name="pref_start_on_boot_desc">Pornește automat aplicația după o repornire.</string>
     <string name="dialog_storage_type_title">Tip stocare</string>
-    <string name="dialog_storage_type_internal_title">Stocare internă</string>
-    <string name="dialog_storage_type_internal_desc">Mai rapidă și are o compatibilitate mai bună cu Syncthing.</string>
-    <string name="dialog_storage_type_external_title">Stocare externă</string>
-    <string name="dialog_storage_type_external_desc">Mai puțin eficientă și poate duce la erori de sincronizare neașteptate.</string>
     <string name="notification_channel_persistent_name_started">Notificare persistentă când este pornit</string>
     <string name="notification_channel_persistent_name_stopped">Notificare persistentă când este oprit</string>
 </resources>
