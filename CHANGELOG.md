@@ -19,6 +19,7 @@
 * Fix opening folders containing file conflicts when using SAF ([PR #201])
 * Open SAF folder picker to proper directory when granting SAF permissions after import an existing configuration ([PR #201])
 * Sync translations from Weblate ([PR #202])
+* Clean up English translation strings ([PR #203])
 
 ### Version 3.3
 
@@ -462,3 +463,4 @@
 [PR #200]: https://github.com/chenxiaolong/BasicSync/pull/200
 [PR #201]: https://github.com/chenxiaolong/BasicSync/pull/201
 [PR #202]: https://github.com/chenxiaolong/BasicSync/pull/202
+[PR #203]: https://github.com/chenxiaolong/BasicSync/pull/203
