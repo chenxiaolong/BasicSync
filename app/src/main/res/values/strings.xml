@@ -57,7 +57,7 @@
     <!-- Title for the preference to export the Syncthing configuration. -->
     <string name="pref_export_configuration_name">Export configuration</string>
     <!-- Description for the preference to export the current Syncthing configuration to a zip file. -->
-    <string name="pref_export_configuration_desc">Export current Syncthing configuration to a zip file.</string>
+    <string name="pref_export_configuration_desc">Export the current Syncthing configuration to a zip file.</string>
     <!-- Title for the preference that shows the current status of Syncthing. The notification_persistent_* strings are used for the description. -->
     <string name="pref_service_status_name">Syncthing status</string>
     <!-- Title for the preference that controls whether to use auto mode. Auto mode is where Syncthing is automatically started and stopped based on the run conditions. -->
