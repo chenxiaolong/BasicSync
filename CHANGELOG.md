@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Update syncthing to 2.1.2 ([PR #200])
+  * BasicSync now uses the upstream Syncthing defaults for the number of file hashers, but only for new installations. For existing installations, to use the upstream defaults, set hashers to 0 for every folder and also the default folder in Web UI -> Gear Icon -> Advanced.
 * Add support for direct file access to SD cards and USB drives ([PR #201])
   * This is only supported on Android >=11.
   * Existing shared folders on external storage need to be removed and re-added to take advantage of this. They previously used Android's storage access framework (SAF).
