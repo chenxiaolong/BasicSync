@@ -10,6 +10,14 @@
 ### Unreleased
 
 * Update syncthing to 2.1.2 ([PR #200])
+* Add support for direct file access to SD cards and USB drives ([PR #201])
+  * This is only supported on Android >=11.
+  * Existing shared folders on external storage need to be removed and re-added to take advantage of this. They previously used Android's storage access framework (SAF).
+* Change storage type wording to direct file access vs. SAF instead of internal vs. external ([PR #201])
+* Automatically refresh folder selector if contents change while browsing ([PR #201])
+* Fix opening folders containing file conflicts on SD cards and USB drives ([PR #201])
+* Fix opening folders containing file conflicts when using SAF ([PR #201])
+* Open SAF folder picker to proper directory when granting SAF permissions after import an existing configuration ([PR #201])
 
 ### Version 3.3
 
@@ -451,3 +459,4 @@
 [PR #196]: https://github.com/chenxiaolong/BasicSync/pull/196
 [PR #199]: https://github.com/chenxiaolong/BasicSync/pull/199
 [PR #200]: https://github.com/chenxiaolong/BasicSync/pull/200
+[PR #201]: https://github.com/chenxiaolong/BasicSync/pull/201
