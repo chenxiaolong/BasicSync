@@ -18,7 +18,7 @@
 * Automatically refresh folder selector if contents change while browsing ([PR #201])
 * Fix opening folders containing file conflicts on SD cards and USB drives ([PR #201])
 * Fix opening folders containing file conflicts when using SAF ([PR #201])
-* Open SAF folder picker to proper directory when granting SAF permissions after import an existing configuration ([PR #201])
+* Open folder picker to proper directory when granting missing SAF permissions after importing an existing configuration ([PR #201])
 * Sync translations from Weblate ([PR #202], [PR #204])
 * Clean up English translation strings ([PR #203])
 
