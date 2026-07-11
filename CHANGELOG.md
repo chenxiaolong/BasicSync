@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.4
 
 * Update syncthing to 2.1.2 ([PR #200])
   * BasicSync now uses the upstream Syncthing defaults for the number of file hashers, but only for new installations. For existing installations, to use the upstream defaults, set hashers to 0 for every folder and also the default folder in Web UI -> Gear Icon -> Advanced.
