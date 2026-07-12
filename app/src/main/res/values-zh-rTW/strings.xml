@@ -15,7 +15,7 @@
     <string name="pref_allow_notifications_name">允許通知</string>
     <string name="pref_allow_notifications_desc">為確保在背景穩定執行，以及啟動與停止 Syncthing，需要此權限。</string>
     <string name="pref_local_storage_access_name">允許存取本機儲存空間</string>
-    <string name="pref_local_storage_access_desc">Syncthing 需要此權限才能存取 <tt>/sdcard</tt> 下的本機儲存空間。</string>
+    <string name="pref_local_storage_access_desc">Syncthing 需要此權限才能直接存取本機與外部儲存空間。</string>
     <string name="pref_disable_app_hibernation_name">停用應用程式休眠</string>
     <string name="pref_disable_app_hibernation_desc">防止 Android 在一段時間後自動移除應用程式權限。</string>
     <string name="pref_open_web_ui_name">開啟網頁介面</string>
@@ -204,4 +204,9 @@
     <plurals name="device_state_pending">
         <item quantity="other">• %d 個裝置等待同步</item>
     </plurals>
+    <string name="pref_saf_folder_access_name">允許存取資料夾</string>
+    <string name="dialog_storage_type_local_title">直接檔案存取</string>
+    <string name="dialog_storage_type_local_desc">需要「所有檔案存取」權限，但效率更高且與 Syncthing 有更好的相容性。</string>
+    <string name="dialog_storage_type_saf_title">儲存空間存取架構</string>
+    <string name="dialog_storage_type_saf_desc">僅授予選定資料夾的權限，但速度較慢且可能導致非預期的同步錯誤。</string>
 </resources>
