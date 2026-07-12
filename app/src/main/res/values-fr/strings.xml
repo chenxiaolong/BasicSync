@@ -228,7 +228,7 @@
         <item quantity="other">%d appareils en attente de synchronisation</item>
     </plurals>
     <string name="pref_allow_local_network_name">Autoriser l\'accès au réseau local</string>
-    <string name="pref_allow_local_network_desc">Requis pour la connexion aux appareils en passant directement par le réseau local au lieu des serveurs de relai de Syncthing.</string>
+    <string name="pref_allow_local_network_desc">Requis pour la connexion directe aux appareils du réseau local, sans serveurs relais.</string>
     <string name="pref_start_on_boot_name">Démarrer au démarrage du système</string>
     <string name="pref_start_on_boot_desc">Démarre l\'application automatiquement après un redémarrage du système.</string>
     <string name="dialog_storage_type_title">Type de stockage</string>
