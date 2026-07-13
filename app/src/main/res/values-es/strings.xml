@@ -128,7 +128,7 @@
         <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
-    <string name="pref_local_storage_access_desc">Es necesario para que Syncthing acceda al almacenamiento local bajo <tt>/sdcard</tt>.</string>
+    <string name="pref_local_storage_access_desc">Es necesario para que Syncthing tenga acceso al almacenamiento interno y externo.</string>
     <string name="pref_conflicts_name">Conflictos de sincronización</string>
     <plurals name="pref_conflicts_desc">
         <item quantity="one">%d archivo encontró un conflicto durante la sincronización.</item>
@@ -221,4 +221,9 @@
     <string name="pref_start_on_boot_desc">Iniciar la aplicación automáticamente después de un reinicio.</string>
     <string name="notification_channel_persistent_name_started">Notificación persistente al iniciar</string>
     <string name="notification_channel_persistent_name_stopped">Notificación persistente al detenerse</string>
+    <string name="pref_saf_folder_access_name">Permitir acceso a la carpeta</string>
+    <string name="dialog_storage_type_local_title">Acceso directo a archivos</string>
+    <string name="dialog_storage_type_local_desc">Requiere el permiso de “acceso a todos los archivos”, pero es más eficiente y tiene mejor compatibilidad con Syncthing.</string>
+    <string name="dialog_storage_type_saf_title">Marco de acceso al almacenamiento</string>
+    <string name="dialog_storage_type_saf_desc">Solo concede permisos a la carpeta seleccionada, pero es más lento y puede provocar errores de sincronización inesperados.</string>
 </resources>
