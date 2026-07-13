@@ -15,7 +15,7 @@
     <string name="pref_allow_notifications_name">Permite notificările</string>
     <string name="pref_allow_notifications_desc">Necesar pentru a rula fiabil în fundal și pentru a porni și opri Syncthing.</string>
     <string name="pref_local_storage_access_name">Permite accesul la stocarea locală</string>
-    <string name="pref_local_storage_access_desc">Necesar pentru Syncthing pentru a accesa stocarea locală din <tt>/sdcard</tt>.</string>
+    <string name="pref_local_storage_access_desc">Este necesar pentru ca Syncthing să aibă acces direct la stocarea internă și externă.</string>
     <string name="pref_disable_app_hibernation_name">Dezactivează hibernarea aplicației</string>
     <string name="pref_disable_app_hibernation_desc">Necesar pentru a împiedica Android să elimine automat permisiunile aplicației după o perioadă de timp.</string>
     <string name="pref_open_web_ui_name">Deschide interfața web</string>
@@ -234,4 +234,9 @@
     <string name="dialog_storage_type_title">Tip stocare</string>
     <string name="notification_channel_persistent_name_started">Notificare persistentă când este pornit</string>
     <string name="notification_channel_persistent_name_stopped">Notificare persistentă când este oprit</string>
+    <string name="pref_saf_folder_access_name">Permite accesul la dosar</string>
+    <string name="dialog_storage_type_local_title">Acces direct la fișiere</string>
+    <string name="dialog_storage_type_local_desc">Necesită permisiunea „acces la toate fișierele”, dar este mai eficient și are o compatibilitate mai bună cu Syncthing.</string>
+    <string name="dialog_storage_type_saf_title">Framework acces la stocare</string>
+    <string name="dialog_storage_type_saf_desc">Acordă permisiuni doar pentru dosarul selectat, dar este mai lent și poate duce la erori de sincronizare neașteptate.</string>
 </resources>
