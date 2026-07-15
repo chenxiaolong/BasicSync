@@ -9,7 +9,7 @@
     <string name="pref_allow_notifications_name">السماح بالإشعارات</string>
     <string name="pref_allow_notifications_desc">مطلوب للتشغيل بشكل صحيح في الخلفية ولتشغيل وإيقاف Syncthing.</string>
     <string name="pref_local_storage_access_name">السماح بالوصول إلى وحدة التخزين المحلية</string>
-    <string name="pref_local_storage_access_desc">مطلوب لتمكين Syncthing من الوصول إلى وحدة التخزين المحلية تحت المسار <tt>/sdcard</tt>.</string>
+    <string name="pref_local_storage_access_desc">مطلوب لتمكين Syncthing من الوصول إلى وحدتا التخزين الداخلية والخارجية.</string>
     <string name="pref_disable_app_hibernation_name">تعطيل وضع سبات التطبيقات</string>
     <string name="pref_disable_app_hibernation_desc">مطلوب لمنع نظام أندرويد من إزالة أذونات التطبيق تلقائيًا بعد مرور فترة من الوقت.</string>
     <string name="pref_open_web_ui_name">افتح واجهة مستخدم الويب</string>
@@ -260,4 +260,15 @@
         <item quantity="many">%d ساعة</item>
         <item quantity="other">%d ساعة</item>
     </plurals>
+    <string name="pref_allow_local_network_name">السماح بالوصول إلى الشبكة المحلية</string>
+    <string name="pref_allow_local_network_desc">مطلوب للاتصال بالأجهزة المتصلة بالشبكة المحلية مباشرةً بدلًا من الاتصال عبر خوادم ترحيل Syncthing.</string>
+    <string name="pref_saf_folder_access_name">السماح بالوصول إلى المجلد</string>
+    <string name="pref_start_on_boot_name">البدء عند الإقلاع</string>
+    <string name="pref_start_on_boot_desc">ابدأ التطبيق في الخلفية بعد إعادة التشغيل.</string>
+    <string name="dialog_storage_type_local_title">وصول مباشر للملفات</string>
+    <string name="dialog_storage_type_local_desc">يتطلب اذن «الوصول لجميع الملفات»، لكن اكثر كفاءة وتوافق مع Syncthing.</string>
+    <string name="dialog_storage_type_saf_title">إطار عمل الوصول للتخزين</string>
+    <string name="dialog_storage_type_saf_desc">يُعطِي صلاحية الوصول للمجلد الذي ستحدّده فقط، لكنه أبطأ وقد يؤدي لأعطال مفاجئة أثناء المزامنة.</string>
+    <string name="notification_channel_persistent_name_started">إشعار مستمر عند التشغيل</string>
+    <string name="notification_channel_persistent_name_stopped">إشعار مستمر عند التوقف</string>
 </resources>
