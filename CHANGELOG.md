@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Sync translations from Weblate ([PR #205])
+
 ### Version 3.4
 
 * Update syncthing to 2.1.2 ([PR #200])
@@ -466,3 +470,4 @@
 [PR #202]: https://github.com/chenxiaolong/BasicSync/pull/202
 [PR #203]: https://github.com/chenxiaolong/BasicSync/pull/203
 [PR #204]: https://github.com/chenxiaolong/BasicSync/pull/204
+[PR #205]: https://github.com/chenxiaolong/BasicSync/pull/205
