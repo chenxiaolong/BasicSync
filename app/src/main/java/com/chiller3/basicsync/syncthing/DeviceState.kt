@@ -26,7 +26,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
-import android.os.SystemClock
 import android.util.Log
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
@@ -95,7 +94,7 @@ data class DeviceState(
     val isBatterySaver: Boolean = false,
     val isAutoSyncData: Boolean = false,
     val isInTimeWindow: Boolean = false,
-    val isIdleExpired: Boolean = false,
+    val idleStart: Long = -1,
     val busyFolders: Int = 0,
     val connectedDevices: Int = 0,
     val connectedOnce: Boolean = false,
@@ -190,11 +189,11 @@ data class DeviceState(
             reasons.add(BlockedReason.AUTO_SYNC_DATA)
         }
 
-        if (!isInTimeWindow || isIdleExpired) {
+        if (!isInTimeWindow) {
             if (prefs.syncScheduleBatteryOnly && isPluggedIn) {
                 Log.d(TAG, "Ignoring sync schedule because device is plugged in")
             } else {
-                Log.d(TAG, "Blocked due to execution time window (idleExpired=${isIdleExpired})")
+                Log.d(TAG, "Blocked due to execution time window")
                 reasons.add(BlockedReason.TIME_SCHEDULE)
             }
         }
@@ -428,31 +427,61 @@ class DeviceStateTracker(private val context: Context) :
 
     private var autoSyncHandle: Any? = null
 
-    private val scheduleCycleAction = newAlarmAction()
-    private val scheduleIdleAction = newAlarmAction()
-    private val scheduleCyclePendingIntent = alarmPendingIntent(context, scheduleCycleAction)
-    private val scheduleIdlePendingIntent = alarmPendingIntent(context, scheduleIdleAction)
+    private val scheduleAction = newAlarmAction()
+    private val schedulePendingIntent = alarmPendingIntent(context, scheduleAction)
 
     // The OnAlarmListener variant of setExactAndAllowWhileIdle() isn't available until API 37.
     private val scheduleReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
-                scheduleCycleAction -> {
-                    alarmManager.cancel(scheduleCyclePendingIntent)
-                    alarmManager.cancel(scheduleIdlePendingIntent)
+                // This is idempotent at a given point in time.
+                scheduleAction -> {
+                    alarmManager.cancel(schedulePendingIntent)
 
                     val canRun = if (prefs.syncSchedule) {
                         val cycleDurationMs = max(prefs.scheduleCycleMs, MINIMUM_CYCLE_MS)
                         val syncDurationMs = max(prefs.scheduleSyncMs, MINIMUM_SYNC_MS)
-                        val inWindow = !state.isInTimeWindow
+                        val syncIdleMs = max(prefs.scheduleIdleMs, MINIMUM_IDLE_MS)
 
-                        val (label, durationMs) = if (inWindow) {
-                            "sync" to syncDurationMs
-                        } else {
-                            "off" to (cycleDurationMs - syncDurationMs)
+                        val now = System.currentTimeMillis()
+                        val windowStart = now / cycleDurationMs * cycleDurationMs
+                        var windowEnd = windowStart + syncDurationMs
+                        var endIsIdle = false
+                        if (state.idleStart >= 0) {
+                            val idleEnd = state.idleStart + syncIdleMs
+                            if (idleEnd in windowStart until windowEnd) {
+                                windowEnd = idleEnd
+                                endIsIdle = true
+                            }
                         }
 
-                        scheduleAlarm(label, scheduleCyclePendingIntent, durationMs.toLong())
+                        val inWindow = now in windowStart until windowEnd
+
+                        val (label, nextCheckMs) = if (!inWindow) {
+                            "window_start" to windowStart + cycleDurationMs
+                        } else if (!endIsIdle) {
+                            "window_end" to windowEnd
+                        } else {
+                            "idle_end" to windowEnd
+                        }
+
+                        val exact = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
+                        if (exact) {
+                            alarmManager.setExactAndAllowWhileIdle(
+                                AlarmManager.RTC_WAKEUP,
+                                nextCheckMs,
+                                schedulePendingIntent,
+                            )
+                        } else {
+                            alarmManager.setAndAllowWhileIdle(
+                                AlarmManager.RTC_WAKEUP,
+                                nextCheckMs,
+                                schedulePendingIntent,
+                            )
+                        }
+
+                        Log.d(TAG, "Scheduled next alarm: for=$label, wait=${nextCheckMs - now}, " +
+                                "inWindow=$inWindow, exact=$exact")
 
                         inWindow
                     } else {
@@ -460,59 +489,39 @@ class DeviceStateTracker(private val context: Context) :
                         true
                     }
 
-                    if (canRun) {
-                        scheduleIdleTimer()
+                    if (!state.isInTimeWindow && canRun) {
+                        state = state.copy(
+                            isInTimeWindow = true,
+                            idleStart = -1,
+                            connectedOnce = false,
+                        )
+                    } else if (state.isInTimeWindow && !canRun) {
+                        state = state.copy(isInTimeWindow = false)
                     }
-
-                    state = state.copy(
-                        isInTimeWindow = canRun,
-                        isIdleExpired = false,
-                        connectedOnce = false,
-                    )
-                }
-                scheduleIdleAction -> {
-                    Log.d(TAG, "Idle window expired")
-
-                    state = state.copy(isIdleExpired = true)
                 }
             }
         }
     }
 
-    private fun scheduleAlarm(type: String, pendingIntent: PendingIntent, sleepMs: Long) {
-        val now = SystemClock.elapsedRealtime()
-        val wake = now + sleepMs
+    private fun updateIdleState() {
+        var idleStart = -1L
 
-        val exact = AlarmManagerCompat.canScheduleExactAlarms(alarmManager)
-        if (exact) {
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                wake,
-                pendingIntent,
-            )
+        if (!prefs.syncSchedule || !prefs.syncScheduleIdle) {
+            Log.d(TAG, "Idle schedule is disabled")
+        } else if (!state.isInTimeWindow) {
+            Log.d(TAG, "Outside of window; ignoring change in idle state")
+        } else if (!state.connectedOnce) {
+            Log.d(TAG, "Waiting for initial connection")
+        } else if (state.busyFolders > 0) {
+            Log.d(TAG, "Became busy")
+        } else if (state.idleStart < 0) {
+            Log.d(TAG, "Became idle")
+            idleStart = System.currentTimeMillis()
         } else {
-            alarmManager.setAndAllowWhileIdle(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                wake,
-                pendingIntent,
-            )
+            Log.d(TAG, "Already idle")
         }
 
-        Log.d(TAG, "Scheduled alarm: type=$type, now=$now, wake=$wake, exact=$exact")
-    }
-
-    private fun scheduleIdleTimer() {
-        val enabled = prefs.syncSchedule && prefs.syncScheduleIdle
-        val isIdle = state.busyFolders == 0
-        val connectedOnce = state.connectedOnce
-
-        if (enabled && isIdle && connectedOnce) {
-            val syncIdleMs = max(prefs.scheduleIdleMs, MINIMUM_IDLE_MS)
-
-            scheduleAlarm("idle", scheduleIdlePendingIntent, syncIdleMs.toLong())
-        } else {
-            Log.d(TAG, "Not scheduling idle timer: enabled=$enabled, idle=$isIdle, connectedOnce=$connectedOnce")
-        }
+        state = state.copy(idleStart = idleStart)
     }
 
     fun updateBusyFolders(folderStates: SyncthingService.FolderStates) {
@@ -521,12 +530,10 @@ class DeviceStateTracker(private val context: Context) :
 
         handler.post {
             if (state.busyFolders != count) {
-                alarmManager.cancel(scheduleIdlePendingIntent)
-
                 Log.d(TAG, "Busy folders updated: count=$count")
 
                 state = state.copy(busyFolders = count)
-                scheduleIdleTimer()
+                scheduleRefresh.run()
             }
         }
     }
@@ -548,17 +555,17 @@ class DeviceStateTracker(private val context: Context) :
                 // After a single device connects, the idle timer is based solely on whether all
                 // folders are idle. Devices disconnecting do not affect the timer.
                 if (!connectedBefore && count > 0) {
-                    scheduleIdleTimer()
+                    scheduleRefresh.run()
                 }
             }
         }
     }
 
-    private val scheduleReset = Runnable {
-        Log.d(TAG, "Resetting sync schedule listener")
+    private val scheduleRefresh = Runnable {
+        Log.d(TAG, "Refreshing sync schedule")
 
-        state = state.copy(isInTimeWindow = false, isIdleExpired = false)
-        scheduleReceiver.onReceive(context, Intent(scheduleCycleAction))
+        updateIdleState()
+        scheduleReceiver.onReceive(context, Intent(scheduleAction))
     }
 
     private val proxyChangeReceiver = object : BroadcastReceiver() {
@@ -599,8 +606,8 @@ class DeviceStateTracker(private val context: Context) :
                 Log.d(TAG, "Preference $key changed")
 
                 // Try to debounce since these are generally changed at the same time.
-                handler.removeCallbacks(scheduleReset)
-                handler.post(scheduleReset)
+                handler.removeCallbacks(scheduleRefresh)
+                handler.post(scheduleRefresh)
             }
             // PREF_ALLOWED_WIFI_NETWORKS is checked in SyncthingService because we need the service
             // to request the location foreground permission first.
@@ -630,13 +637,10 @@ class DeviceStateTracker(private val context: Context) :
         ContextCompat.registerReceiver(
             context,
             scheduleReceiver,
-            IntentFilter().apply {
-                addAction(scheduleCycleAction)
-                addAction(scheduleIdleAction)
-            },
+            IntentFilter(scheduleAction),
             ContextCompat.RECEIVER_NOT_EXPORTED,
         )
-        scheduleReceiver.onReceive(context, Intent(scheduleCycleAction))
+        scheduleReceiver.onReceive(context, Intent(scheduleAction))
         context.registerReceiver(
             proxyChangeReceiver,
             IntentFilter(Proxy.PROXY_CHANGE_ACTION),
@@ -658,9 +662,8 @@ class DeviceStateTracker(private val context: Context) :
         context.unregisterReceiver(batterySaverReceiver)
         ContentResolver.removeStatusChangeListener(autoSyncHandle)
         context.unregisterReceiver(scheduleReceiver)
-        alarmManager.cancel(scheduleCyclePendingIntent)
-        alarmManager.cancel(scheduleIdlePendingIntent)
-        handler.removeCallbacks(scheduleReset)
+        alarmManager.cancel(schedulePendingIntent)
+        handler.removeCallbacks(scheduleRefresh)
         context.unregisterReceiver(proxyChangeReceiver)
 
         this.listener = null
