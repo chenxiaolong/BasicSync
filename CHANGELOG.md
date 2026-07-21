@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.6
 
 * Align sync schedule intervals to Unix timestamp 0 ([Issue #207], [PR #208])
   * This ensures two devices running BasicSync with the same sync schedule settings will wake at the same time.
