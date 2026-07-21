@@ -7,6 +7,11 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Align sync schedule intervals to Unix timestamp 0 ([Issue #207], [PR #208])
+  * This ensures two devices running BasicSync with the same sync schedule settings will wake at the same time.
+
 ### Version 3.5
 
 * Sync translations from Weblate ([PR #205])
@@ -325,6 +330,7 @@
 [Issue #175]: https://github.com/chenxiaolong/BasicSync/issues/175
 [Issue #188]: https://github.com/chenxiaolong/BasicSync/issues/188
 [Issue #192]: https://github.com/chenxiaolong/BasicSync/issues/192
+[Issue #207]: https://github.com/chenxiaolong/BasicSync/issues/207
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -471,3 +477,4 @@
 [PR #203]: https://github.com/chenxiaolong/BasicSync/pull/203
 [PR #204]: https://github.com/chenxiaolong/BasicSync/pull/204
 [PR #205]: https://github.com/chenxiaolong/BasicSync/pull/205
+[PR #208]: https://github.com/chenxiaolong/BasicSync/pull/208
