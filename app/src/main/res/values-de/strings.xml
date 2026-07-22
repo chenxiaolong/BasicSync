@@ -207,4 +207,8 @@
     <string name="notification_channel_persistent_name_started">Dauerhafte Benachrichtigung, sobald gestartet</string>
     <string name="notification_channel_persistent_name_stopped">Dauerhafte Benachrichtigung, sobald gestoppt</string>
     <string name="pref_saf_folder_access_name">Ordnerzugriff erlauben</string>
+    <string name="dialog_storage_type_local_title">Direkter Dateizugriff</string>
+    <string name="dialog_storage_type_saf_desc">Erteilt nur Berechtigungen für den ausgewählten Ordner, ist jedoch langsamer und kann zu unerwarteten Synchronisierungsfehlern führen.</string>
+    <string name="dialog_storage_type_local_desc">Erfordert die Berechtigung „Zugriff auf alle Dateien“, ist jedoch effizienter und bietet eine bessere Kompatibilität mit Syncthing.</string>
+    <string name="dialog_storage_type_saf_title">Speicherzugriff-Framework</string>
 </resources>
