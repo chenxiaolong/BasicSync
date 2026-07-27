@@ -519,6 +519,7 @@ class DeviceStateTracker(private val context: Context) :
             idleStart = System.currentTimeMillis()
         } else {
             Log.d(TAG, "Already idle")
+            idleStart = state.idleStart
         }
 
         state = state.copy(idleStart = idleStart)
