@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.7
 
 * Fix the "stop early when idle" feature not stopping early in some scenarios ([Issue #212], [PR #213])
   * This was a regression introduced in version 3.6.
