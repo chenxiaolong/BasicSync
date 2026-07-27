@@ -7,6 +7,11 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Fix the "stop early when idle" feature not stopping early in some scenarios ([Issue #212], [PR #213])
+  * This was a regression introduced in version 3.6.
+
 ### Version 3.6
 
 * Align sync schedule intervals to Unix timestamp 0 ([Issue #207], [PR #208])
@@ -331,6 +336,7 @@
 [Issue #188]: https://github.com/chenxiaolong/BasicSync/issues/188
 [Issue #192]: https://github.com/chenxiaolong/BasicSync/issues/192
 [Issue #207]: https://github.com/chenxiaolong/BasicSync/issues/207
+[Issue #212]: https://github.com/chenxiaolong/BasicSync/issues/212
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -478,3 +484,4 @@
 [PR #204]: https://github.com/chenxiaolong/BasicSync/pull/204
 [PR #205]: https://github.com/chenxiaolong/BasicSync/pull/205
 [PR #208]: https://github.com/chenxiaolong/BasicSync/pull/208
+[PR #213]: https://github.com/chenxiaolong/BasicSync/pull/213
