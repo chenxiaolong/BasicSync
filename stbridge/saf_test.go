@@ -694,12 +694,6 @@ func TestOpenFileExists(t *testing.T) {
 	}
 
 	client, opts := newTestClient()
-	client.createDocument = func(parentDocumentUri, mimeType, name string) (string, error) {
-		if mimeType != safMimeTypeDir {
-			t.Errorf("invalid MIME type: %q", mimeType)
-		}
-		return name, nil
-	}
 	client.openDocument = func(documentUri, mode string) (int, error) {
 		if mode != "rw" {
 			t.Errorf("invalid mode: %q", mode)
@@ -719,6 +713,178 @@ func TestOpenFileExists(t *testing.T) {
 			file.Close()
 		}
 		t.Errorf("did not fail with EEXIST: %+v", err)
+	}
+}
+
+func TestOpenFileModeString(t *testing.T) {
+	nodeInternal := &safNode{
+		uri:            "content://com.android.externalstorage.documents/tree/primary%3apath",
+		infoExpiry:     safExpired,
+		childrenExpiry: safExpired,
+		watchManager:   &safWatchManager{},
+	}
+	nodeExternal := &safNode{
+		uri:            "content://com.chiller3.rsaf/tree/remote%3apath",
+		infoExpiry:     safExpired,
+		childrenExpiry: safExpired,
+		watchManager:   &safWatchManager{},
+	}
+
+	actualMode := ""
+
+	client, opts := newTestClient()
+	client.openDocument = func(documentUri, mode string) (int, error) {
+		if !slices.Contains([]string{"r", "w", "wt", "wa", "rw", "rwt"}, mode) {
+			t.Errorf("invalid pfd mode: %q", mode)
+		}
+
+		actualMode = mode
+		return syscall.Dup(syscall.Stdin)
+	}
+
+	for _, i := range []struct {
+		internal bool
+		flags    int
+		mode     string
+		readable bool
+		writable bool
+		invalid  bool
+	}{
+		{
+			internal: true,
+			flags:    os.O_RDONLY,
+			mode:     "r",
+			readable: true,
+			writable: false,
+		},
+		{
+			internal: false,
+			flags:    os.O_RDONLY,
+			mode:     "rw",
+			readable: true,
+			writable: false,
+		},
+		{
+			internal: true,
+			flags:    os.O_WRONLY,
+			mode:     "w",
+			readable: false,
+			writable: true,
+		},
+		{
+			internal: false,
+			flags:    os.O_WRONLY,
+			mode:     "rw",
+			readable: false,
+			writable: true,
+		},
+		{
+			internal: true,
+			flags:    os.O_WRONLY | os.O_TRUNC,
+			mode:     "wt",
+			readable: false,
+			writable: true,
+		},
+		{
+			internal: false,
+			flags:    os.O_WRONLY | os.O_TRUNC,
+			mode:     "rwt",
+			readable: false,
+			writable: true,
+		},
+		{
+			internal: true,
+			flags:    os.O_WRONLY | os.O_APPEND,
+			mode:     "wa",
+			readable: false,
+			writable: true,
+		},
+		{
+			internal: false,
+			flags:    os.O_WRONLY | os.O_APPEND,
+			invalid:  true,
+		},
+		{
+			internal: true,
+			flags:    os.O_RDWR,
+			mode:     "rw",
+			readable: true,
+			writable: true,
+		},
+		{
+			internal: false,
+			flags:    os.O_RDWR,
+			mode:     "rw",
+			readable: true,
+			writable: true,
+		},
+		{
+			internal: true,
+			flags:    os.O_RDWR | os.O_TRUNC,
+			mode:     "rwt",
+			readable: true,
+			writable: true,
+		},
+		{
+			internal: false,
+			flags:    os.O_RDWR | os.O_TRUNC,
+			mode:     "rwt",
+			readable: true,
+			writable: true,
+		},
+		{
+			internal: true,
+			flags:    os.O_TRUNC,
+			invalid:  true,
+		},
+		{
+			internal: false,
+			flags:    os.O_TRUNC,
+			invalid:  true,
+		},
+		{
+			internal: true,
+			flags:    os.O_APPEND,
+			invalid:  true,
+		},
+		{
+			internal: false,
+			flags:    os.O_APPEND,
+			invalid:  true,
+		},
+	} {
+		actualMode = ""
+		var node *safNode
+
+		if i.internal {
+			node = nodeInternal
+		} else {
+			node = nodeExternal
+		}
+
+		file, err := node.OpenFile(opts, ".", i.flags)
+		if err != nil {
+			if i.invalid {
+				continue
+			} else {
+				t.Fatalf("should have succeeded: %+v: %v", i, err)
+			}
+		}
+		file.Close()
+
+		if i.invalid {
+			t.Fatalf("should have failed: %+v", i)
+		}
+
+		if actualMode != i.mode {
+			t.Errorf("invalid pfd mode: %q != %q", actualMode, i.mode)
+		}
+		if file.canRead != i.readable {
+			t.Errorf("invalid readable state: %v != %v", file.canRead, i.readable)
+		}
+		if file.canWrite != i.writable {
+			t.Errorf("invalid writable state: %v != %v", file.canWrite, i.writable)
+		}
 	}
 }
 

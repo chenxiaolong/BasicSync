@@ -810,6 +810,26 @@ func (sn *safNode) MkdirAll(opts *safOpts, name string) (*safNode, bool, error) 
 	return current, currentIsNew, nil
 }
 
+// android-10.0.0_r1 is the first Android version that guaranteed that O_TRUNC
+// is only passed when 't' is present for "w" vs "wt" [1]. However, "rw" has
+// never truncated since the very beginning [2].
+//
+// android-17.0.0_r1 is the first Android version that started enforcing that
+// the ParcelFileDescriptor modes cannot be anything besides the six below [3].
+//
+// [1] https://android.googlesource.com/platform/frameworks/base/+/63280e06fc64672ab36d14f852b13df2274cc328%5E!/
+// [2] https://android.googlesource.com/platform/frameworks/base/+/9066cfe9886ac131c34d59ed0e2d287b0e3c0087%5E!/
+// [3] https://android.googlesource.com/platform/frameworks/base/+/5b5468ef7ae91858b1fe485ade787e4c16058264%5E!/
+const (
+	pfdMask = os.O_RDONLY | os.O_WRONLY | os.O_RDWR | os.O_TRUNC | os.O_APPEND
+	pfdR    = os.O_RDONLY
+	pfdW    = os.O_WRONLY
+	pfdWt   = os.O_WRONLY | os.O_TRUNC
+	pfdWa   = os.O_WRONLY | os.O_APPEND
+	pfdRw   = os.O_RDWR
+	pfdRwt  = os.O_RDWR | os.O_TRUNC
+)
+
 // Open or create the specified file. Only the [os.O_RDONLY], [os.O_WRONLY],
 // [os.O_RDWR], [os.O_CREATE], [os.O_TRUNC], and [os.O_EXCL] flags are
 // supported.
@@ -841,23 +861,36 @@ func (sn *safNode) OpenFile(opts *safOpts, name string, flags int) (*safFile, er
 		return nil, err
 	}
 
-	safMode := "rw"
-	if flags&os.O_RDWR == 0 && isAlwaysSeekable(child.uri) {
-		if flags&os.O_WRONLY != 0 {
-			safMode = "w"
-		} else {
-			safMode = "r"
-		}
-	}
+	pfdFlags := flags & pfdMask
+	var safMode string
 
-	// android-10.0.0_r1 is the first Android version that guaranteed that
-	// O_TRUNC is only passed when 't' is present for "w" vs "wt" [1]. However,
-	// "rw" has never truncated since the very beginning [2].
-	//
-	// [1] https://android.googlesource.com/platform/frameworks/base/+/63280e06fc64672ab36d14f852b13df2274cc328%5E!/
-	// [2] https://android.googlesource.com/platform/frameworks/base/+/9066cfe9886ac131c34d59ed0e2d287b0e3c0087%5E!/
-	if flags&os.O_TRUNC != 0 {
-		safMode += "t"
+	if isAlwaysSeekable(child.uri) {
+		switch pfdFlags {
+		case pfdR:
+			safMode = "r"
+		case pfdW:
+			safMode = "w"
+		case pfdWt:
+			safMode = "wt"
+		case pfdWa:
+			safMode = "wa"
+		case pfdRw:
+			safMode = "rw"
+		case pfdRwt:
+			safMode = "rwt"
+		default:
+			return nil, fmt.Errorf("invalid open flags for guaranteed seekable file: %q: %#x", child.uri, flags)
+		}
+	} else {
+		switch pfdFlags {
+		case pfdR, pfdW, pfdRw:
+			safMode = "rw"
+		case pfdWt, pfdRwt:
+			safMode = "rwt"
+		// "wa" is not representable.
+		default:
+			return nil, fmt.Errorf("invalid open flags for not guaranteed seekable file: %q: %#x", child.uri, flags)
+		}
 	}
 
 	fd, err := opts.client.OpenDocument(child.uri, safMode)
@@ -1576,7 +1609,7 @@ func (sfs *safFilesystem) Chtimes(name string, atime time.Time, mtime time.Time)
 }
 
 func (sfs *safFilesystem) Create(name string) (fs.File, error) {
-	return sfs.OpenFile(name, os.O_CREATE|os.O_TRUNC, 0)
+	return sfs.OpenFile(name, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0)
 }
 
 func (sfs *safFilesystem) CreateSymlink(target, name string) error {
