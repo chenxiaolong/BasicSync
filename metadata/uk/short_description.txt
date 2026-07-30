@@ -1,0 +1,1 @@
+Простий запуск Syncthing на Android
