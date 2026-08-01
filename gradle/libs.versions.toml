@@ -1,14 +1,14 @@
 [versions]
-android-gradle-plugin = "9.2.1"
+android-gradle-plugin = "9.3.1"
 androidx-activity = "1.13.0"
 androidx-camera = "1.6.1"
 androidx-compose-bom = "2026.06.01"
-androidx-compose-material3 = "1.5.0-alpha23"
+androidx-compose-material3 = "1.5.0-alpha25"
 androidx-core = "1.19.0"
 androidx-lifecycle-viewmodel-compose = "2.11.0"
 androidx-preference = "1.2.1"
-jgit = "7.7.0.202606012155-r"
-kotlin = "2.4.0"
+jgit = "7.7.1.202607240634-r"
+kotlin = "2.4.10"
 material = "1.14.0"
 zxing = "3.5.4"
 
