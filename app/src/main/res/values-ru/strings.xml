@@ -1,3 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_header_about">О программе</string>
+    <string name="pref_header_debug">Отладка</string>
+    <string name="pref_inhibit_battery_opt_name">Отключить экономию заряда</string>
+    <string name="pref_allow_notifications_name">Разрешить уведомления</string>
+    <string name="pref_allow_notifications_desc">Необходимо для стабильной работы в фоне и управления службой Syncthing.</string>
+    <string name="pref_open_web_ui_name">Открыть веб интерфейс</string>
+    <string name="pref_header_advanced">Дополнительно</string>
+    <string name="pref_open_web_ui_desc">Открыть вебинтерфейс параметров Syncthing.</string>
+    <string name="pref_conflicts_name">Конфликты синхронизации</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="one">конфликт при синхронизации %d файла.</item>
+        <item quantity="few">конфликт при синхронизации %d файлов.</item>
+        <item quantity="many">конфликт при синхронизации %d файлов.</item>
+        <item quantity="other">конфликт при синхронизации %d файлов.</item>
+    </plurals>
+    <string name="pref_import_configuration_name">Импорт настроек</string>
+    <string name="pref_import_configuration_desc">Загрузить конфигурацию Syncthing из zip-файла.</string>
+    <string name="pref_export_configuration_name">Экспорт конфигурации</string>
+    <string name="pref_export_configuration_desc">Сохранить текущую конфигурацию Syncthing в zip-файл.</string>
+    <string name="pref_auto_mode_name">Автоматический режим</string>
+    <string name="pref_auto_mode_desc">Автоматический запуск и остановка по заданным условиям.</string>
+    <string name="pref_network_conditions_name">Сетевые параметры</string>
+    <string name="pref_remote_control_name">Разрешить удаленное управление</string>
+    <string name="pref_show_exit_name">Показывать кнопку «Выход»</string>
+    <string name="pref_start_on_boot_name">Запускать при загрузке</string>
+    <string name="pref_start_on_boot_desc">Автоматически запускать приложение после перезагрузки.</string>
+    <string name="pref_version_name">Версия</string>
+    <string name="pref_save_logs_name">Сохранить журналы</string>
+    <string name="pref_allow_auto_mode_name">Разрешить автоматический режим</string>
+    <string name="pref_network_allow_wifi_name">Разрешить Wi-Fi</string>
+    <string name="pref_header_allowed_wifi_networks">Разрешенные Wi-Fi сети</string>
+    <string name="pref_header_available_wifi_networks">Доступные Wi-Fi сети</string>
+    <string name="pref_require_unmetered_network_name">Только сети без ограничения трафика</string>
+    <string name="pref_network_allow_other_name">Разрешить другие сетевые интерфейсы</string>
 </resources>
