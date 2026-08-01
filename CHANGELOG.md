@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.8
 
 * Fix bug that led to inefficiency when renaming files in shared folders that use SAF ([Issue #214], [PR #215])
 * Update dependencies ([PR #216])
