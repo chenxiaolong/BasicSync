@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="pref_header_about">О программе</string>
-    <string name="pref_header_debug">Отладка</string>
+    <string name="pref_header_debug">Дебаг (отладка)</string>
     <string name="pref_inhibit_battery_opt_name">Отключить экономию заряда</string>
     <string name="pref_allow_notifications_name">Разрешить уведомления</string>
     <string name="pref_allow_notifications_desc">Необходимо для стабильной работы в фоне и управления службой Syncthing.</string>
@@ -15,7 +15,7 @@
         <item quantity="many">конфликт при синхронизации %d файлов.</item>
         <item quantity="other">конфликт при синхронизации %d файлов.</item>
     </plurals>
-    <string name="pref_import_configuration_name">Импорт настроек</string>
+    <string name="pref_import_configuration_name">Импорт конфигурации</string>
     <string name="pref_import_configuration_desc">Загрузить конфигурацию Syncthing из zip-файла.</string>
     <string name="pref_export_configuration_name">Экспорт конфигурации</string>
     <string name="pref_export_configuration_desc">Сохранить текущую конфигурацию Syncthing в zip-файл.</string>
@@ -34,4 +34,20 @@
     <string name="pref_header_available_wifi_networks">Доступные Wi-Fi сети</string>
     <string name="pref_require_unmetered_network_name">Только сети без ограничения трафика</string>
     <string name="pref_network_allow_other_name">Разрешить другие сетевые интерфейсы</string>
+    <string name="pref_inhibit_battery_opt_desc">Требуется для стабильной работы в фоне.</string>
+    <string name="pref_header_permissions">Разрешения</string>
+    <string name="pref_header_configuration">Параметры</string>
+    <string name="pref_header_run_conditions">Условия запуска</string>
+    <string name="pref_disable_app_hibernation_name">Отключить гибернацию</string>
+    <string name="pref_disable_app_hibernation_desc">Необходимо для предотвращения автоматической отмены разрешений системой Android.</string>
+    <string name="pref_allow_local_network_name">Разрешить доступ к локальной сети</string>
+    <string name="pref_allow_local_network_desc">Необходимо для соединения с устройствами в локальной сети напрямую, без использования ретрансляционных серверов Syncthing.</string>
+    <string name="pref_local_storage_access_name">Разрешить доступ к памяти устройства</string>
+    <string name="pref_local_storage_access_desc">Требуется для прямого доступа Syncthing к файлам во внутренней и внешней памяти.</string>
+    <string name="pref_saf_folder_access_name">Разрешить доступ к папке</string>
+    <string name="pref_service_status_name">Статус Syncthing</string>
+    <string name="pref_keep_alive_name">Поддерживать работу службы Syncthing</string>
+    <string name="pref_header_allowed_network_types">Разрешенные типы сетей</string>
+    <string name="pref_network_allow_ethernet_name">Разрешить Ethernet</string>
+    <string name="pref_network_allow_cellular_name">Разрешить мобильные данные</string>
 </resources>
