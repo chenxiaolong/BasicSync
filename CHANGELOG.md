@@ -11,6 +11,7 @@
 
 * Fix bug that led to inefficiency when renaming files in shared folders that use SAF ([Issue #214], [PR #215])
 * Update dependencies ([PR #216])
+* Sync translations from Weblate ([PR #211])
 
 ### Version 3.7
 
@@ -490,6 +491,7 @@
 [PR #204]: https://github.com/chenxiaolong/BasicSync/pull/204
 [PR #205]: https://github.com/chenxiaolong/BasicSync/pull/205
 [PR #208]: https://github.com/chenxiaolong/BasicSync/pull/208
+[PR #211]: https://github.com/chenxiaolong/BasicSync/pull/211
 [PR #213]: https://github.com/chenxiaolong/BasicSync/pull/213
 [PR #215]: https://github.com/chenxiaolong/BasicSync/pull/215
 [PR #216]: https://github.com/chenxiaolong/BasicSync/pull/216
