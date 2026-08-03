@@ -1,0 +1,1 @@
+Простой клиент Syncthing для Android
