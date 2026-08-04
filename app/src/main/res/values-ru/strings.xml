@@ -88,4 +88,157 @@
     <string name="web_ui_scan_qr_code">Сканировать QR код</string>
     <string name="dialog_sync_schedule_hint_idle">Время бездействия</string>
     <string name="dialog_wifi_network_title">Wi-Fi сеть</string>
+    <string name="notification_persistent_running_title">Syncthing запущен</string>
+    <string name="notification_persistent_not_running_title">Syncthing не запущен</string>
+    <string name="notification_persistent_paused_title">Syncthing приостановлен</string>
+    <string name="notification_persistent_starting_title">Syncthing запускается</string>
+    <string name="notification_persistent_stopping_title">Syncthing останавливается</string>
+    <string name="notification_persistent_pausing_title">Syncthing приостанавливается</string>
+    <string name="notification_channel_persistent_name_started">Закреплённое уведомление после запуска</string>
+    <string name="notification_channel_persistent_name_stopped">Закреплённое уведомление после остановки</string>
+    <string name="notification_channel_failure_name">Уведомления об ошибках</string>
+    <string name="pref_show_exit_desc">Показывать кнопку «Выход» в постоянном уведомлении. Приложение автоматически перезапустится после перезагрузки устройства или при получении команды удалённого управления.</string>
+    <plurals name="duration_hours">
+        <item quantity="one">%d час</item>
+        <item quantity="few">%d часов</item>
+        <item quantity="many">%d часов</item>
+        <item quantity="other">%d часов</item>
+    </plurals>
+    <string name="pref_allow_background_location_name">Разрешить доступ к местоположению в фоновом режиме</string>
+    <string name="pref_allow_background_location_desc">Требуется для доступа к сведениям о Wi-Fi подключении в фоновом режиме.</string>
+    <string name="pref_allow_precise_location_desc">Необходимо для получения информации о Wi-Fi подключении.</string>
+    <string name="pref_add_wifi_network_name">Добавить сеть Wi-Fi вручную</string>
+    <string name="pref_sync_schedule_name">Синхронизировать по расписанию</string>
+    <string name="alert_browser_not_found">Веб-браузер недоступен.</string>
+    <string name="alert_documentsui_not_found">Системный файловый менеджер (DocumentsUI) недоступен.</string>
+    <string name="alert_tv_inhibit_battery_opt">Отключение оптимизации «батареи» на Android TV требует выполнения действий вручную.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">В Android TV отсутствует интерфейс для отключения оптимизации «батареи», но это необходимо для стабильной работы Syncthing в фоновом режиме. Это можно сделать с помощью следующей команды ADB.</string>
+    <string name="dialog_storage_type_title">Тип хранилища</string>
+    <string name="dialog_storage_type_local_title">Прямой доступ к файлам</string>
+    <string name="dialog_storage_type_local_desc">Требуется разрешения «Доступ ко всем файлам», для более эффективной и стабильной работы Syncthing.</string>
+    <string name="pref_run_on_battery_desc">Работать от батареи, если заряд выше или равен %1$d%%. При питании от сети Syncthing работает постоянно.</string>
+    <string name="pref_keep_alive_desc">Приостанавливать Syncthing вместо полного закрытия. Это поможет избежать высокой нагрузки на устройство при сканировании крупных папок во время запуска.</string>
+    <string name="pref_save_logs_desc">Сохранить системный журнал в файл.</string>
+    <string name="pref_conflicts_info">При синхронизации следующих файлов возникли конфликты, требующие ручного разрешения. Выберите файл, чтобы открыть содержащую его папку в файловом менеджере.</string>
+    <string name="pref_location_optional_info">Разрешение на доступ к местоположению не обязательно и требуется только для ограничения разрешённых сетей Wi-Fi. Даже если доступ предоставлен, он не будет использоваться, пока не настроен список разрешённых сетей Wi-Fi.</string>
+    <string name="pref_allow_precise_location_name">Разрешить доступ к точному местоположению</string>
+    <string name="pref_wifi_networks_info">Ограничить работу Wi-Fi только указанными сетями. Если список пуст, допускаются работа в любые сети.</string>
+    <string name="pref_sync_schedule_desc">Запускать синхронизацию на %2$s каждые %1$s.</string>
+    <string name="pref_sync_schedule_idle_name">Завершать досрочно при отсутствии активности</string>
+    <string name="pref_sync_schedule_battery_only_name">Расписание только при питании от батареи</string>
+    <string name="pref_sync_schedule_battery_only_desc">При питании от сети расписание не будет учитываться.</string>
+    <string name="pref_sync_schedule_idle_desc">Досрочно завершать работу Syncthing, если подключено хотя бы одно устройство и во всех папках нет активности %1$s.</string>
+    <string name="alert_logcat_success">Журнал успешно сохранен в %1$s</string>
+    <string name="alert_logcat_failure">Не удалось сохранить журнал в %1$s</string>
+    <string name="dialog_storage_type_saf_title">Системный файловый менеджер (SAF)</string>
+    <string name="dialog_new_folder_title">Новая папка</string>
+    <string name="dialog_storage_type_saf_desc">Ограничивает доступ только выбранной папкой, однако снижает скорость работы и может вызывать ошибки синхронизации.</string>
+    <string name="dialog_new_folder_message">Введите имя для новой папки создаваемой в %1$s.</string>
+    <string name="dialog_wifi_network_message">Укажите название (SSID) сети Wi-Fi. Работает и для скрытых сетей Wi-Fi.</string>
+    <string name="notification_channel_failure_desc">Уведомления об ошибках при запуске Syncthing</string>
+    <string name="notification_channel_conflicts_name">Конфликты синхронизации</string>
+    <string name="notification_action_auto_mode">Автоматический режим</string>
+    <string name="notification_action_manual_mode">Ручной режим</string>
+    <string name="notification_action_start">Запуск</string>
+    <string name="notification_action_stop">Остановка</string>
+    <string name="notification_action_exit">Выход</string>
+    <string name="notification_channel_conflicts_desc">Уведомления о конфликтах синхронизации</string>
+    <string name="notification_channel_alerts_name">Уведомления Syncthing</string>
+    <string name="notification_channel_alerts_desc">Запросы устройств/папок и другие уведомления от Syncthing.</string>
+    <string name="notification_persistent_importing_title">Импортирование конфигурации</string>
+    <string name="notification_persistent_exporting_title">Экспортирование конфигурации</string>
+    <string name="notification_failure_run_title">Не удалось запустить Syncthing</string>
+    <string name="blocked_reason_bad_network_type">• Запрещённый тип подключения</string>
+    <string name="quick_settings_tile_auto_mode">Автоматический режим</string>
+    <string name="blocked_reason_low_battery">• Батарея разряжена</string>
+    <string name="blocked_reason_battery_saver">• Включён режим «Экономия энергии»</string>
+    <string name="blocked_reason_auto_sync_data">• Автосинхронизация данных выключена</string>
+    <string name="blocked_reason_on_battery">• Работа от аккумулятора</string>
+    <string name="notification_failure_run_message">Ошибка при запуске Syncthing. Во избежание перезапуска по циклу работа Syncthing остановлена, включён ручной режим.</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="one">%d обнаружен конфликт синхронизации</item>
+        <item quantity="few">%d обнаружено конфликтов синхронизации</item>
+        <item quantity="many">%d обнаружено конфликтов синхронизации</item>
+        <item quantity="other">%d обнаружено конфликтов синхронизации</item>
+    </plurals>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="one">%d уведомление Syncthing</item>
+        <item quantity="few">%d уведомлений Syncthing</item>
+        <item quantity="many">%d уведомлений Syncthing</item>
+        <item quantity="other">%d уведомлений Syncthing</item>
+    </plurals>
+    <string name="blocked_reason_no_storage_permissions">• Отказано в доступе к хранилищу</string>
+    <string name="blocked_reason_manual">• Остановлено вручную</string>
+    <string name="blocked_reason_disconnected">• Нет соединения с сетью</string>
+    <string name="blocked_reason_metered_network">• Подключено к тарифицируемой сети</string>
+    <string name="blocked_reason_bad_wifi_ssid">• Подключено к заблокированной сети Wi-Fi</string>
+    <string name="blocked_reason_time_schedule">• Вне указанного расписания</string>
+    <plurals name="folder_state_idle">
+        <item quantity="one">%d папка синхронизирована</item>
+        <item quantity="few">%d папок синхронизировано</item>
+        <item quantity="many">%d папок синхронизировано</item>
+        <item quantity="other">%d папок синхронизировано</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="one">%d папка проверяется</item>
+        <item quantity="few">%d папок проверяется</item>
+        <item quantity="many">%d папок проверяется</item>
+        <item quantity="other">%d папок проверяется</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="one">%d папка синхронизируется</item>
+        <item quantity="few">%d папок синхронизируются</item>
+        <item quantity="many">%d папок синхронизируются</item>
+        <item quantity="other">%d папок синхронизируются</item>
+    </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%d секунда</item>
+        <item quantity="few">%d секунд</item>
+        <item quantity="many">%d секунд</item>
+        <item quantity="other">%d секунд</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минут</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минут</item>
+    </plurals>
+    <plurals name="device_state_connected">
+        <item quantity="one">%d подключено устройство</item>
+        <item quantity="few">%d подключено устройств</item>
+        <item quantity="many">%d подключено устройств</item>
+        <item quantity="other">%d подключено устройств</item>
+    </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="one">%d синхронизация устройства</item>
+        <item quantity="few">%d синхронизация устройств</item>
+        <item quantity="many">%d синхронизация устройств</item>
+        <item quantity="other">%d синхронизация устройств</item>
+    </plurals>
+    <string name="quick_settings_tile_manual_mode_started">Запущено вручную</string>
+    <string name="quick_settings_tile_manual_mode_stopped">Остановлено вручную</string>
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">• Очистка устаревших файлов в %d папке</item>
+        <item quantity="few">• Очистка устаревших файлов в %d папках</item>
+        <item quantity="many">• Очистка устаревших файлов в %d папках</item>
+        <item quantity="other">• Очистка устаревших файлов в %d папках</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="one">• Ошибки в %d папке</item>
+        <item quantity="few">• Ошибок в %d папках</item>
+        <item quantity="many">• Ошибок в %d папках</item>
+        <item quantity="other">• Ошибок в %d папках</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="one">• Запуск %d папки</item>
+        <item quantity="few">• Запуск %d папок</item>
+        <item quantity="many">• Запуск %d папок</item>
+        <item quantity="other">• Запуск %d папок</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="one">• Ожидание синхронизации с %d устройством</item>
+        <item quantity="few">• Ожидание синхронизации с %d устройствами</item>
+        <item quantity="many">• Ожидание синхронизации с %d устройствами</item>
+        <item quantity="other">• Ожидание синхронизации с %d устройствами</item>
+    </plurals>
 </resources>
