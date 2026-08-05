@@ -36,7 +36,7 @@
     <string name="pref_network_allow_other_name">Разрешить другие сетевые интерфейсы</string>
     <string name="pref_inhibit_battery_opt_desc">Требуется для стабильной работы в фоне.</string>
     <string name="pref_header_permissions">Разрешения</string>
-    <string name="pref_header_configuration">Параметры</string>
+    <string name="pref_header_configuration">Конфигурация</string>
     <string name="pref_header_run_conditions">Условия запуска</string>
     <string name="pref_disable_app_hibernation_name">Отключить гибернацию</string>
     <string name="pref_disable_app_hibernation_desc">Необходимо для предотвращения автоматической отмены разрешений системой Android.</string>
