@@ -16,4 +16,15 @@
     <string name="pref_open_web_ui_name">Open web UI</string>
     <string name="pref_open_web_ui_desc">Open Syncthing\'s web configuration interface.</string>
     <string name="pref_conflicts_name">Sync conflicts</string>
+    <string name="pref_import_configuration_name">Import configuration</string>
+    <string name="pref_import_configuration_desc">Import an existing Syncthing configuration zip file.</string>
+    <string name="pref_export_configuration_name">Export configuration</string>
+    <string name="pref_export_configuration_desc">Export the current Syncthing configuration to a zip file.</string>
+    <string name="pref_service_status_name">Syncthing status</string>
+    <string name="pref_auto_mode_name">Auto mode</string>
+    <string name="pref_auto_mode_desc">Automatically start and stop based on the specified conditions.</string>
+    <string name="pref_network_conditions_name">Network conditions</string>
+    <string name="pref_network_conditions_desc">Run when connected to certain network types or Wi-Fi networks.</string>
+    <string name="pref_run_on_battery_name">Run on battery power</string>
+    <string name="pref_run_on_battery_desc">Run when the device is on battery power and the battery level is at least %1$d%%. Syncthing always runs when plugged in.</string>
 </resources>
