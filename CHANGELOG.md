@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.9
 
 * Update syncthing to 2.1.3 ([PR #218])
 * Sync translations from Weblate ([PR #217])
