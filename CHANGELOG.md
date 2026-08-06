@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update syncthing to 2.1.3 ([PR #218])
+
 ### Version 3.8
 
 * Fix bug that led to inefficiency when renaming files in shared folders that use SAF ([Issue #214], [PR #215])
@@ -495,3 +499,4 @@
 [PR #213]: https://github.com/chenxiaolong/BasicSync/pull/213
 [PR #215]: https://github.com/chenxiaolong/BasicSync/pull/215
 [PR #216]: https://github.com/chenxiaolong/BasicSync/pull/216
+[PR #218]: https://github.com/chenxiaolong/BasicSync/pull/218
