@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add setting for turning off folder and device status information in the persistent notification ([Issue #219], [PR #220])
+
 ### Version 3.9
 
 * Update syncthing to 2.1.3 ([PR #218])
@@ -349,6 +353,7 @@
 [Issue #207]: https://github.com/chenxiaolong/BasicSync/issues/207
 [Issue #212]: https://github.com/chenxiaolong/BasicSync/issues/212
 [Issue #214]: https://github.com/chenxiaolong/BasicSync/issues/214
+[Issue #219]: https://github.com/chenxiaolong/BasicSync/issues/219
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -502,3 +507,4 @@
 [PR #216]: https://github.com/chenxiaolong/BasicSync/pull/216
 [PR #217]: https://github.com/chenxiaolong/BasicSync/pull/217
 [PR #218]: https://github.com/chenxiaolong/BasicSync/pull/218
+[PR #220]: https://github.com/chenxiaolong/BasicSync/pull/220
