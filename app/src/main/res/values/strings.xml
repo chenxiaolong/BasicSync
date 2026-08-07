@@ -10,6 +10,8 @@
     <string name="pref_header_configuration">Configuration</string>
     <!-- Section header for preferences to configure when Syncthing is allowed to run. -->
     <string name="pref_header_run_conditions">Run conditions</string>
+    <!-- Section header for preferences related to notifications. -->
+    <string name="pref_header_notifications">Notifications</string>
     <!-- Section header for preferences related to advanced power-user functionality. -->
     <string name="pref_header_advanced">Advanced</string>
     <!-- Section header for the preference showing information about the app, like version numbers. -->
@@ -100,6 +102,10 @@
     <string name="pref_show_exit_name">Show Exit button</string>
     <!-- Description for the preference to show an exit button in the persistent notification. -->
     <string name="pref_show_exit_desc">Show an Exit button in the persistent notification. The app will automatically start again after a reboot or when receiving a remote control command.</string>
+    <!-- Title for the preference to show folder and device states in the persistent notification. -->
+    <string name="pref_show_details_name">Detailed notifications</string>
+    <!-- Description for the preference to show folder and device states in the persistent notification. -->
+    <string name="pref_show_details_desc">Show the status of shared folders and connected devices in the persistent notification.</string>
     <!-- Title for the preference to start the app after a reboot. -->
     <string name="pref_start_on_boot_name">Start on boot</string>
     <!-- Description for the preference to start the app after a reboot. -->

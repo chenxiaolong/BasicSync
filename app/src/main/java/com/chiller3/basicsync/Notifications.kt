@@ -118,7 +118,7 @@ class Notifications(private val context: Context) {
             setOngoing(true)
             setOnlyAlertOnce(true)
 
-            if (runState.showFolderStates) {
+            if (state.showDetails && runState.showFolderStates) {
                 setContentText(buildString {
                     append(context.resources.getQuantityString(
                         R.plurals.device_state_connected,

@@ -52,6 +52,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         )
         private val STATE_CHANGE_PREFS = arrayOf(
             Preferences.PREF_KEEP_ALIVE,
+            Preferences.PREF_SHOW_DETAILS,
             Preferences.PREF_SHOW_EXIT,
         )
 
@@ -174,10 +175,25 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         private val manualMode: Boolean,
         private val allowAutoMode: Boolean,
         private val preRunAction: PreRunAction?,
+        val showDetails: Boolean,
         private val showExit: Boolean,
         val folderStates: FolderStates,
         val deviceStates: DeviceStates,
     ) {
+        fun equivalent(prev: ServiceState?): Boolean =
+            prev != null
+                    && keepAlive == prev.keepAlive
+                    && blockedReasons == prev.blockedReasons
+                    && isStarted == prev.isStarted
+                    && isResumed == prev.isResumed
+                    && manualMode == prev.manualMode
+                    && allowAutoMode == prev.allowAutoMode
+                    && preRunAction == prev.preRunAction
+                    && showDetails == prev.showDetails
+                    && showExit == prev.showExit
+                    && (!showDetails || (folderStates == prev.folderStates
+                            && deviceStates == prev.deviceStates))
+
         private val shouldResume: Boolean
             get() = blockedReasons.isEmpty()
 
@@ -654,7 +670,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 return
             }
 
-            val notificationState = ServiceState(
+            val serviceState = ServiceState(
                 keepAlive = prefs.keepAlive,
                 blockedReasons = blockedReasons,
                 isStarted = isStarted,
@@ -662,43 +678,49 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 manualMode = prefs.isManualMode,
                 allowAutoMode = prefs.allowAutoMode,
                 preRunAction = currentPreRunAction,
+                showDetails = prefs.showDetails,
                 showExit = prefs.showExit,
                 folderStates = syncthingFolderStates,
                 deviceStates = syncthingDeviceStates,
             )
 
-            val wasChanged = notificationState != lastServiceState
+            val wasChanged = serviceState != lastServiceState
 
             if (wasChanged || forceShowNotification) {
                 if (wasChanged) {
-                    deviceStateTracker.updateBusyFolders(notificationState.folderStates)
-                    deviceStateTracker.updateConnectedDevices(notificationState.deviceStates)
+                    deviceStateTracker.updateBusyFolders(serviceState.folderStates)
+                    deviceStateTracker.updateConnectedDevices(serviceState.deviceStates)
 
                     val guiInfo = guiInfo
 
-                    allListeners { it.onRunStateChanged(notificationState, guiInfo) }
+                    allListeners { it.onRunStateChanged(serviceState, guiInfo) }
                 }
 
-                val (id, notification) = notifications.createPersistentNotification(notificationState)
                 val useLocation = deviceStateTracker.canUseLocation()
-                var type = 0
+                val locationChanged = useLocation != lastUseLocation
+                val notificationChanged = !serviceState.equivalent(lastServiceState)
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                    type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                if (locationChanged || notificationChanged || forceShowNotification) {
+                    val (id, notification) = notifications.createPersistentNotification(serviceState)
+                    var type = 0
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                        type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && useLocation) {
+                        type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
+                    }
+
+                    ServiceCompat.startForeground(this, id, notification, type)
+                    notifications.cancelOppositePersistentNotification(id)
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && useLocation) {
-                    type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
-                }
 
-                ServiceCompat.startForeground(this, id, notification, type)
-                notifications.cancelOppositePersistentNotification(id)
-
-                if (lastUseLocation != useLocation) {
+                if (locationChanged) {
                     deviceStateTracker.refreshNetworkState()
                     lastUseLocation = useLocation
                 }
 
-                lastServiceState = notificationState
+                lastServiceState = serviceState
             }
         }
     }

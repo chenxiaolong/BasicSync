@@ -108,9 +108,10 @@ fun SettingsScreen(
     val respectBatterySaver = remember(reloadPrefs) { prefs.respectBatterySaver }
     val respectAutoSyncData = remember(reloadPrefs) { prefs.respectAutoSyncData }
     val keepAlive = remember(reloadPrefs) { prefs.keepAlive }
+    val showDetails = remember(reloadPrefs) { prefs.showDetails }
+    val showExit = remember(reloadPrefs) { prefs.showExit }
     val remoteControl = remember(reloadPrefs) { prefs.remoteControl }
     val allowAutoMode = remember(reloadPrefs) { prefs.allowAutoMode }
-    val showExit = remember(reloadPrefs) { prefs.showExit }
     val startOnBoot = remember(reloadPrefs) { prefs.startOnBoot }
     val isDebugMode = remember(reloadPrefs) { prefs.isDebugMode }
 
@@ -330,9 +331,10 @@ fun SettingsScreen(
             respectBatterySaver = respectBatterySaver,
             respectAutoSyncData = respectAutoSyncData,
             keepAlive = keepAlive,
+            showDetails = showDetails,
+            showExit = showExit,
             remoteControl = remoteControl,
             allowAutoMode = allowAutoMode,
-            showExit = showExit,
             startOnBoot = startOnBoot,
             isDebugMode = isDebugMode,
             onInhibitBatteryOptGrant = {
@@ -440,6 +442,14 @@ fun SettingsScreen(
                 prefs.keepAlive = enabled
                 reloadPrefs++
             },
+            onShowDetailsChange = { enabled ->
+                prefs.showDetails = enabled
+                reloadPrefs++
+            },
+            onShowExitChange = { enabled ->
+                prefs.showExit = enabled
+                reloadPrefs++
+            },
             onRemoteControlChange = { enabled ->
                 prefs.remoteControl = enabled
                 reloadPrefs++
@@ -455,10 +465,6 @@ fun SettingsScreen(
                 }
 
                 SyncthingService.start(context, action)
-            },
-            onShowExitChange = { enabled ->
-                prefs.showExit = enabled
-                reloadPrefs++
             },
             onStartOnBootChange = { enabled ->
                 prefs.startOnBoot = enabled
@@ -566,9 +572,10 @@ private fun SettingsContent(
     respectBatterySaver: Boolean,
     respectAutoSyncData: Boolean,
     keepAlive: Boolean,
+    showDetails: Boolean,
+    showExit: Boolean,
     remoteControl: Boolean,
     allowAutoMode: Boolean,
-    showExit: Boolean,
     startOnBoot: Boolean,
     isDebugMode: Boolean,
     onInhibitBatteryOptGrant: () -> Unit,
@@ -590,9 +597,10 @@ private fun SettingsContent(
     onRespectAutoSyncDataChange: (Boolean) -> Unit,
     onSyncScheduleSettingsOpen: () -> Unit,
     onKeepAliveChange: (Boolean) -> Unit,
+    onShowDetailsChange: (Boolean) -> Unit,
+    onShowExitChange: (Boolean) -> Unit,
     onRemoteControlChange: (Boolean) -> Unit,
     onAllowAutoModeChange: (Boolean) -> Unit,
-    onShowExitChange: (Boolean) -> Unit,
     onStartOnBootChange: (Boolean) -> Unit,
     onDebugModeChange: (Boolean) -> Unit,
     onSourceRepoOpen: () -> Unit,
@@ -844,6 +852,35 @@ private fun SettingsContent(
             )
         }
 
+        item(key = "notifications") {
+            PreferenceCategory(
+                title = { Text(text = stringResource(R.string.pref_header_notifications)) },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
+        item(key = "show_details") {
+            SwitchPreference(
+                checked = showDetails,
+                onCheckedChange = onShowDetailsChange,
+                shapes = BetterSegmentedShapes.top(),
+                title = { Text(text = stringResource(R.string.pref_show_details_name)) },
+                summary = { Text(text = stringResource(R.string.pref_show_details_desc)) },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
+        item(key = "show_exit") {
+            SwitchPreference(
+                checked = showExit,
+                onCheckedChange = onShowExitChange,
+                shapes = BetterSegmentedShapes.bottom(),
+                title = { Text(text = stringResource(R.string.pref_show_exit_name)) },
+                summary = { Text(text = stringResource(R.string.pref_show_exit_desc)) },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
         item(key = "advanced") {
             PreferenceCategory(
                 title = { Text(text = stringResource(R.string.pref_header_advanced)) },
@@ -869,17 +906,6 @@ private fun SettingsContent(
                 shapes = BetterSegmentedShapes.middle(),
                 title = { Text(text = stringResource(R.string.pref_allow_auto_mode_name)) },
                 summary = { Text(text = stringResource(R.string.pref_allow_auto_mode_desc)) },
-                modifier = Modifier.animateItem(),
-            )
-        }
-
-        item(key = "show_exit") {
-            SwitchPreference(
-                checked = showExit,
-                onCheckedChange = onShowExitChange,
-                shapes = BetterSegmentedShapes.middle(),
-                title = { Text(text = stringResource(R.string.pref_show_exit_name)) },
-                summary = { Text(text = stringResource(R.string.pref_show_exit_desc)) },
                 modifier = Modifier.animateItem(),
             )
         }
@@ -1016,6 +1042,7 @@ private fun PreviewSettingsScreen() {
         manualMode = false,
         allowAutoMode = true,
         preRunAction = null,
+        showDetails = true,
         showExit = false,
         folderStates = SyncthingService.FolderStates(),
         deviceStates = SyncthingService.DeviceStates(),
@@ -1042,9 +1069,10 @@ private fun PreviewSettingsScreen() {
                 respectBatterySaver = true,
                 respectAutoSyncData = true,
                 keepAlive = false,
+                showDetails = true,
+                showExit = false,
                 remoteControl = false,
                 allowAutoMode = true,
-                showExit = false,
                 startOnBoot = true,
                 isDebugMode = true,
                 onInhibitBatteryOptGrant = {},
@@ -1066,9 +1094,10 @@ private fun PreviewSettingsScreen() {
                 onRespectAutoSyncDataChange = {},
                 onSyncScheduleSettingsOpen = {},
                 onKeepAliveChange = {},
+                onShowDetailsChange = {},
+                onShowExitChange = {},
                 onRemoteControlChange = {},
                 onAllowAutoModeChange = {},
-                onShowExitChange = {},
                 onStartOnBootChange = {},
                 onDebugModeChange = {},
                 onSourceRepoOpen = {},
