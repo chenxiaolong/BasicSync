@@ -241,4 +241,7 @@
     <string name="dialog_storage_type_local_desc">Wymaga uprawnienia „dostęp do wszystkich plików”, ale jest wydajniejszy i bardziej kompatybilny z Syncthing.</string>
     <string name="dialog_storage_type_saf_desc">Udziela uprawnień tylko do wybranego folderu, ale działa wolniej i może powodować nieoczekiwane błędy synchronizacji.</string>
     <string name="dialog_storage_type_saf_title">Szkielet dostępu do pamięci</string>
+    <string name="pref_show_details_desc">Pokaż status udostępnionych folderów i podłączonych urządzeń w stałym powiadomieniu.</string>
+    <string name="pref_header_notifications">Powiadomienia</string>
+    <string name="pref_show_details_name">Powiadomienia szczegółowe</string>
 </resources>
