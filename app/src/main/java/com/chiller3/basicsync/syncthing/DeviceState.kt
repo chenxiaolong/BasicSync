@@ -679,6 +679,7 @@ class DeviceStateTracker(private val context: Context) :
         // switch to the location-compatible network callback. However, note that even if we used
         // the location-compatible network callback all the time, Android would still not send us a
         // new event when the permissions are granted.
+        Log.d(TAG, "Reregistering network callback")
         unregisterNetworkCallback()
         registerNetworkCallback()
     }

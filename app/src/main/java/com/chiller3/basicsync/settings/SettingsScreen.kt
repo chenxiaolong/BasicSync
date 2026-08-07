@@ -1042,6 +1042,7 @@ private fun PreviewSettingsScreen() {
         manualMode = false,
         allowAutoMode = true,
         preRunAction = null,
+        useLocation = false,
         showDetails = true,
         showExit = false,
         folderStates = SyncthingService.FolderStates(),

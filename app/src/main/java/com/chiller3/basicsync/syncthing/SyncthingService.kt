@@ -175,6 +175,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         private val manualMode: Boolean,
         private val allowAutoMode: Boolean,
         private val preRunAction: PreRunAction?,
+        val useLocation: Boolean,
         val showDetails: Boolean,
         private val showExit: Boolean,
         val folderStates: FolderStates,
@@ -189,6 +190,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     && manualMode == prev.manualMode
                     && allowAutoMode == prev.allowAutoMode
                     && preRunAction == prev.preRunAction
+                    && useLocation == prev.useLocation
                     && showDetails == prev.showDetails
                     && showExit == prev.showExit
                     && (!showDetails || (folderStates == prev.folderStates
@@ -405,8 +407,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     @GuardedBy("stateLock")
     private var lastServiceState: ServiceState? = null
-    @GuardedBy("stateLock")
-    private var lastUseLocation: Boolean = false
 
     private lateinit var deviceStateTracker: DeviceStateTracker
     @GuardedBy("stateLock")
@@ -678,6 +678,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 manualMode = prefs.isManualMode,
                 allowAutoMode = prefs.allowAutoMode,
                 preRunAction = currentPreRunAction,
+                useLocation = deviceStateTracker.canUseLocation(),
                 showDetails = prefs.showDetails,
                 showExit = prefs.showExit,
                 folderStates = syncthingFolderStates,
@@ -696,18 +697,14 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     allListeners { it.onRunStateChanged(serviceState, guiInfo) }
                 }
 
-                val useLocation = deviceStateTracker.canUseLocation()
-                val locationChanged = useLocation != lastUseLocation
-                val notificationChanged = !serviceState.equivalent(lastServiceState)
-
-                if (locationChanged || notificationChanged || forceShowNotification) {
+                if (!serviceState.equivalent(lastServiceState) || forceShowNotification) {
                     val (id, notification) = notifications.createPersistentNotification(serviceState)
                     var type = 0
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                         type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
                     }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && useLocation) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && serviceState.useLocation) {
                         type = type or ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION
                     }
 
@@ -715,9 +712,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     notifications.cancelOppositePersistentNotification(id)
                 }
 
-                if (locationChanged) {
+                if (serviceState.useLocation != lastServiceState?.useLocation) {
                     deviceStateTracker.refreshNetworkState()
-                    lastUseLocation = useLocation
                 }
 
                 lastServiceState = serviceState
