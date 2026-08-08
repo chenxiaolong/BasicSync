@@ -196,4 +196,7 @@
     <string name="dialog_storage_type_local_desc">需要“所有文件访问”权限，但效率更高，且与 Syncthing 的兼容性更好。</string>
     <string name="dialog_storage_type_saf_title">存储访问框架</string>
     <string name="dialog_storage_type_saf_desc">仅授予对所选文件夹的权限，但速度较慢，且可能会导致意外的同步错误。</string>
+    <string name="pref_header_notifications">通知</string>
+    <string name="pref_show_details_name">详细通知</string>
+    <string name="pref_show_details_desc">在常驻通知中显示共享文件夹和已连接设备的状态。</string>
 </resources>
