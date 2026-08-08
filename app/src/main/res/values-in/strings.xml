@@ -11,7 +11,7 @@
     <string name="pref_allow_notifications_name">Izinkan notifikasi</string>
     <string name="pref_allow_notifications_desc">Diperlukan agar dapat berjalan dengan andal di latar belakang dan untuk memulai serta menghentikan Syncthing.</string>
     <string name="pref_local_storage_access_name">Izinkan akses penyimpanan lokal</string>
-    <string name="pref_local_storage_access_desc">Diperlukan agar Syncthing dapat mengakses penyimpanan lokal di bawah <tt>/sdcard</tt>.</string>
+    <string name="pref_local_storage_access_desc">Diperlukan agar Syncthing memiliki akses file langsung ke penyimpanan internal dan eksternal.</string>
     <string name="pref_disable_app_hibernation_name">Nonaktifkan hibernasi aplikasi</string>
     <string name="pref_disable_app_hibernation_desc">Diperlukan untuk mencegah Android secara otomatis menghapus izin aplikasi setelah jangka waktu tertentu.</string>
     <string name="pref_open_web_ui_name">Buka UI web</string>
@@ -19,7 +19,7 @@
     <string name="pref_import_configuration_name">Impor konfigurasi</string>
     <string name="pref_import_configuration_desc">Impor berkas zip konfigurasi Syncthing yang sudah ada.</string>
     <string name="pref_export_configuration_name">Ekspor konfigurasi</string>
-    <string name="pref_export_configuration_desc">Ekspor konfigurasi Syncthing saat ini ke berkas zip.</string>
+    <string name="pref_export_configuration_desc">Ekspor konfigurasi Syncthing saat ini ke file zip.</string>
     <string name="pref_service_status_name">Status Syncthing</string>
     <string name="pref_auto_mode_name">Mode otomatis</string>
     <string name="pref_auto_mode_desc">Mulai dan hentikan secara otomatis berdasarkan kondisi yang ditentukan.</string>
@@ -183,4 +183,20 @@
     <plurals name="device_state_pending">
         <item quantity="other">• %d perangkat menunggu sinkronisasi</item>
     </plurals>
+    <string name="pref_header_notifications">Notifikasi</string>
+    <string name="pref_allow_local_network_name">Izinkan akses jaringan lokal</string>
+    <string name="pref_allow_local_network_desc">Diperlukan untuk terhubung ke perangkat di jaringan lokal secara langsung alih-alih melalui server relay Syncthing.</string>
+    <string name="pref_saf_folder_access_name">Izinkan akses folder</string>
+    <string name="pref_conflicts_name">Konflik sinkronisasi</string>
+    <string name="pref_show_details_name">Notifikasi terperinci</string>
+    <string name="pref_show_details_desc">Tampilkan status folder yang dibagikan dan perangkat yang terhubung di notifikasi persisten.</string>
+    <string name="pref_start_on_boot_name">Mulai saat boot</string>
+    <string name="pref_start_on_boot_desc">Otomatis mulai aplikasi setelah reboot.</string>
+    <string name="dialog_storage_type_title">Jenis penyimpanan</string>
+    <string name="dialog_storage_type_local_title">Akses file langsung</string>
+    <string name="dialog_storage_type_local_desc">Memerlukan izin \"akses semua file\", tetapi lebih efisien dan memiliki kompatibilitas yang lebih baik dengan Syncthing.</string>
+    <string name="dialog_storage_type_saf_title">Kerangka kerja akses penyimpanan</string>
+    <string name="dialog_storage_type_saf_desc">Hanya memberikan izin ke folder yang dipilih, tetapi lebih lambat dan dapat menyebabkan kesalahan sinkronisasi yang tidak diharapkan.</string>
+    <string name="notification_channel_persistent_name_started">Notifikasi persisten saat dimulai</string>
+    <string name="notification_channel_persistent_name_stopped">Notifikasi persisten saat dihentikan</string>
 </resources>
