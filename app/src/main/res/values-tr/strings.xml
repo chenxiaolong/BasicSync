@@ -213,5 +213,5 @@
     <string name="dialog_storage_type_saf_desc">Yalnızca seçilen klasöre izin verir, ancak daha yavaştır ve beklenmeyen eşitleme hatalarına neden olabilir.</string>
     <string name="pref_header_notifications">Bildirimler</string>
     <string name="pref_show_details_name">Ayrıntılı bildirimler</string>
-    <string name="pref_show_details_desc">Kalıcı bildirimde paylaşılan klasörlerin ve bağlı aygıtların durumunu göster.</string>
+    <string name="pref_show_details_desc">Kalıcı bildirimde paylaşılan klasörlerin ve bağlı cihazların durumunu göster.</string>
 </resources>
