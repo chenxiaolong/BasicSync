@@ -277,8 +277,11 @@ val golang = tasks.register("golang") {
     val goBinDir = File(goDir, "bin")
     val goGitDir = File(File(File(File(rootDir, ".git"), "modules"), "external"), "go")
 
-    inputs.files(
-        File(goGitDir, "HEAD"),
+    // jgit can't read a submodule's .git file.
+    val goGit = Git.open(goGitDir)!!
+
+    inputs.properties(
+        "submodule.commit" to goGit.log().call().iterator().next().id.name,
     )
     outputs.files(
         File(goBinDir, "go"),
@@ -461,6 +464,9 @@ val stbridge = tasks.register("stbridge") {
     val syncthingDir = File(File(rootDir, "external"), "syncthing")
     val syncthingGitDir = File(File(File(File(rootDir, ".git"), "modules"), "external"), "syncthing")
 
+    // jgit can't read a submodule's .git file.
+    val stGit = Git.open(syncthingGitDir)!!
+
     inputs.files(
         goModFile,
         File(stbridgeSrcDir, "go.sum"),
@@ -469,13 +475,13 @@ val stbridge = tasks.register("stbridge") {
         File(stbridgeSrcDir, "stbridge.go"),
         File(File(stbridgeSrcDir, "pidfdhack"), "pidfdhack.go"),
         File(File(stbridgeSrcDir, "pidfdhack"), "pidfdhack_android.go"),
-        File(syncthingGitDir, "HEAD"),
         golang.map { it.outputs.files },
         goenv.map { it.outputs.files },
         gomobile.map { it.outputs.files },
         gowrapper.map { it.outputs.files },
     )
     inputs.properties(
+        "submodule.commit" to stGit.log().call().iterator().next().id.name,
         "android.defaultConfig.minSdk" to android.defaultConfig.minSdk!!,
         "android.namespace" to android.namespace!!,
         "androidComponents.sdkComponents.ndkDirectory" to
@@ -500,8 +506,6 @@ val stbridge = tasks.register("stbridge") {
         val gomobileExecutable = gomobile.get().outputs.files.find { it.name == "gomobile" }!!
         val binDir = gomobileExecutable.parentFile
 
-        // jgit can't read a submodule's .git file.
-        val stGit = Git.open(syncthingGitDir)!!
         val stGitVersionTriple = describeVersion(stGit)
         val stGitVersionName = getVersionName(stGit, stGitVersionTriple)
         val stGitTimestamp = RevWalk(stGit.repository).use {
