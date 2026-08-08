@@ -211,4 +211,7 @@
     <string name="dialog_storage_type_local_desc">\"Tüm dosyalara erişim\" izni gerektirir, ancak daha verimlidir ve Syncthing ile daha iyi uyumluluğa sahiptir.</string>
     <string name="dialog_storage_type_saf_title">Depolama erişim çatısı</string>
     <string name="dialog_storage_type_saf_desc">Yalnızca seçilen klasöre izin verir, ancak daha yavaştır ve beklenmeyen eşitleme hatalarına neden olabilir.</string>
+    <string name="pref_header_notifications">Bildirimler</string>
+    <string name="pref_show_details_name">Ayrıntılı bildirimler</string>
+    <string name="pref_show_details_desc">Kalıcı bildirimde paylaşılan klasörlerin ve bağlı aygıtların durumunu göster.</string>
 </resources>
