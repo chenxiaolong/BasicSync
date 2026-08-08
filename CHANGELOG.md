@@ -10,6 +10,8 @@
 ### Unreleased
 
 * Add setting for turning off folder and device status information in the persistent notification ([Issue #219], [PR #220])
+* Backport upstream fix for generating support bundles ([PR #221])
+  * This was a regression introduced in Syncthing version 2.1.3.
 
 ### Version 3.9
 
@@ -508,3 +510,4 @@
 [PR #217]: https://github.com/chenxiaolong/BasicSync/pull/217
 [PR #218]: https://github.com/chenxiaolong/BasicSync/pull/218
 [PR #220]: https://github.com/chenxiaolong/BasicSync/pull/220
+[PR #221]: https://github.com/chenxiaolong/BasicSync/pull/221
