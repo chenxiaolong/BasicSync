@@ -144,7 +144,7 @@
     <string name="notification_action_exit">Выход</string>
     <string name="notification_channel_conflicts_desc">Уведомления о конфликтах синхронизации</string>
     <string name="notification_channel_alerts_name">Уведомления Syncthing</string>
-    <string name="notification_channel_alerts_desc">Запросы устройств/папок и другие уведомления от Syncthing.</string>
+    <string name="notification_channel_alerts_desc">Запросы устройств/папок и другие уведомления от Syncthing</string>
     <string name="notification_persistent_importing_title">Импортирование конфигурации</string>
     <string name="notification_persistent_exporting_title">Экспортирование конфигурации</string>
     <string name="notification_failure_run_title">Не удалось запустить Syncthing</string>
@@ -241,4 +241,7 @@
         <item quantity="many">• Ожидание синхронизации с %d устройствами</item>
         <item quantity="other">• Ожидание синхронизации с %d устройствами</item>
     </plurals>
+    <string name="pref_header_notifications">Уведомления</string>
+    <string name="pref_show_details_name">Подробные уведомления</string>
+    <string name="pref_show_details_desc">Показывать состояние общих папок и подключенных устройств в закрепленном уведомлении.</string>
 </resources>
