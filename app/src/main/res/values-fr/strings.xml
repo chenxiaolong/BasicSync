@@ -239,4 +239,7 @@
     <string name="dialog_storage_type_local_desc">Nécessite l\'autorisation \"accès à tous les fichiers\", mais améliore l\'efficacité et la compatibilité avec Syncthing.</string>
     <string name="dialog_storage_type_saf_title">Storage access framework</string>
     <string name="dialog_storage_type_saf_desc">Autorise seulement l\'accès au dossier sélectionné, mais est plus lent et peu entraîner des erreurs de synchronisation inattendues.</string>
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_show_details_desc">Afficher l\'état des partages et appareils dans la notification persistante.</string>
+    <string name="pref_show_details_name">Notifications détaillées</string>
 </resources>
