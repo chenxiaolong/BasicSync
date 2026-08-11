@@ -130,7 +130,7 @@
     <string name="pref_sync_schedule_idle_desc">Досрочно завершать работу Syncthing, если подключено хотя бы одно устройство и во всех папках нет активности %1$s.</string>
     <string name="alert_logcat_success">Журнал успешно сохранен в %1$s</string>
     <string name="alert_logcat_failure">Не удалось сохранить журнал в %1$s</string>
-    <string name="dialog_storage_type_saf_title">Системный файловый менеджер (SAF)</string>
+    <string name="dialog_storage_type_saf_title">Только выбранные папки (без доступа ко всей памяти)</string>
     <string name="dialog_new_folder_title">Новая папка</string>
     <string name="dialog_storage_type_saf_desc">Ограничивает доступ только выбранной папкой, однако снижает скорость работы и может вызывать ошибки синхронизации.</string>
     <string name="dialog_new_folder_message">Введите имя для новой папки создаваемой в %1$s.</string>
