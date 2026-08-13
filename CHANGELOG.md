@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.10
 
 * Add setting for turning off folder and device status information in the persistent notification ([Issue #219], [PR #220])
 * Backport upstream fix for generating support bundles ([PR #221])
