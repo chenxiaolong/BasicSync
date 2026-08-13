@@ -239,4 +239,7 @@
     <string name="dialog_storage_type_local_desc">Necesită permisiunea „acces la toate fișierele”, dar este mai eficient și are o compatibilitate mai bună cu Syncthing.</string>
     <string name="dialog_storage_type_saf_title">Framework acces la stocare</string>
     <string name="dialog_storage_type_saf_desc">Acordă permisiuni doar pentru dosarul selectat, dar este mai lent și poate duce la erori de sincronizare neașteptate.</string>
+    <string name="pref_header_notifications">Notificări</string>
+    <string name="pref_show_details_name">Notificări detaliate</string>
+    <string name="pref_show_details_desc">Afișează starea dosarelor partajate și a dispozitivelor conectate în notificarea persistentă.</string>
 </resources>
