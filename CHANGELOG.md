@@ -13,6 +13,7 @@
 * Backport upstream fix for generating support bundles ([PR #221])
   * This was a regression introduced in Syncthing version 2.1.3.
 * Fix git submodules not being rebuilt in certain scenarios ([PR #222])
+* Sync translations from Weblate ([PR #225])
 
 ### Version 3.9
 
@@ -513,3 +514,4 @@
 [PR #220]: https://github.com/chenxiaolong/BasicSync/pull/220
 [PR #221]: https://github.com/chenxiaolong/BasicSync/pull/221
 [PR #222]: https://github.com/chenxiaolong/BasicSync/pull/222
+[PR #225]: https://github.com/chenxiaolong/BasicSync/pull/225
