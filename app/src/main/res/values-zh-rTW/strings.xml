@@ -209,4 +209,5 @@
     <string name="dialog_storage_type_local_desc">需要「所有檔案存取」權限，但效率更高且與 Syncthing 有更好的相容性。</string>
     <string name="dialog_storage_type_saf_title">儲存空間存取架構</string>
     <string name="dialog_storage_type_saf_desc">僅授予選定資料夾的權限，但速度較慢且可能導致非預期的同步錯誤。</string>
+    <string name="pref_header_notifications">通知</string>
 </resources>
