@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Update golang to 1.27.0 ([PR #226], [PR #230])
+* Sync translations from Weblate ([PR #227])
 
 ### Version 3.10
 
@@ -520,4 +521,5 @@
 [PR #222]: https://github.com/chenxiaolong/BasicSync/pull/222
 [PR #225]: https://github.com/chenxiaolong/BasicSync/pull/225
 [PR #226]: https://github.com/chenxiaolong/BasicSync/pull/226
+[PR #227]: https://github.com/chenxiaolong/BasicSync/pull/227
 [PR #230]: https://github.com/chenxiaolong/BasicSync/pull/230
