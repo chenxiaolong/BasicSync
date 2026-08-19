@@ -9,7 +9,7 @@
 
 ### Unreleased
 
-* Update golang to 1.26.6 ([PR #226])
+* Update golang to 1.27.0 ([PR #226], [PR #230])
 
 ### Version 3.10
 
@@ -520,3 +520,4 @@
 [PR #222]: https://github.com/chenxiaolong/BasicSync/pull/222
 [PR #225]: https://github.com/chenxiaolong/BasicSync/pull/225
 [PR #226]: https://github.com/chenxiaolong/BasicSync/pull/226
+[PR #230]: https://github.com/chenxiaolong/BasicSync/pull/230
