@@ -13,7 +13,6 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.archive.TarFormat
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.revwalk.RevWalk
-import org.gradle.kotlin.dsl.environment
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
@@ -118,9 +117,20 @@ val projectUrl = "https://github.com/chenxiaolong/BasicSync"
 val extraDir = layout.buildDirectory.map { it.dir("extra") }
 val archiveDir = extraDir.map { it.dir("archive") }
 val stbridgeDir = extraDir.map { it.dir("stbridge") }
+val stbridgeRawAar = stbridgeDir.map { it.file("stbridge-raw.aar") }
 val stbridgeAar = stbridgeDir.map { it.file("stbridge.aar") }
+val stbridgeUnpackedDir = stbridgeDir.map { it.dir("unpacked") }
+val stbridgeCommentlessDir = stbridgeDir.map { it.dir("commentless") }
+val stbridgeSrcDir = File(rootDir, "stbridge")
+
+val goDir = File(rootDir, "external/go")
+val goSrcDir = File(goDir, "src")
+val goBinDir = File(goDir, "bin")
 
 val abis = arrayOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+
+val isWindows = DefaultNativePlatform.getCurrentOperatingSystem().isWindows
+val exeExt = if (isWindows) ".exe" else ""
 
 android {
     namespace = "com.chiller3.basicsync"
@@ -269,13 +279,8 @@ interface InjectedExecOps {
     @get:Inject val execOps: ExecOperations
 }
 
-val stbridgeSrcDir = File(rootDir, "stbridge")
-
 val golang = tasks.register("golang") {
-    val goDir = File(File(rootDir, "external"), "go")
-    val goSrcDir = File(goDir, "src")
-    val goBinDir = File(goDir, "bin")
-    val goGitDir = File(File(File(File(rootDir, ".git"), "modules"), "external"), "go")
+    val goGitDir = File(rootDir, ".git/modules/external/go")
 
     // jgit can't read a submodule's .git file.
     val goGit = Git.open(goGitDir)!!
@@ -284,15 +289,15 @@ val golang = tasks.register("golang") {
         "submodule.commit" to goGit.log().call().iterator().next().id.name,
     )
     outputs.files(
-        File(goBinDir, "go"),
-        File(goBinDir, "gofmt"),
+        File(goBinDir, "go$exeExt"),
+        File(goBinDir, "gofmt$exeExt"),
     )
 
     val injected = project.objects.newInstance<InjectedExecOps>()
 
     doLast {
         injected.execOps.exec {
-            if (DefaultNativePlatform.getCurrentOperatingSystem().isWindows) {
+            if (isWindows) {
                 executable("cmd.exe")
                 args("/C", "make.bat")
             } else {
@@ -300,6 +305,40 @@ val golang = tasks.register("golang") {
             }
             workingDir(goSrcDir)
         }
+    }
+}
+
+val golangClean = tasks.register("golangClean") {
+    outputs.upToDateWhen { false }
+
+    val injected = project.objects.newInstance<InjectedExecOps>()
+    val goExecutable = File(goBinDir, "go$exeExt")
+
+    doFirst {
+        if (!goExecutable.exists()) {
+            throw StopExecutionException()
+        }
+    }
+
+    // Just run the cleanup commands directly. clean.bash and clean.bat do not behave the same way.
+    doLast {
+        for (args in arrayOf(
+            arrayOf("clean", "-i", "std"),
+            arrayOf("tool", "dist", "clean"),
+            arrayOf("clean", "-i", "cmd"),
+        )) {
+            injected.execOps.exec {
+                executable(goExecutable)
+                args(*args)
+                workingDir(goSrcDir)
+            }
+        }
+    }
+}
+
+tasks {
+    getByName<Delete>("clean") {
+        dependsOn.add(golangClean)
     }
 }
 
@@ -358,14 +397,14 @@ val gomobile = tasks.register("gomobile") {
         goenv.map { it.outputs.files },
     )
     outputs.files(
-        binDir.map { it.file("gobind") },
-        binDir.map { it.file("gomobile") },
+        binDir.map { it.file("gobind$exeExt") },
+        binDir.map { it.file("gomobile$exeExt") },
     )
 
     val injected = project.objects.newInstance<InjectedExecOps>()
 
     doLast {
-        val goExecutable = golang.get().outputs.files.find { it.name == "go" }!!
+        val goExecutable = golang.get().outputs.files.find { it.name == "go$exeExt" }!!
         val outputStream = ByteArrayOutputStream()
 
         injected.execOps.exec {
@@ -411,13 +450,13 @@ val gowrapper = tasks.register("gowrapper") {
         goenv.map { it.outputs.files },
     )
     outputs.files(
-        binDir.map { it.file("go") },
+        binDir.map { it.file("go$exeExt") },
     )
 
     val injected = project.objects.newInstance<InjectedExecOps>()
 
     doLast {
-        val goExecutable = golang.get().outputs.files.find { it.name == "go" }!!
+        val goExecutable = golang.get().outputs.files.find { it.name == "go$exeExt" }!!
 
         injected.execOps.exec {
             executable(goExecutable)
@@ -431,7 +470,7 @@ val gowrapper = tasks.register("gowrapper") {
     }
 }
 
-val stbridge = tasks.register("stbridge") {
+val stbridgeRaw = tasks.register("stbridgeRaw") {
     project.objects.newInstance<UsesSdkComponentsBuildService>().let { usesSdkComponents ->
         usesSdkComponents.initializeSdkComponentsBuildService(this)
         val sdkComponentsBuildService = usesSdkComponents.sdkComponentsBuildService.get()
@@ -461,8 +500,8 @@ val stbridge = tasks.register("stbridge") {
 
     val tempDir = stbridgeDir.map { it.dir("temp") }
     val goModFile = File(stbridgeSrcDir, "go.mod")
-    val syncthingDir = File(File(rootDir, "external"), "syncthing")
-    val syncthingGitDir = File(File(File(File(rootDir, ".git"), "modules"), "external"), "syncthing")
+    val syncthingDir = File(rootDir, "external/syncthing")
+    val syncthingGitDir = File(rootDir, ".git/modules/external/syncthing")
 
     // jgit can't read a submodule's .git file.
     val stGit = Git.open(syncthingGitDir)!!
@@ -473,8 +512,8 @@ val stbridge = tasks.register("stbridge") {
         File(stbridgeSrcDir, "saf.go"),
         File(stbridgeSrcDir, "saf_test.go"),
         File(stbridgeSrcDir, "stbridge.go"),
-        File(File(stbridgeSrcDir, "pidfdhack"), "pidfdhack.go"),
-        File(File(stbridgeSrcDir, "pidfdhack"), "pidfdhack_android.go"),
+        File(stbridgeSrcDir, "pidfdhack/pidfdhack.go"),
+        File(stbridgeSrcDir, "pidfdhack/pidfdhack_android.go"),
         golang.map { it.outputs.files },
         goenv.map { it.outputs.files },
         gomobile.map { it.outputs.files },
@@ -490,8 +529,8 @@ val stbridge = tasks.register("stbridge") {
                 androidComponents.sdkComponents.sdkDirectory.map { it.asFile.absolutePath },
     )
     outputs.files(
-        stbridgeDir.map { it.file("stbridge.aar") },
-        stbridgeDir.map { it.file("stbridge-sources.jar") },
+        stbridgeRawAar,
+        stbridgeDir.map { it.file("stbridge-raw-sources.jar") },
     )
 
     doFirst {
@@ -501,9 +540,8 @@ val stbridge = tasks.register("stbridge") {
     val injected = project.objects.newInstance<InjectedExecOps>()
 
     doLast {
-        val goExecutable = golang.get().outputs.files.find { it.name == "go" }!!
-        val goBinDir = goExecutable.parentFile
-        val gomobileExecutable = gomobile.get().outputs.files.find { it.name == "gomobile" }!!
+        val goExecutable = golang.get().outputs.files.find { it.name == "go$exeExt" }!!
+        val gomobileExecutable = gomobile.get().outputs.files.find { it.name == "gomobile$exeExt" }!!
         val binDir = gomobileExecutable.parentFile
 
         val stGitVersionTriple = describeVersion(stGit)
@@ -521,7 +559,7 @@ val stbridge = tasks.register("stbridge") {
                 "github.com/syncthing/syncthing/cmd/infra/strelaypoolsrv/auto",
             )
             environment(
-                "PATH" to "$binDir${File.pathSeparator}${environment["PATH"]}",
+                "PATH" to "$binDir${File.pathSeparator}${System.getenv("PATH")}",
                 "SOURCE_DATE_EPOCH" to stGitTimestamp,
             )
             addGoEnvironment(this)
@@ -529,13 +567,17 @@ val stbridge = tasks.register("stbridge") {
             workingDir(syncthingDir)
         }
 
-        injected.execOps.exec {
-            executable(goExecutable)
-            args("test", "-ldflags=-checklinkname=0")
-            environment("PATH", "$binDir${File.pathSeparator}${environment["PATH"]}")
-            addGoEnvironment(this)
+        if (isWindows) {
+            project.logger.warn("stbridge tests cannot run on Windows")
+        } else {
+            injected.execOps.exec {
+                executable(goExecutable)
+                args("test", "-ldflags=-checklinkname=0")
+                environment("PATH", "$binDir${File.pathSeparator}${System.getenv("PATH")}")
+                addGoEnvironment(this)
 
-            workingDir(stbridgeSrcDir)
+                workingDir(stbridgeSrcDir)
+            }
         }
 
         injected.execOps.exec {
@@ -565,7 +607,7 @@ val stbridge = tasks.register("stbridge") {
             args(
                 "bind",
                 "-v",
-                "-o", stbridgeAar.get().asFile.absolutePath,
+                "-o", stbridgeRawAar.get().asFile.absolutePath,
                 "-target=android",
                 "-androidapi=${android.defaultConfig.minSdk}",
                 "-javapkg=${android.namespace}.binding",
@@ -577,11 +619,14 @@ val stbridge = tasks.register("stbridge") {
             environment(
                 // gomobile only supports finding gobind in $PATH. binDir is listed before goBinDir
                 // so that gowrapper is used.
-                "PATH" to "$binDir${File.pathSeparator}$goBinDir${File.pathSeparator}${environment["PATH"]}",
+                "PATH" to "$binDir${File.pathSeparator}$goBinDir${File.pathSeparator}${System.getenv("PATH")}",
                 "ANDROID_HOME" to androidComponents.sdkComponents.sdkDirectory.get()
                     .asFile.absolutePath,
                 "ANDROID_NDK_HOME" to androidComponents.sdkComponents.ndkDirectory.get()
                     .asFile.absolutePath,
+                // Windows.
+                "TMP" to tempDir.get().asFile.absolutePath,
+                // Non-Windows.
                 "TMPDIR" to tempDir.get().asFile.absolutePath,
                 // The wrapper will use this as a template to construct a relative path for
                 // reproducible builds. This will need to change if gomobile ever changes their
@@ -618,6 +663,85 @@ val stbridge = tasks.register("stbridge") {
     }
 }
 
+val stbridgeRawUnpack = tasks.register<Copy>("stbridgeRawUnpack") {
+    outputs.dir(stbridgeUnpackedDir)
+
+    from(zipTree(stbridgeRaw.map { it.outputs.files.find { f -> f.name.endsWith(".aar") } }))
+    into(stbridgeUnpackedDir)
+}
+
+val stbridgeStripComment = tasks.register("stbridgeStripComment") {
+    val objcopyExecutables: Provider<Map<String, File>>
+
+    project.objects.newInstance<UsesSdkComponentsBuildService>().let { usesSdkComponents ->
+        usesSdkComponents.initializeSdkComponentsBuildService(this)
+        val sdkComponentsBuildService = usesSdkComponents.sdkComponentsBuildService.get()
+
+        val sdkComponents = androidComponents.sdkComponents as SdkComponentsImpl
+        val ndkHandler = sdkComponentsBuildService.versionedNdkHandler(
+            sdkComponents.ndkVersion.get(),
+            sdkComponents.ndkPath.takeIf { it.isPresent }?.get(),
+        )
+
+        objcopyExecutables = ndkHandler.objcopyExecutableMapProvider
+    }
+
+    inputs.dir(stbridgeRawUnpack.map { it.outputs.files.first() })
+    outputs.dir(stbridgeCommentlessDir)
+
+    val injected = project.objects.newInstance<InjectedExecOps>()
+
+    // The same version of the NDK running on different host platforms produces executables with
+    // different version strings in the .comment section of the ELF file. We can just remove that
+    // entire section to make the file reproducible.
+    doFirst {
+        val unpackedDir = stbridgeUnpackedDir.get().asFile
+        val commentlessDir = stbridgeCommentlessDir.get().asFile
+
+        delete(commentlessDir)
+        commentlessDir.mkdir()
+
+        for (file in unpackedDir.walkTopDown()) {
+            val relPath = file.toRelativeString(unpackedDir)
+            val targetFile = File(commentlessDir, relPath)
+
+            if (file.isDirectory) {
+                file.mkdir()
+            } else if (file.name == "libgojni.so") {
+                val abi = file.parentFile.name
+                val targetFile = File(commentlessDir, relPath)
+
+                targetFile.parentFile.mkdirs()
+
+                injected.execOps.exec {
+                    executable(objcopyExecutables.get()[abi])
+                    args("--remove-section", ".comment", file, targetFile)
+                }
+            } else {
+                file.copyTo(targetFile)
+            }
+        }
+    }
+}
+
+val stbridge = tasks.register<Zip>("stbridge") {
+    archiveFileName.set(stbridgeAar.map { it.asFile.name })
+    destinationDirectory.set(stbridgeDir)
+
+    isPreserveFileTimestamps = false
+    isReproducibleFileOrder = true
+
+    from(stbridgeStripComment)
+}
+
+tasks {
+    getByName<Delete>("clean") {
+        val syncthingDir = File(rootDir, "external/syncthing")
+        delete.add(File(syncthingDir, "cmd/infra/strelaypoolsrv/auto/gui.files.go"))
+        delete.add(File(syncthingDir, "lib/api/auto/gui.files.go"))
+    }
+}
+
 /*
  * NOTE: This requires the https://crates.io/crates/resvg CLI utility. BasicSync's SVG icon uses
  * transform-origin, which very few SVG parsers support.
@@ -626,8 +750,8 @@ val stbridge = tasks.register("stbridge") {
  * https://gitlab.com/inkscape/inbox/-/issues/4640
  */
 tasks.register("iconPng") {
-    val inputSvg = File(File(File(rootDir, "app"), "images"), "icon.svg")
-    val outputPng = File(File(File(File(rootDir, "metadata"), "en-US"), "images"), "icon.png")
+    val inputSvg = File(rootDir, "app/images/icon.svg")
+    val outputPng = File(rootDir, "metadata/en-US/images/icon.png")
 
     inputs.files(inputSvg)
     outputs.files(outputPng)
@@ -779,7 +903,7 @@ tasks.register("versionPreRelease") {
         ?.let { getVersionCode(VersionTriple("v$it", 0, ObjectId.zeroId())) }
 
     doLast {
-        File(File(rootDir, "metadata"), "version.txt").writeText(gitVersionCode!!.toString())
+        File(rootDir, "metadata/version.txt").writeText(gitVersionCode!!.toString())
     }
 }
 
