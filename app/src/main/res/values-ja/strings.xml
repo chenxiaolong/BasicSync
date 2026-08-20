@@ -1,3 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_header_run_conditions">実行条件</string>
+    <string name="pref_header_notifications">通知</string>
+    <string name="pref_open_web_ui_name">ウェブUIを開く</string>
+    <string name="pref_import_configuration_name">設定をインポート</string>
+    <string name="pref_export_configuration_name">設定をエクスポート</string>
+    <string name="pref_service_status_name">Syncthingの状態</string>
+    <string name="pref_auto_mode_name">自動モード</string>
+    <string name="pref_auto_mode_desc">指定された条件に基づいて自動的に起動、停止します。</string>
+    <string name="pref_sync_schedule_settings_name">同期スケジュール</string>
+    <string name="pref_header_permissions">許可</string>
+    <string name="pref_header_configuration">設定</string>
+    <string name="pref_inhibit_battery_opt_name">バッテリー最適化を無効化</string>
+    <string name="pref_allow_notifications_name">通知を許可</string>
+    <string name="notification_action_auto_mode">自動モード</string>
+    <string name="notification_action_manual_mode">手動モード</string>
+    <string name="notification_action_start">起動</string>
+    <string name="notification_action_stop">停止</string>
+    <string name="pref_header_advanced">高度な設定</string>
+    <string name="notification_persistent_paused_title">Syncthingは休止状態です</string>
+    <string name="notification_persistent_not_running_title">Syncthingは稼働していません</string>
+    <string name="notification_persistent_running_title">Syncthingは稼働しています</string>
+    <string name="notification_persistent_starting_title">Syncthingを起動します</string>
+    <string name="notification_persistent_stopping_title">Syncthingを停止します</string>
+    <string name="notification_persistent_pausing_title">Syncthingを休止します</string>
+    <string name="pref_header_about">このアプリについて</string>
+    <string name="pref_header_debug">デバッグ</string>
 </resources>
