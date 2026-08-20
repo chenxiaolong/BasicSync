@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.11
 
 * Update golang to 1.27.0 ([PR #226], [PR #230])
 * Add support for building the app on Windows ([PR #231])
