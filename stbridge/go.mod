@@ -5,7 +5,7 @@ go 1.26
 require (
 	github.com/syncthing/syncthing v0.0.0
 	go.foxforensics.eu/go-zip v1.0.0
-	golang.org/x/mobile v0.0.0-20260803200217-62cee1672c8e
+	golang.org/x/mobile v0.0.0-20260820023541-8e8303b9da6c
 	golang.org/x/sys v0.47.0
 )
 
