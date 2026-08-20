@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Update golang to 1.27.0 ([PR #226], [PR #230])
+* Add support for building the app on Windows ([PR #231])
 * Sync translations from Weblate ([PR #227])
 
 ### Version 3.10
@@ -523,3 +524,4 @@
 [PR #226]: https://github.com/chenxiaolong/BasicSync/pull/226
 [PR #227]: https://github.com/chenxiaolong/BasicSync/pull/227
 [PR #230]: https://github.com/chenxiaolong/BasicSync/pull/230
+[PR #231]: https://github.com/chenxiaolong/BasicSync/pull/231
