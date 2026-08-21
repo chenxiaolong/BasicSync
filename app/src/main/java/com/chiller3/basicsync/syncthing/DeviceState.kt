@@ -39,6 +39,7 @@ import kotlin.math.roundToInt
 enum class NetworkType {
     WIFI,
     CELLULAR,
+    ROAMING,
     ETHERNET,
     OTHER,
 }
@@ -147,6 +148,7 @@ data class DeviceState(
             val networkAllowed = when (networkType) {
                 NetworkType.WIFI -> prefs.networkAllowWifi
                 NetworkType.CELLULAR -> prefs.networkAllowCellular
+                NetworkType.ROAMING -> prefs.networkAllowRoaming
                 NetworkType.ETHERNET -> prefs.networkAllowEthernet
                 NetworkType.OTHER -> prefs.networkAllowOther
             }
@@ -305,7 +307,11 @@ class DeviceStateTracker(private val context: Context) :
         val networkType = if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
             NetworkType.WIFI
         } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-            NetworkType.CELLULAR
+            if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_ROAMING)) {
+                NetworkType.CELLULAR
+            } else {
+                NetworkType.ROAMING
+            }
         } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
             NetworkType.ETHERNET
         } else {

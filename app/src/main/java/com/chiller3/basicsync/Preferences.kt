@@ -28,6 +28,7 @@ class Preferences(context: Context) {
         const val PREF_REQUIRE_UNMETERED_NETWORK = "require_unmetered_network"
         const val PREF_NETWORK_ALLOW_WIFI = "network_allow_wifi"
         const val PREF_NETWORK_ALLOW_CELLULAR = "network_allow_cellular"
+        const val PREF_NETWORK_ALLOW_ROAMING = "network_allow_roaming"
         const val PREF_NETWORK_ALLOW_ETHERNET = "network_allow_ethernet"
         const val PREF_NETWORK_ALLOW_OTHER = "network_allow_other"
         const val PREF_ALLOWED_WIFI_NETWORKS = "allowed_wifi_networks"
@@ -106,6 +107,10 @@ class Preferences(context: Context) {
     var networkAllowCellular: Boolean
         get() = prefs.getBoolean(PREF_NETWORK_ALLOW_CELLULAR, true)
         set(enabled) = prefs.edit { putBoolean(PREF_NETWORK_ALLOW_CELLULAR, enabled) }
+
+    var networkAllowRoaming: Boolean
+        get() = prefs.getBoolean(PREF_NETWORK_ALLOW_ROAMING, false)
+        set(enabled) = prefs.edit { putBoolean(PREF_NETWORK_ALLOW_ROAMING, enabled) }
 
     var networkAllowEthernet: Boolean
         get() = prefs.getBoolean(PREF_NETWORK_ALLOW_ETHERNET, true)

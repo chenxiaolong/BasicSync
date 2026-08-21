@@ -52,6 +52,7 @@ fun NetworkConditionsScreen(
     val requireUnmeteredNetwork = remember(reloadPrefs) { prefs.requireUnmeteredNetwork }
     val networkAllowWifi = remember(reloadPrefs) { prefs.networkAllowWifi }
     val networkAllowCellular = remember(reloadPrefs) { prefs.networkAllowCellular }
+    val networkAllowRoaming = remember(reloadPrefs) { prefs.networkAllowRoaming }
     val networkAllowEthernet = remember(reloadPrefs) { prefs.networkAllowEthernet }
     val networkAllowOther = remember(reloadPrefs) { prefs.networkAllowOther }
 
@@ -97,6 +98,7 @@ fun NetworkConditionsScreen(
             requireUnmeteredNetwork = requireUnmeteredNetwork,
             networkAllowWifi = networkAllowWifi,
             networkAllowCellular = networkAllowCellular,
+            networkAllowRoaming = networkAllowRoaming,
             networkAllowEthernet = networkAllowEthernet,
             networkAllowOther = networkAllowOther,
             preciseLocationGranted = preciseLocationGranted,
@@ -113,6 +115,10 @@ fun NetworkConditionsScreen(
             },
             onNetworkAllowCellularChange = { enabled ->
                 prefs.networkAllowCellular = enabled
+                reloadPrefs++
+            },
+            onNetworkAllowRoamingChange = { enabled ->
+                prefs.networkAllowRoaming = enabled
                 reloadPrefs++
             },
             onNetworkAllowEthernetChange = { enabled ->
@@ -149,6 +155,7 @@ fun NetworkConditionsContent(
     requireUnmeteredNetwork: Boolean,
     networkAllowWifi: Boolean,
     networkAllowCellular: Boolean,
+    networkAllowRoaming: Boolean,
     networkAllowEthernet: Boolean,
     networkAllowOther: Boolean,
     preciseLocationGranted: Boolean,
@@ -158,6 +165,7 @@ fun NetworkConditionsContent(
     onRequireUnmeteredNetworkChange: (Boolean) -> Unit,
     onNetworkAllowWifiChange: (Boolean) -> Unit,
     onNetworkAllowCellularChange: (Boolean) -> Unit,
+    onNetworkAllowRoamingChange: (Boolean) -> Unit,
     onNetworkAllowEthernetChange: (Boolean) -> Unit,
     onNetworkAllowOtherChange: (Boolean) -> Unit,
     onPreciseLocationGrant: () -> Unit,
@@ -203,6 +211,16 @@ fun NetworkConditionsContent(
                 onCheckedChange = onNetworkAllowCellularChange,
                 shapes = BetterSegmentedShapes.middle(),
                 title = { Text(text = stringResource(R.string.pref_network_allow_cellular_name)) },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
+        item(key = "network_allow_roaming") {
+            SwitchPreference(
+                checked = networkAllowRoaming,
+                onCheckedChange = onNetworkAllowRoamingChange,
+                shapes = BetterSegmentedShapes.middle(),
+                title = { Text(text = stringResource(R.string.pref_network_allow_roaming_name)) },
                 modifier = Modifier.animateItem(),
             )
         }
@@ -383,6 +401,7 @@ private fun PreviewNetworkConditionsScreen() {
                 requireUnmeteredNetwork = true,
                 networkAllowWifi = true,
                 networkAllowCellular = true,
+                networkAllowRoaming = false,
                 networkAllowEthernet = true,
                 networkAllowOther = true,
                 preciseLocationGranted = false,
@@ -392,6 +411,7 @@ private fun PreviewNetworkConditionsScreen() {
                 onRequireUnmeteredNetworkChange = {},
                 onNetworkAllowWifiChange = {},
                 onNetworkAllowCellularChange = {},
+                onNetworkAllowRoamingChange = {},
                 onNetworkAllowEthernetChange = {},
                 onNetworkAllowOtherChange = {},
                 onPreciseLocationGrant = {},

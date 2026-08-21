@@ -126,12 +126,14 @@
     <string name="pref_header_allowed_wifi_networks">Allowed Wi-Fi networks</string>
     <!-- Section header for all available Wi-Fi networks that the user can pick from. -->
     <string name="pref_header_available_wifi_networks">Available Wi-Fi networks</string>
-    <!-- Preference for whether to allow syncing on unmetered networks. This is for unmetered networks of all types (Wi-Fi, unlimited cellular data, ethernet, etc.). -->
+    <!-- Preference for whether to allow syncing on unmetered networks. This is for unmetered networks of all types (Wi-Fi, ethernet, etc.). -->
     <string name="pref_require_unmetered_network_name">Require unmetered network</string>
     <!-- Preference for whether to allow syncing on Wi-Fi. -->
     <string name="pref_network_allow_wifi_name">Allow Wi-Fi</string>
-    <!-- Preference for whether to allow syncing on cellular data. -->
+    <!-- Preference for whether to allow syncing on cellular data (when not roaming). -->
     <string name="pref_network_allow_cellular_name">Allow mobile data</string>
+    <!-- Preference for whether to allow syncing on cellular data (when roaming). -->
+    <string name="pref_network_allow_roaming_name">Allow mobile data (roaming)</string>
     <!-- Preference for whether to allow syncing on ethernet. -->
     <string name="pref_network_allow_ethernet_name">Allow ethernet</string>
     <!-- Preference for whether to allow syncing on all other types of interfaces. This is for uncommon network interfaces, like bluetooth tethering or satellite internet. -->
