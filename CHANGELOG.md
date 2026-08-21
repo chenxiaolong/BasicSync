@@ -7,6 +7,11 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add separate toggle for controlling if syncing is allowed when mobile data is roaming ([Issue #233], [PR #234])
+  * This option is disabled by default.
+
 ### Version 3.11
 
 * Update golang to 1.27.0 ([PR #226], [PR #230])
@@ -365,6 +370,7 @@
 [Issue #212]: https://github.com/chenxiaolong/BasicSync/issues/212
 [Issue #214]: https://github.com/chenxiaolong/BasicSync/issues/214
 [Issue #219]: https://github.com/chenxiaolong/BasicSync/issues/219
+[Issue #233]: https://github.com/chenxiaolong/BasicSync/issues/233
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -527,3 +533,4 @@
 [PR #230]: https://github.com/chenxiaolong/BasicSync/pull/230
 [PR #231]: https://github.com/chenxiaolong/BasicSync/pull/231
 [PR #232]: https://github.com/chenxiaolong/BasicSync/pull/232
+[PR #234]: https://github.com/chenxiaolong/BasicSync/pull/234
