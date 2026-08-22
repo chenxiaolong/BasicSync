@@ -244,4 +244,5 @@
     <string name="pref_show_details_desc">Pokaż status udostępnionych folderów i podłączonych urządzeń w stałym powiadomieniu.</string>
     <string name="pref_header_notifications">Powiadomienia</string>
     <string name="pref_show_details_name">Powiadomienia szczegółowe</string>
+    <string name="pref_network_allow_roaming_name">Zezwól na dane mobilne (roaming)</string>
 </resources>

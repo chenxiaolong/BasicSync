@@ -199,4 +199,5 @@
     <string name="pref_header_notifications">通知</string>
     <string name="pref_show_details_name">详细通知</string>
     <string name="pref_show_details_desc">在常驻通知中显示共享文件夹和已连接设备的状态。</string>
+    <string name="pref_network_allow_roaming_name">允许移动数据（漫游）</string>
 </resources>
