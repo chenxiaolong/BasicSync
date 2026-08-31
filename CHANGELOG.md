@@ -11,6 +11,7 @@
 
 * Add separate toggle for controlling if syncing is allowed when mobile data is roaming ([Issue #233], [PR #234])
   * This option is disabled by default.
+* Sync translations from Weblate ([PR #235])
 
 ### Version 3.11
 
@@ -534,3 +535,4 @@
 [PR #231]: https://github.com/chenxiaolong/BasicSync/pull/231
 [PR #232]: https://github.com/chenxiaolong/BasicSync/pull/232
 [PR #234]: https://github.com/chenxiaolong/BasicSync/pull/234
+[PR #235]: https://github.com/chenxiaolong/BasicSync/pull/235
