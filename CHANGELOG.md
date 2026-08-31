@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.12
 
 * Add separate toggle for controlling if syncing is allowed when mobile data is roaming ([Issue #233], [PR #234])
   * This option is disabled by default.
