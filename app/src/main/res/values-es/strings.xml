@@ -229,4 +229,5 @@
     <string name="pref_header_notifications">Notificaciones</string>
     <string name="pref_show_details_name">Notificaciones detalladas</string>
     <string name="pref_show_details_desc">Mostrar el estado de las carpetas compartidas y los dispositivos conectados en las notificaciones persistentes.</string>
+    <string name="pref_network_allow_roaming_name">Permitir datos móviles (roaming)</string>
 </resources>
