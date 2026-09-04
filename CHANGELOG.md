@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Update dependencies ([PR #239])
+* Sync translations from Weblate ([PR #238])
 
 ### Version 3.12
 
@@ -540,4 +541,5 @@
 [PR #232]: https://github.com/chenxiaolong/BasicSync/pull/232
 [PR #234]: https://github.com/chenxiaolong/BasicSync/pull/234
 [PR #235]: https://github.com/chenxiaolong/BasicSync/pull/235
+[PR #238]: https://github.com/chenxiaolong/BasicSync/pull/238
 [PR #239]: https://github.com/chenxiaolong/BasicSync/pull/239
