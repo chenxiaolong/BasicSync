@@ -1,11 +1,11 @@
 module stbridge
 
-go 1.26
+go 1.26.0
 
 require (
 	github.com/syncthing/syncthing v0.0.0
 	go.foxforensics.eu/go-zip v1.0.0
-	golang.org/x/mobile v0.0.0-20260820023541-8e8303b9da6c
+	golang.org/x/mobile v0.0.0-20260821190718-4776eadac327
 	golang.org/x/sys v0.47.0
 )
 
