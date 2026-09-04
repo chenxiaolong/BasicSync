@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update dependencies ([PR #239])
+
 ### Version 3.12
 
 * Add separate toggle for controlling if syncing is allowed when mobile data is roaming ([Issue #233], [PR #234])
@@ -536,3 +540,4 @@
 [PR #232]: https://github.com/chenxiaolong/BasicSync/pull/232
 [PR #234]: https://github.com/chenxiaolong/BasicSync/pull/234
 [PR #235]: https://github.com/chenxiaolong/BasicSync/pull/235
+[PR #239]: https://github.com/chenxiaolong/BasicSync/pull/239
