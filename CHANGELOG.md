@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Update syncthing to 2.1.5 ([PR #241])
+* Sync translations from Weblate ([PR #240])
 
 ### Version 3.13
 
@@ -547,4 +548,5 @@
 [PR #235]: https://github.com/chenxiaolong/BasicSync/pull/235
 [PR #238]: https://github.com/chenxiaolong/BasicSync/pull/238
 [PR #239]: https://github.com/chenxiaolong/BasicSync/pull/239
+[PR #240]: https://github.com/chenxiaolong/BasicSync/pull/240
 [PR #241]: https://github.com/chenxiaolong/BasicSync/pull/241
