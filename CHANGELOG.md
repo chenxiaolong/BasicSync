@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Version 3.15
+
+* There are no changes in this release. A new release is being created only because updating `metadata/version.txt` was inadvertently omitted from version 3.14.
+
 ### Version 3.14
 
 * Update syncthing to 2.1.5 ([PR #241])
