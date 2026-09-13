@@ -11,6 +11,7 @@
 
 * Avoid changing Syncthing's default log level when the app is set to debug mode ([PR #242])
   * Syncthing already has a builtin way to change this in Web UI -> Logs -> Debugging Facilities.
+* Fix duplicate web UI javascript log messages caused by an interaction between chromium and gomobile ([PR #243])
 
 ### Version 3.15
 
@@ -560,3 +561,4 @@
 [PR #240]: https://github.com/chenxiaolong/BasicSync/pull/240
 [PR #241]: https://github.com/chenxiaolong/BasicSync/pull/241
 [PR #242]: https://github.com/chenxiaolong/BasicSync/pull/242
+[PR #243]: https://github.com/chenxiaolong/BasicSync/pull/243
