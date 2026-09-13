@@ -20,8 +20,10 @@ import android.provider.Settings
 import android.util.Base64
 import android.util.Log
 import android.view.ViewGroup
+import android.webkit.ConsoleMessage
 import android.webkit.JavascriptInterface
 import android.webkit.SslErrorHandler
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -451,6 +453,38 @@ fun WebUiScreen(onExit: () -> Unit) {
         }
     }
 
+    val webChromeClient = remember {
+        object : WebChromeClient() {
+            override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
+                /*
+                 * Chromium sends console messages to its own logger by default [0]. On Android,
+                 * high severity log messages get sent to both logcat and stderr [1]. Due to
+                 * gomobile hijacking stderr [2] to send output to logcat, this causes the log
+                 * message to be duplicated. We'll just consume the message and log ourselves to
+                 * work around this.
+                 *
+                 * [0] https://source.chromium.org/chromium/chromium/src/+/main:components/headless/console_message_logger/headless_console_message_logger.cc;l=28-50;drc=aaa5ca21ac213cc0a868a387868764f63dc5e45f
+                 * [1] https://source.chromium.org/chromium/chromium/src/+/main:base/logging.cc;l=807-865;drc=0b1e750672ddd755453dbbeec5ce9ef50c879e08
+                 * [2] https://github.com/golang/mobile/blob/8b95e45f8d3e224183cc3d760609cef9896e498c/internal/mobileinit/mobileinit_android.go#L78-L81
+                 */
+
+                val logLevel = when (consoleMessage.messageLevel()) {
+                    ConsoleMessage.MessageLevel.TIP, ConsoleMessage.MessageLevel.LOG -> Log.INFO
+                    ConsoleMessage.MessageLevel.WARNING -> Log.WARN
+                    ConsoleMessage.MessageLevel.ERROR -> Log.ERROR
+                    ConsoleMessage.MessageLevel.DEBUG -> Log.DEBUG
+                }
+
+                val sourceId = consoleMessage.sourceId()
+                val lineNumber = consoleMessage.lineNumber()
+                val message = consoleMessage.message()
+
+                Log.println(logLevel, "SyncthingJs", "[$sourceId:$lineNumber] $message")
+                return true
+            }
+        }
+    }
+
     AppScreen(fullScreenContent = true) { params ->
         AndroidView(
             factory = {
@@ -482,6 +516,7 @@ fun WebUiScreen(onExit: () -> Unit) {
                     addJavascriptInterface(webViewInterface, "BasicSync")
 
                     this.webViewClient = webViewClient
+                    this.webChromeClient = webChromeClient
                 }
             },
             onRelease = {
