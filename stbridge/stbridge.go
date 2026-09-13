@@ -16,7 +16,6 @@ import (
 	"io"
 	"iter"
 	"log"
-	"log/slog"
 	"net"
 	_ "net/http"
 	"os"
@@ -165,23 +164,6 @@ func applyProxySettings(proxy string, no_proxy string) {
 	}
 
 	resetProxyConfig()
-}
-
-//go:linkname slogutilSetDefaultLevel github.com/syncthing/syncthing/internal/slogutil.SetDefaultLevel
-func slogutilSetDefaultLevel(level slog.Level)
-
-// This is thread-safe because syncthing's internal levelTracker.SetDefault() is
-// thread-safe.
-func SetLogLevel(level string) error {
-	var slogLevel slog.Level
-
-	if err := slogLevel.UnmarshalText([]byte(level)); err != nil {
-		return fmt.Errorf("invalid log level: %q", level)
-	}
-
-	slogutilSetDefaultLevel(slogLevel)
-
-	return nil
 }
 
 func InitDirs(filesDir string, cacheDir string, externalDir string) error {

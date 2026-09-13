@@ -509,8 +509,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         prefs = Preferences(this)
         prefs.registerListener(this)
 
-        setLogLevel()
-
         notifications = Notifications(this)
 
         deviceStateTracker = DeviceStateTracker(this)
@@ -609,10 +607,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         when (key) {
             in BLOCKED_REASONS_PREFS, in DeviceState.PREFS -> recomputeBlockedReasons = true
             in STATE_CHANGE_PREFS -> {}
-            Preferences.PREF_DEBUG_MODE -> {
-                setLogLevel()
-                return
-            }
             else -> return
         }
 
@@ -627,13 +621,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             deviceState = state
             stateChanged(recomputeBlockedReasons = true)
         }
-    }
-
-    private fun setLogLevel() {
-        val level = if (prefs.isDebugMode) { "DEBUG" } else { "INFO" }
-        Log.d(TAG, "Setting Syncthing log level to $level")
-
-        Stbridge.setLogLevel(level)
     }
 
     private fun stateChanged(
