@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.16
 
 * Avoid changing Syncthing's default log level when the app is set to debug mode ([PR #242])
   * Syncthing already has a builtin way to change this in Web UI -> Logs -> Debugging Facilities.
