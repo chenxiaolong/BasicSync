@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.17
 
 * Use in-place file overwrites on MediaProvider FUSE filesystems ([PR #245])
   * This works around an issue introduced with Android's 2026-09 security patches where external apps that previously opened a shared file lose permissions to it when it is synced.
