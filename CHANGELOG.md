@@ -7,6 +7,12 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Use in-place file overwrites on MediaProvider FUSE filesystems ([PR #245])
+  * This works around an issue introduced with Android's 2026-09 security patches where external apps that previously opened a shared file lose permissions to it when it is synced.
+  * This increases the chance of file corruption if BasicSync/Syncthing were to crash while the file was being written. However, it is impossible to work around this issue any other way due to Android's limitations.
+
 ### Version 3.16
 
 * Avoid changing Syncthing's default log level when the app is set to debug mode ([PR #242])
@@ -564,3 +570,4 @@
 [PR #242]: https://github.com/chenxiaolong/BasicSync/pull/242
 [PR #243]: https://github.com/chenxiaolong/BasicSync/pull/243
 [PR #244]: https://github.com/chenxiaolong/BasicSync/pull/244
+[PR #245]: https://github.com/chenxiaolong/BasicSync/pull/245
