@@ -102,7 +102,6 @@
     <string name="notification_persistent_paused_title">Syncthing est en pause</string>
     <string name="notification_persistent_starting_title">Syncthing démarre</string>
     <string name="notification_persistent_stopping_title">Syncthing s\'arrête</string>
-    <string name="notification_persistent_pausing_title">Syncthing se met en pause</string>
     <string name="notification_persistent_importing_title">Importation de la configuration</string>
     <string name="notification_persistent_exporting_title">Exportation de la configuration</string>
     <string name="notification_failure_run_title">Échec de l\'exécution de Syncthing</string>

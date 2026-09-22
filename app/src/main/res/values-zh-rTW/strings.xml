@@ -102,7 +102,6 @@
     <string name="notification_persistent_paused_title">Syncthing 已暫停</string>
     <string name="notification_persistent_starting_title">Syncthing 正在啟動</string>
     <string name="notification_persistent_stopping_title">Syncthing 正在停止</string>
-    <string name="notification_persistent_pausing_title">Syncthing 正在暫停</string>
     <string name="notification_persistent_importing_title">正在匯入組態</string>
     <string name="notification_persistent_exporting_title">正在匯出組態</string>
     <string name="notification_failure_run_title">Syncthing 執行失敗</string>

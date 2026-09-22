@@ -106,7 +106,25 @@ For developers of other Syncthing apps, the custom filesystem scheme that BasicS
 
 ## Remote control
 
-When the "Allow remote control" setting is enabled, BasicSync allows other apps to control when Syncthing runs via Android's broadcast mechanism. The following broadcast actions are supported, which behave exactly the same as the corresponding buttons in BasicSync's notification:
+When the "Allow remote control" setting is enabled, BasicSync will report the current state of Syncthing to other apps and allow them to control when Syncthing runs. This uses Android's broadcast mechanism.
+
+Whenever the state changes (eg. Syncthing paused due to metered network), BasicSync will send the following broadcast with the listed extras:
+
+* `com.chiller3.basicsync.STATE_CHANGED`
+    * `mode`
+        * `AUTO_MODE` - Currently set to auto mode
+        * `MANUAL_MODE_STARTED` - Currently set to manual mode and started
+        * `MANUAL_MODE_STOPPED` - Currently set to manual mode and stopped/paused
+    * `run_state`
+        * `RUNNING` - Syncthing is running and permitted to sync
+        * `NOT_RUNNING` - Syncthing is not running at all
+        * `PAUSED` - Syncthing is running, but not permitted to sync
+        * `STARTING` - Syncthing is in the process of starting up
+        * `STOPPING` - Syncthing is in the process of shutting down entirely
+        * `IMPORTING` - Syncthing is not running due to an ongoing config import
+        * `EXPORTING` - Syncthing is not running due to an ongoing config export
+
+BasicSync also accepts the following broadcasts from other apps:
 
 * `com.chiller3.basicsync.AUTO_MODE`
     * Switch to auto mode where Syncthing runs based on the configured run conditions.
@@ -117,6 +135,8 @@ When the "Allow remote control" setting is enabled, BasicSync allows other apps 
     * Switch to manual mode and start Syncthing.
 * `com.chiller3.basicsync.STOP`
     * Switch to manual mode and stop Syncthing.
+* `com.chiller3.basicsync.REQUEST_STATE`
+    * Request a new `com.chiller3.basicsync.STATE_CHANGED` broadcast, even if the state has not changed.
 
 These broadcasts can also be sent via `adb`. For example:
 

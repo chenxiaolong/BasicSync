@@ -23,6 +23,7 @@ import androidx.annotation.GuardedBy
 import androidx.annotation.WorkerThread
 import androidx.core.app.ServiceCompat
 import androidx.core.net.toUri
+import com.chiller3.basicsync.BuildConfig
 import com.chiller3.basicsync.Notifications
 import com.chiller3.basicsync.Permissions
 import com.chiller3.basicsync.Preferences
@@ -63,6 +64,13 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         val ACTION_RENOTIFY = "${SyncthingService::class.java.canonicalName}.renotify"
         val ACTION_RECHECK = "${SyncthingService::class.java.canonicalName}.restart"
         val ACTION_EXIT = "${SyncthingService::class.java.canonicalName}.exit"
+
+        private const val BROADCAST_ACTION = "${BuildConfig.APPLICATION_ID}.STATE_CHANGED"
+        private const val BROADCAST_MODE = "mode"
+        private const val BROADCAST_MODE_AUTO_MODE = "AUTO_MODE"
+        private const val BROADCAST_MODE_MANUAL_MODE_STARTED = "MANUAL_MODE_STARTED"
+        private const val BROADCAST_MODE_MANUAL_MODE_STOPPED = "MANUAL_MODE_STOPPED"
+        private const val BROADCAST_RUN_STATE = "run_state"
 
         private val isRunningListeners = HashSet<OnServiceRunningChange>()
         private var isRunning: Boolean = false
@@ -150,7 +158,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         PAUSED,
         STARTING,
         STOPPING,
-        PAUSING,
         IMPORTING,
         EXPORTING;
 
@@ -164,7 +171,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             get() = this == NOT_RUNNING || this == PAUSED
 
         val webUiAvailable: Boolean
-            get() = this == RUNNING || this == PAUSED || this == PAUSING
+            get() = this == RUNNING || this == PAUSED
     }
 
     data class ServiceState(
@@ -173,6 +180,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         private val isStarted: Boolean,
         private val isResumed: Boolean,
         private val manualMode: Boolean,
+        private val manualShouldRun: Boolean,
         private val allowAutoMode: Boolean,
         private val preRunAction: PreRunAction?,
         val useLocation: Boolean,
@@ -188,6 +196,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     && isStarted == prev.isStarted
                     && isResumed == prev.isResumed
                     && manualMode == prev.manualMode
+                    && manualShouldRun == prev.manualShouldRun
                     && allowAutoMode == prev.allowAutoMode
                     && preRunAction == prev.preRunAction
                     && useLocation == prev.useLocation
@@ -209,9 +218,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 if (isResumed) {
                     if (shouldResume) {
                         RunState.RUNNING
-                    } else if (keepAlive) {
-                        RunState.PAUSING
                     } else {
+                        // If keepAlive is true, isResumed is going to equal shouldResume.
                         RunState.STOPPING
                     }
                 } else {
@@ -233,6 +241,15 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                         RunState.NOT_RUNNING
                     }
                 }
+            }
+
+        internal val broadcastMode: String
+            get() = if (!manualMode) {
+                BROADCAST_MODE_AUTO_MODE
+            } else if (manualShouldRun) {
+                BROADCAST_MODE_MANUAL_MODE_STARTED
+            } else {
+                BROADCAST_MODE_MANUAL_MODE_STOPPED
             }
 
         val actions: List<String>
@@ -663,6 +680,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 isStarted = isStarted,
                 isResumed = isResumed,
                 manualMode = prefs.isManualMode,
+                manualShouldRun = prefs.manualShouldRun,
                 allowAutoMode = prefs.allowAutoMode,
                 preRunAction = currentPreRunAction,
                 useLocation = deviceStateTracker.canUseLocation(),
@@ -685,6 +703,15 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 }
 
                 if (!serviceState.equivalent(lastServiceState) || forceShowNotification) {
+                    if (prefs.remoteControl) {
+                        sendBroadcast(
+                            Intent(BROADCAST_ACTION).apply {
+                                putExtra(BROADCAST_MODE, serviceState.broadcastMode)
+                                putExtra(BROADCAST_RUN_STATE, serviceState.runState.name)
+                            }
+                        )
+                    }
+
                     val (id, notification) = notifications.createPersistentNotification(serviceState)
                     var type = 0
 

@@ -23,7 +23,6 @@
     <string name="notification_persistent_running_title">Syncthingは稼働しています</string>
     <string name="notification_persistent_starting_title">Syncthingを起動します</string>
     <string name="notification_persistent_stopping_title">Syncthingを停止します</string>
-    <string name="notification_persistent_pausing_title">Syncthingを休止します</string>
     <string name="pref_header_about">このアプリについて</string>
     <string name="pref_header_debug">デバッグ</string>
     <plurals name="device_state_connected">

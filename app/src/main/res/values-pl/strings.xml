@@ -91,7 +91,6 @@
     <string name="notification_persistent_paused_title">Syncthing wstrzymano</string>
     <string name="notification_persistent_starting_title">Syncthing się uruchamia</string>
     <string name="notification_persistent_stopping_title">Syncthing się zatrzymuje</string>
-    <string name="notification_persistent_pausing_title">Synchronizacja się wstrzymuje</string>
     <string name="notification_persistent_importing_title">Importowanie ustawień</string>
     <string name="notification_persistent_exporting_title">Eksportowanie ustawień</string>
     <string name="notification_failure_run_title">Nie udało się uruchomić Syncthing</string>

@@ -155,6 +155,7 @@
                 <action android:name="${applicationId}.MANUAL_MODE" />
                 <action android:name="${applicationId}.START" />
                 <action android:name="${applicationId}.STOP" />
+                <action android:name="${applicationId}.REQUEST_STATE" />
             </intent-filter>
         </receiver>
 

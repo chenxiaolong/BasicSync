@@ -20,6 +20,7 @@ class RemoteControlReceiver : BroadcastReceiver() {
         private const val ACTION_MANUAL_MODE = "${BuildConfig.APPLICATION_ID}.MANUAL_MODE"
         private const val ACTION_START = "${BuildConfig.APPLICATION_ID}.START"
         private const val ACTION_STOP = "${BuildConfig.APPLICATION_ID}.STOP"
+        private const val ACTION_REQUEST_STATE = "${BuildConfig.APPLICATION_ID}.REQUEST_STATE"
     }
 
     override fun onReceive(context: Context, intent: Intent?) {
@@ -33,6 +34,7 @@ class RemoteControlReceiver : BroadcastReceiver() {
             ACTION_MANUAL_MODE -> SyncthingService.ACTION_MANUAL_MODE
             ACTION_START -> SyncthingService.ACTION_START
             ACTION_STOP -> SyncthingService.ACTION_STOP
+            ACTION_REQUEST_STATE -> SyncthingService.ACTION_RENOTIFY
             else -> {
                 Log.w(TAG, "Ignoring unrecognized intent: $intent")
                 return

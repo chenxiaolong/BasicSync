@@ -93,7 +93,6 @@
     <string name="notification_persistent_paused_title">Syncthing está pausado</string>
     <string name="notification_persistent_starting_title">Syncthing se está iniciando</string>
     <string name="notification_persistent_stopping_title">Syncthing se está deteniendo</string>
-    <string name="notification_persistent_pausing_title">Syncthing se está pausando</string>
     <string name="notification_persistent_importing_title">Importando configuración</string>
     <string name="notification_persistent_exporting_title">Exportando configuración</string>
     <string name="notification_failure_run_title">No se pudo ejecutar Syncthing</string>

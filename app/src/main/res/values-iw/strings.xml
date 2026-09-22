@@ -94,7 +94,6 @@
     <string name="notification_persistent_paused_title">היישום Syncthing מופסק</string>
     <string name="notification_persistent_starting_title">היישום Syncthing מתחיל</string>
     <string name="notification_persistent_stopping_title">היישום Syncthing עוצר</string>
-    <string name="notification_persistent_pausing_title">היישום Syncthing מפסיק</string>
     <string name="notification_persistent_importing_title">התצורה מיובאת</string>
     <string name="notification_persistent_exporting_title">התצורה מיוצאת</string>
     <string name="notification_failure_run_title">הרצת Syncthing נכשלה</string>

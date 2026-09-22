@@ -990,8 +990,6 @@ private fun serviceStatusSummary(state: SyncthingService.ServiceState?) = state?
                 stringResource(R.string.notification_persistent_starting_title)
             SyncthingService.RunState.STOPPING ->
                 stringResource(R.string.notification_persistent_stopping_title)
-            SyncthingService.RunState.PAUSING ->
-                stringResource(R.string.notification_persistent_pausing_title)
             SyncthingService.RunState.IMPORTING ->
                 stringResource(R.string.notification_persistent_importing_title)
             SyncthingService.RunState.EXPORTING ->
@@ -1040,6 +1038,7 @@ private fun PreviewSettingsScreen() {
         isStarted = true,
         isResumed = true,
         manualMode = false,
+        manualShouldRun = false,
         allowAutoMode = true,
         preRunAction = null,
         useLocation = false,

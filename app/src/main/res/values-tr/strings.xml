@@ -94,7 +94,6 @@
     <string name="notification_persistent_paused_title">Syncthing duraklatıldı</string>
     <string name="notification_persistent_starting_title">Syncthing başlatılıyor</string>
     <string name="notification_persistent_stopping_title">Syncthing durduruluyor</string>
-    <string name="notification_persistent_pausing_title">Syncthing duraklatılıyor</string>
     <string name="notification_persistent_importing_title">Yapılandırma içe aktarılıyor</string>
     <string name="notification_persistent_exporting_title">Yapılandırma dışa aktarılıyor</string>
     <string name="notification_failure_run_title">Syncthing\'i çalıştırma başarısız oldu</string>

@@ -101,7 +101,6 @@ class Notifications(private val context: Context) {
             SyncthingService.RunState.PAUSED -> R.string.notification_persistent_paused_title
             SyncthingService.RunState.STARTING -> R.string.notification_persistent_starting_title
             SyncthingService.RunState.STOPPING -> R.string.notification_persistent_stopping_title
-            SyncthingService.RunState.PAUSING -> R.string.notification_persistent_pausing_title
             SyncthingService.RunState.IMPORTING -> R.string.notification_persistent_importing_title
             SyncthingService.RunState.EXPORTING -> R.string.notification_persistent_exporting_title
         }

@@ -95,7 +95,6 @@
     <string name="notification_persistent_paused_title">Syncthing 已暂停</string>
     <string name="notification_persistent_starting_title">Syncthing 正在启动</string>
     <string name="notification_persistent_stopping_title">Syncthing 正在停止</string>
-    <string name="notification_persistent_pausing_title">Syncthing 正在暂停</string>
     <string name="notification_persistent_importing_title">正在导入配置</string>
     <string name="notification_persistent_exporting_title">正在导出配置</string>
     <string name="notification_failure_run_title">无法运行 Syncthing</string>

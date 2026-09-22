@@ -102,7 +102,6 @@
     <string name="notification_persistent_paused_title">A Syncthing szüneteltetve</string>
     <string name="notification_persistent_starting_title">A Syncthing indul</string>
     <string name="notification_persistent_stopping_title">A Syncthing leáll</string>
-    <string name="notification_persistent_pausing_title">A Syncthing szünetel</string>
     <string name="notification_persistent_importing_title">Konfiguráció importálása</string>
     <string name="notification_persistent_exporting_title">Konfiguráció exportálása</string>
     <string name="notification_failure_run_title">Nem sikerült a Syncthing futtatása</string>
