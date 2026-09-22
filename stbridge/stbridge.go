@@ -52,6 +52,10 @@ func Version() string {
 	return build.Version
 }
 
+func SetAllowSafeOverwrites(allow bool) {
+	fs.AllowSafeOverwritesOnAndroidFuse.Store(allow)
+}
+
 func cleanOldFiles() {
 	// We only clean up a subset of what upstream syncthing does since the
 	// initial release started with 2.x and certain features aren't enabled.

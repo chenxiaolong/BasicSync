@@ -624,6 +624,10 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         when (key) {
             in BLOCKED_REASONS_PREFS, in DeviceState.PREFS -> recomputeBlockedReasons = true
             in STATE_CHANGE_PREFS -> {}
+            Preferences.PREF_ALLOW_SAFE_OVERWRITES -> {
+                Stbridge.setAllowSafeOverwrites(prefs.allowSafeOverwrites)
+                return
+            }
             else -> return
         }
 
