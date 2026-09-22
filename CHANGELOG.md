@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add support for reporting status when remote control is enabled ([Issue #246], [PR #247])
+
 ### Version 3.17
 
 * Use in-place file overwrites on MediaProvider FUSE filesystems ([PR #245])
@@ -399,6 +403,7 @@
 [Issue #214]: https://github.com/chenxiaolong/BasicSync/issues/214
 [Issue #219]: https://github.com/chenxiaolong/BasicSync/issues/219
 [Issue #233]: https://github.com/chenxiaolong/BasicSync/issues/233
+[Issue #246]: https://github.com/chenxiaolong/BasicSync/issues/246
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -571,3 +576,4 @@
 [PR #243]: https://github.com/chenxiaolong/BasicSync/pull/243
 [PR #244]: https://github.com/chenxiaolong/BasicSync/pull/244
 [PR #245]: https://github.com/chenxiaolong/BasicSync/pull/245
+[PR #247]: https://github.com/chenxiaolong/BasicSync/pull/247
