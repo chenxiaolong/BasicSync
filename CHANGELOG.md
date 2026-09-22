@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.18
 
 * Add support for reporting status when remote control is enabled ([Issue #246], [PR #247])
 
