@@ -9,6 +9,8 @@
 
 ### Unreleased
 
+* Expose synchronization completion state through the remote-control state broadcast ([Issue #249])
+
 * Add global toggle for controlling whether to overwrite files safely ([PR #248])
   * This is enabled by default to match upstream Syncthing behavior, effectively undoing the workaround added in version 3.17.
   * **NOTE**: Folks who want to prevent other apps from losing permissions to shared files when synced need to **turn off the new "Overwrite files safely" option** on the main screen.
@@ -410,6 +412,7 @@
 [Issue #219]: https://github.com/chenxiaolong/BasicSync/issues/219
 [Issue #233]: https://github.com/chenxiaolong/BasicSync/issues/233
 [Issue #246]: https://github.com/chenxiaolong/BasicSync/issues/246
+[Issue #249]: https://github.com/chenxiaolong/BasicSync/issues/249
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4

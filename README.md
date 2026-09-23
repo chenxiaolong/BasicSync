@@ -123,6 +123,12 @@ Whenever the state changes (eg. Syncthing paused due to metered network), BasicS
         * `STOPPING` - Syncthing is in the process of shutting down entirely
         * `IMPORTING` - Syncthing is not running due to an ongoing config import
         * `EXPORTING` - Syncthing is not running due to an ongoing config export
+    * `sync_state`
+        * `SYNCING` - At least one local folder is busy or a connected remote device still has known synchronization work.
+        * `SYNCED` - Syncthing is running, folder state has been observed, all observed folders are idle, and there is no known pending device work.
+        * `UNKNOWN` - Synchronization completion cannot currently be determined reliably, such as when Syncthing is not running, folder state has not been initialized, a local folder is in an error state, or known synchronization work is waiting for a disconnected device.
+
+`SYNCED` represents that BasicSync currently knows of no remaining synchronization work. It does not claim that an unreachable remote device has independently confirmed its state.
 
 BasicSync also accepts the following broadcasts from other apps:
 

@@ -71,6 +71,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         private const val BROADCAST_MODE_MANUAL_MODE_STARTED = "MANUAL_MODE_STARTED"
         private const val BROADCAST_MODE_MANUAL_MODE_STOPPED = "MANUAL_MODE_STOPPED"
         private const val BROADCAST_RUN_STATE = "run_state"
+        private const val BROADCAST_SYNC_STATE = "sync_state"
 
         private val isRunningListeners = HashSet<OnServiceRunningChange>()
         private var isRunning: Boolean = false
@@ -174,6 +175,12 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             get() = this == RUNNING || this == PAUSED
     }
 
+    enum class SyncState {
+        SYNCING,
+        SYNCED,
+        UNKNOWN,
+    }
+
     data class ServiceState(
         private val keepAlive: Boolean,
         val blockedReasons: EnumSet<BlockedReason>,
@@ -204,6 +211,12 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     && showExit == prev.showExit
                     && (!showDetails || (folderStates == prev.folderStates
                             && deviceStates == prev.deviceStates))
+
+        fun broadcastEquivalent(prev: ServiceState?): Boolean =
+            prev != null
+                    && broadcastMode == prev.broadcastMode
+                    && runState == prev.runState
+                    && syncState == prev.syncState
 
         private val shouldResume: Boolean
             get() = blockedReasons.isEmpty()
@@ -241,6 +254,45 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                         RunState.NOT_RUNNING
                     }
                 }
+            }
+
+        val syncState: SyncState
+            get() {
+                if (runState != RunState.RUNNING) {
+                    return SyncState.UNKNOWN
+                }
+
+                // A local folder error or known work for a disconnected device means
+                // that completion cannot currently be determined reliably.
+                if (folderStates.errored > 0 || deviceStates.pending > 0) {
+                    return SyncState.UNKNOWN
+                }
+
+                // An empty state can also mean that Syncthing has not reported its
+                // initial folder states yet. Avoid reporting a false SYNCED state.
+                val knownFolderCount =
+                    folderStates.idle +
+                        folderStates.scanning +
+                        folderStates.syncing +
+                        folderStates.cleaning +
+                        folderStates.errored +
+                        folderStates.starting
+
+                if (knownFolderCount == 0) {
+                    return SyncState.UNKNOWN
+                }
+
+                if (
+                    folderStates.scanning > 0 ||
+                    folderStates.syncing > 0 ||
+                    folderStates.cleaning > 0 ||
+                    folderStates.starting > 0 ||
+                    deviceStates.syncing > 0
+                ) {
+                    return SyncState.SYNCING
+                }
+
+                return SyncState.SYNCED
             }
 
         internal val broadcastMode: String
@@ -706,16 +758,20 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                     allListeners { it.onRunStateChanged(serviceState, guiInfo) }
                 }
 
-                if (!serviceState.equivalent(lastServiceState) || forceShowNotification) {
-                    if (prefs.remoteControl) {
-                        sendBroadcast(
-                            Intent(BROADCAST_ACTION).apply {
-                                putExtra(BROADCAST_MODE, serviceState.broadcastMode)
-                                putExtra(BROADCAST_RUN_STATE, serviceState.runState.name)
-                            }
-                        )
-                    }
+                if (
+                    prefs.remoteControl &&
+                    (!serviceState.broadcastEquivalent(lastServiceState) || forceShowNotification)
+                ) {
+                    sendBroadcast(
+                        Intent(BROADCAST_ACTION).apply {
+                            putExtra(BROADCAST_MODE, serviceState.broadcastMode)
+                            putExtra(BROADCAST_RUN_STATE, serviceState.runState.name)
+                            putExtra(BROADCAST_SYNC_STATE, serviceState.syncState.name)
+                        }
+                    )
+                }
 
+                if (!serviceState.equivalent(lastServiceState) || forceShowNotification) {
                     val (id, notification) = notifications.createPersistentNotification(serviceState)
                     var type = 0
 
