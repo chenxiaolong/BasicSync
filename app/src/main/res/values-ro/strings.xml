@@ -242,4 +242,7 @@
     <string name="pref_show_details_name">Notificări detaliate</string>
     <string name="pref_show_details_desc">Afișează starea dosarelor partajate și a dispozitivelor conectate în notificarea persistentă.</string>
     <string name="pref_network_allow_roaming_name">Permite date mobile (roaming)</string>
+    <string name="pref_allow_safe_overwrites_name">Suprascrie fișierele în siguranță</string>
+    <string name="pref_allow_safe_overwrites_desc">Cu patch-urile de securitate Android din septembrie 2026, dezactivarea acestei opțiuni împiedică alte aplicații să piardă permisiunile asupra fișierelor partajate atunci când acestea sunt sincronizate.</string>
+    <string name="pref_allow_safe_overwrites_info">În mod implicit, Syncthing suprascrie fișierele în siguranță prin scrierea mai întâi a noilor date într-un fișier temporar, ștergând fișierul vechi și apoi redenumind fișierul temporar. Cu toate acestea, odată cu patch-urile de securitate Android din septembrie 2026, aceste operațiuni asupra fișierelor vor face ca alte aplicații să își piardă permisiunile asupra fișierelor partajate de fiecare dată când sunt sincronizate.\n\nDacă suprascrierile în siguranță sunt dezactivate, Syncthing va scrie noile date într-un fișier temporar, va suprascrie fișierul original și apoi va șterge fișierul temporar. Acest lucru cauzează probleme în principal dacă aplicația se blochează în timpul sincronizării. Fișierul parțial suprascris va crea un conflict de sincronizare care trebuie rezolvat manual.</string>
 </resources>
