@@ -214,4 +214,7 @@
     <string name="pref_show_details_name">Ayrıntılı bildirimler</string>
     <string name="pref_show_details_desc">Kalıcı bildirimde paylaşılan klasörlerin ve bağlı cihazların durumunu göster.</string>
     <string name="pref_network_allow_roaming_name">Mobil veriye izin ver (dolaşım)</string>
+    <string name="pref_allow_safe_overwrites_name">Dosyaların üzerine güvenle yazın</string>
+    <string name="pref_allow_safe_overwrites_desc">Android\'in Eylül 2026 güvenlik yamaları ile bu özelliğin kapatılması, diğer uygulamaların eşitlendiklerinde paylaşılan dosyaların izinleri kaybetmesini önler.</string>
+    <string name="pref_allow_safe_overwrites_info">Varsayılan olarak Syncthing, önce yeni verileri geçici bir dosyaya yazarak, eski dosyayı silerek ve ardından geçici dosyayı yeniden adlandırarak dosyaların üzerine güvenli bir şekilde yazar. Ancak Android\'in Eylül 2026 güvenlik yamaları ile bu dosya işlemleri, diğer uygulamaların her eşitlendiğinde paylaşılan dosyaların izinlerini kaybetmesine neden olacak.\n\nEğer güvenli üzerine yazmalar kapatılırsa Syncthing yeni verileri geçici bir dosyaya yazacak, buradaki orijinal dosyanın üzerine yazacak ve ardından geçici dosyayı silecek. Bu, esas olarak eşitleme sırasında uygulamanın çökmesi durumunda sorunlara neden olur. Kısmen üzerine yazılan dosya, el ile çözülmek zorunda kalacak bir eşitleme çakışması oluşturacaktır.</string>
 </resources>
