@@ -71,6 +71,16 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         private const val BROADCAST_MODE_MANUAL_MODE_STARTED = "MANUAL_MODE_STARTED"
         private const val BROADCAST_MODE_MANUAL_MODE_STOPPED = "MANUAL_MODE_STOPPED"
         private const val BROADCAST_RUN_STATE = "run_state"
+        private const val BROADCAST_BLOCKED_REASONS = "blocked_reasons"
+        private const val BROADCAST_FOLDERS_IDLE_COUNT = "folders_idle_count"
+        private const val BROADCAST_FOLDERS_SCANNING_COUNT = "folders_scanning_count"
+        private const val BROADCAST_FOLDERS_SYNCING_COUNT = "folders_syncing_count"
+        private const val BROADCAST_FOLDERS_CLEANING_COUNT = "folders_cleaning_count"
+        private const val BROADCAST_FOLDERS_ERRORED_COUNT = "folders_errored_count"
+        private const val BROADCAST_FOLDERS_STARTING_COUNT = "folders_starting_count"
+        private const val BROADCAST_DEVICES_CONNECTED_COUNT = "devices_connected_count"
+        private const val BROADCAST_DEVICES_SYNCING_COUNT = "devices_syncing_count"
+        private const val BROADCAST_DEVICES_PENDING_COUNT = "devices_pending_count"
 
         private val isRunningListeners = HashSet<OnServiceRunningChange>()
         private var isRunning: Boolean = false
@@ -644,6 +654,26 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         }
     }
 
+    private fun sendStateBroadcast(serviceState: ServiceState) {
+        sendBroadcast(
+            Intent(BROADCAST_ACTION).apply {
+                putExtra(BROADCAST_MODE, serviceState.broadcastMode)
+                putExtra(BROADCAST_RUN_STATE, serviceState.runState.name)
+                putExtra(BROADCAST_BLOCKED_REASONS, serviceState.blockedReasons
+                    .map { it.name }.toTypedArray())
+                putExtra(BROADCAST_FOLDERS_IDLE_COUNT, serviceState.folderStates.idle)
+                putExtra(BROADCAST_FOLDERS_SCANNING_COUNT, serviceState.folderStates.scanning)
+                putExtra(BROADCAST_FOLDERS_SYNCING_COUNT, serviceState.folderStates.syncing)
+                putExtra(BROADCAST_FOLDERS_CLEANING_COUNT, serviceState.folderStates.cleaning)
+                putExtra(BROADCAST_FOLDERS_ERRORED_COUNT, serviceState.folderStates.errored)
+                putExtra(BROADCAST_FOLDERS_STARTING_COUNT, serviceState.folderStates.starting)
+                putExtra(BROADCAST_DEVICES_CONNECTED_COUNT, serviceState.deviceStates.connected)
+                putExtra(BROADCAST_DEVICES_SYNCING_COUNT, serviceState.deviceStates.syncing)
+                putExtra(BROADCAST_DEVICES_PENDING_COUNT, serviceState.deviceStates.pending)
+            }
+        )
+    }
+
     private fun stateChanged(
         recomputeBlockedReasons: Boolean = false,
         forceShowNotification: Boolean = false,
@@ -708,12 +738,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
                 if (!serviceState.equivalent(lastServiceState) || forceShowNotification) {
                     if (prefs.remoteControl) {
-                        sendBroadcast(
-                            Intent(BROADCAST_ACTION).apply {
-                                putExtra(BROADCAST_MODE, serviceState.broadcastMode)
-                                putExtra(BROADCAST_RUN_STATE, serviceState.runState.name)
-                            }
-                        )
+                        sendStateBroadcast(serviceState)
                     }
 
                     val (id, notification) = notifications.createPersistentNotification(serviceState)

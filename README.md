@@ -111,11 +111,11 @@ When the "Allow remote control" setting is enabled, BasicSync will report the cu
 Whenever the state changes (eg. Syncthing paused due to metered network), BasicSync will send the following broadcast with the listed extras:
 
 * `com.chiller3.basicsync.STATE_CHANGED`
-    * `mode`
+    * `mode` (string)
         * `AUTO_MODE` - Currently set to auto mode
         * `MANUAL_MODE_STARTED` - Currently set to manual mode and started
         * `MANUAL_MODE_STOPPED` - Currently set to manual mode and stopped/paused
-    * `run_state`
+    * `run_state` (string)
         * `RUNNING` - Syncthing is running and permitted to sync
         * `NOT_RUNNING` - Syncthing is not running at all
         * `PAUSED` - Syncthing is running, but not permitted to sync
@@ -123,6 +123,27 @@ Whenever the state changes (eg. Syncthing paused due to metered network), BasicS
         * `STOPPING` - Syncthing is in the process of shutting down entirely
         * `IMPORTING` - Syncthing is not running due to an ongoing config import
         * `EXPORTING` - Syncthing is not running due to an ongoing config export
+    * `blocked_reasons` (string array) - List of reasons Syncthing cannot run. Most of these apply only to auto mode and only when the corresponding restriction is configured. Can be one or more of:
+        * `NO_STORAGE_PERMISSIONS` - Internal storage permissions have not been granted (only when a shared folder on internal storage exists)
+        * `MANUAL` - `mode` is `MANUAL_MODE_STOPPED`
+        * `DISCONNECTED` - Not connected to any network
+        * `METERED_NETWORK` - Connected to metered network
+        * `BAD_NETWORK_TYPE` - Connected to disallowed network type
+        * `BAD_WIFI_SSID` - Connected to disallowed Wi-Fi SSID
+        * `ON_BATTERY` - Running on battery power
+        * `LOW_BATTERY` - Battery is lower than configured threshold
+        * `BATTERY_SAVER` - Android's battery saver mode is enabled
+        * `AUTO_SYNC_DATA` - Android's auto-sync data option is disabled
+        * `TIME_SCHEDULE` - Outside of sync schedule's permitted sync window
+    * `folders_idle_count` (int) - Number of folders up to date
+    * `folders_scanning_count` (int) - Number of folders scanning for changes
+    * `folders_syncing_count` (int) - Number of folders actively syncing
+    * `folders_cleaning_count` (int) - Number of folders cleaning old files
+    * `folders_errored_count` (int) - Number of folders with errors
+    * `folders_starting_count` (int) - Number of folders initializing
+    * `devices_connected_count` (int) - Number of devices connected
+    * `devices_syncing_count` (int) - Number of devices actively syncing
+    * `devices_pending_count` (int) - Number of devices pending sync
 
 BasicSync also accepts the following broadcasts from other apps:
 
