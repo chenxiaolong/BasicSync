@@ -214,4 +214,7 @@
     <string name="pref_show_details_name">Detaillierte Benachrichtigungen</string>
     <string name="pref_show_details_desc">Den Status von freigegebenen Ordnern und verbundenen Geräten in der dauerhaften Benachrichtigung anzeigen.</string>
     <string name="pref_network_allow_roaming_name">Mobile Daten erlauben (Roaming)</string>
+    <string name="pref_allow_safe_overwrites_name">Dateien sicher überschreiben</string>
+    <string name="pref_allow_safe_overwrites_desc">Mit den Android-Sicherheitspatches vom September 2026 verhindert das Deaktivieren dieser Funktion, dass andere Apps bei der Synchronisierung die Berechtigungen für freigegebene Dateien verlieren.</string>
+    <string name="pref_allow_safe_overwrites_info">Standardmäßig überschreibt Syncthing Dateien auf sichere Weise, indem es die neuen Daten zunächst in eine temporäre Datei schreibt, die alte Datei löscht und anschließend die temporäre Datei umbenennt. Mit den Sicherheitspatches von Android vom September 2026 führen diese Dateioperationen jedoch dazu, dass andere Apps bei jeder Synchronisierung ihre Zugriffsrechte auf freigegebene Dateien verlieren.\n\nWenn das sichere Überschreiben deaktiviert ist, schreibt Syncthing die neuen Daten in eine temporäre Datei, überschreibt die Originaldatei direkt an Ort und Stelle und löscht anschließend die temporäre Datei. Dies führt vor allem dann zu Problemen, wenn die App während der Synchronisierung abstürzt. Die teilweise überschriebene Datei verursacht einen Synchronisierungskonflikt, der manuell behoben werden muss.</string>
 </resources>
