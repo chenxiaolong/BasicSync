@@ -244,4 +244,7 @@
     <string name="pref_header_notifications">Powiadomienia</string>
     <string name="pref_show_details_name">Powiadomienia szczegółowe</string>
     <string name="pref_network_allow_roaming_name">Zezwól na dane mobilne (roaming)</string>
+    <string name="pref_allow_safe_overwrites_name">Bezpiecznie nadpisz pliki</string>
+    <string name="pref_allow_safe_overwrites_desc">W przypadku wrześniowych poprawek bezpieczeństwa systemu Android z 2026 roku wyłączenie tej opcji zapobiega utracie przez inne aplikacje uprawnień do plików współdzielonych podczas ich synchronizacji.</string>
+    <string name="pref_allow_safe_overwrites_info">Domyślnie Syncthing nadpisuje pliki w bezpieczny sposób: najpierw zapisuje nowe dane w pliku tymczasowym, usuwa stary plik, a następnie zmienia nazwę pliku tymczasowego. Jednak w związku z wrześniowymi poprawkami bezpieczeństwa systemu Android z 2026 roku, operacje te będą powodować utratę uprawnień innych aplikacji do współdzielonych plików przy każdej synchronizacji.\n\nJeśli bezpieczne nadpisywanie zostanie wyłączone, Syncthing zapisze nowe dane w pliku tymczasowym, nadpisze oryginalny plik w jego bieżącej lokalizacji, a następnie usunie plik tymczasowy. Problemy mogą wystąpić głównie w przypadku awarii aplikacji podczas synchronizacji. Częściowo nadpisany plik spowoduje konflikt synchronizacji, który trzeba będzie rozwiązać ręcznie.</string>
 </resources>
