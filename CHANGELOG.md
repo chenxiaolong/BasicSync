@@ -7,6 +7,12 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add global toggle for controlling whether to overwrite files safely ([PR #248])
+  * This is enabled by default to match upstream Syncthing behavior, effectively undoing the workaround added in version 3.17.
+  * **NOTE**: Folks who want to prevent other apps from losing permissions to shared files when synced need to **turn off the new "Overwrite files safely" option** on the main screen.
+
 ### Version 3.18
 
 * Add support for reporting status when remote control is enabled ([Issue #246], [PR #247])
@@ -577,3 +583,4 @@
 [PR #244]: https://github.com/chenxiaolong/BasicSync/pull/244
 [PR #245]: https://github.com/chenxiaolong/BasicSync/pull/245
 [PR #247]: https://github.com/chenxiaolong/BasicSync/pull/247
+[PR #248]: https://github.com/chenxiaolong/BasicSync/pull/248
