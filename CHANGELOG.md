@@ -14,6 +14,7 @@
   * **NOTE**: Folks who want to prevent other apps from losing permissions to shared files when synced need to **turn off the new "Overwrite files safely" option** on the main screen.
 * Add counts of folder and device states to remote control broadcasts ([Issue #249], [PR #253])
 * Fix keyboard overlapping web UI elements when the system webview version is <144 ([Issue #251], [PR #254])
+* Allow selecting `Android/data/com.chiller3.basicsync/files` on USB drives and SD cards with Android <11 ([Issue #251], [PR #255])
 
 ### Version 3.18
 
@@ -590,3 +591,4 @@
 [PR #248]: https://github.com/chenxiaolong/BasicSync/pull/248
 [PR #253]: https://github.com/chenxiaolong/BasicSync/pull/253
 [PR #254]: https://github.com/chenxiaolong/BasicSync/pull/254
+[PR #255]: https://github.com/chenxiaolong/BasicSync/pull/255
