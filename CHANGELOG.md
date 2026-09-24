@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.19
 
 * Add global toggle for controlling whether to overwrite files safely ([PR #248])
   * This is enabled by default to match upstream Syncthing behavior, effectively undoing the workaround added in version 3.17.
