@@ -15,6 +15,7 @@
 * Add counts of folder and device states to remote control broadcasts ([Issue #249], [PR #253])
 * Fix keyboard overlapping web UI elements when the system webview version is <144 ([Issue #251], [PR #254])
 * Allow selecting `Android/data/com.chiller3.basicsync/files` on USB drives and SD cards with Android <11 ([Issue #251], [PR #255])
+* Sync translations from Weblate ([PR #250])
 
 ### Version 3.18
 
@@ -589,6 +590,7 @@
 [PR #245]: https://github.com/chenxiaolong/BasicSync/pull/245
 [PR #247]: https://github.com/chenxiaolong/BasicSync/pull/247
 [PR #248]: https://github.com/chenxiaolong/BasicSync/pull/248
+[PR #250]: https://github.com/chenxiaolong/BasicSync/pull/250
 [PR #253]: https://github.com/chenxiaolong/BasicSync/pull/253
 [PR #254]: https://github.com/chenxiaolong/BasicSync/pull/254
 [PR #255]: https://github.com/chenxiaolong/BasicSync/pull/255
