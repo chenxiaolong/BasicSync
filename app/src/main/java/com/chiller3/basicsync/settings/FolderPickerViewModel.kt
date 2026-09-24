@@ -11,9 +11,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
-import android.os.Environment
 import android.os.FileObserver
 import android.os.storage.StorageManager
+import android.system.ErrnoException
+import android.system.Os
+import android.system.OsConstants
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
@@ -45,11 +47,9 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
         val VIRTUAL_ROOT = File("")
 
         private val SUPPORTS_INOTIFY = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-        private val WRITABLE_EXTERNAL = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
     }
 
     sealed interface Child {
-        val enabled: Boolean
         val pinToTop: Boolean
         val title: String
         val summary: String?
@@ -57,15 +57,11 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
     }
 
     data class Root(
-        val writable: Boolean,
         val isPrimary: Boolean,
         val description: String,
         val uuid: String?,
         val mountPoint: File,
     ) : Child {
-        override val enabled: Boolean
-            get() = writable
-
         override val pinToTop: Boolean
             get() = isPrimary
 
@@ -80,9 +76,6 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
     }
 
     data class Directory(val name: String) : Child {
-        override val enabled: Boolean
-            get() = true
-
         override val pinToTop: Boolean
             get() = false
 
@@ -99,19 +92,24 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
     data class State(
         val cwd: File,
         val childDirs: List<Child>,
+        val writable: Boolean,
     )
 
     private val appContext = context.applicationContext
     private val storageManager = appContext.getSystemService(StorageManager::class.java)
 
-    private val _state = MutableStateFlow(State(cwd = VIRTUAL_ROOT, childDirs = emptyList()))
+    private val _state = MutableStateFlow(State(
+        cwd = VIRTUAL_ROOT,
+        childDirs = emptyList(),
+        writable = false,
+    ))
     val state = _state.asStateFlow()
 
-    private val mainLock = this
     private val operationLock = Mutex()
     private var roots = emptyList<Root>()
     @RequiresApi(Build.VERSION_CODES.Q)
     private var observer: FileObserver? = null
+    private val observerLock = this
 
     private val rootsReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -145,17 +143,11 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
             refreshRootsLocked()
 
             if (initialPath == VIRTUAL_ROOT) {
-                val usableRoots = synchronized(mainLock) {
-                    roots.asSequence().filter { it.enabled }.iterator()
-                }
-                if (usableRoots.hasNext()) {
-                    val root = usableRoots.next()
-                    if (!usableRoots.hasNext()) {
-                        // Navigate to the only usable root initially to avoid an extra tap. The
-                        // user can always navigate back if external storage is later attached.
-                        navigateLocked(root.mountPoint, File("."))
-                        return@launchOperation
-                    }
+                if (roots.size == 1) {
+                    // Navigate to the only usable root initially to avoid an extra tap. The user
+                    // can always navigate back if external storage is later attached.
+                    navigateLocked(roots[0].mountPoint, File("."))
+                    return@launchOperation
                 }
             }
 
@@ -169,7 +161,7 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
         appContext.unregisterReceiver(rootsReceiver)
 
         if (SUPPORTS_INOTIFY) {
-            synchronized(mainLock) {
+            synchronized(observerLock) {
                 observer?.stopWatching()
                 observer = null
             }
@@ -195,8 +187,6 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
             val mountPoint = volume.directoryCompat ?: continue
 
             newRoots.add(Root(
-                writable = volume.state == Environment.MEDIA_MOUNTED
-                        && (volume.isPrimary || WRITABLE_EXTERNAL),
                 isPrimary = volume.isPrimary,
                 description = volume.getDescription(appContext),
                 uuid = volume.uuid,
@@ -205,28 +195,23 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
         }
 
         Log.d(TAG, "New roots: $newRoots")
-
-        synchronized(mainLock) {
-            roots = newRoots
-        }
+        roots = newRoots
     }
 
-    private fun canBrowse(file: File) = synchronized(mainLock) {
-        roots.any { file.startsWith(it.mountPoint) }
-    }
+    private fun canBrowseLocked(file: File) = roots.any { file.startsWith(it.mountPoint) }
 
     private fun navigateLocked(cwd: File, path: File) {
         var newCwd = VIRTUAL_ROOT
         if (path != VIRTUAL_ROOT) {
             cwd.resolve(path)
                 .normalize()
-                .takeIf { canBrowse(it) && it.isDirectory }
+                .takeIf { canBrowseLocked(it) && it.isDirectory }
                 ?.let { newCwd = it }
         }
         Log.d(TAG, "Changing cwd: $cwd + $path = $newCwd")
 
         val childDirs = if (newCwd == VIRTUAL_ROOT) {
-            synchronized(mainLock) { roots.toMutableList() }
+            roots.toMutableList()
         } else {
             mutableListOf<Directory>().apply {
                 add(Directory(".."))
@@ -249,8 +234,18 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
             )
         }
 
-        synchronized(mainLock) {
-            if (SUPPORTS_INOTIFY && newCwd != cwd) {
+        val writable = if (newCwd == VIRTUAL_ROOT) {
+            false
+        } else {
+            try {
+                Os.access(newCwd.path, OsConstants.W_OK)
+            } catch (_: ErrnoException) {
+                false
+            }
+        }
+
+        if (SUPPORTS_INOTIFY && newCwd != cwd) {
+            synchronized(observerLock) {
                 observer?.stopWatching()
 
                 if (newCwd == VIRTUAL_ROOT) {
@@ -264,7 +259,13 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
             }
         }
 
-        _state.update { State(cwd = newCwd, childDirs = childDirs) }
+        _state.update {
+            State(
+                cwd = newCwd,
+                childDirs = childDirs,
+                writable = writable,
+            )
+        }
     }
 
     private fun refreshIfCwdLocked(expectedCwd: File) {
@@ -287,16 +288,15 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
     fun mkdir(cwd: File, name: String) {
         Log.d(TAG, "Creating in: $cwd: $name")
 
-        if (!canBrowse(cwd)) {
-            // This is not an error because a volume may have been unmounted in the meantime.
-            Log.w(TAG, "Invalid cwd: $cwd")
-            return
-        } else if (!isSafeName(name)) {
+        if (!isSafeName(name)) {
             throw IllegalArgumentException("Unsafe name: $name")
         }
 
         launchOperation {
-            cwd.resolve(name).mkdir()
+            if (!cwd.resolve(name).mkdir()) {
+                Log.w(TAG, "Failed to create in: $cwd: $name")
+            }
+
             refreshIfCwdLocked(cwd)
         }
     }

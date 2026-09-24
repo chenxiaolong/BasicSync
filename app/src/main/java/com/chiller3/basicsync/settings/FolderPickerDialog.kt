@@ -84,7 +84,6 @@ fun FolderPickerDialog(
                                 index = index,
                                 count = state.childDirs.size,
                             ),
-                            enabled = childDir.enabled,
                             title = { Text(text = childDir.title) },
                             summary = childDir.summary?.let { { Text(text = it) } },
                             // This is uglier, but having the fade out animation delays the
@@ -103,7 +102,10 @@ fun FolderPickerDialog(
             onDismissRequest = onDismiss,
             confirmButton = {
                 if (!isRoot) {
-                    TextButton(onClick = { onSelect(shortCwd) }) {
+                    TextButton(
+                        onClick = { onSelect(shortCwd) },
+                        enabled = state.writable,
+                    ) {
                         Text(text = stringResource(android.R.string.ok))
                     }
                 }
@@ -114,7 +116,10 @@ fun FolderPickerDialog(
                 }
 
                 if (!isRoot) {
-                    TextButton(onClick = { showNewFolderDialog = true }) {
+                    TextButton(
+                        onClick = { showNewFolderDialog = true },
+                        enabled = state.writable,
+                    ) {
                         Text(text = stringResource(R.string.dialog_new_folder_title))
                     }
                 }
