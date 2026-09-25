@@ -244,4 +244,7 @@
     <string name="pref_header_notifications">Powiadomienia</string>
     <string name="pref_show_details_name">Powiadomienia szczegółowe</string>
     <string name="pref_network_allow_roaming_name">Zezwól na dane mobilne (roaming)</string>
+    <string name="pref_proxy_override_name">Zastąp ustawienia serwera proxy</string>
+    <string name="pref_proxy_override_desc">Użyj niestandardowego serwera proxy zamiast tego określonego w ustawieniach sieciowych systemu Android.</string>
+    <string name="dialog_proxy_override_hint">Adres URL serwera proxy</string>
 </resources>
