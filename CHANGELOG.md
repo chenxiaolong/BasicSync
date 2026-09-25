@@ -9,6 +9,8 @@
 
 ### Unreleased
 
+* Implement better workaround for the permission revocation issue introduced in Android's 2026-09 security patches ([PR #256])
+  * The "Overwrite files safely" option is now obsolete and has been removed.
 * Sync translations from Weblate ([PR #257])
 
 ### Version 3.19
@@ -598,4 +600,5 @@
 [PR #253]: https://github.com/chenxiaolong/BasicSync/pull/253
 [PR #254]: https://github.com/chenxiaolong/BasicSync/pull/254
 [PR #255]: https://github.com/chenxiaolong/BasicSync/pull/255
+[PR #256]: https://github.com/chenxiaolong/BasicSync/pull/256
 [PR #257]: https://github.com/chenxiaolong/BasicSync/pull/257
