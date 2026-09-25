@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Sync translations from Weblate ([PR #257])
+
 ### Version 3.19
 
 * Add global toggle for controlling whether to overwrite files safely ([PR #248])
@@ -594,3 +598,4 @@
 [PR #253]: https://github.com/chenxiaolong/BasicSync/pull/253
 [PR #254]: https://github.com/chenxiaolong/BasicSync/pull/254
 [PR #255]: https://github.com/chenxiaolong/BasicSync/pull/255
+[PR #257]: https://github.com/chenxiaolong/BasicSync/pull/257
