@@ -229,4 +229,7 @@
         <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
+    <string name="pref_proxy_override_name">Substituir configurações de proxy</string>
+    <string name="pref_proxy_override_desc">Use um proxy personalizado em vez de um proxy específico nas configurações de rede do Android.</string>
+    <string name="dialog_proxy_override_hint">URL do proxy</string>
 </resources>
