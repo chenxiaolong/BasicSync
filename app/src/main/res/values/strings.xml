@@ -110,6 +110,10 @@
     <string name="pref_start_on_boot_name">Start on boot</string>
     <!-- Description for the preference to start the app after a reboot. -->
     <string name="pref_start_on_boot_desc">Automatically start the app after a reboot.</string>
+    <!-- Title for the preference to override Android's proxy settings. -->
+    <string name="pref_proxy_override_name">Override proxy settings</string>
+    <!-- Description for the preference to override Android's proxy settings. -->
+    <string name="pref_proxy_override_desc">Use a custom proxy instead of the proxy specified in Android\'s network settings.</string>
     <!-- Title for the preference that shows the version number. The description is two lines: the first line is BasicSync's version and the second line in Syncthing's version. -->
     <string name="pref_version_name">Version</string>
     <!-- Title for the debug preference that saves logs to a file. -->
@@ -248,6 +252,8 @@
     <string name="dialog_wifi_network_message">Enter the name (SSID) of the Wi-Fi network. This also works for hidden Wi-Fi networks.</string>
     <!-- Textbox hint shown in the dialog for manually adding an allowed Wi-Fi network. -->
     <string name="dialog_wifi_network_hint">SSID</string>
+    <!-- Textbox hint shown in the dialog for overriding the proxy URL. -->
+    <string name="dialog_proxy_override_hint">Proxy URL</string>
 
     <!-- Tooltip shown in Syncthing's web UI for selecting a local folder when adding a new shared Syncthing folder. Keep as short as possible. -->
     <string name="web_ui_select_folder">Select folder</string>

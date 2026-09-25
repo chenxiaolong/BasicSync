@@ -29,11 +29,13 @@ import (
 	_ "unsafe"
 
 	_ "golang.org/x/mobile/event/key"
+	_ "golang.org/x/net/proxy"
 	"golang.org/x/sys/unix"
 
 	_ "github.com/syncthing/syncthing/cmd/syncthing/cli"
 	"github.com/syncthing/syncthing/lib/build"
 	"github.com/syncthing/syncthing/lib/config"
+	"github.com/syncthing/syncthing/lib/dialer"
 	"github.com/syncthing/syncthing/lib/events"
 	"github.com/syncthing/syncthing/lib/fs"
 	"github.com/syncthing/syncthing/lib/locations"
@@ -136,34 +138,57 @@ func readPemCert(path string) (*x509.Certificate, error) {
 	return cert, nil
 }
 
+type netProxyEnvOnce struct {
+	names []string
+	once  sync.Once
+	val   string
+}
+
 //go:linkname resetProxyConfig net/http.resetProxyConfig
 func resetProxyConfig()
+
+//go:linkname netProxyAllProxyEnv golang.org/x/net/proxy.allProxyEnv
+var netProxyAllProxyEnv *netProxyEnvOnce
+
+//go:linkname netProxyNoProxyEnv golang.org/x/net/proxy.noProxyEnv
+var netProxyNoProxyEnv *netProxyEnvOnce
+
+//go:linkname netProxyEnvOnceReset golang.org/x/net/proxy.(*envOnce).reset
+func netProxyEnvOnceReset(*netProxyEnvOnce)
 
 // This is not thread-safe and should only be called by run().
 func applyProxySettings(proxy string, no_proxy string) {
 	if len(proxy) > 0 {
 		log.Printf("Setting proxy to %q", proxy)
 
-		os.Setenv("http_proxy", proxy)
-		os.Setenv("https_proxy", proxy)
+		os.Setenv("ALL_PROXY", proxy)
+		os.Setenv("ALL_PROXY_NO_FALLBACK", "1")
 	} else {
 		log.Print("Clearing proxy settings")
 
-		os.Unsetenv("http_proxy")
-		os.Unsetenv("https_proxy")
+		os.Unsetenv("ALL_PROXY")
+		os.Unsetenv("ALL_PROXY_NO_FALLBACK")
 	}
 
 	if len(no_proxy) > 0 {
 		log.Printf("Setting no_proxy to %q", no_proxy)
 
-		os.Setenv("no_proxy", no_proxy)
+		os.Setenv("NO_PROXY", no_proxy)
 	} else {
 		log.Print("Clearing no_proxy settings")
 
-		os.Unsetenv("no_proxy")
+		os.Unsetenv("NO_PROXY")
 	}
 
+	// For NO_PROXY in the standard library.
 	resetProxyConfig()
+
+	// For ALL_PROXY and NO_PROXY in golang.org/x/net/proxy.
+	netProxyEnvOnceReset(netProxyAllProxyEnv)
+	netProxyEnvOnceReset(netProxyNoProxyEnv)
+
+	// For ALL_PROXY_NO_FALLBACK and http.DefaultTransport in Syncthing.
+	dialer.ResetProxyConfig()
 }
 
 func InitDirs(filesDir string, cacheDir string, externalDir string) error {

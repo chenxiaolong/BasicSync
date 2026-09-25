@@ -440,8 +440,11 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     private lateinit var deviceStateTracker: DeviceStateTracker
     @GuardedBy("stateLock")
     private var deviceState = DeviceState()
+
     @GuardedBy("stateLock")
-    private var runningProxyInfo: ProxyInfo? = null
+    private var desiredProxyInfo = ProxyInfo(proxy = "", noProxy = "")
+    @GuardedBy("stateLock")
+    private var runningProxyInfo = desiredProxyInfo
 
     @GuardedBy("stateLock")
     private var blockedReasons = EnumSet.noneOf(BlockedReason::class.java)
@@ -632,6 +635,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         Log.d(TAG, "Preference $key changed")
 
         var recomputeBlockedReasons = false
+        var recomputeProxyInfo = false
 
         // We have to switch foreground service and network callback types when location becomes
         // needed or no longer needed.
@@ -640,11 +644,13 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         when (key) {
             in BLOCKED_REASONS_PREFS, in DeviceState.PREFS -> recomputeBlockedReasons = true
             in STATE_CHANGE_PREFS -> {}
+            Preferences.PREF_PROXY_OVERRIDE -> recomputeProxyInfo = true
             else -> return
         }
 
         stateChanged(
             recomputeBlockedReasons = recomputeBlockedReasons,
+            recomputeProxyInfo = recomputeProxyInfo,
             forceShowNotification = forceShowNotification,
         )
     }
@@ -652,7 +658,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     override fun onDeviceStateChanged(state: DeviceState) {
         synchronized(stateLock) {
             deviceState = state
-            stateChanged(recomputeBlockedReasons = true)
+            stateChanged(recomputeBlockedReasons = true, recomputeProxyInfo = true)
         }
     }
 
@@ -678,6 +684,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     private fun stateChanged(
         recomputeBlockedReasons: Boolean = false,
+        recomputeProxyInfo: Boolean = false,
         forceShowNotification: Boolean = false,
     ) {
         synchronized(stateLock) {
@@ -700,6 +707,12 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                         add(BlockedReason.NO_STORAGE_PERMISSIONS)
                     }
                 }
+            }
+
+            if (recomputeProxyInfo) {
+                desiredProxyInfo = prefs.proxyOverride
+                    ?.let { ProxyInfo(proxy = it, noProxy = "") }
+                    ?: deviceState.proxyInfo
             }
 
             handleStateChangeLocked()
@@ -773,7 +786,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         // The service needs to be restarted for proxy changes to take effect. The hack we do to set
         // the proxy on the golang side can't be made thread-safe.
         val needFullRestart = !shouldThreadRun
-                || runningProxyInfo != deviceState.proxyInfo
+                || runningProxyInfo != desiredProxyInfo
                 || preRunActions.isNotEmpty()
                 || recheckPermissions
 
@@ -811,8 +824,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 actions.addAll(preRunActions)
                 preRunActions.clear()
 
-                runningProxyInfo = deviceState.proxyInfo
-                proxyInfo = deviceState.proxyInfo
+                runningProxyInfo = desiredProxyInfo
+                proxyInfo = desiredProxyInfo
 
                 // recheckPermissions is cleared in onCheckStoragePermissions().
                 recheckOnly = !shouldStart

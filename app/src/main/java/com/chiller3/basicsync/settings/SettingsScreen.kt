@@ -113,6 +113,7 @@ fun SettingsScreen(
     val remoteControl = remember(reloadPrefs) { prefs.remoteControl }
     val allowAutoMode = remember(reloadPrefs) { prefs.allowAutoMode }
     val startOnBoot = remember(reloadPrefs) { prefs.startOnBoot }
+    val proxyOverride = remember(reloadPrefs) { prefs.proxyOverride }
     val isDebugMode = remember(reloadPrefs) { prefs.isDebugMode }
 
     var reloadPerms by remember { mutableIntStateOf(0) }
@@ -336,6 +337,7 @@ fun SettingsScreen(
             remoteControl = remoteControl,
             allowAutoMode = allowAutoMode,
             startOnBoot = startOnBoot,
+            proxyOverride = proxyOverride,
             isDebugMode = isDebugMode,
             onInhibitBatteryOptGrant = {
                 requestInhibitBatteryOpt.launch(Permissions.getInhibitBatteryOptIntent(context))
@@ -470,6 +472,10 @@ fun SettingsScreen(
                 prefs.startOnBoot = enabled
                 reloadPrefs++
             },
+            onProxyOverrideChange = { url ->
+                prefs.proxyOverride = url
+                reloadPrefs++
+            },
             onDebugModeChange = { enabled ->
                 prefs.isDebugMode = enabled
                 reloadPrefs++
@@ -577,6 +583,7 @@ private fun SettingsContent(
     remoteControl: Boolean,
     allowAutoMode: Boolean,
     startOnBoot: Boolean,
+    proxyOverride: String?,
     isDebugMode: Boolean,
     onInhibitBatteryOptGrant: () -> Unit,
     onNotificationsGrant: () -> Unit,
@@ -602,6 +609,7 @@ private fun SettingsContent(
     onRemoteControlChange: (Boolean) -> Unit,
     onAllowAutoModeChange: (Boolean) -> Unit,
     onStartOnBootChange: (Boolean) -> Unit,
+    onProxyOverrideChange: (String?) -> Unit,
     onDebugModeChange: (Boolean) -> Unit,
     onSourceRepoOpen: () -> Unit,
     onSaveLogs: () -> Unit,
@@ -668,6 +676,7 @@ private fun SettingsContent(
     val runState = serviceState?.runState
 
     var showMinBatteryLevelDialog by rememberSaveable { mutableStateOf(false) }
+    var showProxyOverrideDialog by rememberSaveable { mutableStateOf(false) }
 
     PreferenceColumn(contentPadding = contentPadding) {
         if (missingPermissions.isNotEmpty()) {
@@ -914,9 +923,19 @@ private fun SettingsContent(
             SwitchPreference(
                 checked = startOnBoot,
                 onCheckedChange = onStartOnBootChange,
-                shapes = BetterSegmentedShapes.bottom(),
+                shapes = BetterSegmentedShapes.middle(),
                 title = { Text(text = stringResource(R.string.pref_start_on_boot_name)) },
                 summary = { Text(text = stringResource(R.string.pref_start_on_boot_desc)) },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
+        item(key = "proxy_override") {
+            Preference(
+                onClick = { showProxyOverrideDialog = true },
+                shapes = BetterSegmentedShapes.bottom(),
+                title = { Text(text = stringResource(R.string.pref_proxy_override_name)) },
+                summary = { Text(text = stringResource(R.string.pref_proxy_override_desc)) },
                 modifier = Modifier.animateItem(),
             )
         }
@@ -968,6 +987,19 @@ private fun SettingsContent(
             },
             onDismiss = {
                 showMinBatteryLevelDialog = false
+            },
+        )
+    }
+
+    if (showProxyOverrideDialog) {
+        ProxyOverrideDialog(
+            initialUrl = proxyOverride,
+            onSelect = { url ->
+                onProxyOverrideChange(url)
+                showProxyOverrideDialog = false
+            },
+            onDismiss = {
+                showProxyOverrideDialog = false
             },
         )
     }
@@ -1074,6 +1106,7 @@ private fun PreviewSettingsScreen() {
                 remoteControl = false,
                 allowAutoMode = true,
                 startOnBoot = true,
+                proxyOverride = null,
                 isDebugMode = true,
                 onInhibitBatteryOptGrant = {},
                 onNotificationsGrant = {},
@@ -1099,6 +1132,7 @@ private fun PreviewSettingsScreen() {
                 onRemoteControlChange = {},
                 onAllowAutoModeChange = {},
                 onStartOnBootChange = {},
+                onProxyOverrideChange = {},
                 onDebugModeChange = {},
                 onSourceRepoOpen = {},
                 onSaveLogs = {},
