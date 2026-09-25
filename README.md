@@ -68,26 +68,6 @@ The app is intentionally kept very basic so that the project is easy to maintain
 * `INTERACT_ACROSS_USERS` (Android >=17)
     * Optionally used to allow two separate BasicSync instances installed in different Android profiles or users to talk to each other over localhost. Can only be granted via `adb`. See the [cross-user communication](#cross-user-communication) section for more details.
 
-## Other apps losing permissions
-
-With Android's September 2026 security patches, other apps will lose permissions to shared files when they are synced by default.
-
-Syncthing normally overwrites files safely during syncing by:
-
-1. Writing the new data to a temporary file (`.syncthing.<name>.tmp`)
-2. Deleting the original file
-3. Renaming the temporary file to the original name
-
-However, with Android's September 2026 security patches, renaming or deleting files (steps 2 and 3) will cause other apps to lose permissions to them.
-
-Turning off the "Overwrite files safely" option on BasicSync's main screen will work around this problem. This forces Syncthing to always use its fallback mechanism for overwriting files by:
-
-1. Writing the new data to a temporary file (`.syncthing.<name>.tmp`)
-2. Overwriting the original file in place, copying data from the temporary file
-3. Deleting the temporary file
-
-Android will not revoke other apps' permissions in this case because the original file is never renamed or deleted. Turning off safe overwrites can potentially cause issues in the event that the app crashes during step 2 where the original file is overwritten in place. The partially overwritten file will create a sync conflict the next time the app starts up that must be manually resolved.
-
 ## Remote web UI access
 
 Syncthing listens on the loopback interface and is available via `127.0.0.1:8384` by default. BasicSync will try to use the same port on every start, but will automatically pick a new random port if there is a conflict. The current port number can be found in Web UI -> Actions -> Settings -> GUI. HTTPS and basic authentication are both forcibly enabled every time Syncthing starts.

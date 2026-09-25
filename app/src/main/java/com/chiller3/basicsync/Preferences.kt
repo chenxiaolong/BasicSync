@@ -25,7 +25,6 @@ class Preferences(context: Context) {
         const val PREF_REMOTE_CONTROL = "remote_control"
         const val PREF_ALLOW_AUTO_MODE = "allow_auto_mode"
         const val PREF_START_ON_BOOT = "start_on_boot"
-        const val PREF_ALLOW_SAFE_OVERWRITES = "allow_safe_overwrites"
         const val PREF_REQUIRE_UNMETERED_NETWORK = "require_unmetered_network"
         const val PREF_NETWORK_ALLOW_WIFI = "network_allow_wifi"
         const val PREF_NETWORK_ALLOW_CELLULAR = "network_allow_cellular"
@@ -45,6 +44,7 @@ class Preferences(context: Context) {
 
         // Legacy preferences.
         private const val PREF_REQUIRE_SUFFICIENT_BATTERY = "require_sufficient_battery"
+        private const val PREF_ALLOW_SAFE_OVERWRITES = "allow_safe_overwrites"
     }
 
     private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
@@ -96,10 +96,6 @@ class Preferences(context: Context) {
     var startOnBoot: Boolean
         get() = prefs.getBoolean(PREF_START_ON_BOOT, true)
         set(enabled) = prefs.edit { putBoolean(PREF_START_ON_BOOT, enabled) }
-
-    var allowSafeOverwrites: Boolean
-        get() = prefs.getBoolean(PREF_ALLOW_SAFE_OVERWRITES, true)
-        set(enabled) = prefs.edit { putBoolean(PREF_ALLOW_SAFE_OVERWRITES, enabled) }
 
     var requireUnmeteredNetwork: Boolean
         get() = prefs.getBoolean(PREF_REQUIRE_UNMETERED_NETWORK, true)
@@ -172,6 +168,10 @@ class Preferences(context: Context) {
             }
 
             prefs.edit { remove(PREF_REQUIRE_SUFFICIENT_BATTERY) }
+        }
+
+        if (prefs.contains(PREF_ALLOW_SAFE_OVERWRITES)) {
+            prefs.edit { remove(PREF_ALLOW_SAFE_OVERWRITES) }
         }
 
         clampSyncScheduleDurations(true)

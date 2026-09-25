@@ -11,6 +11,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Binder
 import android.os.Build
@@ -427,6 +428,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     private lateinit var prefs: Preferences
     private lateinit var notifications: Notifications
+    private val mediaScanner = MediaScannerConnection(this, null)
     private val runnerThread = Thread(::runner)
 
     @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
@@ -541,6 +543,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         deviceStateTracker = DeviceStateTracker(this)
         deviceStateTracker.registerListener(this)
 
+        mediaScanner.connect()
+
         runnerThread.start()
     }
 
@@ -564,6 +568,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         prefs.unregisterListener(this)
 
         deviceStateTracker.unregisterListener(this)
+
+        mediaScanner.disconnect()
 
         Log.d(TAG, "Exiting")
     }
@@ -634,10 +640,6 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         when (key) {
             in BLOCKED_REASONS_PREFS, in DeviceState.PREFS -> recomputeBlockedReasons = true
             in STATE_CHANGE_PREFS -> {}
-            Preferences.PREF_ALLOW_SAFE_OVERWRITES -> {
-                Stbridge.setAllowSafeOverwrites(prefs.allowSafeOverwrites)
-                return
-            }
             else -> return
         }
 
@@ -968,6 +970,16 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
         synchronized(stateLock) {
             syncthingConflicts = ConflictsInfo(local = local, saf = saf)
+        }
+    }
+
+    override fun onRemoteFileUpdated(path: String, isDelete: Boolean) {
+        try {
+            mediaScanner.scanFile(path, null)
+        } catch (e: IllegalStateException) {
+            // On exit, we don't wait for the runner thread to stop. There's a small chance we could
+            // still receive an event after disconnection.
+            Log.w(TAG, "Received remote file update event after shutdown", e)
         }
     }
 

@@ -35,8 +35,7 @@ class MainApplication : Application() {
 
         Notifications(this).updateChannels()
 
-        val prefs = Preferences(this)
-        prefs.migrate()
+        Preferences(this).migrate()
 
         Stbridge.initDirs(
             filesDir.toString(),
@@ -44,6 +43,5 @@ class MainApplication : Application() {
             getExternalFilesDir(null)!!.toString(),
         )
         Stbridge.setSafClient(SyncthingSafClient(this))
-        Stbridge.setAllowSafeOverwrites(prefs.allowSafeOverwrites)
     }
 }

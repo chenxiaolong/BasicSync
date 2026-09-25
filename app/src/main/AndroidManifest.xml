@@ -81,6 +81,7 @@
         android:enableOnBackInvokedCallback="true"
         android:memtagMode="sync"
         android:requestLegacyExternalStorage="true"
+        android:requestRawExternalStorageAccess="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BasicSync"

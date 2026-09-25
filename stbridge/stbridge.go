@@ -52,10 +52,6 @@ func Version() string {
 	return build.Version
 }
 
-func SetAllowSafeOverwrites(allow bool) {
-	fs.AllowSafeOverwritesOnAndroidFuse.Store(allow)
-}
-
 func cleanOldFiles() {
 	// We only clean up a subset of what upstream syncthing does since the
 	// initial release started with 2.x and certain features aren't enabled.
@@ -287,6 +283,8 @@ type SyncthingStatusReceiver interface {
 	// Can be sent before OnSyncthingStarted, but not after OnSyncthingStopped.
 	OnConflictsUpdated(local0Sep string, safChildParent0Sep string)
 
+	OnRemoteFileUpdated(path string, isDelete bool)
+
 	// Can be sent before OnSyncthingStarted, but not after OnSyncthingStopped.
 	OnAlertsUpdated(count int32)
 
@@ -318,22 +316,22 @@ func isConflict(name string) bool {
 	return strings.Contains(filepath.Base(name), ".sync-conflict-")
 }
 
-type conflictsInfo struct {
-	byFolder        map[string]map[string]struct{}
-	folderPaths     map[string]string
-	filesystemTypes map[string]config.FilesystemType
+type fileStateInfo struct {
+	conflictsByFolder map[string]map[string]struct{}
+	folderPaths       map[string]string
+	filesystemTypes   map[string]config.FilesystemType
 }
 
 func dispatchConflicts(
-	conflictsInfo *conflictsInfo,
+	fileStateInfo *fileStateInfo,
 	receiver SyncthingStatusReceiver,
 ) {
 	uniqueLocal := map[string]struct{}{}
 	uniqueSaf := map[string]string{}
 
-	for folder, names := range conflictsInfo.byFolder {
-		folderPath := conflictsInfo.folderPaths[folder]
-		filesystemType := conflictsInfo.filesystemTypes[folder]
+	for folder, names := range fileStateInfo.conflictsByFolder {
+		folderPath := fileStateInfo.folderPaths[folder]
+		filesystemType := fileStateInfo.filesystemTypes[folder]
 
 		if filesystemType == config.FilesystemTypeBasic {
 			// Never fails on Android.
@@ -392,6 +390,25 @@ func dispatchConflicts(
 	}
 
 	receiver.OnConflictsUpdated(local0Sep.String(), safChildParent0Sep.String())
+}
+
+func dispatchRemoteChange(
+	fileStateInfo *fileStateInfo,
+	folderID string,
+	path string,
+	isDelete bool,
+	receiver SyncthingStatusReceiver,
+) {
+	if fileStateInfo.filesystemTypes[folderID] != config.FilesystemTypeBasic {
+		return
+	}
+
+	folderPath := fileStateInfo.folderPaths[folderID]
+	// Never fails on Android.
+	expanded, _ := fs.ExpandTilde(folderPath)
+	filePath := filepath.Join(expanded, path)
+
+	receiver.OnRemoteFileUpdated(filePath, isDelete)
 }
 
 // The only type of alerts we currently don't track are those associated
@@ -513,7 +530,7 @@ func eventLoop(
 	stopped chan struct{},
 	evLogger events.Logger,
 	cfgWrapper config.Wrapper,
-	conflictsInfo *conflictsInfo,
+	fileStateInfo *fileStateInfo,
 	alertsInfo *alertsInfo,
 	receiver SyncthingStatusReceiver,
 ) {
@@ -551,21 +568,34 @@ func eventLoop(
 				data := evt.Data.(map[string]string)
 				folderID := data["folder"]
 				path := data["path"]
+				objType := data["type"]
+				isDelete := data["action"] == "deleted"
 
-				if !isConflict(path) {
-					continue
-				}
-
-				if data["action"] == "deleted" {
-					delete(conflictsInfo.byFolder[folderID], path)
-				} else {
-					if _, ok := conflictsInfo.byFolder[folderID]; !ok {
-						conflictsInfo.byFolder[folderID] = map[string]struct{}{}
+				if isConflict(path) {
+					if isDelete {
+						delete(fileStateInfo.conflictsByFolder[folderID], path)
+					} else {
+						if _, ok := fileStateInfo.conflictsByFolder[folderID]; !ok {
+							fileStateInfo.conflictsByFolder[folderID] = map[string]struct{}{}
+						}
+						fileStateInfo.conflictsByFolder[folderID][path] = struct{}{}
 					}
-					conflictsInfo.byFolder[folderID][path] = struct{}{}
+
+					dispatchConflicts(fileStateInfo, receiver)
 				}
 
-				dispatchConflicts(conflictsInfo, receiver)
+				// With Android's 2026-09 security patches, MediaStore updates
+				// that involve a rename or delete now result in URI permission
+				// revocation. On API >=31, this happens by default for writes
+				// to MediaProvider's FUSE filesystem. We turn this off in the
+				// app manifest, so we need to manually trigger MediaScanner for
+				// any changes synced from the remote.
+				//
+				// https://github.com/syncthing/syncthing/issues/10887
+				// https://android.googlesource.com/platform/packages/providers/MediaProvider/+/91dddac65b6ef48ae54302fa852029c2fcf010aa
+				if evt.Type == events.RemoteChangeDetected && objType == "file" {
+					dispatchRemoteChange(fileStateInfo, folderID, path, isDelete, receiver)
+				}
 
 			case events.PendingDevicesChanged:
 				if data, ok := evt.Data.(map[string][]interface{}); ok {
@@ -696,24 +726,24 @@ func eventLoop(
 			case events.ConfigSaved:
 				cfg := evt.Data.(config.Configuration)
 
-				clear(conflictsInfo.folderPaths)
-				clear(conflictsInfo.filesystemTypes)
+				clear(fileStateInfo.folderPaths)
+				clear(fileStateInfo.filesystemTypes)
 
 				for _, folder := range cfg.Folders {
-					conflictsInfo.folderPaths[folder.ID] = folder.Path
-					conflictsInfo.filesystemTypes[folder.ID] = folder.FilesystemType
+					fileStateInfo.folderPaths[folder.ID] = folder.Path
+					fileStateInfo.filesystemTypes[folder.ID] = folder.FilesystemType
 				}
 
-				for folderID := range conflictsInfo.byFolder {
-					if _, ok := conflictsInfo.folderPaths[folderID]; !ok {
-						delete(conflictsInfo.byFolder, folderID)
+				for folderID := range fileStateInfo.conflictsByFolder {
+					if _, ok := fileStateInfo.folderPaths[folderID]; !ok {
+						delete(fileStateInfo.conflictsByFolder, folderID)
 					}
 				}
 
-				dispatchConflicts(conflictsInfo, receiver)
+				dispatchConflicts(fileStateInfo, receiver)
 
 				for folderID := range folderStates {
-					if _, ok := conflictsInfo.folderPaths[folderID]; !ok {
+					if _, ok := fileStateInfo.folderPaths[folderID]; !ok {
 						delete(folderStates, folderID)
 					}
 				}
@@ -732,7 +762,7 @@ func eventLoop(
 
 				for deviceID, folders := range deviceStates.dirty {
 					for folderID := range folders {
-						if _, ok := conflictsInfo.folderPaths[folderID]; !ok {
+						if _, ok := fileStateInfo.folderPaths[folderID]; !ok {
 							delete(folders, folderID)
 						}
 					}
@@ -778,10 +808,10 @@ func startEventLoop(
 	allLocalFiles allLocalFilesFunc,
 	receiver SyncthingStatusReceiver,
 ) error {
-	conflictsInfo := conflictsInfo{
-		byFolder:        map[string]map[string]struct{}{},
-		folderPaths:     map[string]string{},
-		filesystemTypes: map[string]config.FilesystemType{},
+	fileStateInfo := fileStateInfo{
+		conflictsByFolder: map[string]map[string]struct{}{},
+		folderPaths:       map[string]string{},
+		filesystemTypes:   map[string]config.FilesystemType{},
 	}
 
 	// Find the initial set of conflicts from the database before starting the
@@ -795,20 +825,20 @@ func startEventLoop(
 				continue
 			}
 
-			if _, ok := conflictsInfo.byFolder[folder.ID]; !ok {
-				conflictsInfo.byFolder[folder.ID] = map[string]struct{}{}
+			if _, ok := fileStateInfo.conflictsByFolder[folder.ID]; !ok {
+				fileStateInfo.conflictsByFolder[folder.ID] = map[string]struct{}{}
 			}
-			conflictsInfo.byFolder[folder.ID][dbFile.Name] = struct{}{}
+			fileStateInfo.conflictsByFolder[folder.ID][dbFile.Name] = struct{}{}
 		}
 		if err := errFn(); err != nil {
 			return fmt.Errorf("failed to query database for: %q: %w", folder.ID, err)
 		}
 
-		conflictsInfo.folderPaths[folder.ID] = folder.Path
-		conflictsInfo.filesystemTypes[folder.ID] = folder.FilesystemType
+		fileStateInfo.folderPaths[folder.ID] = folder.Path
+		fileStateInfo.filesystemTypes[folder.ID] = folder.FilesystemType
 	}
 
-	dispatchConflicts(&conflictsInfo, receiver)
+	dispatchConflicts(&fileStateInfo, receiver)
 
 	alertsInfo := alertsInfo{
 		needsRestart:   cfg.RequiresRestart(),
@@ -824,7 +854,7 @@ func startEventLoop(
 		stopped,
 		evLogger,
 		cfg,
-		&conflictsInfo,
+		&fileStateInfo,
 		&alertsInfo,
 		receiver,
 	)

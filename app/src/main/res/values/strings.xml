@@ -110,12 +110,6 @@
     <string name="pref_start_on_boot_name">Start on boot</string>
     <!-- Description for the preference to start the app after a reboot. -->
     <string name="pref_start_on_boot_desc">Automatically start the app after a reboot.</string>
-    <!-- Title for the preference to configure whether Syncthing overwrites files safely. -->
-    <string name="pref_allow_safe_overwrites_name">Overwrite files safely</string>
-    <!-- Description for the preference to configure whether Syncthing overwrites files safely. -->
-    <string name="pref_allow_safe_overwrites_desc">With Android\'s September 2026 security patches, turning this off prevents other apps from losing permissions to shared files when they are synced.</string>
-    <!-- Extended description for the preference to configure whether Syncthing overwrites files safely. This string can be as long as necessary and "\n\n" can be used to separate paragraphs. -->
-    <string name="pref_allow_safe_overwrites_info">By default, Syncthing overwrites files safely by writing the new data to a temporary file first, deleting the old file, and then renaming the temporary file. However, with Android\'s September 2026 security patches, these file operations will cause other apps to lose their permissions to shared files every time they are synced.\n\nIf safe overwrites are turned off, Syncthing will write the new data to a temporary file, overwrite the original file in place, and then delete the temporary file. This mainly causes issues if the app crashes during syncing. The partially overwritten file will create a sync conflict that must be manually resolved.</string>
     <!-- Title for the preference that shows the version number. The description is two lines: the first line is BasicSync's version and the second line in Syncthing's version. -->
     <string name="pref_version_name">Version</string>
     <!-- Title for the debug preference that saves logs to a file. -->

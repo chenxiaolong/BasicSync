@@ -113,7 +113,6 @@ fun SettingsScreen(
     val remoteControl = remember(reloadPrefs) { prefs.remoteControl }
     val allowAutoMode = remember(reloadPrefs) { prefs.allowAutoMode }
     val startOnBoot = remember(reloadPrefs) { prefs.startOnBoot }
-    val allowSafeOverwrites = remember(reloadPrefs) { prefs.allowSafeOverwrites }
     val isDebugMode = remember(reloadPrefs) { prefs.isDebugMode }
 
     var reloadPerms by remember { mutableIntStateOf(0) }
@@ -337,7 +336,6 @@ fun SettingsScreen(
             remoteControl = remoteControl,
             allowAutoMode = allowAutoMode,
             startOnBoot = startOnBoot,
-            allowSafeOverwrites = allowSafeOverwrites,
             isDebugMode = isDebugMode,
             onInhibitBatteryOptGrant = {
                 requestInhibitBatteryOpt.launch(Permissions.getInhibitBatteryOptIntent(context))
@@ -472,11 +470,6 @@ fun SettingsScreen(
                 prefs.startOnBoot = enabled
                 reloadPrefs++
             },
-            onAllowSafeOverwritesChange = { enabled ->
-                // SyncthingService watches this and applies the change to stbridge.
-                prefs.allowSafeOverwrites = enabled
-                reloadPrefs++
-            },
             onDebugModeChange = { enabled ->
                 prefs.isDebugMode = enabled
                 reloadPrefs++
@@ -584,7 +577,6 @@ private fun SettingsContent(
     remoteControl: Boolean,
     allowAutoMode: Boolean,
     startOnBoot: Boolean,
-    allowSafeOverwrites: Boolean,
     isDebugMode: Boolean,
     onInhibitBatteryOptGrant: () -> Unit,
     onNotificationsGrant: () -> Unit,
@@ -610,7 +602,6 @@ private fun SettingsContent(
     onRemoteControlChange: (Boolean) -> Unit,
     onAllowAutoModeChange: (Boolean) -> Unit,
     onStartOnBootChange: (Boolean) -> Unit,
-    onAllowSafeOverwritesChange: (Boolean) -> Unit,
     onDebugModeChange: (Boolean) -> Unit,
     onSourceRepoOpen: () -> Unit,
     onSaveLogs: () -> Unit,
@@ -677,7 +668,6 @@ private fun SettingsContent(
     val runState = serviceState?.runState
 
     var showMinBatteryLevelDialog by rememberSaveable { mutableStateOf(false) }
-    var showAllowSafeOverwritesDialog by rememberSaveable { mutableStateOf(false) }
 
     PreferenceColumn(contentPadding = contentPadding) {
         if (missingPermissions.isNotEmpty()) {
@@ -924,21 +914,9 @@ private fun SettingsContent(
             SwitchPreference(
                 checked = startOnBoot,
                 onCheckedChange = onStartOnBootChange,
-                shapes = BetterSegmentedShapes.middle(),
+                shapes = BetterSegmentedShapes.bottom(),
                 title = { Text(text = stringResource(R.string.pref_start_on_boot_name)) },
                 summary = { Text(text = stringResource(R.string.pref_start_on_boot_desc)) },
-                modifier = Modifier.animateItem(),
-            )
-        }
-
-        item(key = "allow_safe_overwrites") {
-            SplitSwitchPreference(
-                onClick = { showAllowSafeOverwritesDialog = true },
-                checked = allowSafeOverwrites,
-                onCheckedChange = onAllowSafeOverwritesChange,
-                shapes = BetterSegmentedShapes.bottom(),
-                title = { Text(text = stringResource(R.string.pref_allow_safe_overwrites_name)) },
-                summary = { Text(text = stringResource(R.string.pref_allow_safe_overwrites_desc)) },
                 modifier = Modifier.animateItem(),
             )
         }
@@ -990,14 +968,6 @@ private fun SettingsContent(
             },
             onDismiss = {
                 showMinBatteryLevelDialog = false
-            },
-        )
-    }
-
-    if (showAllowSafeOverwritesDialog) {
-        AllowSafeOverwritesDialog(
-            onDismiss = {
-                showAllowSafeOverwritesDialog = false
             },
         )
     }
@@ -1104,7 +1074,6 @@ private fun PreviewSettingsScreen() {
                 remoteControl = false,
                 allowAutoMode = true,
                 startOnBoot = true,
-                allowSafeOverwrites = true,
                 isDebugMode = true,
                 onInhibitBatteryOptGrant = {},
                 onNotificationsGrant = {},
@@ -1130,7 +1099,6 @@ private fun PreviewSettingsScreen() {
                 onRemoteControlChange = {},
                 onAllowAutoModeChange = {},
                 onStartOnBootChange = {},
-                onAllowSafeOverwritesChange = {},
                 onDebugModeChange = {},
                 onSourceRepoOpen = {},
                 onSaveLogs = {},

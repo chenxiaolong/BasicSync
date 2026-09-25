@@ -229,7 +229,4 @@
         <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
-    <string name="pref_allow_safe_overwrites_name">Substituir arquivos com segurança</string>
-    <string name="pref_allow_safe_overwrites_desc">Com os patches de segurança de setembro de 2026 do Android, desligar isso evita que outros aplicativos percam permissões para arquivos compartilhados quando eles são sincronizados.</string>
-    <string name="pref_allow_safe_overwrites_info">Por padrão, o Syncthing substitui os arquivos com segurança, gravando primeiro os novos dados em um arquivo temporário, excluindo o arquivo antigo e, em seguida, renomeando o arquivo temporário. No entanto, com os patches de segurança de setembro de 2026 do Android, essas operações de arquivo farão com que outros aplicativos percam suas permissões para arquivos compartilhados sempre que forem sincronizados.\n\nSe as substituições seguras estiverem desativadas, o Syncthing gravará os novos dados em um arquivo temporário, substituirá o arquivo original e, em seguida, excluirá o arquivo temporário. Isso causa problemas principalmente se o aplicativo travar durante a sincronização. O arquivo parcialmente substituído criará um conflito de sincronização que deverá ser resolvido manualmente.</string>
 </resources>
