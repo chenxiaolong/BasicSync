@@ -240,4 +240,11 @@
     </plurals>
     <string name="pref_sync_schedule_desc">%2$s синхронізації, вікно %1$s.</string>
     <string name="dialog_sync_schedule_message">Дозволено суфікси <tt>h</tt> (години), <tt>m</tt> (хвилини) й <tt>s</tt> (секунди).</string>
+    <string name="pref_header_notifications">Сповіщення</string>
+    <string name="pref_show_details_name">Докладні сповіщення</string>
+    <string name="pref_show_details_desc">Показати стан поширених тек і з\'єднаних пристроїв у постійному сповіщенні.</string>
+    <string name="pref_proxy_override_name">Переналаштувати проксі</string>
+    <string name="pref_proxy_override_desc">Використати власний проксі замість вказаного в параметрах мережі Android.</string>
+    <string name="pref_network_allow_roaming_name">Дозволити мобільні дані (роумінг)</string>
+    <string name="dialog_proxy_override_hint">URL-адреса проксі</string>
 </resources>
