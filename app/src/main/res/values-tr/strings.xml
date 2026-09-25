@@ -214,4 +214,7 @@
     <string name="pref_show_details_name">Ayrıntılı bildirimler</string>
     <string name="pref_show_details_desc">Kalıcı bildirimde paylaşılan klasörlerin ve bağlı cihazların durumunu göster.</string>
     <string name="pref_network_allow_roaming_name">Mobil veriye izin ver (dolaşım)</string>
+    <string name="pref_proxy_override_name">Vekil sunucu ayarlarını geçersiz kıl</string>
+    <string name="pref_proxy_override_desc">Android\'in ağ ayarlarında belirtilen vekil sunucu yerine özel bir vekil sunucu kullanın.</string>
+    <string name="dialog_proxy_override_hint">Vekil sunucu URL\'si</string>
 </resources>
