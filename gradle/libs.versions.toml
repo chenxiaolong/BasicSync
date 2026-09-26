@@ -1,10 +1,10 @@
 [versions]
-android-gradle-plugin = "9.4.0"
+android-gradle-plugin = "9.4.1"
 androidx-activity = "1.13.0"
 androidx-camera = "1.6.2"
 androidx-compose-bom = "2026.09.00"
-androidx-compose-material3 = "1.5.0-alpha28"
-androidx-core = "1.19.0"
+androidx-compose-material3 = "1.5.0-alpha29"
+androidx-core = "1.19.1"
 androidx-lifecycle-viewmodel-compose = "2.11.0"
 androidx-preference = "1.2.1"
 jgit = "7.8.0.202609011348-r"
