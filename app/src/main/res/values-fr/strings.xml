@@ -242,4 +242,7 @@
     <string name="pref_show_details_desc">Afficher l\'état des partages et appareils dans la notification persistante.</string>
     <string name="pref_show_details_name">Notifications détaillées</string>
     <string name="pref_network_allow_roaming_name">Autoriser (en itinérance) sur les données mobiles</string>
+    <string name="pref_proxy_override_name">Remplacer les paramètres du proxy</string>
+    <string name="pref_proxy_override_desc">Utiliser un proxy personnalisé à la place du proxy défini dans les paramètres réseau d\'Android.</string>
+    <string name="dialog_proxy_override_hint">URL du proxy</string>
 </resources>
