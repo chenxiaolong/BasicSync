@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.20
 
 * Implement better workaround for the permission revocation issue introduced in Android's 2026-09 security patches ([PR #256])
   * The "Overwrite files safely" option is now obsolete and has been removed.
