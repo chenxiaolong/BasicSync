@@ -47,9 +47,9 @@
     <string name="pref_network_allow_other_name">Andere Netzwerkschnittstellen erlauben</string>
     <string name="pref_location_optional_info">Die Standortberechtigung ist optional und wird nur benötigt, um auf erlaubte WLANs einzuschränken. Selbst wenn die Berechtigung erteilt ist, wird sie nur benutzt, wenn erlaubte WLANs konfiguriert sind.</string>
     <string name="pref_allow_precise_location_name">Zugriff auf genauen Standort erlauben</string>
-    <string name="pref_allow_precise_location_desc">Benötigt um WLAN-Verbindungsinformationen überhaupt abzurufen.</string>
+    <string name="pref_allow_precise_location_desc">Benötigt, um WLAN-Verbindungsinformationen überhaupt abzurufen.</string>
     <string name="pref_allow_background_location_name">Zugriff auf Standort im Hintergrund erlauben</string>
-    <string name="pref_allow_background_location_desc">Benötigt um WLAN-Verbindungsinformationen im Hintergrund abzurufen.</string>
+    <string name="pref_allow_background_location_desc">Benötigt, um WLAN-Verbindungsinformationen im Hintergrund abzurufen.</string>
     <string name="pref_wifi_networks_info">Wenn WLAN in Benutzung ist, nur bei Verbindung mit den angegebenen Netzwerken ausführen. Ohne Angabe spezifischer Netzwerke sind alle Netzwerke erlaubt.</string>
     <string name="pref_add_wifi_network_name">WLAN manuell hinzufügen</string>
     <string name="alert_import_success">Konfiguration erfolgreich importiert</string>
@@ -214,4 +214,7 @@
     <string name="pref_show_details_name">Detaillierte Benachrichtigungen</string>
     <string name="pref_show_details_desc">Den Status von freigegebenen Ordnern und verbundenen Geräten in der dauerhaften Benachrichtigung anzeigen.</string>
     <string name="pref_network_allow_roaming_name">Mobile Daten erlauben (Roaming)</string>
+    <string name="pref_proxy_override_name">Proxy-Einstellungen übersteuern</string>
+    <string name="pref_proxy_override_desc">Einen benutzerdefinierten Proxy anstelle des in den Android-Netzwerkeinstellungen angegebenen Proxys verwenden.</string>
+    <string name="dialog_proxy_override_hint">Proxy-URL</string>
 </resources>
