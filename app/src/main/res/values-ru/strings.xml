@@ -244,4 +244,7 @@
     <string name="pref_show_details_name">Подробные уведомления</string>
     <string name="pref_show_details_desc">Показывать состояние общих папок и подключенных устройств в закрепленном уведомлении.</string>
     <string name="pref_network_allow_roaming_name">Разрешить мобильные данные (роуминг)</string>
+    <string name="pref_proxy_override_name">Переопределить настройки прокси</string>
+    <string name="pref_proxy_override_desc">Использовать собственный прокси-сервер вместо системного в настройках Android.</string>
+    <string name="dialog_proxy_override_hint">Адрес прокси-сервера</string>
 </resources>
