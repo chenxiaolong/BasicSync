@@ -12,7 +12,7 @@
 * Implement better workaround for the permission revocation issue introduced in Android's 2026-09 security patches ([PR #256])
   * The "Overwrite files safely" option is now obsolete and has been removed.
 * Add support for setting a custom proxy URL (including SOCKS5) instead of using Android's proxy settings ([Issue #258], [PR #259])
-* Sync translations from Weblate ([PR #257])
+* Sync translations from Weblate ([PR #257], [PR #260])
 * Update dependencies ([PR #261])
 
 ### Version 3.19
@@ -606,4 +606,5 @@
 [PR #256]: https://github.com/chenxiaolong/BasicSync/pull/256
 [PR #257]: https://github.com/chenxiaolong/BasicSync/pull/257
 [PR #259]: https://github.com/chenxiaolong/BasicSync/pull/259
+[PR #260]: https://github.com/chenxiaolong/BasicSync/pull/260
 [PR #261]: https://github.com/chenxiaolong/BasicSync/pull/261
