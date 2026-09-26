@@ -47,9 +47,9 @@
     <string name="pref_network_allow_other_name">Andere Netzwerkschnittstellen erlauben</string>
     <string name="pref_location_optional_info">Die Standortberechtigung ist optional und wird nur benötigt, um auf erlaubte WLANs einzuschränken. Selbst wenn die Berechtigung erteilt ist, wird sie nur benutzt, wenn erlaubte WLANs konfiguriert sind.</string>
     <string name="pref_allow_precise_location_name">Zugriff auf genauen Standort erlauben</string>
-    <string name="pref_allow_precise_location_desc">Benötigt, um WLAN-Verbindungsinformationen überhaupt abzurufen.</string>
+    <string name="pref_allow_precise_location_desc">Für den Zugriff auf WLAN-Verbindungsdaten erforderlich.</string>
     <string name="pref_allow_background_location_name">Zugriff auf Standort im Hintergrund erlauben</string>
-    <string name="pref_allow_background_location_desc">Benötigt, um WLAN-Verbindungsinformationen im Hintergrund abzurufen.</string>
+    <string name="pref_allow_background_location_desc">Für den Zugriff im Hintergrund auf WLAN-Verbindungsdaten erforderlich.</string>
     <string name="pref_wifi_networks_info">Wenn WLAN in Benutzung ist, nur bei Verbindung mit den angegebenen Netzwerken ausführen. Ohne Angabe spezifischer Netzwerke sind alle Netzwerke erlaubt.</string>
     <string name="pref_add_wifi_network_name">WLAN manuell hinzufügen</string>
     <string name="alert_import_success">Konfiguration erfolgreich importiert</string>
@@ -84,7 +84,7 @@
     <string name="web_ui_select_folder">Ordner auswählen</string>
     <string name="web_ui_scan_qr_code">QR-Code scannen</string>
     <string name="notification_channel_failure_name">Fehlermeldungen</string>
-    <string name="notification_channel_failure_desc">Warnhinweise für Fehlern beim Starten von Syncthing</string>
+    <string name="notification_channel_failure_desc">Warnhinweise für Fehler beim Starten von Syncthing</string>
     <string name="notification_persistent_running_title">Syncthing wird ausgeführt</string>
     <string name="notification_persistent_not_running_title">Syncthing wird nicht ausgeführt</string>
     <string name="notification_persistent_paused_title">Syncthing ist angehalten</string>
