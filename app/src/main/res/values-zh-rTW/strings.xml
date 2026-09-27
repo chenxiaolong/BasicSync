@@ -212,4 +212,7 @@
     <string name="pref_show_details_name">詳細通知</string>
     <string name="pref_show_details_desc">在常駐通知中顯示共享資料夾與已連線裝置的狀態。</string>
     <string name="pref_network_allow_roaming_name">允許行動數據（漫遊）</string>
+    <string name="pref_proxy_override_name">覆寫 Proxy 設定</string>
+    <string name="pref_proxy_override_desc">使用自訂 Proxy，而非 Android 網路設定中指定的 Proxy。</string>
+    <string name="dialog_proxy_override_hint">Proxy URL</string>
 </resources>
