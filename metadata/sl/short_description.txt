@@ -1,0 +1,1 @@
+Preprosta aplikacije za izvajanje storitve Syncthing na sistemu Android
