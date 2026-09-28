@@ -242,4 +242,7 @@
     <string name="pref_show_details_name">Notificări detaliate</string>
     <string name="pref_show_details_desc">Afișează starea dosarelor partajate și a dispozitivelor conectate în notificarea persistentă.</string>
     <string name="pref_network_allow_roaming_name">Permite date mobile (roaming)</string>
+    <string name="pref_proxy_override_name">Suprascrie setările proxy</string>
+    <string name="pref_proxy_override_desc">Folosește un proxy personalizat în locul proxy-ului specificat în setările de rețea ale Android.</string>
+    <string name="dialog_proxy_override_hint">Adresa URL proxy</string>
 </resources>
