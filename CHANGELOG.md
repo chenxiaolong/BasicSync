@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Fix logic error when listing the contents of a SAF directory where the cache had expired ([Issue #263], [PR #264])
+
 ### Version 3.20
 
 * Implement better workaround for the permission revocation issue introduced in Android's 2026-09 security patches ([PR #256])
@@ -425,6 +429,7 @@
 [Issue #249]: https://github.com/chenxiaolong/BasicSync/issues/249
 [Issue #251]: https://github.com/chenxiaolong/BasicSync/issues/251
 [Issue #258]: https://github.com/chenxiaolong/BasicSync/issues/258
+[Issue #263]: https://github.com/chenxiaolong/BasicSync/issues/263
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -608,3 +613,4 @@
 [PR #259]: https://github.com/chenxiaolong/BasicSync/pull/259
 [PR #260]: https://github.com/chenxiaolong/BasicSync/pull/260
 [PR #261]: https://github.com/chenxiaolong/BasicSync/pull/261
+[PR #264]: https://github.com/chenxiaolong/BasicSync/pull/264
