@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Fix logic error when listing the contents of a SAF directory where the cache had expired ([Issue #263], [PR #264])
+* Reduce memory usage when traversing SAF path components ([Issue #263], [PR #265])
 
 ### Version 3.20
 
@@ -614,3 +615,4 @@
 [PR #260]: https://github.com/chenxiaolong/BasicSync/pull/260
 [PR #261]: https://github.com/chenxiaolong/BasicSync/pull/261
 [PR #264]: https://github.com/chenxiaolong/BasicSync/pull/264
+[PR #265]: https://github.com/chenxiaolong/BasicSync/pull/265
