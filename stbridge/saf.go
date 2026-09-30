@@ -36,6 +36,7 @@ var (
 		"removeChildLocked",
 		"getInfo",
 		"getChildren",
+		"getChild",
 		"Resolve",
 		"DirNames",
 		"getOrCreateChild",
@@ -521,19 +522,15 @@ func (sn *safNode) getInfo(opts *safOpts) (*safFileInfo, error) {
 }
 
 // Get the current node's list of children if it is a directory, refreshing the
-// list if it expired. This returns a copy of the internal field.
+// list if it expired. This returns the internal children map and must be called
+// while the lock is held.
 //
 // If this node is not a directory and allowFiles is false, an error wrapping
 // [syscall.ENOTDIR] is returned. The cached metadata info is used to determine
 // if the node is a directory. [safNode.getInfoLocked] is never called. Because
 // SAF returns the metadata of all the children, the children will have
 // non-expired info fields, but expired (and empty/nil) children fields.
-func (sn *safNode) getChildren(opts *safOpts, allowFiles bool) (map[string]*safNode, error) {
-	implLogf("getChildren", "sn=%q, allowFiles=%v", sn.uri, allowFiles)
-
-	sn.lock.Lock()
-	defer sn.lock.Unlock()
-
+func (sn *safNode) getChildrenLocked(opts *safOpts, allowFiles bool) (map[string]*safNode, error) {
 	if sn.children == nil {
 		if allowFiles {
 			return nil, nil
@@ -544,7 +541,7 @@ func (sn *safNode) getChildren(opts *safOpts, allowFiles bool) (map[string]*safN
 
 	now := time.Now()
 	if !now.After(time.Unix(sn.childrenExpiry, 0)) {
-		return maps.Clone(sn.children), nil
+		return sn.children, nil
 	}
 
 	expiry := now.Add(opts.cacheDuration)
@@ -617,7 +614,54 @@ func (sn *safNode) getChildren(opts *safOpts, allowFiles bool) (map[string]*safN
 
 	sn.updateChildrenLocked(opts, children, expiry.Unix())
 
+	return children, nil
+}
+
+// Get the current node's list of children if it is a directory, refreshing the
+// list if it expired. This returns a copy of the internal field.
+//
+// If this node is not a directory and allowFiles is false, an error wrapping
+// [syscall.ENOTDIR] is returned. The cached metadata info is used to determine
+// if the node is a directory. [safNode.getInfoLocked] is never called. Because
+// SAF returns the metadata of all the children, the children will have
+// non-expired info fields, but expired (and empty/nil) children fields.
+func (sn *safNode) getChildren(opts *safOpts, allowFiles bool) (map[string]*safNode, error) {
+	implLogf("getChildren", "sn=%q, allowFiles=%v", sn.uri, allowFiles)
+
+	sn.lock.Lock()
+	defer sn.lock.Unlock()
+
+	children, err := sn.getChildrenLocked(opts, allowFiles)
+	if err != nil {
+		return nil, err
+	}
+
 	return maps.Clone(children), nil
+}
+
+// Get the specified child from the current node's list of children if it is a
+// directory, refreshing the list if it expired. This always returns either a
+// non-nil child node or an error.
+func (sn *safNode) getChild(opts *safOpts, name string) (*safNode, error) {
+	implLogf("getChild", "sn=%q, name=%q", sn.uri, name)
+
+	sn.lock.Lock()
+	defer sn.lock.Unlock()
+
+	children, err := sn.getChildrenLocked(opts, false)
+	if err != nil {
+		return nil, err
+	}
+
+	child, ok := children[name]
+	if !ok {
+		return nil, fmt.Errorf(
+			"%q not a child of %q: %w",
+			name, sn.uri, os.ErrNotExist,
+		)
+	}
+
+	return child, err
 }
 
 // Get the child node referenced by the specified relative path. ".." components
@@ -638,17 +682,9 @@ func (sn *safNode) Resolve(opts *safOpts, name string) (*safNode, error) {
 	current := sn
 
 	for _, component := range components {
-		children, err := current.getChildren(opts, false)
+		child, err := current.getChild(opts, component)
 		if err != nil {
 			return nil, err
-		}
-
-		child, ok := children[component]
-		if !ok {
-			return nil, fmt.Errorf(
-				"%q not a child of %q: %w",
-				component, current.uri, os.ErrNotExist,
-			)
 		}
 
 		current = child

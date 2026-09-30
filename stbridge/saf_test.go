@@ -408,6 +408,61 @@ func TestGetRoots(t *testing.T) {
 	}
 }
 
+func TestGetChild(t *testing.T) {
+	node := &safNode{
+		uri:            "uri://0",
+		name:           "0",
+		size:           0,
+		mtime:          0,
+		infoExpiry:     safExpired,
+		children:       makeChildren(true),
+		childrenExpiry: safExpired,
+		watchManager:   &safWatchManager{},
+	}
+	childFileInfo := safFileInfo{
+		Uri:    "uri://1",
+		Name_:  "1",
+		Size_:  1,
+		Mtime:  1,
+		IsDir_: false,
+	}
+
+	calls := 0
+
+	client, opts := newTestClient()
+	client.queryChildDocumentsJson = func(documentUri string) (string, error) {
+		calls++
+		return fileInfoListJson(&childFileInfo), nil
+	}
+
+	child, err := node.getChild(opts, "2")
+	if child != nil || !errors.Is(err, os.ErrNotExist) {
+		t.Fatalf("did not fail with ENOENT: %+v: %+v", child, err)
+	}
+	if calls != 1 {
+		t.Errorf("queryChildDocumentsJson was not called when expired")
+	}
+
+	child, err = node.getChild(opts, "1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if calls != 1 {
+		t.Errorf("queryChildDocumentsJson was called when not expired")
+	}
+
+	actualInfo := child.cachedInfoLocked()
+
+	if actualInfo != childFileInfo {
+		t.Errorf("child info does not match: %+v != %+v", actualInfo, childFileInfo)
+	}
+
+	child, err = child.getChild(opts, "3")
+	if child != nil || !errors.Is(err, syscall.ENOTDIR) {
+		t.Errorf("did not fail with ENOTDIR: %+v: %+v", child, err)
+	}
+}
+
 func TestResolveSelf(t *testing.T) {
 	node := &safNode{
 		uri:            "0",
