@@ -11,6 +11,7 @@ import (
 	"maps"
 	"os"
 	"path/filepath"
+	"reflect"
 	"slices"
 	"strconv"
 	"syscall"
@@ -317,6 +318,9 @@ func TestGetChildren(t *testing.T) {
 	if calls != 1 {
 		t.Errorf("queryChildDocumentsJson was not called when expired")
 	}
+	if reflect.ValueOf(children).Pointer() == reflect.ValueOf(node.children).Pointer() {
+		t.Errorf("children was not a copy: %p (%+v)", children, children)
+	}
 	if len(children) != 2 {
 		t.Errorf("invalid number of children")
 	}
@@ -340,6 +344,9 @@ func TestGetChildren(t *testing.T) {
 	}
 	if calls != 1 {
 		t.Errorf("queryChildDocumentsJson was called when not expired")
+	}
+	if reflect.ValueOf(children).Pointer() == reflect.ValueOf(node.children).Pointer() {
+		t.Errorf("children was not a copy: %p (%+v)", children, children)
 	}
 	if !maps.Equal(children, oldChildren) {
 		t.Errorf("children changed: %+v != %+v", children, oldChildren)

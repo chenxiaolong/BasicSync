@@ -617,7 +617,7 @@ func (sn *safNode) getChildren(opts *safOpts, allowFiles bool) (map[string]*safN
 
 	sn.updateChildrenLocked(opts, children, expiry.Unix())
 
-	return children, nil
+	return maps.Clone(children), nil
 }
 
 // Get the child node referenced by the specified relative path. ".." components
