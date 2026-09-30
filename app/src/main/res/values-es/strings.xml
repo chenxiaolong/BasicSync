@@ -229,4 +229,7 @@
     <string name="pref_show_details_name">Notificaciones detalladas</string>
     <string name="pref_show_details_desc">Mostrar el estado de las carpetas compartidas y los dispositivos conectados en las notificaciones persistentes.</string>
     <string name="pref_network_allow_roaming_name">Permitir datos móviles (roaming)</string>
+    <string name="pref_proxy_override_name">Anular ajustes proxy</string>
+    <string name="pref_proxy_override_desc">Usar proxy personalizado en vez del esecificado en los ajustes de Android.</string>
+    <string name="dialog_proxy_override_hint">URL proxy</string>
 </resources>
