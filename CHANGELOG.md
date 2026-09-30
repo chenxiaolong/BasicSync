@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.21
 
 * Fix logic error when listing the contents of a SAF directory with an expired cache ([Issue #263], [PR #264])
 * Reduce memory usage when traversing SAF path components ([Issue #263], [PR #265])
