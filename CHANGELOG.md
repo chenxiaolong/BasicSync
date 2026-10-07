@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update syncthing to 2.1.6 ([PR #269])
+
 ### Version 3.21
 
 * Fix logic error when listing the contents of a SAF directory with an expired cache ([Issue #263], [PR #264])
@@ -618,3 +622,4 @@
 [PR #262]: https://github.com/chenxiaolong/BasicSync/pull/262
 [PR #264]: https://github.com/chenxiaolong/BasicSync/pull/264
 [PR #265]: https://github.com/chenxiaolong/BasicSync/pull/265
+[PR #269]: https://github.com/chenxiaolong/BasicSync/pull/269
