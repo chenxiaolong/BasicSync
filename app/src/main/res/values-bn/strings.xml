@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_header_permissions">অনুমতিসমূহ</string>
+    <string name="pref_header_configuration">কনফিগারেশন</string>
+    <string name="pref_header_run_conditions">চালনার শর্তাবলি</string>
 </resources>
