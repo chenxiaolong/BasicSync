@@ -217,4 +217,8 @@
     <string name="pref_proxy_override_name">Proxy-Einstellungen übersteuern</string>
     <string name="pref_proxy_override_desc">Einen benutzerdefinierten Proxy anstelle des in den Android-Netzwerkeinstellungen angegebenen Proxys verwenden.</string>
     <string name="dialog_proxy_override_hint">Proxy-URL</string>
+    <string name="timestamp_stopped_at">• Zuletzt beendet: %s</string>
+    <string name="timestamp_starting_at">• Nächster Start: %s</string>
+    <string name="timestamp_stopping_at">• Nächster Stopp: %s</string>
+    <string name="timestamp_started_at">• Zuletzt gestartet: %s</string>
 </resources>
