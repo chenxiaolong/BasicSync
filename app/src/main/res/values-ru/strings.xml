@@ -247,4 +247,8 @@
     <string name="pref_proxy_override_name">Переопределить настройки прокси</string>
     <string name="pref_proxy_override_desc">Использовать собственный прокси-сервер вместо системного в настройках Android.</string>
     <string name="dialog_proxy_override_hint">Адрес прокси-сервера</string>
+    <string name="timestamp_started_at">• Время запуска: %s</string>
+    <string name="timestamp_stopped_at">• Время остановки: %s</string>
+    <string name="timestamp_starting_at">• Запланировано на %s</string>
+    <string name="timestamp_stopping_at">• Остановка в %s</string>
 </resources>
