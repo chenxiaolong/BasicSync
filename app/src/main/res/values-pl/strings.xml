@@ -247,4 +247,8 @@
     <string name="pref_proxy_override_name">Zastąp ustawienia serwera proxy</string>
     <string name="pref_proxy_override_desc">Użyj niestandardowego serwera proxy zamiast tego określonego w ustawieniach sieciowych systemu Android.</string>
     <string name="dialog_proxy_override_hint">Adres URL serwera proxy</string>
+    <string name="timestamp_started_at">• Uruchomiono o %s</string>
+    <string name="timestamp_stopped_at">• Zatrzymano o %s</string>
+    <string name="timestamp_starting_at">• Uruchomienie o %s</string>
+    <string name="timestamp_stopping_at">• Zatrzymanie o %s</string>
 </resources>
