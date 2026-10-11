@@ -217,4 +217,8 @@
     <string name="pref_proxy_override_name">Vekil sunucu ayarlarını geçersiz kıl</string>
     <string name="pref_proxy_override_desc">Android\'in ağ ayarlarında belirtilen vekil sunucu yerine özel bir vekil sunucu kullanın.</string>
     <string name="dialog_proxy_override_hint">Vekil sunucu URL\'si</string>
+    <string name="timestamp_started_at">• Başlatılma zamanı %s</string>
+    <string name="timestamp_stopped_at">• Durdurulma zamanı %s</string>
+    <string name="timestamp_starting_at">• Başlama zamanı %s</string>
+    <string name="timestamp_stopping_at">• Durma zamanı %s</string>
 </resources>
