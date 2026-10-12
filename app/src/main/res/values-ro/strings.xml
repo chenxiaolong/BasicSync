@@ -245,4 +245,8 @@
     <string name="pref_proxy_override_name">Suprascrie setările proxy</string>
     <string name="pref_proxy_override_desc">Folosește un proxy personalizat în locul proxy-ului specificat în setările de rețea ale Android.</string>
     <string name="dialog_proxy_override_hint">Adresa URL proxy</string>
+    <string name="timestamp_started_at">• A pornit la %s</string>
+    <string name="timestamp_stopped_at">• S-a oprit la %s</string>
+    <string name="timestamp_starting_at">• Va porni la %s</string>
+    <string name="timestamp_stopping_at">• Se va opri la %s</string>
 </resources>
