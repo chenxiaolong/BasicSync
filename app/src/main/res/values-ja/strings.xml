@@ -58,4 +58,14 @@
     </plurals>
     <string name="notification_action_exit">終了</string>
     <string name="pref_inhibit_battery_opt_desc">バックグラウンドで安定して実行するために必要です。</string>
+    <string name="pref_allow_local_network_name">ローカルネットワークアクセスを許可</string>
+    <string name="pref_local_storage_access_name">ローカルストレージアクセスを許可</string>
+    <string name="pref_saf_folder_access_name">フォルダーアクセスを許可</string>
+    <string name="pref_header_allowed_network_types">許可されているネットワークの種類</string>
+    <string name="pref_header_allowed_wifi_networks">許可されているWi-Fiネットワーク</string>
+    <string name="pref_header_available_wifi_networks">利用可能なWi-Fiネットワーク</string>
+    <string name="action_details">詳細</string>
+    <string name="dialog_error_details_title">エラーの詳細</string>
+    <string name="web_ui_select_folder">フォルダーを選択</string>
+    <string name="web_ui_scan_qr_code">QRコードをスキャン</string>
 </resources>
