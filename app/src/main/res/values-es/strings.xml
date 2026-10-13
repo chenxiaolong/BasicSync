@@ -232,4 +232,8 @@
     <string name="pref_proxy_override_name">Anular ajustes proxy</string>
     <string name="pref_proxy_override_desc">Usar proxy personalizado en vez del esecificado en los ajustes de Android.</string>
     <string name="dialog_proxy_override_hint">URL proxy</string>
+    <string name="timestamp_started_at">• Iniciado: %s</string>
+    <string name="timestamp_stopped_at">• Detenido: %s</string>
+    <string name="timestamp_starting_at">• Próximo inicio: %s</string>
+    <string name="timestamp_stopping_at">• Próxima detención: %s</string>
 </resources>
