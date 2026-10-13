@@ -232,4 +232,8 @@
     <string name="dialog_proxy_override_hint">URL proxy</string>
     <string name="pref_proxy_override_name">Ignora le impostazioni proxy</string>
     <string name="pref_proxy_override_desc">Utilizza un proxy personalizzato invece del proxy specificato nelle impostazioni di rete di Android.</string>
+    <string name="timestamp_started_at">• Avviato il %s</string>
+    <string name="timestamp_stopped_at">• Fermato il %s</string>
+    <string name="timestamp_starting_at">• In avvio il %s</string>
+    <string name="timestamp_stopping_at">• In arresto il %s</string>
 </resources>
