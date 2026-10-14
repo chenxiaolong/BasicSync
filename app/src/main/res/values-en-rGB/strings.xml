@@ -32,4 +32,11 @@
     <string name="pref_allow_local_network_desc">Needed to connect to devices on the local network directly instead of passing through Syncthing\'s relay servers.</string>
     <string name="pref_local_storage_access_desc">Needed for Syncthing to have direct file access to internal and external storage.</string>
     <string name="pref_saf_folder_access_name">Allow folder access</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="one">%d file encountered a conflict during syncing.</item>
+        <item quantity="other">%d files encountered conflicts during syncing.</item>
+    </plurals>
+    <string name="pref_respect_battery_saver_name">Respect battery saver mode</string>
+    <string name="pref_respect_battery_saver_desc">Only run when Android\'s battery saver mode is disabled.</string>
+    <string name="pref_respect_auto_sync_data_name">Respect auto-sync data setting</string>
 </resources>
