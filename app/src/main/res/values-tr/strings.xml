@@ -22,7 +22,7 @@
     <string name="pref_save_logs_name">Günlükleri kaydet</string>
     <string name="pref_export_configuration_desc">Şu anki Syncthing yapılandırmasını zip dosyasına aktarın.</string>
     <string name="pref_service_status_name">Syncthing durumu</string>
-    <string name="pref_auto_mode_name">Otomatik mod</string>
+    <string name="pref_auto_mode_name">Otomatik modu</string>
     <string name="pref_auto_mode_desc">Belirtilen koşullara göre otomatik olarak başlatın ve durdurun.</string>
     <string name="pref_network_conditions_name">Ağ koşulları</string>
     <string name="pref_network_conditions_desc">Belirli ağ türlerine veya kablosuz (Wi-Fi) ağlara bağlanıldığında çalıştırın.</string>
@@ -37,7 +37,7 @@
     <string name="pref_keep_alive_name">Syncthing\'i canlı tut</string>
     <string name="pref_keep_alive_desc">Syncthing\'in çalışmaması gerektiğinde kapatmak yerine duraklatın. Bu, başlangıçta büyük klasörleri tararken olası performans düşüşünü önler.</string>
     <string name="pref_remote_control_name">Uzaktan denetime izin ver</string>
-    <string name="pref_remote_control_desc">Harici uygulamaların otomatik moda geçmesine veya Syncthing\'i el ile başlatmasına ve durdurmasına izin verin.</string>
+    <string name="pref_remote_control_desc">Harici uygulamaların otomatik moduna geçmesine veya Syncthing\'i el ile başlatmasına ve durdurmasına izin verin.</string>
     <string name="pref_version_name">Sürüm</string>
     <string name="pref_save_logs_desc">Logcat günlüklerini bir dosyaya kaydedin.</string>
     <string name="pref_header_allowed_network_types">İzin verilen ağ türleri</string>
@@ -160,8 +160,8 @@
     <string name="alert_documentsui_not_found">Android\'in yerleşik dosya yöneticisi (DocumentsUI) kullanılabilir değil.</string>
     <string name="alert_tv_inhibit_battery_opt">\"Pil\" optimizasyonlarını etkisizleştirmek, Android TV\'de elle adımlar gerektirir.</string>
     <string name="alert_tv_inhibit_battery_opt_details">Android TV\'de \"pil\" optimizasyonlarını etkisizleştirecek bir kullanıcı arayüzü yoktur, ancak Syncthing\'i arka planda güvenilir bir şekilde çalıştırmak için yine de gereklidir. Bu, aşağıdaki adb komutunu çalıştırarak yapılmak zorundadır.</string>
-    <string name="pref_allow_auto_mode_name">Otomatik moda izin ver</string>
-    <string name="pref_allow_auto_mode_desc">Etkisizleştirildiğinde tüm otomatik mod işlevselliği uygulamadan, bildirimden ve hızlı ayarlar kutucuğundan tamamen kaldırılır.</string>
+    <string name="pref_allow_auto_mode_name">Otomatik moduna izin ver</string>
+    <string name="pref_allow_auto_mode_desc">Etkisizleştirildiğinde tüm otomatik modu işlevselliği uygulamadan, bildirimden ve hızlı ayarlar kutucuğundan tamamen kaldırılır.</string>
     <plurals name="folder_state_idle">
         <item quantity="one">• %d klasör güncel</item>
         <item quantity="other">• %d klasör güncel</item>
