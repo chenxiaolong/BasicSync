@@ -215,4 +215,8 @@
     <string name="pref_proxy_override_name">覆寫 Proxy 設定</string>
     <string name="pref_proxy_override_desc">使用自訂 Proxy，而非 Android 網路設定中指定的 Proxy。</string>
     <string name="dialog_proxy_override_hint">Proxy URL</string>
+    <string name="timestamp_started_at">• 啟動於 %s</string>
+    <string name="timestamp_stopped_at">• 停止於 %s</string>
+    <string name="timestamp_stopping_at">• 將停止於 %s</string>
+    <string name="timestamp_starting_at">• 將啟動於 %s</string>
 </resources>
