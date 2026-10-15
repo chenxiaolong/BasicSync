@@ -247,4 +247,8 @@
     <string name="pref_proxy_override_desc">Використати власний проксі замість вказаного в параметрах мережі Android.</string>
     <string name="pref_network_allow_roaming_name">Дозволити мобільні дані (роумінг)</string>
     <string name="dialog_proxy_override_hint">URL-адреса проксі</string>
+    <string name="timestamp_started_at">• Час запуску: %s</string>
+    <string name="timestamp_stopped_at">• Час зупинки: %s</string>
+    <string name="timestamp_starting_at">• Заплановано на %s</string>
+    <string name="timestamp_stopping_at">• Зупинка о %s</string>
 </resources>
