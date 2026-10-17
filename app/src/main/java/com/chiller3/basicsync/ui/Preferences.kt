@@ -26,7 +26,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberOverscrollEffect
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItemColors
 import androidx.compose.material3.ListItemDefaults
@@ -58,7 +57,6 @@ import androidx.compose.ui.unit.dp
 import com.chiller3.basicsync.Preferences
 import com.chiller3.basicsync.ui.theme.Icons
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 object PreferenceDefaults {
     val HorizontalPadding = 16.dp
     val SegmentedGap = ListItemDefaults.SegmentedGap
@@ -168,7 +166,6 @@ fun PreferenceCategory(
     }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun Preference(
     onClick: () -> Unit,
@@ -220,7 +217,6 @@ private fun PreferenceSwitch(
     )
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SwitchPreference(
     checked: Boolean,
@@ -266,7 +262,6 @@ fun SwitchPreference(
     )
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SplitSwitchPreference(
     onClick: () -> Unit,

@@ -10,7 +10,6 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.os.BatteryManager
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -91,7 +90,6 @@ fun SyncScheduleScreen(onBack: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SyncScheduleContent(
     syncSchedule: Boolean,

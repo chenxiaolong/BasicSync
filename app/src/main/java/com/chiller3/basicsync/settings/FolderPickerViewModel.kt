@@ -234,14 +234,10 @@ class FolderPickerViewModel(context: Context, initialPath: File) : ViewModel() {
             )
         }
 
-        val writable = if (newCwd == VIRTUAL_ROOT) {
+        val writable = newCwd != VIRTUAL_ROOT && try {
+            Os.access(newCwd.path, OsConstants.W_OK)
+        } catch (_: ErrnoException) {
             false
-        } else {
-            try {
-                Os.access(newCwd.path, OsConstants.W_OK)
-            } catch (_: ErrnoException) {
-                false
-            }
         }
 
         if (SUPPORTS_INOTIFY && newCwd != cwd) {

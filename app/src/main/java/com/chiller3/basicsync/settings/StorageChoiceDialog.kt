@@ -8,7 +8,6 @@ package com.chiller3.basicsync.settings
 import android.os.Parcelable
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -25,7 +24,6 @@ enum class StorageChoice : Parcelable {
     SAF,
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun StorageChoiceDialog(
     onSelect: (StorageChoice) -> Unit,
