@@ -72,7 +72,7 @@ The app is intentionally kept very basic so that the project is easy to maintain
 
 Syncthing listens on the loopback interface and is available via `127.0.0.1:8384` by default. BasicSync will try to use the same port on every start, but will automatically pick a new random port if there is a conflict. The current port number can be found in Web UI -> Actions -> Settings -> GUI. HTTPS and basic authentication are both forcibly enabled every time Syncthing starts.
 
-For basic authentication, the password is the API token. Generating new API tokens is supported, but setting an arbitrary password is not. BasicSync will internally set the password to the API token on every start.
+For basic authentication, the default password is the API token. Changing the password is supported, but it may require logging in once when accessing the web UI within the app.
 
 ## Storage access framework
 

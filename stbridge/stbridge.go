@@ -991,13 +991,7 @@ func Run(startup *SyncthingStartupConfig) error {
 			log.Printf("Setting API key to random string")
 			c.GUI.APIKey = rand.String(32)
 		}
-
-		// There is no good way to set "X-Api-Key" nor "Authorization: Bearer"
-		// in Android's WebView. The only way to pass in additional headers is
-		// when calling the initial loadUrl() and basic authentication is the
-		// only method that'll persist in the session. We'll force the password
-		// to be the API key so that we always know its value.
-		if c.GUI.CompareHashedPassword(c.GUI.APIKey) != nil {
+		if len(c.GUI.Password) == 0 {
 			log.Printf("Setting password to API key")
 			c.GUI.SetPassword(c.GUI.APIKey)
 		}

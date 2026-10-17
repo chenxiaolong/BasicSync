@@ -150,10 +150,6 @@ const actionsToHide = new Set([
 // There are many other ways the user can shoot themselves in the foot, like by syncing xattrs, but
 // we'll only discourage messing with settings that break the configuration web UI.
 const settingsToDisable = new Set([
-    // The webview requires the password to be the API key because there's no sane way to inject
-    // custom headers, so we need basic auth. Hide the password field to reduce the chance of users
-    // breaking their setup (until the next restart when the password is forcibly changed back).
-    'password',
     // Android blocks HTTP by default and we don't override this restriction.
     'UseTLS',
     // Cannot work on Android.
