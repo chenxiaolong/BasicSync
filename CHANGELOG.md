@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.23
 
 * Show state transition timestamps in notification body ([Issue #268], [PR #272])
 * Allow changing the web UI password ([PR #273])
