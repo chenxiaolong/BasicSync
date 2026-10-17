@@ -11,6 +11,7 @@
 
 * Show state transition timestamps in notification body ([Issue #268], [PR #272])
 * Allow changing the web UI password ([PR #273])
+* Update dependencies ([PR #274])
 
 ### Version 3.22
 
@@ -633,3 +634,4 @@
 [PR #269]: https://github.com/chenxiaolong/BasicSync/pull/269
 [PR #272]: https://github.com/chenxiaolong/BasicSync/pull/272
 [PR #273]: https://github.com/chenxiaolong/BasicSync/pull/273
+[PR #274]: https://github.com/chenxiaolong/BasicSync/pull/274
