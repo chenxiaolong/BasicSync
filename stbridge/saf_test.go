@@ -1029,7 +1029,7 @@ func TestRemoveAll(t *testing.T) {
 	}
 }
 
-func TestRename(t *testing.T) {
+func TestRenameMissing(t *testing.T) {
 	watchManager := &safWatchManager{}
 	node := &safNode{
 		uri:            "0",
@@ -1066,6 +1066,9 @@ func TestRename(t *testing.T) {
 	}
 
 	client, opts := newTestClient()
+	client.queryChildDocumentsJson = func(documentUri string) (string, error) {
+		return fileInfoListJson(), nil
+	}
 	client.moveDocument = func(sourceDocumentUri, sourceParentDocumentUri, targetParentDocumentUri string) (string, error) {
 		if sourceDocumentUri != "a" {
 			t.Errorf("invalid source: %q", sourceDocumentUri)
@@ -1103,6 +1106,76 @@ func TestRename(t *testing.T) {
 	}
 	if _, err := node.Rename(opts, "1", ""); !errors.Is(err, os.ErrInvalid) {
 		t.Errorf("replacing root did not fail with EINVAL: %+v", err)
+	}
+}
+
+func TestRenameExists(t *testing.T) {
+	watchManager := &safWatchManager{}
+	node := &safNode{
+		uri:            "0",
+		infoExpiry:     safNotExpired,
+		children:       makeChildren(true),
+		childrenExpiry: safNotExpired,
+		watchManager:   watchManager,
+	}
+	node.children["1"] = &safNode{
+		parent:         node,
+		uri:            "1",
+		name:           "1",
+		infoExpiry:     safNotExpired,
+		children:       makeChildren(false),
+		childrenExpiry: safNotExpired,
+		watchManager:   watchManager,
+	}
+	node.children["2"] = &safNode{
+		parent:         node,
+		uri:            "2",
+		name:           "2",
+		infoExpiry:     safNotExpired,
+		children:       makeChildren(false),
+		childrenExpiry: safExpired,
+		watchManager:   watchManager,
+	}
+
+	client, opts := newTestClient()
+	client.queryChildDocumentsJson = func(documentUri string) (string, error) {
+		info1 := &safFileInfo{
+			Uri:    node.children["1"].uri,
+			Name_:  node.children["1"].name,
+			IsDir_: node.children != nil,
+		}
+		info2 := &safFileInfo{
+			Uri:    node.children["2"].uri,
+			Name_:  node.children["2"].name,
+			IsDir_: node.children != nil,
+		}
+
+		return fileInfoListJson(info1, info2), nil
+	}
+	client.renameDocument = func(documentUri, name string) (string, error) {
+		if documentUri != "2" {
+			t.Errorf("invalid document: %q", documentUri)
+		}
+		if name != "1" {
+			t.Errorf("invalid name: %q", name)
+		}
+		return name, nil
+	}
+	client.deleteDocument = func(documentUri string) error {
+		if documentUri != "1" {
+			t.Errorf("invalid document: %q", documentUri)
+		}
+		return nil
+	}
+
+	oldChild := node.children["2"]
+
+	child, err := node.Rename(opts, "2", "1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if child == oldChild {
+		t.Errorf("child did not change despite URI changing")
 	}
 }
 

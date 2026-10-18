@@ -1088,6 +1088,24 @@ func (sn *safNode) Rename(opts *safOpts, oldname string, newname string) (*safNo
 	}
 
 	if oldChildName != newChildName {
+		existingChild, err := newParent.getChild(opts, newChildName)
+		if err == nil {
+			// We need to manually delete the target file because AOSP's
+			// FileSystemProvider's renameDocument() implementation tries to
+			// build a unique filename (with numeric counter) when a rename
+			// would replace an existing file, same as when creating a new file.
+			//
+			// This makes atomic renames non-atomic, but it's impossible to
+			// avoid that. This fixes operations in Syncthing that use its
+			// AtomicWriter type, like when modifying .stignore.
+			err = opts.client.DeleteDocument(existingChild.uri)
+			if err != nil {
+				log.Printf("failed to delete existing file during rename: %q: %v", existingChild.uri, err)
+			}
+		} else if !errors.Is(err, os.ErrNotExist) {
+			return nil, wrapAsNotFound(err)
+		}
+
 		newChildUri, err := opts.client.RenameDocument(child.uri, newChildName)
 		if err != nil {
 			return nil, wrapAsNotFound(err)
