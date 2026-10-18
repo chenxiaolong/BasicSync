@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.24
 
 * Work around Android issue that causes ` (#).stignore` files to be created when editing ignore patterns for shared folders that use SAF ([Issue #275], [PR #276])
 
