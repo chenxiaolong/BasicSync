@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Work around Android issue that causes ` (#).stignore` files to be created when editing ignore patterns for shared folders that use SAF ([Issue #275], [PR #276])
+
 ### Version 3.23
 
 * Show state transition timestamps in notification body ([Issue #268], [PR #272])
@@ -445,6 +449,7 @@
 [Issue #258]: https://github.com/chenxiaolong/BasicSync/issues/258
 [Issue #263]: https://github.com/chenxiaolong/BasicSync/issues/263
 [Issue #268]: https://github.com/chenxiaolong/BasicSync/issues/268
+[Issue #275]: https://github.com/chenxiaolong/BasicSync/issues/275
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -637,3 +642,4 @@
 [PR #272]: https://github.com/chenxiaolong/BasicSync/pull/272
 [PR #273]: https://github.com/chenxiaolong/BasicSync/pull/273
 [PR #274]: https://github.com/chenxiaolong/BasicSync/pull/274
+[PR #276]: https://github.com/chenxiaolong/BasicSync/pull/276
