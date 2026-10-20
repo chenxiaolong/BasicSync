@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Only show "Started at"/"Stopped at" in the notification when the sync schedule feature is enabled ([PR #277])
+
 ### Version 3.24
 
 * Work around Android issue that causes ` (#).stignore` files to be created when editing ignore patterns for shared folders that use SAF ([Issue #275], [PR #276])
@@ -643,3 +647,4 @@
 [PR #273]: https://github.com/chenxiaolong/BasicSync/pull/273
 [PR #274]: https://github.com/chenxiaolong/BasicSync/pull/274
 [PR #276]: https://github.com/chenxiaolong/BasicSync/pull/276
+[PR #277]: https://github.com/chenxiaolong/BasicSync/pull/277
