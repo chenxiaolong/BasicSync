@@ -10,6 +10,8 @@
 ### Unreleased
 
 * Only show "Started at"/"Stopped at" in the notification when the sync schedule feature is enabled ([PR #277])
+* Update golang to 1.27.3 for [CVE-2026-111943](https://github.com/golang/go/issues/82345) ([PR #278])
+  * Some of emSign's intermediate CA certificates are being distrusted due to a not-yet-disclosed [security incident](https://github.com/certifi/python-certifi/issues/439).
 
 ### Version 3.24
 
@@ -648,3 +650,4 @@
 [PR #274]: https://github.com/chenxiaolong/BasicSync/pull/274
 [PR #276]: https://github.com/chenxiaolong/BasicSync/pull/276
 [PR #277]: https://github.com/chenxiaolong/BasicSync/pull/277
+[PR #278]: https://github.com/chenxiaolong/BasicSync/pull/278
