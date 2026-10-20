@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.25
 
 * Only show "Started at"/"Stopped at" in the notification when the sync schedule feature is enabled ([PR #277])
 * Update golang to 1.27.3 for [CVE-2026-111943](https://github.com/golang/go/issues/82345) ([PR #278])
