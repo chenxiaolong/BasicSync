@@ -734,7 +734,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             val serviceState = ServiceState(
                 keepAlive = prefs.keepAlive,
                 blockedReasons = blockedReasons,
-                lastTransition = lastTransition,
+                lastTransition = lastTransition.takeIf { deviceState.nextTransition != null },
                 nextTransition = deviceState.nextTransition.takeIf { !isManualMode },
                 isStarted = isStarted,
                 isResumed = isResumed,
