@@ -11,7 +11,7 @@
 
 * Only show "Started at"/"Stopped at" in the notification when the sync schedule feature is enabled ([PR #277])
 * Update golang to 1.27.3 for [CVE-2026-111943](https://github.com/golang/go/issues/82345) ([PR #278])
-  * Some of emSign's intermediate CA certificates are being distrusted due to a not-yet-disclosed [security incident](https://github.com/certifi/python-certifi/issues/439).
+  * Several of eMudhra's intermediate CA certificates are being distrusted due to [their private keys being trivially discoverable](https://bugzilla.mozilla.org/show_bug.cgi?id=2083449).
 
 ### Version 3.24
 
