@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Update Syncthing to 2.1.7 ([PR #279])
+
 ### Version 3.25
 
 * Only show "Started at"/"Stopped at" in the notification when the sync schedule feature is enabled ([PR #277])
@@ -651,3 +655,4 @@
 [PR #276]: https://github.com/chenxiaolong/BasicSync/pull/276
 [PR #277]: https://github.com/chenxiaolong/BasicSync/pull/277
 [PR #278]: https://github.com/chenxiaolong/BasicSync/pull/278
+[PR #279]: https://github.com/chenxiaolong/BasicSync/pull/279
