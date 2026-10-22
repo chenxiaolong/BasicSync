@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.26
 
 * Update Syncthing to 2.1.7 ([PR #279])
 
