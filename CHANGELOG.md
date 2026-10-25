@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Fix detection of empty password for imported configs ([Issue #281], [PR #282])
+* Only close the web UI instead of the whole app UI if Syncthing restarts ([PR #283])
 
 ### Version 3.26
 
@@ -662,3 +663,4 @@
 [PR #278]: https://github.com/chenxiaolong/BasicSync/pull/278
 [PR #279]: https://github.com/chenxiaolong/BasicSync/pull/279
 [PR #282]: https://github.com/chenxiaolong/BasicSync/pull/282
+[PR #283]: https://github.com/chenxiaolong/BasicSync/pull/283
