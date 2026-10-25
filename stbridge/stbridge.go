@@ -991,7 +991,7 @@ func Run(startup *SyncthingStartupConfig) error {
 			log.Printf("Setting API key to random string")
 			c.GUI.APIKey = rand.String(32)
 		}
-		if len(c.GUI.Password) == 0 {
+		if len(c.GUI.Password) == 0 || c.GUI.CompareHashedPassword("") == nil {
 			log.Printf("Setting password to API key")
 			c.GUI.SetPassword(c.GUI.APIKey)
 		}
