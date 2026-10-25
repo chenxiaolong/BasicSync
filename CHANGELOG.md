@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Fix detection of empty password for imported configs ([Issue #281], [PR #282])
+
 ### Version 3.26
 
 * Update Syncthing to 2.1.7 ([PR #279])
@@ -460,6 +464,7 @@
 [Issue #263]: https://github.com/chenxiaolong/BasicSync/issues/263
 [Issue #268]: https://github.com/chenxiaolong/BasicSync/issues/268
 [Issue #275]: https://github.com/chenxiaolong/BasicSync/issues/275
+[Issue #281]: https://github.com/chenxiaolong/BasicSync/issues/281
 [PR #2]: https://github.com/chenxiaolong/BasicSync/pull/2
 [PR #3]: https://github.com/chenxiaolong/BasicSync/pull/3
 [PR #4]: https://github.com/chenxiaolong/BasicSync/pull/4
@@ -656,3 +661,4 @@
 [PR #277]: https://github.com/chenxiaolong/BasicSync/pull/277
 [PR #278]: https://github.com/chenxiaolong/BasicSync/pull/278
 [PR #279]: https://github.com/chenxiaolong/BasicSync/pull/279
+[PR #282]: https://github.com/chenxiaolong/BasicSync/pull/282
