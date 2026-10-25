@@ -16,7 +16,10 @@ class WebUiActivity : BaseActivity() {
 
         setContent {
             AppTheme {
-                WebUiScreen(onExit = ::finishAffinity)
+                WebUiScreen(
+                    onClose = ::finish,
+                    onExit = ::finishAffinity,
+                )
             }
         }
     }

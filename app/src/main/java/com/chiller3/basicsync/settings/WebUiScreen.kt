@@ -92,7 +92,10 @@ private fun jsEscape(s: String) = buildString {
 }
 
 @Composable
-fun WebUiScreen(onExit: () -> Unit) {
+fun WebUiScreen(
+    onClose: () -> Unit,
+    onExit: () -> Unit,
+) {
     val context = LocalContext.current
     val resources = LocalResources.current
 
@@ -137,7 +140,7 @@ fun WebUiScreen(onExit: () -> Unit) {
                 guiInfo: SyncthingService.GuiInfo?,
             ) {
                 if (!state.runState.webUiAvailable) {
-                    onExit()
+                    onClose()
                 }
 
                 if (guiInfo != null && webView.url == null) {
