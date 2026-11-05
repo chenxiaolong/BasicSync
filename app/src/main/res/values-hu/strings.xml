@@ -134,4 +134,104 @@
         <item quantity="one">%d óra</item>
         <item quantity="other">%d óra</item>
     </plurals>
+    <string name="pref_header_advanced">Speciális</string>
+    <string name="pref_remote_control_name">Távvezérlés engedélyezése</string>
+    <string name="pref_remote_control_desc">Lehetővé teszi, hogy külső alkalmazások automatikus módra váltsanak, vagy kézzel elindítsák és leállítsák a Syncthinget.</string>
+    <string name="blocked_reason_no_storage_permissions">• A tárhely-hozzáférési engedélyek megtagadva</string>
+    <string name="pref_conflicts_name">Szinkronizálási ütközések</string>
+    <plurals name="pref_conflicts_desc">
+        <item quantity="one">%d fájlnál ütközés történt a szinkronizálás során.</item>
+        <item quantity="other">%d fájlnál ütközés történt a szinkronizálás során.</item>
+    </plurals>
+    <string name="pref_conflicts_info">Az alábbi fájloknál ütközés történt a szinkronizálás során, ezeket kézzel kell feloldani. Válasszon ki egy fájlt a szülőkönyvtárának megnyitásához a rendszer fájlkezelőjében.</string>
+    <string name="notification_channel_conflicts_name">Szinkronizálási ütközések</string>
+    <string name="notification_channel_conflicts_desc">Értesítések a szinkronizálás során észlelt ütközésekről</string>
+    <plurals name="notification_conflicts_title">
+        <item quantity="one">%d szinkronizálási ütközés található</item>
+        <item quantity="other">%d szinkronizálási ütközés található</item>
+    </plurals>
+    <string name="pref_show_exit_name">Kilépés gomb megjelenítése</string>
+    <string name="pref_show_exit_desc">Kilépés gomb megjelenítése az állandó értesítésben. Az alkalmazás újraindítás után vagy távvezérlési parancs fogadásakor automatikusan újra elindul.</string>
+    <string name="notification_action_exit">Kilépés</string>
+    <string name="pref_sync_schedule_battery_only_name">Időzítés használata csak akkumulátorról</string>
+    <string name="pref_sync_schedule_battery_only_desc">Töltőre csatlakoztatva az időzítés figyelmen kívül marad.</string>
+    <string name="pref_sync_schedule_settings_name">Szinkronizálás időzítése</string>
+    <string name="pref_sync_schedule_settings_desc">A Syncthing rendszeres futtatása rögzített időköz alapján.</string>
+    <string name="pref_sync_schedule_idle_name">Korai leállítás tétlenség esetén</string>
+    <string name="pref_sync_schedule_idle_desc">A Syncthing leállítása a szinkronizálási időablak vége előtt, ha legalább egy eszköz csatlakozott, és az összes mappa %1$s óta tétlen.</string>
+    <string name="dialog_sync_schedule_hint_idle">Tétlenség időtartama</string>
+    <string name="quick_settings_tile_auto_mode">Automatikus mód</string>
+    <string name="quick_settings_tile_manual_mode_started">Kézzel elindítva</string>
+    <string name="quick_settings_tile_manual_mode_stopped">Kézzel leállítva</string>
+    <string name="notification_channel_alerts_name">Syncthing-riasztások</string>
+    <string name="notification_channel_alerts_desc">A Syncthing által jelzett eszköz- és mappakérések, valamint egyéb riasztások</string>
+    <plurals name="notification_syncthing_alerts_title">
+        <item quantity="one">%d Syncthing-riasztás</item>
+        <item quantity="other">%d Syncthing-riasztás</item>
+    </plurals>
+    <string name="alert_browser_not_found">Nem érhető el webböngésző.</string>
+    <string name="alert_documentsui_not_found">Az Android beépített fájlkezelője (DocumentsUI) nem érhető el.</string>
+    <string name="alert_tv_inhibit_battery_opt">Az \"akkumulátor\"-optimalizálás letiltása Android TV-n kézi lépéseket igényel.</string>
+    <string name="alert_tv_inhibit_battery_opt_details">Az Android TV-n nincs felület az \"akkumulátor\"-optimalizálás letiltásához, de ez továbbra is szükséges ahhoz, hogy a Syncthing megbízhatóan fusson a háttérben. Ezt a következő adb-parancs futtatásával kell elvégezni.</string>
+    <string name="pref_allow_auto_mode_name">Automatikus mód engedélyezése</string>
+    <string name="pref_allow_auto_mode_desc">Letiltva az automatikus mód minden funkciója teljesen eltűnik az alkalmazásból, az értesítésből és a gyorsbeállítások csempéjéből.</string>
+    <plurals name="folder_state_idle">
+        <item quantity="one">• %d mappa naprakész</item>
+        <item quantity="other">• %d mappa naprakész</item>
+    </plurals>
+    <plurals name="folder_state_scanning">
+        <item quantity="one">• %d mappa átnézése folyamatban</item>
+        <item quantity="other">• %d mappa átnézése folyamatban</item>
+    </plurals>
+    <plurals name="folder_state_syncing">
+        <item quantity="one">• %d mappa szinkronizálása folyamatban</item>
+        <item quantity="other">• %d mappa szinkronizálása folyamatban</item>
+    </plurals>
+    <plurals name="folder_state_cleaning">
+        <item quantity="one">• %d mappa régi fájljainak törlése folyamatban</item>
+        <item quantity="other">• %d mappa régi fájljainak törlése folyamatban</item>
+    </plurals>
+    <plurals name="folder_state_errored">
+        <item quantity="one">• %d mappa hibás</item>
+        <item quantity="other">• %d mappa hibás</item>
+    </plurals>
+    <plurals name="folder_state_starting">
+        <item quantity="one">• %d mappa indul</item>
+        <item quantity="other">• %d mappa indul</item>
+    </plurals>
+    <plurals name="device_state_connected">
+        <item quantity="one">• %d eszköz csatlakozva</item>
+        <item quantity="other">• %d eszköz csatlakozva</item>
+    </plurals>
+    <plurals name="device_state_syncing">
+        <item quantity="one">• %d eszköz szinkronizál</item>
+        <item quantity="other">• %d eszköz szinkronizál</item>
+    </plurals>
+    <plurals name="device_state_pending">
+        <item quantity="one">• %d eszköz szinkronizálásra vár</item>
+        <item quantity="other">• %d eszköz szinkronizálásra vár</item>
+    </plurals>
+    <string name="dialog_storage_type_title">Tárhely típusa</string>
+    <string name="pref_allow_local_network_name">Helyi hálózati hozzáférés engedélyezése</string>
+    <string name="pref_allow_local_network_desc">Szükséges ahhoz, hogy a helyi hálózaton lévő eszközökhöz közvetlenül kapcsolódjon a Syncthing közvetítőszerverei helyett.</string>
+    <string name="pref_start_on_boot_name">Indítás rendszerindításkor</string>
+    <string name="pref_start_on_boot_desc">Az alkalmazás automatikus indítása újraindítás után.</string>
+    <string name="notification_channel_persistent_name_started">Állandó értesítés futás közben</string>
+    <string name="notification_channel_persistent_name_stopped">Állandó értesítés leállított állapotban</string>
+    <string name="pref_saf_folder_access_name">Mappahozzáférés engedélyezése</string>
+    <string name="dialog_storage_type_local_title">Közvetlen fájlhozzáférés</string>
+    <string name="dialog_storage_type_local_desc">Az \"összes fájl elérése\" engedélyt igényli, de hatékonyabb, és jobban kompatibilis a Syncthinggel.</string>
+    <string name="dialog_storage_type_saf_title">Storage Access Framework (tárhely-hozzáférési keretrendszer)</string>
+    <string name="dialog_storage_type_saf_desc">Csak a kiválasztott mappához ad engedélyt, de lassabb, és váratlan szinkronizálási hibákat okozhat.</string>
+    <string name="pref_header_notifications">Értesítések</string>
+    <string name="pref_show_details_name">Részletes értesítések</string>
+    <string name="pref_show_details_desc">A megosztott mappák és a csatlakozott eszközök állapotának megjelenítése az állandó értesítésben.</string>
+    <string name="pref_network_allow_roaming_name">Mobil adatforgalom engedélyezése (barangolás)</string>
+    <string name="pref_proxy_override_name">Proxybeállítások felülbírálása</string>
+    <string name="pref_proxy_override_desc">Egyéni proxy használata az Android hálózati beállításaiban megadott proxy helyett.</string>
+    <string name="dialog_proxy_override_hint">Proxy URL-je</string>
+    <string name="timestamp_started_at">• Elindítva: %s</string>
+    <string name="timestamp_stopped_at">• Leállítva: %s</string>
+    <string name="timestamp_starting_at">• Indítás: %s</string>
+    <string name="timestamp_stopping_at">• Leállítás: %s</string>
 </resources>
