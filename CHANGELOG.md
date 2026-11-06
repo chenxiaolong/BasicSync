@@ -11,6 +11,7 @@
 
 * Add support for receiving broadcast/multicast announcement packets when local discovery is enabled ([PR #287])
 * Update dependencies ([PR #288])
+* Sync translations from Weblate ([PR #289])
 
 ### Version 3.27
 
@@ -671,3 +672,4 @@
 [PR #283]: https://github.com/chenxiaolong/BasicSync/pull/283
 [PR #287]: https://github.com/chenxiaolong/BasicSync/pull/287
 [PR #288]: https://github.com/chenxiaolong/BasicSync/pull/288
+[PR #289]: https://github.com/chenxiaolong/BasicSync/pull/289
