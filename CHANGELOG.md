@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add support for receiving broadcast/multicast announcement packets when local discovery is enabled ([PR #287])
+
 ### Version 3.27
 
 * Fix detection of empty password for imported configs ([Issue #281], [PR #282])
@@ -664,3 +668,4 @@
 [PR #279]: https://github.com/chenxiaolong/BasicSync/pull/279
 [PR #282]: https://github.com/chenxiaolong/BasicSync/pull/282
 [PR #283]: https://github.com/chenxiaolong/BasicSync/pull/283
+[PR #287]: https://github.com/chenxiaolong/BasicSync/pull/287
