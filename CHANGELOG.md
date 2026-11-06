@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Add support for receiving broadcast/multicast announcement packets when local discovery is enabled ([PR #287])
+* Update dependencies ([PR #288])
 
 ### Version 3.27
 
@@ -669,3 +670,4 @@
 [PR #282]: https://github.com/chenxiaolong/BasicSync/pull/282
 [PR #283]: https://github.com/chenxiaolong/BasicSync/pull/283
 [PR #287]: https://github.com/chenxiaolong/BasicSync/pull/287
+[PR #288]: https://github.com/chenxiaolong/BasicSync/pull/288
