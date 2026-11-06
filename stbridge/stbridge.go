@@ -306,6 +306,9 @@ type SyncthingStatusReceiver interface {
 	OnSyncthingStopped(app *SyncthingApp)
 
 	// Can be sent before OnSyncthingStarted, but not after OnSyncthingStopped.
+	OnLocalDiscoveryEnabled(enabled bool)
+
+	// Can be sent before OnSyncthingStarted, but not after OnSyncthingStopped.
 	OnConflictsUpdated(local0Sep string, safChildParent0Sep string)
 
 	OnRemoteFileUpdated(path string, isDelete bool)
@@ -751,6 +754,8 @@ func eventLoop(
 			case events.ConfigSaved:
 				cfg := evt.Data.(config.Configuration)
 
+				receiver.OnLocalDiscoveryEnabled(cfg.Options.LocalAnnEnabled2)
+
 				clear(fileStateInfo.folderPaths)
 				clear(fileStateInfo.filesystemTypes)
 
@@ -833,6 +838,8 @@ func startEventLoop(
 	allLocalFiles allLocalFilesFunc,
 	receiver SyncthingStatusReceiver,
 ) error {
+	receiver.OnLocalDiscoveryEnabled(cfg.Options().LocalAnnEnabled2)
+
 	fileStateInfo := fileStateInfo{
 		conflictsByFolder: map[string]map[string]struct{}{},
 		folderPaths:       map[string]string{},

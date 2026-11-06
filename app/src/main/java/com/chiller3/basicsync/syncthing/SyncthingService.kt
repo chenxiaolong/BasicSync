@@ -13,6 +13,7 @@ import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.net.wifi.WifiManager
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
@@ -432,6 +433,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
     private lateinit var prefs: Preferences
     private lateinit var notifications: Notifications
+    private lateinit var multicastLock: WifiManager.MulticastLock
     private val mediaScanner = MediaScannerConnection(this, null)
     private val runnerThread = Thread(::runner)
 
@@ -484,6 +486,8 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     private var syncthingApp: SyncthingApp? = null
     @GuardedBy("stateLock")
     private var lastTransition: ScheduleEvent? = null
+    @GuardedBy("stateLock")
+    private var localDiscoveryEnabled = false
     @GuardedBy("stateLock")
     private var syncthingConflicts = ConflictsInfo()
         set(conflicts) {
@@ -548,6 +552,10 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         prefs.registerListener(this)
 
         notifications = Notifications(this)
+
+        val wifiManager = getSystemService(WifiManager::class.java)
+        multicastLock = wifiManager.createMulticastLock("Syncthing Local Discovery")
+        multicastLock.setReferenceCounted(false)
 
         deviceStateTracker = DeviceStateTracker(this)
         deviceStateTracker.registerListener(this)
@@ -818,6 +826,17 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
                 stateLock.notify()
             }
         }
+
+        val needMulticast = localDiscoveryEnabled && shouldResume
+        if (needMulticast != multicastLock.isHeld) {
+            Log.d(TAG, "Updating multicast lock: $needMulticast")
+
+            if (needMulticast) {
+                multicastLock.acquire()
+            } else {
+                multicastLock.release()
+            }
+        }
     }
 
     private fun runner() {
@@ -901,6 +920,21 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
                 // stateChanged() will be called by onSharedPreferenceChanged().
             }
+
+            // These are cleared here instead of onSyncthingStopped() because we want the state to
+            // clear in the event of an initialization failure after a service restart.
+            // onSyncthingStopped() is not called if onSyncthingStarted() is never reached.
+            // onMulticastNeeded(), onConflictsUpdated(), and onAlertsUpdated() can all fire before
+            // onSyncthingStarted().
+            synchronized(stateLock) {
+                localDiscoveryEnabled = false
+                syncthingConflicts = ConflictsInfo()
+                syncthingAlerts = 0
+                syncthingFolderStates = FolderStates()
+                syncthingDeviceStates = DeviceStates()
+
+                stateChanged()
+            }
         }
     }
 
@@ -976,12 +1010,17 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         Log.i(TAG, "Syncthing successfully stopped")
 
         synchronized(stateLock) {
-            syncthingConflicts = ConflictsInfo()
-            syncthingAlerts = 0
-            syncthingFolderStates = FolderStates()
-            syncthingDeviceStates = DeviceStates()
             syncthingApp = null
             lastTransition = ScheduleEvent.WindowEnd(System.currentTimeMillis())
+
+            stateChanged()
+        }
+    }
+
+    @WorkerThread
+    override fun onLocalDiscoveryEnabled(enabled: Boolean) {
+        synchronized(stateLock) {
+            localDiscoveryEnabled = enabled
 
             stateChanged()
         }
@@ -1004,6 +1043,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
         }
     }
 
+    @WorkerThread
     override fun onRemoteFileUpdated(path: String, isDelete: Boolean) {
         try {
             mediaScanner.scanFile(path, null)

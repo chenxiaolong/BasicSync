@@ -47,6 +47,9 @@ The app is intentionally kept very basic so that the project is easy to maintain
     * Syncthing's crash reporting is disabled because BasicSync integrates it in a way that is not supported upstream.
 * `ACCESS_LOCAL_NETWORK` (Android >=17)
     * Needed for directly connecting to devices on the local network instead of passing through Syncthing's relay servers.
+* `CHANGE_WIFI_MULTICAST_STATE`
+    * Needed for receiving broadcast (IPv4) and multicast (IPv6) packets for Syncthing's [Local Discovery Protocol](https://docs.syncthing.net/specs/localdisco-v4.html).
+    * The permission is unused when local discovery is disabled in Syncthing.
 * `READ_SYNC_SETTINGS`
     * Used for detecting if Android's auto-sync data setting is enabled.
 * `ACCESS_NETWORK_STATE`
