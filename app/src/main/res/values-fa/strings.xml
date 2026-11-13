@@ -217,4 +217,8 @@
         <item quantity="one">%d ساعت</item>
         <item quantity="other">%d ساعت</item>
     </plurals>
+    <string name="timestamp_started_at">• از %s شروع شد</string>
+    <string name="timestamp_stopped_at">• در %s متوقف شد</string>
+    <string name="timestamp_starting_at">• شروع از %s</string>
+    <string name="timestamp_stopping_at">• توقف در %s</string>
 </resources>
