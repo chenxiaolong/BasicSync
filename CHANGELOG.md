@@ -7,7 +7,7 @@
     to update the actual links at the bottom of the file.
 -->
 
-### Unreleased
+### Version 3.29
 
 * Allow syncing to BasicSync's external app directory without the "All files" permission ([PR #292])
 * Fix missing permission UI elements sometimes requiring the user to manually scroll up to see them ([PR #293])
