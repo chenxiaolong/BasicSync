@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Allow syncing to BasicSync's external app directory without the "All files" permission ([PR #292])
+* Fix missing permission UI elements sometimes requiring the user to manually scroll up to see them ([PR #293])
 
 ### Version 3.28
 
@@ -678,3 +679,4 @@
 [PR #288]: https://github.com/chenxiaolong/BasicSync/pull/288
 [PR #289]: https://github.com/chenxiaolong/BasicSync/pull/289
 [PR #292]: https://github.com/chenxiaolong/BasicSync/pull/292
+[PR #293]: https://github.com/chenxiaolong/BasicSync/pull/293
