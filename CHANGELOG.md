@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Allow syncing to BasicSync's external app directory without the "All files" permission ([PR #292])
+
 ### Version 3.28
 
 * Add support for receiving broadcast/multicast announcement packets when local discovery is enabled ([PR #287])
@@ -673,3 +677,4 @@
 [PR #287]: https://github.com/chenxiaolong/BasicSync/pull/287
 [PR #288]: https://github.com/chenxiaolong/BasicSync/pull/288
 [PR #289]: https://github.com/chenxiaolong/BasicSync/pull/289
+[PR #292]: https://github.com/chenxiaolong/BasicSync/pull/292
