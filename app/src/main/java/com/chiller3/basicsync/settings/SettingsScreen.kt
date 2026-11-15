@@ -22,6 +22,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -676,7 +677,23 @@ private fun SettingsContent(
     var showMinBatteryLevelDialog by rememberSaveable { mutableStateOf(false) }
     var showProxyOverrideDialog by rememberSaveable { mutableStateOf(false) }
 
-    PreferenceColumn(contentPadding = contentPadding) {
+    val lazyListState = rememberLazyListState()
+    var scrolledToTopOnce by rememberSaveable { mutableStateOf(false) }
+
+    // Permissions are checked asynchronously and when the new items are added to the top of the
+    // list, the Compose AppBar does not change state to indicate that scrolling up is possible.
+    // Scroll to the top once to ensure the user can see the new options.
+    if (!scrolledToTopOnce && missingPermissions.isNotEmpty()) {
+        LaunchedEffect(Unit) {
+            lazyListState.animateScrollToItem(0)
+            scrolledToTopOnce = true
+        }
+    }
+
+    PreferenceColumn(
+        state = lazyListState,
+        contentPadding = contentPadding,
+    ) {
         if (missingPermissions.isNotEmpty()) {
             item(key = "permissions") {
                 PreferenceCategory(
