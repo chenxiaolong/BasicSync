@@ -939,6 +939,21 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
     }
 
     override fun onCheckStoragePermissions(local0Sep: String, saf0Sep: String) {
+        // We don't need to request permissions if the configured local directories are just the
+        // external app directories. There's no way to select these directories via the UI, but the
+        // user can still type them in.
+        val noPermDirs = getExternalFilesDirs(null)
+        var localRequiresPerms = false
+
+        for (path in unpack0Sep(local0Sep)) {
+            val file = File(path).expandTilde().normalize()
+
+            if (!noPermDirs.any(file::startsWith)) {
+                localRequiresPerms = true
+                break
+            }
+        }
+
         val saf = mutableSetOf<Uri>()
 
         for (encoded in unpack0Sep(saf0Sep)) {
@@ -974,7 +989,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
 
         synchronized(stateLock) {
             recheckPermissions = false
-            missingLocal = local0Sep.isNotEmpty() && !Permissions.haveLocalStorage(this)
+            missingLocal = localRequiresPerms && !Permissions.haveLocalStorage(this)
             missingSaf = saf.sorted()
 
             allListeners {

@@ -80,6 +80,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:enableOnBackInvokedCallback="true"
+        android:hasFragileUserData="true"
         android:memtagMode="sync"
         android:requestLegacyExternalStorage="true"
         android:requestRawExternalStorageAccess="true"
