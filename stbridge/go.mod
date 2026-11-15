@@ -7,7 +7,7 @@ require (
 	go.foxforensics.eu/go-zip v1.0.0
 	golang.org/x/mobile v0.0.0-20261011034528-197770444867
 	golang.org/x/net v0.62.0
-	golang.org/x/sys v0.49.0
+	golang.org/x/sys v0.50.0
 )
 
 replace github.com/syncthing/syncthing v0.0.0 => ../external/syncthing
