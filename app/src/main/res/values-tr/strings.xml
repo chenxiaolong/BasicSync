@@ -221,4 +221,6 @@
     <string name="timestamp_stopped_at">• Durdurulma zamanı %s</string>
     <string name="timestamp_starting_at">• Başlama zamanı %s</string>
     <string name="timestamp_stopping_at">• Durma zamanı %s</string>
+    <string name="pref_allow_multicast_name">Duyuru paketlerini al</string>
+    <string name="pref_allow_multicast_desc">Gelen duyuru paketlerine izin vermek, yerel keşfin güvenilirliğini artırır ancak pil kullanımının artmasına neden olabilir.</string>
 </resources>
