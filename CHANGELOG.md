@@ -7,6 +7,10 @@
     to update the actual links at the bottom of the file.
 -->
 
+### Unreleased
+
+* Add setting to disable receiving announcement packets for local discovery ([PR #295])
+
 ### Version 3.29
 
 * Allow syncing to BasicSync's external app directory without the "All files" permission ([PR #292])
@@ -684,3 +688,4 @@
 [PR #292]: https://github.com/chenxiaolong/BasicSync/pull/292
 [PR #293]: https://github.com/chenxiaolong/BasicSync/pull/293
 [PR #294]: https://github.com/chenxiaolong/BasicSync/pull/294
+[PR #295]: https://github.com/chenxiaolong/BasicSync/pull/295
