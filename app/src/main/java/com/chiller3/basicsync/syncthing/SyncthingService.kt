@@ -57,6 +57,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             Preferences.PREF_KEEP_ALIVE,
             Preferences.PREF_SHOW_DETAILS,
             Preferences.PREF_SHOW_EXIT,
+            Preferences.PREF_ALLOW_MULTICAST,
         )
 
         val ACTION_AUTO_MODE = "${SyncthingService::class.java.canonicalName}.auto_mode"
@@ -827,7 +828,7 @@ class SyncthingService : Service(), SyncthingStatusReceiver, DeviceStateListener
             }
         }
 
-        val needMulticast = localDiscoveryEnabled && shouldResume
+        val needMulticast = localDiscoveryEnabled && shouldResume && prefs.allowMulticast
         if (needMulticast != multicastLock.isHeld) {
             Log.d(TAG, "Updating multicast lock: $needMulticast")
 

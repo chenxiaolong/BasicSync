@@ -110,6 +110,10 @@
     <string name="pref_start_on_boot_name">Start on boot</string>
     <!-- Description for the preference to start the app after a reboot. -->
     <string name="pref_start_on_boot_desc">Automatically start the app after a reboot.</string>
+    <!-- Title for the preference to allow receiving announcement packets for local discovery. -->
+    <string name="pref_allow_multicast_name">Receive announcement packets</string>
+    <!-- Description for the preference to allow receiving announcement packets for local discovery. -->
+    <string name="pref_allow_multicast_desc">Allowing incoming announcement packets improves the reliability of local discovery, but can result in increased battery usage.</string>
     <!-- Title for the preference to override Android's proxy settings. -->
     <string name="pref_proxy_override_name">Override proxy settings</string>
     <!-- Description for the preference to override Android's proxy settings. -->

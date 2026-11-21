@@ -25,6 +25,7 @@ class Preferences(context: Context) {
         const val PREF_REMOTE_CONTROL = "remote_control"
         const val PREF_ALLOW_AUTO_MODE = "allow_auto_mode"
         const val PREF_START_ON_BOOT = "start_on_boot"
+        const val PREF_ALLOW_MULTICAST = "allow_multicast"
         const val PREF_PROXY_OVERRIDE = "proxy_override"
         const val PREF_REQUIRE_UNMETERED_NETWORK = "require_unmetered_network"
         const val PREF_NETWORK_ALLOW_WIFI = "network_allow_wifi"
@@ -97,6 +98,10 @@ class Preferences(context: Context) {
     var startOnBoot: Boolean
         get() = prefs.getBoolean(PREF_START_ON_BOOT, true)
         set(enabled) = prefs.edit { putBoolean(PREF_START_ON_BOOT, enabled) }
+
+    var allowMulticast: Boolean
+        get() = prefs.getBoolean(PREF_ALLOW_MULTICAST, true)
+        set(enabled) = prefs.edit { putBoolean(PREF_ALLOW_MULTICAST, enabled) }
 
     var proxyOverride: String?
         get() = prefs.getString(PREF_PROXY_OVERRIDE, null)

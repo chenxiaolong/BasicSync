@@ -113,6 +113,7 @@ fun SettingsScreen(
     val remoteControl = remember(reloadPrefs) { prefs.remoteControl }
     val allowAutoMode = remember(reloadPrefs) { prefs.allowAutoMode }
     val startOnBoot = remember(reloadPrefs) { prefs.startOnBoot }
+    val allowMulticast = remember(reloadPrefs) { prefs.allowMulticast }
     val proxyOverride = remember(reloadPrefs) { prefs.proxyOverride }
     val isDebugMode = remember(reloadPrefs) { prefs.isDebugMode }
 
@@ -337,6 +338,7 @@ fun SettingsScreen(
             remoteControl = remoteControl,
             allowAutoMode = allowAutoMode,
             startOnBoot = startOnBoot,
+            allowMulticast = allowMulticast,
             proxyOverride = proxyOverride,
             isDebugMode = isDebugMode,
             onInhibitBatteryOptGrant = {
@@ -472,6 +474,10 @@ fun SettingsScreen(
                 prefs.startOnBoot = enabled
                 reloadPrefs++
             },
+            onAllowMulticastChange = { enabled ->
+                prefs.allowMulticast = enabled
+                reloadPrefs++
+            },
             onProxyOverrideChange = { url ->
                 prefs.proxyOverride = url
                 reloadPrefs++
@@ -582,6 +588,7 @@ private fun SettingsContent(
     remoteControl: Boolean,
     allowAutoMode: Boolean,
     startOnBoot: Boolean,
+    allowMulticast: Boolean,
     proxyOverride: String?,
     isDebugMode: Boolean,
     onInhibitBatteryOptGrant: () -> Unit,
@@ -608,6 +615,7 @@ private fun SettingsContent(
     onRemoteControlChange: (Boolean) -> Unit,
     onAllowAutoModeChange: (Boolean) -> Unit,
     onStartOnBootChange: (Boolean) -> Unit,
+    onAllowMulticastChange: (Boolean) -> Unit,
     onProxyOverrideChange: (String?) -> Unit,
     onDebugModeChange: (Boolean) -> Unit,
     onSourceRepoOpen: () -> Unit,
@@ -945,6 +953,17 @@ private fun SettingsContent(
             )
         }
 
+        item(key = "allow_multicast") {
+            SwitchPreference(
+                checked = allowMulticast,
+                onCheckedChange = onAllowMulticastChange,
+                shapes = BetterSegmentedShapes.middle(),
+                title = { Text(text = stringResource(R.string.pref_allow_multicast_name)) },
+                summary = { Text(text = stringResource(R.string.pref_allow_multicast_desc)) },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
         item(key = "proxy_override") {
             Preference(
                 onClick = { showProxyOverrideDialog = true },
@@ -1123,6 +1142,7 @@ private fun PreviewSettingsScreen() {
                 remoteControl = false,
                 allowAutoMode = true,
                 startOnBoot = true,
+                allowMulticast = true,
                 proxyOverride = null,
                 isDebugMode = true,
                 onInhibitBatteryOptGrant = {},
@@ -1149,6 +1169,7 @@ private fun PreviewSettingsScreen() {
                 onRemoteControlChange = {},
                 onAllowAutoModeChange = {},
                 onStartOnBootChange = {},
+                onAllowMulticastChange = {},
                 onProxyOverrideChange = {},
                 onDebugModeChange = {},
                 onSourceRepoOpen = {},
