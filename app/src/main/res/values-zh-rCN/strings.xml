@@ -206,4 +206,6 @@
     <string name="timestamp_stopped_at">• 停止于 %s</string>
     <string name="timestamp_starting_at">• 将于 %s 启动</string>
     <string name="timestamp_stopping_at">• 将于 %s 停止</string>
+    <string name="pref_allow_multicast_name">接收广播数据包</string>
+    <string name="pref_allow_multicast_desc">允许传入的广播数据包可提高本地发现的可靠性，但可能会导致耗电量增加。</string>
 </resources>
