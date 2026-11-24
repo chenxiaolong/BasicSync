@@ -10,6 +10,7 @@
 ### Unreleased
 
 * Add setting to disable receiving announcement packets for local discovery ([PR #295])
+* Sync translations from Weblate ([PR #296])
 
 ### Version 3.29
 
@@ -689,3 +690,4 @@
 [PR #293]: https://github.com/chenxiaolong/BasicSync/pull/293
 [PR #294]: https://github.com/chenxiaolong/BasicSync/pull/294
 [PR #295]: https://github.com/chenxiaolong/BasicSync/pull/295
+[PR #296]: https://github.com/chenxiaolong/BasicSync/pull/296
